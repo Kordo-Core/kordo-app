@@ -1,0 +1,15 @@
+{
+  "extends": "../../node_modules/expo/tsconfig.base.json",
+  "compilerOptions": {
+    "types": ["react", "react-native"],
+    "strict": true,
+    "baseUrl": ".",
+    "paths": {
+      "kordo-ui": ["../../kordo-ui/src"]
+    },
+    "noEmit": true,
+    "jsx": "react-jsx"
+  },
+  "include": ["**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules", "babel.config.js", "metro.config.js"]
+}
