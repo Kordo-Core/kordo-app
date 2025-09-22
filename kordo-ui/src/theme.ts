@@ -7,6 +7,11 @@ export type KordoTheme = {
   spacing: Record<string, string>;
   fontSizes: Record<string, string>;
   borderRadius: Record<string, string>;
+  fonts: {
+    regular: string;
+    medium: string;
+    bold: string;
+  };
 };
 
 export const theme: KordoTheme = {
@@ -37,13 +42,18 @@ export const theme: KordoTheme = {
       color900: '#124527',
       color950: '#072B1F',
     },
-
     neutral: {
       white: '#FFFFFF',
       black: '#000000',
+      grey: '#888888',
     },
   },
-  spacing: { sm: '8', md: '16', lg: '24' },
-  fontSizes: { sm: '12', md: '16', lg: '20' },
+  spacing: { sm: '8', md: '12', lg: '16', xl: '32' },
+  fontSizes: { xs: '12', sm: '14', md: '16', lg: '18', xl: '24', xxl: '32' },
   borderRadius: { md: '6px', rounded: '999px' },
+  fonts: {
+    regular: 'Outfit_400Regular',
+    medium: 'Outfit_500Medium',
+    bold: 'Outfit_700Bold',
+  },
 };
