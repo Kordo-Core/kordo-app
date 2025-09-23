@@ -1,6 +1,6 @@
-import { Button, theme } from 'kordo-ui';
+import { Button, Text, theme } from 'kordo-ui';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { ThemeProvider } from '@emotion/react';
 import {
   useFonts,
@@ -23,7 +23,10 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <View style={styles.container}>
-       <Text>Hello, World!</Text>
+       <Text size="xxl" appearance='primary'>Hello, World!</Text>
+       <Text bold>Hello, World!</Text>
+       <Text size="lg" appearance='secondary' bold>Hello, World!</Text>
+       <Button title="Press me" appearance='black' borderRadius='rounded' size='lg' width='fill'/>
         <StatusBar style="auto" />
       </View>
     </ThemeProvider>
