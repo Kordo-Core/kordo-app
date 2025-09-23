@@ -2,7 +2,7 @@ import { FontAwesome } from '@expo/vector-icons';
 
 export interface ButtonProps {
   title?: string;
-  appearance: 'primary' | 'secondary' | 'black';
+  appearance: 'primary' | 'secondary' | 'black' | 'transparent';
   iconName?: keyof typeof FontAwesome.glyphMap;
   iconPosition?: 'left' | 'right';
   borderRadius: 'rounded' | 'square';

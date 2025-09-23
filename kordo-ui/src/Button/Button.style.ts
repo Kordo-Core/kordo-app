@@ -12,6 +12,8 @@ const getColor = (appearance: ButtonProps['appearance'], theme: KordoTheme): str
       return theme.colors.secondary.color500;
     case 'black':
       return theme.colors.neutral.black;
+    case 'transparent':
+      return 'transparent';
     default:
       return theme.colors.neutral.black;
   }
@@ -73,5 +75,9 @@ export const Icon = styled(FontAwesome)<{
   inverted?: boolean;
 }>`
   color: ${(props) =>
-    props.inverted ? getColor(props.appearance, props.theme) : props.theme.colors.neutral.white};
+    props.appearance === 'transparent'
+      ? ''
+      : props.inverted
+        ? getColor(props.appearance, props.theme)
+        : props.theme.colors.neutral.white};
 `;

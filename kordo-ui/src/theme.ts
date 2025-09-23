@@ -6,6 +6,7 @@ export type KordoTheme = {
   };
   spacing: Record<string, string>;
   fontSizes: Record<string, string>;
+  iconSizes: Record<string, number>;
   borderRadius: Record<string, string>;
   fonts: {
     regular: string;
@@ -50,6 +51,7 @@ export const theme: KordoTheme = {
   },
   spacing: { sm: '8', md: '12', lg: '16', xl: '32' },
   fontSizes: { xs: '12', sm: '14', md: '16', lg: '18', xl: '24', xxl: '32' },
+  iconSizes: { md: 20, lg: 30 },
   borderRadius: { md: '6px', rounded: '999px' },
   fonts: {
     regular: 'Outfit_400Regular',
