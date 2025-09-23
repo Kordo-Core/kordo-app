@@ -51,7 +51,7 @@ export const ButtonContainer = styled(Animated.createAnimatedComponent(Pressable
     props.iconName && !props.title
       ? '0'
       : props.size === 'lg'
-        ? props.theme.spacing.xlg
+        ? props.theme.spacing.xl
         : props.theme.spacing.md};
 `;
 

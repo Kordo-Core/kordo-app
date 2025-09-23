@@ -45,10 +45,11 @@ export const theme: KordoTheme = {
     neutral: {
       white: '#FFFFFF',
       black: '#000000',
+      grey: '#888888',
     },
   },
-  spacing: { sm: '8', md: '12', lg: '16', xlg: '32' },
-  fontSizes: { sm: '14', md: '16', lg: '18' },
+  spacing: { sm: '8', md: '12', lg: '16', xl: '32' },
+  fontSizes: { xs: '12', sm: '14', md: '16', lg: '18', xl: '24', xxl: '32' },
   borderRadius: { md: '6px', rounded: '999px' },
   fonts: {
     regular: 'Outfit_400Regular',
