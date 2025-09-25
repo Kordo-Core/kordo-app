@@ -5,5 +5,4 @@ export interface TextProps {
   appearance?: 'primary' | 'secondary' | 'black' | 'grey' | 'white';
   size?: 'xxl' | 'xl' | 'lg' | 'md' | 'sm' | 'xs';
   bold?: boolean;
-  className?: string;
 }
