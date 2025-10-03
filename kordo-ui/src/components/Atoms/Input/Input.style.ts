@@ -1,8 +1,9 @@
 import styled from '@emotion/native';
 import { IconProps } from 'types/Icon';
 import { Text } from '../Text/Text';
+import Animated from 'react-native-reanimated';
 
-export const InputWrapper = styled.View((props) => ({
+export const InputWrapper = styled(Animated.View)((props) => ({
   borderWidth: 1,
   backgroundColor: props.theme.colors.neutral.white,
   paddingInline: props.theme.spacing.md,

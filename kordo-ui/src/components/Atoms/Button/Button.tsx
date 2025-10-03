@@ -3,7 +3,7 @@ import { ButtonProps } from './Button.types';
 import * as Styled from './Button.style';
 import { useTheme } from '@emotion/react';
 import { Text } from '../Text/Text';
-import { Bounce } from '../../animations/Bounce/Bounce';
+import { Bounce } from '../../../animations/Bounce/Bounce';
 
 export const Button: React.FC<ButtonProps> = (props) => {
   const theme = useTheme();

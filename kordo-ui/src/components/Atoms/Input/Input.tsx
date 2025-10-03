@@ -7,12 +7,12 @@ import { Text } from '../Text/Text';
 import { Animated, View } from 'react-native';
 import { keyboardTypeMap, textContentTypeMap } from './utils/inputMaps';
 import { State } from './utils/TState';
-import { Shake, ShakeRef } from '../../animations/Shake/Shake';
-import { Fade, FadeRef } from '../../animations/Fade/Fade';
+import { Shake, ShakeRef } from '../../../animations/Shake/Shake';
+import { Fade, FadeRef } from '../../../animations/Fade/Fade';
+import { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
 export const Input: React.FC<InputProps> = (props) => {
   const theme = useTheme();
-  const [state, setState] = React.useState<State>('default');
   const [errorMessage, setErrorMessage] = React.useState<string>('');
 
   const keyboardType = keyboardTypeMap[props.type ?? 'default'];
@@ -20,6 +20,13 @@ export const Input: React.FC<InputProps> = (props) => {
 
   const shakeRef = React.useRef<ShakeRef>(null);
   const fadeRef = React.useRef<FadeRef>(null);
+  const borderColor = useSharedValue(theme.colors.neutral.grey);
+
+  const animatedBorderStyle = useAnimatedStyle(() => ({
+    borderColor: borderColor.value,
+    borderWidth: 1,
+    borderRadius: 8,
+  }));
 
   const validate = (val: string): { state: State; message: string } => {
     if (!val) {
@@ -61,7 +68,7 @@ export const Input: React.FC<InputProps> = (props) => {
         </Text>
       )}
       <Shake ref={shakeRef} duration={50} amplitude={5}>
-        <Styled.InputWrapper>
+        <Styled.InputWrapper style={animatedBorderStyle}>
           {props.icon?.position === 'left' && <FontAwesome6 name={props.icon.name} size={20} />}
 
           <Styled.Input
@@ -70,17 +77,19 @@ export const Input: React.FC<InputProps> = (props) => {
             textContentType={textContentType}
             secureTextEntry={props.type === 'password'}
             onFocus={() => {
-              setState('focused');
               fadeRef.current?.trigger('out');
+              borderColor.value = withTiming(theme.colors.neutral.grey, { duration: 250 });
             }}
             onBlur={() => {
               const { state, message } = validate(props.value);
-              setState(state);
               setErrorMessage(message);
 
               if (state === 'error') {
                 shakeRef.current?.trigger();
                 fadeRef.current?.trigger('in');
+                borderColor.value = withTiming(theme.colors.error, { duration: 250 });
+              } else {
+                borderColor.value = withTiming(theme.colors.neutral.grey, { duration: 250 });
               }
             }}
           />
@@ -89,7 +98,7 @@ export const Input: React.FC<InputProps> = (props) => {
         </Styled.InputWrapper>
       </Shake>
 
-      <Fade ref={fadeRef} direction="down" duration={200} distance={10}>
+      <Fade ref={fadeRef} direction="down" duration={200} distance={6}>
         <Styled.ErrorText appearance="error" size="sm">
           {errorMessage || ' '}
         </Styled.ErrorText>
