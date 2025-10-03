@@ -9,7 +9,7 @@
     "paths": {
       "kordo-ui": [
         "../../kordo-ui/src"
-      ]
+      ],
     },
     "jsx": "react-jsx",
     "noEmit": true
