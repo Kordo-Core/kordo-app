@@ -3,11 +3,12 @@ export type KordoTheme = {
     primary: Record<string, string>;
     secondary: Record<string, string>;
     neutral: Record<string, string>;
+    error: string;
   };
-  spacing: Record<string, string>;
-  fontSizes: Record<string, string>;
+  spacing: Record<string, number>;
+  fontSizes: Record<string, number>;
   iconSizes: Record<string, number>;
-  borderRadius: Record<string, string>;
+  borderRadius: Record<string, number>;
   fonts: {
     regular: string;
     medium: string;
@@ -48,11 +49,14 @@ export const theme: KordoTheme = {
       black: '#000000',
       grey: '#888888',
     },
+    error: '#FF0000',
   },
-  spacing: { sm: '8', md: '12', lg: '16', xl: '32' },
-  fontSizes: { xs: '12', sm: '14', md: '16', lg: '18', xl: '24', xxl: '32' },
+
+  spacing: { sm: 8, md: 12, lg: 16, xl: 20, xxl: 32 },
+  fontSizes: { xs: 12, sm: 14, md: 16, lg: 18, xl: 24, xxl: 32 },
   iconSizes: { md: 20, lg: 30 },
-  borderRadius: { md: '6px', rounded: '999px' },
+  borderRadius: { md: 8, rounded: 100 },
+
   fonts: {
     regular: 'Outfit_400Regular',
     medium: 'Outfit_500Medium',

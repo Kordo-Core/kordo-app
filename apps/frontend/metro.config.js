@@ -3,10 +3,12 @@ const path = require('path');
 
 const config = getDefaultConfig(__dirname);
 
-config.watchFolders = [path.resolve(__dirname, '../../kordo-ui/src')];
+const uiPath = path.resolve(__dirname, '../../kordo-ui');
+
+config.watchFolders = [...config.watchFolders, uiPath];
 
 config.resolver.extraNodeModules = {
-  'kordo-ui': path.resolve(__dirname, '../../kordo-ui/src'),
+  'kordo-ui': uiPath,
 };
 
 module.exports = config;
