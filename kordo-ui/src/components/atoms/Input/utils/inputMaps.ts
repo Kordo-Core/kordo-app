@@ -17,7 +17,7 @@ export const textContentTypeMap = {
 //TODO pas utilisé pour l'instant
 export const iconColorMap = (theme: Theme) => ({
   default: theme.colors.neutral.grey,
-  error: theme.colors.error,
+  error: theme.colors.type.error,
   success: theme.colors.secondary.color500,
   focused: theme.colors.primary.color500,
 });

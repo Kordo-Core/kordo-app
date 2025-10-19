@@ -8,6 +8,6 @@ export const Tag = styled.View<{ appearance: TagProps['appearance'] }>((props) =
   borderRadius: props.theme.borderRadius.rounded,
   backgroundColor:
     props.appearance === 'secondary'
-      ? props.theme.colors.secondary.color500
-      : props.theme.colors.primary.color500,
+      ? props.theme.colors.secondary.base
+      : props.theme.colors.primary.base,
 }));

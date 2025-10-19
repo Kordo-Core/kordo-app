@@ -1,4 +1,3 @@
-import { FontAwesome } from '@expo/vector-icons';
 import { IconProps } from 'types/Icon';
 
 export interface ButtonProps {
