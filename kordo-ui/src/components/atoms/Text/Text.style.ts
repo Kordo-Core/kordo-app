@@ -12,12 +12,12 @@ export const Text = styled.Text<Omit<TextProps, 'children'>>((props) => {
   };
 
   const colorsMap = {
-    primary: props.theme.colors.primary.color500,
-    secondary: props.theme.colors.secondary.color500,
+    primary: props.theme.colors.primary.base,
+    secondary: props.theme.colors.secondary.base,
     white: props.theme.colors.neutral.white,
     grey: props.theme.colors.neutral.grey,
     black: props.theme.colors.neutral.black,
-    error: props.theme.colors.error,
+    error: props.theme.colors.type.error,
   };
 
   const fontSize = fontSizesMap[props.size ?? 'md'];

@@ -3,7 +3,7 @@ import { IconProps } from 'types/Icon';
 import { Text } from '../Text/Text';
 import Animated from 'react-native-reanimated';
 
-export const InputWrapper = styled(Animated.View)((props) => ({
+export const InputContainer = styled(Animated.View)((props) => ({
   borderWidth: 1,
   backgroundColor: props.theme.colors.neutral.white,
   paddingInline: props.theme.spacing.md,

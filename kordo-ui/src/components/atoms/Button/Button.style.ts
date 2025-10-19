@@ -1,15 +1,14 @@
 import styled from '@emotion/native';
 import { ButtonProps } from './Button.types';
-import { FontAwesome as FontAwesome6 } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons';
 import { KordoTheme } from 'theme';
-import { Pressable, Animated } from 'react-native';
 
 const getColor = (appearance: ButtonProps['appearance'], theme: KordoTheme): string => {
   switch (appearance) {
     case 'primary':
-      return theme.colors.primary.color500;
+      return theme.colors.primary.base;
     case 'secondary':
-      return theme.colors.secondary.color500;
+      return theme.colors.secondary.base;
     case 'black':
       return theme.colors.neutral.black;
     default:
@@ -54,7 +53,7 @@ export const ButtonContainer = styled.View<Exclude<ButtonProps, 'onClick'>>((pro
         : props.theme.spacing.md,
 }));
 
-export const Icon = styled(FontAwesome6)<{
+export const Icon = styled(Feather)<{
   appearance: ButtonProps['appearance'];
   inverted?: boolean;
 }>((props) => ({

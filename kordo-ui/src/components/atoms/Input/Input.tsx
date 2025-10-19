@@ -1,10 +1,10 @@
 import React from 'react';
-import { FontAwesome6 } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons';
 import * as Styled from './Input.style';
 import { InputProps } from './Input.types';
 import { useTheme } from '@emotion/react';
 import { Text } from '../Text/Text';
-import { Animated, View } from 'react-native';
+import { View } from 'react-native';
 import { keyboardTypeMap, textContentTypeMap } from './utils/inputMaps';
 import { State } from './utils/TState';
 import { Shake, ShakeRef } from '../../../animations/Shake/Shake';
@@ -68,8 +68,8 @@ export const Input: React.FC<InputProps> = (props) => {
         </Text>
       )}
       <Shake ref={shakeRef} duration={50} amplitude={5}>
-        <Styled.InputWrapper style={animatedBorderStyle}>
-          {props.icon?.position === 'left' && <FontAwesome6 name={props.icon.name} size={20} />}
+        <Styled.InputContainer style={animatedBorderStyle}>
+          {props.icon?.position === 'left' && <Feather name={props.icon.name} size={20} />}
 
           <Styled.Input
             {...props}
@@ -87,15 +87,15 @@ export const Input: React.FC<InputProps> = (props) => {
               if (state === 'error') {
                 shakeRef.current?.trigger();
                 fadeRef.current?.trigger('in');
-                borderColor.value = withTiming(theme.colors.error, { duration: 250 });
+                borderColor.value = withTiming(theme.colors.type.error, { duration: 250 });
               } else {
                 borderColor.value = withTiming(theme.colors.neutral.grey, { duration: 250 });
               }
             }}
           />
 
-          {props.icon?.position === 'right' && <FontAwesome6 name={props.icon.name} size={20} />}
-        </Styled.InputWrapper>
+          {props.icon?.position === 'right' && <Feather name={props.icon.name} size={20} />}
+        </Styled.InputContainer>
       </Shake>
 
       <Fade ref={fadeRef} direction="down" duration={200} distance={6}>
