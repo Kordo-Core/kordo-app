@@ -3,17 +3,25 @@ import { ToastProps } from './Toast.types';
 import { Feather } from '@expo/vector-icons';
 import * as Styled from './Toast.style';
 import { useTheme } from '@emotion/react';
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { Fade, FadeRef } from '../../../animations/Fade/Fade';
 
 export const Toast: React.FC<ToastProps> = (props) => {
   const theme = useTheme();
   const fadeRef = useRef<FadeRef>(null);
+  const [close, setClose] = useState(false);
 
   useEffect(() => {
     fadeRef.current?.trigger('in');
-    setTimeout(() => fadeRef.current?.trigger('out'), 2800);
+    setTimeout(() => fadeRef.current?.trigger('out'), props.duration);
   }, []);
+
+  useEffect(() => {
+    if (close) {
+      fadeRef.current?.trigger('out');
+      props.delete();
+    }
+  }, [close]);
 
   return (
     <Fade ref={fadeRef} direction="up" distance={50} duration={200}>
@@ -25,8 +33,8 @@ export const Toast: React.FC<ToastProps> = (props) => {
         <Styled.CloseIcon
           name="x"
           size={20}
-          position={props.icon?.position}
           color={theme.colors.neutral.grey}
+          onPress={() => setClose(true)}
         />
       </Styled.ToastContainer>
     </Fade>

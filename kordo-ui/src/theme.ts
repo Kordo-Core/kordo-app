@@ -20,7 +20,7 @@ export const theme: KordoTheme = {
   colors: {
     primary: {
       lightest: '#FFFDF7',
-      lighter: '#FCF2D2',
+      lighter: '#fcead2ff',
       light: '#F7D081',
       base: '#F3B24E',
       dark: '#DB9840',

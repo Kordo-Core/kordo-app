@@ -24,7 +24,6 @@ export const ToastContainer = styled.View<{ type: ToastProps['type'] }>((props) 
   };
 
   return {
-    borderWidth: 1,
     borderLeftWidth: 6,
     borderColor: typeColors[props.type].border,
     backgroundColor: typeColors[props.type].background,
@@ -43,6 +42,6 @@ export const Icon = styled(Feather)<{ position: IconProps['position'] }>({
   marginRight: 4,
 });
 
-export const CloseIcon = styled(Feather)<{ position: IconProps['position'] }>({
+export const CloseIcon = styled(Feather)({
   marginLeft: 'auto',
 });

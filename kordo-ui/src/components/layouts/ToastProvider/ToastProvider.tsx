@@ -9,21 +9,32 @@ const ToastContext = React.createContext<ToastContextProps | undefined>(undefine
 export const ToastProvider: React.FC<ToastProviderProps> = (props) => {
   const [toasts, setToasts] = React.useState<ToastProps[]>([]);
 
-  const showToast = (toast: Omit<ToastProps, 'id'>) => {
+  const addToast = (toast: Omit<ToastProps, 'id'>) => {
     const id = Math.random().toString();
     setToasts((prev) => [...prev, { ...toast, id }]);
-    console.log(toast);
     setTimeout(() => {
       setToasts((prev) => prev.filter((t) => t.id !== id));
-    }, 3000);
+    }, toast.duration + 200);
+  };
+
+  const deleteToast = (id: string) => {
+    setTimeout(() => {
+      setToasts((prev) => prev.filter((toast) => toast.id !== id));
+    }, 200);
   };
 
   return (
-    <ToastContext.Provider value={{ showToast }}>
+    <ToastContext.Provider value={{ addToast }}>
       {props.children}
       <Styled.ToastContainer>
         {toasts.map((toast) => (
-          <Toast key={toast.id} {...toast} />
+          <Toast
+            key={toast.id}
+            {...toast}
+            delete={() => {
+              deleteToast(toast.id);
+            }}
+          />
         ))}
       </Styled.ToastContainer>
     </ToastContext.Provider>

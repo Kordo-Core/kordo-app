@@ -12,7 +12,7 @@ const getColor = (appearance: ButtonProps['appearance'], theme: KordoTheme): str
     case 'black':
       return theme.colors.neutral.black;
     default:
-      return theme.colors.neutral.black;
+      return theme.colors.neutral.white;
   }
 };
 

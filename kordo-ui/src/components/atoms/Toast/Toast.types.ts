@@ -7,4 +7,6 @@ export interface ToastProps {
   icon?: IconProps;
   isLoading: boolean;
   isClosable: boolean;
+  duration: number;
+  delete: () => void;
 }

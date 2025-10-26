@@ -5,5 +5,5 @@ export interface ToastProviderProps {
 }
 
 export interface ToastContextProps {
-  showToast: (toast: Omit<ToastProps, 'id'>) => void;
+  addToast: (toast: Omit<ToastProps, 'id'>) => void;
 }
