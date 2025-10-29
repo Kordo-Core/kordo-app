@@ -3,7 +3,10 @@ export type KordoTheme = {
     primary: Record<string, string>;
     secondary: Record<string, string>;
     neutral: Record<string, string>;
-    type: Record<string, string>;
+    success: { base: string; lighter: string };
+    error: { base: string; lighter: string };
+    warning: { base: string; lighter: string };
+    info: { base: string; lighter: string };
   };
   spacing: Record<string, number>;
   fontSizes: Record<string, number>;
@@ -41,11 +44,21 @@ export const theme: KordoTheme = {
       black: '#000000',
       grey: '#888888',
     },
-    type: {
-      success: '#57987D',
-      error: '#FF0000',
-      warning: '#F3B24E',
-      info: '#2196F3',
+    success: {
+      base: '#57987D',
+      lighter: '#E6F4EA',
+    },
+    error: {
+      base: '#FF0000',
+      lighter: '#FDECEA',
+    },
+    warning: {
+      base: '#F3B24E',
+      lighter: '#FFF4E5',
+    },
+    info: {
+      base: '#2196F3',
+      lighter: '#E8F3FD',
     },
   },
   spacing: { sm: 8, md: 12, lg: 16, xl: 20, xxl: 32 },

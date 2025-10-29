@@ -68,6 +68,7 @@ export const Loader: React.FC<LoaderProps> = (props) => {
         <ProgressBar
           onLayout={(e) => setWidth(e.nativeEvent.layout.width)}
           appearance={props.appearance}
+          style={props.style}
         >
           <Bar style={barStyle} infinite={props.infinite ?? false} appearance={props.appearance} />
         </ProgressBar>
@@ -75,7 +76,11 @@ export const Loader: React.FC<LoaderProps> = (props) => {
 
       {props.type === 'spinner' && (
         <>
-          <Styled.AnimatedSvg width={size} height={size} style={spinnerStyle}>
+          <Styled.AnimatedSvg
+            width={size}
+            height={size}
+            style={{ ...spinnerStyle, ...props.style }}
+          >
             <Circle
               cx={size / 2}
               cy={size / 2}

@@ -1,7 +1,7 @@
 import styled from '@emotion/native';
-import { IconProps } from 'types/Icon';
 import { Text } from '../Text/Text';
 import Animated from 'react-native-reanimated';
+import { IconPosition } from '../Icon/Icon.types';
 
 export const InputContainer = styled(Animated.View)((props) => ({
   borderWidth: 1,
@@ -15,9 +15,9 @@ export const InputContainer = styled(Animated.View)((props) => ({
   marginTop: 4,
 }));
 
-export const Input = styled.TextInput<{ icon?: IconProps }>((props) => ({
+export const Input = styled.TextInput<{ iconPosition?: IconPosition }>((props) => ({
   flex: 1,
-  paddingLeft: props.icon?.position === 'left' ? props.theme.spacing.sm : 0,
+  paddingLeft: props.iconPosition === 'left' ? props.theme.spacing.sm : 0,
 }));
 
 export const ErrorText = styled(Text)({

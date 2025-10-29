@@ -1,7 +1,10 @@
 import { Feather } from '@expo/vector-icons';
-import { theme } from 'theme';
 
 export interface IconProps {
   name: keyof typeof Feather.glyphMap;
-  position?: 'left' | 'right';
+  size?: number;
+  color?: string;
+  onPress?: () => void;
 }
+
+export type IconPosition = 'left' | 'right';

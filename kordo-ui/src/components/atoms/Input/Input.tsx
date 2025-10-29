@@ -1,15 +1,15 @@
 import React from 'react';
-import { Feather } from '@expo/vector-icons';
 import * as Styled from './Input.style';
 import { InputProps } from './Input.types';
 import { useTheme } from '@emotion/react';
 import { Text } from '../Text/Text';
 import { View } from 'react-native';
 import { keyboardTypeMap, textContentTypeMap } from './utils/inputMaps';
-import { State } from './utils/TState';
 import { Shake, ShakeRef } from '../../../animations/Shake/Shake';
 import { Fade, FadeRef } from '../../../animations/Fade/Fade';
 import { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import { Icon } from '../Icon/Icon';
+import { StatusType } from 'types/theme.types';
 
 export const Input: React.FC<InputProps> = (props) => {
   const theme = useTheme();
@@ -28,7 +28,7 @@ export const Input: React.FC<InputProps> = (props) => {
     borderRadius: 8,
   }));
 
-  const validate = (val: string): { state: State; message: string } => {
+  const validate = (val: string): { state: StatusType | 'default'; message: string } => {
     if (!val) {
       return props.required
         ? { state: 'error', message: 'Ce champ est requis.' }
@@ -69,7 +69,7 @@ export const Input: React.FC<InputProps> = (props) => {
       )}
       <Shake ref={shakeRef} duration={50} amplitude={5}>
         <Styled.InputContainer style={animatedBorderStyle}>
-          {props.icon?.position === 'left' && <Feather name={props.icon.name} size={20} />}
+          {props.iconPosition === 'left' && props.icon && <Icon name={props.icon.name} size={20} />}
 
           <Styled.Input
             {...props}
@@ -87,14 +87,14 @@ export const Input: React.FC<InputProps> = (props) => {
               if (state === 'error') {
                 shakeRef.current?.trigger();
                 fadeRef.current?.trigger('in');
-                borderColor.value = withTiming(theme.colors.type.error, { duration: 250 });
+                borderColor.value = withTiming(theme.colors.error.base, { duration: 250 });
               } else {
                 borderColor.value = withTiming(theme.colors.neutral.grey, { duration: 250 });
               }
             }}
           />
 
-          {props.icon?.position === 'right' && <Feather name={props.icon.name} size={20} />}
+          {props.iconPosition !== 'left' && props.icon && <Icon name={props.icon.name} size={20} />}
         </Styled.InputContainer>
       </Shake>
 

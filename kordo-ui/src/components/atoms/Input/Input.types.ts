@@ -1,4 +1,4 @@
-import { IconProps } from 'types/Icon';
+import { IconPosition, IconProps } from '../Icon/Icon.types';
 
 export interface InputProps {
   value: string;
@@ -11,5 +11,6 @@ export interface InputProps {
   minLength?: number;
   multiline?: boolean;
   icon?: IconProps;
+  iconPosition?: IconPosition;
   required?: boolean;
 }

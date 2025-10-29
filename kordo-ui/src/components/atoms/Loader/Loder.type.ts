@@ -1,8 +1,12 @@
+import { AppearanceType, SizeType, StatusType } from 'types/theme.types';
+import { ViewStyle } from 'react-native';
+
 export interface LoaderProps {
   type: 'bar' | 'spinner';
   duration: number;
-  appearance?: 'primary' | 'secondary';
+  appearance?: AppearanceType | StatusType;
   infinite?: boolean;
   reverse?: boolean;
-  size?: 'sm' | 'md' | 'lg';
+  size?: SizeType;
+  style?: ViewStyle;
 }

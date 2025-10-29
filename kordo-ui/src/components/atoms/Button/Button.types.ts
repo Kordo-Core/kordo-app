@@ -1,12 +1,14 @@
-import { IconProps } from 'types/Icon';
+import { AppearanceType, NeutralType, SizeType } from 'types/theme.types';
+import { IconPosition, IconProps } from '../Icon/Icon.types';
 
 export interface ButtonProps {
   title?: string;
-  appearance?: 'primary' | 'secondary' | 'black';
+  appearance: AppearanceType | NeutralType;
   icon?: IconProps;
+  iconPosition?: IconPosition;
   borderRadius?: 'rounded' | 'square';
   inverted?: boolean;
-  size?: 'md' | 'lg';
+  size?: Exclude<SizeType, 'sm'>;
   width?: 'fill' | 'full';
   onClick?: () => void;
   // disabled?: boolean; TODO

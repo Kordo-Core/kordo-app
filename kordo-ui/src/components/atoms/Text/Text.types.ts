@@ -1,9 +1,10 @@
 import { KordoTheme } from 'theme';
+import { AppearanceType, ExtendedSizeType, NeutralType, StatusType } from 'types/theme.types';
 
 export interface TextProps {
   children: React.ReactNode;
-  appearance?: 'primary' | 'secondary' | 'black' | 'grey' | 'white' | 'error';
-  size?: 'xxl' | 'xl' | 'lg' | 'md' | 'sm' | 'xs';
+  appearance?: AppearanceType | NeutralType | StatusType;
+  size?: ExtendedSizeType;
   bold?: boolean;
   style?: any;
 }

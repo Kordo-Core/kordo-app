@@ -4,6 +4,7 @@ import * as Styled from './Button.style';
 import { useTheme } from '@emotion/react';
 import { Text } from '../Text/Text';
 import { Bounce } from '../../../animations/Bounce/Bounce';
+import { Icon } from '../Icon/Icon';
 
 export const Button: React.FC<ButtonProps> = (props) => {
   const theme = useTheme();
@@ -11,12 +12,11 @@ export const Button: React.FC<ButtonProps> = (props) => {
   return (
     <Bounce onPress={props.onClick}>
       <Styled.ButtonContainer {...props}>
-        {props.icon && props.icon.position === 'left' && (
-          <Styled.Icon
-            appearance={props.appearance}
-            inverted={props.inverted}
+        {props.icon && props.iconPosition === 'left' && (
+          <Icon
             name={props.icon.name}
             size={props.size == 'lg' ? theme.iconSizes.lg : theme.iconSizes.md}
+            color={props.icon.color}
           />
         )}
         {props.title && (
@@ -28,12 +28,11 @@ export const Button: React.FC<ButtonProps> = (props) => {
             {props.title}
           </Text>
         )}
-        {props.icon && props.icon.position !== 'left' && (
-          <Styled.Icon
-            appearance={props.appearance}
-            inverted={props.inverted}
+        {props.icon && props.iconPosition !== 'left' && (
+          <Icon
             name={props.icon.name}
-            size={props.size == 'lg' ? 30 : 20}
+            size={props.size == 'lg' ? theme.iconSizes.lg : theme.iconSizes.md}
+            color={props.icon.color}
           />
         )}
       </Styled.ButtonContainer>

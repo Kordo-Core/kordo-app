@@ -1,28 +1,11 @@
 import styled from '@emotion/native';
 import { ButtonProps } from './Button.types';
-import { Feather } from '@expo/vector-icons';
-import { KordoTheme } from 'theme';
-
-const getColor = (appearance: ButtonProps['appearance'], theme: KordoTheme): string => {
-  switch (appearance) {
-    case 'primary':
-      return theme.colors.primary.base;
-    case 'secondary':
-      return theme.colors.secondary.base;
-    case 'black':
-      return theme.colors.neutral.black;
-    default:
-      return theme.colors.neutral.white;
-  }
-};
+import { getColor } from '../../../utils/getColors';
 
 export const ButtonContainer = styled.View<Exclude<ButtonProps, 'onClick'>>((props) => ({
-  backgroundColor: props.inverted
-    ? props.theme.colors.neutral.white
-    : getColor(props.appearance, props.theme),
-
-  borderWidth: props.inverted ? 1 : 0,
-  borderColor: props.inverted ? getColor(props.appearance, props.theme) : 'transparent',
+  backgroundColor: props.inverted ? props.theme.colors.neutral.white : getColor(props.appearance!),
+  borderColor: props.inverted ? getColor(props.appearance) : props.theme.colors.neutral.white,
+  borderWidth: 1,
 
   borderRadius:
     props.borderRadius === 'rounded'
@@ -51,13 +34,4 @@ export const ButtonContainer = styled.View<Exclude<ButtonProps, 'onClick'>>((pro
       : props.size === 'lg'
         ? props.theme.spacing.xxl
         : props.theme.spacing.md,
-}));
-
-export const Icon = styled(Feather)<{
-  appearance: ButtonProps['appearance'];
-  inverted?: boolean;
-}>((props) => ({
-  color: props.inverted
-    ? getColor(props.appearance, props.theme)
-    : props.theme.colors.neutral.white,
 }));

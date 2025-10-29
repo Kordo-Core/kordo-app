@@ -1,47 +1,60 @@
 import styled from '@emotion/native';
 import { ToastProps } from './Toast.types';
-import { Feather } from '@expo/vector-icons';
-import { IconProps } from 'types/Icon';
+import { Loader } from '../Loader/Loader';
+import { Icon } from '../Icon/Icon';
 
 export const ToastContainer = styled.View<{ type: ToastProps['type'] }>((props) => {
   const typeColors: Record<ToastProps['type'], { border: string; background: string }> = {
     success: {
-      border: props.theme.colors.type.success,
-      background: '#E6F4EA',
+      border: props.theme.colors.success.base,
+      background: props.theme.colors.success.lighter,
     },
     error: {
-      border: props.theme.colors.type.error,
-      background: '#FDECEA',
+      border: props.theme.colors.error.base,
+      background: props.theme.colors.error.lighter,
     },
     warning: {
-      border: props.theme.colors.type.warning,
-      background: '#FFF4E5',
+      border: props.theme.colors.warning.base,
+      background: props.theme.colors.warning.lighter,
     },
     info: {
-      border: props.theme.colors.type.info,
-      background: '#E8F3FD',
+      border: props.theme.colors.info.base,
+      background: props.theme.colors.info.lighter,
     },
   };
 
   return {
+    overflow: 'hidden',
     borderLeftWidth: 6,
     borderColor: typeColors[props.type].border,
     backgroundColor: typeColors[props.type].background,
-    paddingInline: props.theme.spacing.md,
     borderRadius: props.theme.borderRadius.md,
-    flexDirection: 'row',
+    flexDirection: 'column',
     alignItems: 'center',
+    justifyContent: 'center',
     width: '100%',
     height: 60,
-    marginTop: 4,
   };
 });
 
-export const Icon = styled(Feather)<{ position: IconProps['position'] }>({
+export const ToastContent = styled.View((props) => ({
+  display: 'flex',
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  width: '100%',
+  paddingInline: props.theme.spacing.md,
+}));
+
+export const CustomIcon = styled(Icon)({
   marginLeft: 0,
   marginRight: 4,
 });
 
-export const CloseIcon = styled(Feather)({
+export const CloseIcon = styled(Icon)({
   marginLeft: 'auto',
+});
+
+export const CustomLoader = styled(Loader)({
+  position: 'absolute',
+  bottom: 0,
 });
