@@ -1,7 +1,13 @@
-import { KordoTheme } from 'theme';
-import { AppearanceType, ExtendedSizeType, NeutralType, StatusType } from 'types/theme.types';
+import { TextProps as ReactTextProps } from 'react-native';
 
-export interface TextProps {
+import {
+  AppearanceType,
+  ExtendedSizeType,
+  NeutralType,
+  StatusType,
+} from '../../../types/theme.types';
+
+export interface TextProps extends ReactTextProps {
   children: React.ReactNode;
   appearance?: AppearanceType | NeutralType | StatusType;
   size?: ExtendedSizeType;

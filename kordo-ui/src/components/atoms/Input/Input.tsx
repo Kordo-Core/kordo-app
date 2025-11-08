@@ -20,7 +20,7 @@ export const Input: React.FC<InputProps> = (props) => {
 
   const shakeRef = React.useRef<ShakeRef>(null);
   const fadeRef = React.useRef<FadeRef>(null);
-  const borderColor = useSharedValue(theme.colors.neutral.grey);
+  const borderColor = useSharedValue(theme.colors.neutral.gray);
 
   const animatedBorderStyle = useAnimatedStyle(() => ({
     borderColor: borderColor.value,
@@ -62,7 +62,7 @@ export const Input: React.FC<InputProps> = (props) => {
   return (
     <View>
       {(props.label || props.required) && (
-        <Text appearance="grey" size="md">
+        <Text appearance="gray" size="md">
           {props.label}
           {props.required ? ' *' : ''}
         </Text>
@@ -78,7 +78,7 @@ export const Input: React.FC<InputProps> = (props) => {
             secureTextEntry={props.type === 'password'}
             onFocus={() => {
               fadeRef.current?.trigger('out');
-              borderColor.value = withTiming(theme.colors.neutral.grey, { duration: 250 });
+              borderColor.value = withTiming(theme.colors.neutral.gray, { duration: 250 });
             }}
             onBlur={() => {
               const { state, message } = validate(props.value);
@@ -89,7 +89,7 @@ export const Input: React.FC<InputProps> = (props) => {
                 fadeRef.current?.trigger('in');
                 borderColor.value = withTiming(theme.colors.error.base, { duration: 250 });
               } else {
-                borderColor.value = withTiming(theme.colors.neutral.grey, { duration: 250 });
+                borderColor.value = withTiming(theme.colors.neutral.gray, { duration: 250 });
               }
             }}
           />

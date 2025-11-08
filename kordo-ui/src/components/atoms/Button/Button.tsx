@@ -8,10 +8,18 @@ import { Icon } from '../Icon/Icon';
 
 export const Button: React.FC<ButtonProps> = (props) => {
   const theme = useTheme();
-
   return (
     <Bounce onPress={props.onClick}>
-      <Styled.ButtonContainer {...props}>
+      <Styled.ButtonContainer
+        appearance={props.appearance}
+        inverted={props.inverted}
+        borderRadius={props.borderRadius}
+        size={props.size}
+        width={props.width}
+        withoutBorder={props.withoutBorder}
+        style={props.style}
+        onLayout={props.onLayout}
+      >
         {props.icon && props.iconPosition === 'left' && (
           <Icon
             name={props.icon.name}

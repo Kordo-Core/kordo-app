@@ -3,12 +3,9 @@ import { Pressable } from 'react-native';
 import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
 import { BounceProps } from './Bounce.types';
 
-export const Bounce: React.FC<BounceProps> = ({
-  children,
-  scaleTo = 0.95,
-  duration = 150,
-  onPress,
-}) => {
+export const Bounce: React.FC<BounceProps> = (props) => {
+  const { children, onPress, scaleTo = 0.95, duration = 200 } = props;
+
   const scale = useSharedValue(1);
 
   const animatedStyle = useAnimatedStyle(() => ({

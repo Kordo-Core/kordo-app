@@ -2,11 +2,11 @@ import styled from '@emotion/native';
 import { ButtonProps } from './Button.types';
 import { getColor } from '../../../utils/getColors';
 
-export const ButtonContainer = styled.View<Exclude<ButtonProps, 'onClick'>>((props) => ({
+export const ButtonContainer = styled.View<Omit<ButtonProps, 'onClick' | 'style'>>((props) => ({
   backgroundColor: props.inverted ? props.theme.colors.neutral.white : getColor(props.appearance!),
-  borderColor: props.inverted ? getColor(props.appearance) : props.theme.colors.neutral.white,
-  borderWidth: 1,
-
+  borderColor: 'transparent',
+  borderWidth: props.withoutBorder ? 0 : 1,
+  boxShadow: `inset 0 0 0 ${props.withoutBorder ? -1 : 1}px ${getColor(props.appearance!)}` /* Bordure interne de 2px */,
   borderRadius:
     props.borderRadius === 'rounded'
       ? props.theme.borderRadius.rounded

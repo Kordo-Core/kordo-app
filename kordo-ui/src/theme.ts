@@ -2,7 +2,11 @@ export type KordoTheme = {
   colors: {
     primary: Record<string, string>;
     secondary: Record<string, string>;
-    neutral: Record<string, string>;
+    neutral: {
+      white: string;
+      black: string;
+      gray: Record<string, string>;
+    };
     success: { base: string; lighter: string };
     error: { base: string; lighter: string };
     warning: { base: string; lighter: string };
@@ -42,7 +46,10 @@ export const theme: KordoTheme = {
     neutral: {
       white: '#FFFFFF',
       black: '#000000',
-      grey: '#888888',
+      gray: {
+        light: '#F0F0F0',
+        base: '#888888',
+      },
     },
     success: {
       base: '#57987D',
@@ -61,10 +68,10 @@ export const theme: KordoTheme = {
       lighter: '#E8F3FD',
     },
   },
-  spacing: { sm: 8, md: 12, lg: 16, xl: 20, xxl: 32 },
+  spacing: { xs: 4, sm: 8, md: 12, lg: 16, xl: 20, xxl: 32 },
   fontSizes: { xs: 12, sm: 14, md: 16, lg: 18, xl: 24, xxl: 32 },
   iconSizes: { md: 20, lg: 30 },
-  borderRadius: { md: 8, rounded: 100 },
+  borderRadius: { square: 8, rounded: 100 },
   fonts: {
     regular: 'Outfit_400Regular',
     medium: 'Outfit_500Medium',

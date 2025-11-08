@@ -32,7 +32,7 @@ export const Toast: React.FC<ToastProps> = (props) => {
           <Styled.CloseIcon
             name="x"
             size={20}
-            color={theme.colors.neutral.grey}
+            color={theme.colors.neutral.gray.base}
             onPress={() => setClose(true)}
           />
         </Styled.ToastContent>

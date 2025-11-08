@@ -1,4 +1,4 @@
-import { AppearanceType, SizeType, StatusType } from 'types/theme.types';
+import { AppearanceType, SizeType, StatusType } from '../../../types/theme.types';
 import { ViewStyle } from 'react-native';
 
 export interface LoaderProps {

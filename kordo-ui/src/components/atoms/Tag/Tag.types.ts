@@ -1,4 +1,4 @@
-import { AppearanceType, StatusType } from 'types/theme.types';
+import { AppearanceType, StatusType } from '../../../types/theme.types';
 
 export interface TagProps {
   title: string;

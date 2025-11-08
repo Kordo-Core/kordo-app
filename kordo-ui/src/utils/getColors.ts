@@ -11,8 +11,8 @@ export const getColor = (appearance: AppearanceType | NeutralType | StatusType):
       return theme.colors.neutral.black;
     case 'white':
       return theme.colors.neutral.white;
-    case 'grey':
-      return theme.colors.neutral.grey;
+    case 'gray':
+      return theme.colors.neutral.gray.base;
     case 'success':
       return theme.colors.success.base;
     case 'error':
