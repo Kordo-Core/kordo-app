@@ -1,27 +1,17 @@
 {
+  "extends": "expo/tsconfig.base",
   "compilerOptions": {
-    "types": [
-      "react",
-      "react-native"
-    ],
-    "strict": true,
-    "baseUrl": ".",
+    "baseUrl": ".", 
     "paths": {
-      "kordo-ui": [
-        "../../kordo-ui/src"
-      ],
+      "core/*": ["../../core/*"],
+      "libraries/kordo-ui/*": ["../../libraries/kordo-ui/src/*"],
+      "libraries/kordo-ui": ["../../libraries/kordo-ui/src/index"]
     },
+    "types": ["react", "react-native"],
+    "strict": true,
     "jsx": "react-jsx",
     "noEmit": true
   },
-  "include": [
-    "**/*.ts",
-    "**/*.tsx"
-  ],
-  "exclude": [
-    "node_modules",
-    "babel.config.js",
-    "metro.config.js"
-  ],
-  "extends": "expo/tsconfig.base"
+  "include": ["**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules", "babel.config.js", "metro.config.js"]
 }

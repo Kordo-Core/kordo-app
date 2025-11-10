@@ -1,18 +1,27 @@
-import { Button, Input, SegmentedControl, theme } from 'kordo-ui';
+// Externes
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View } from 'react-native';
 import { ThemeProvider } from '@emotion/react';
+import { useState } from 'react';
+
+// Fonts
 import {
   useFonts,
   Outfit_400Regular,
   Outfit_500Medium,
   Outfit_700Bold,
 } from '@expo-google-fonts/outfit';
-import { useState } from 'react';
+
 import {
+  Button,
+  Input,
+  SegmentedControl,
+  theme,
+  Card,
   ToastProvider,
   useToast,
-} from '../../kordo-ui/src/components/layouts/ToastProvider/ToastProvider';
+  Suggestion,
+} from 'libraries/kordo-ui';
 
 export default function App() {
   const [fontsLoaded] = useFonts({ Outfit_400Regular, Outfit_500Medium, Outfit_700Bold });
@@ -54,20 +63,21 @@ function HomeScreen() {
         size="lg"
       /> */}
       <Button title="Show Success Toast" appearance="primary" borderRadius="rounded" size="lg" />
-      <Button
-        title="Show Success Toast"
-        appearance="primary"
-        inverted
-        borderRadius="rounded"
-        size="lg"
+      <Suggestion
+        isFollowing
+        user={{ id: 'valentino-jacinto', username: 'Valentino Jacinto' }}
+        location="Arkose Massy"
       />
-      <Button
-        title="Show Success Toast"
-        appearance="secondary"
-        inverted
-        borderRadius="rounded"
-        size="lg"
-      />
+      <Card>
+        <Button
+          title="Show Success Toast"
+          appearance="primary"
+          inverted
+          borderRadius="rounded"
+          size="lg"
+          fullWidth
+        />
+      </Card>
 
       <SegmentedControl
         segments={[
