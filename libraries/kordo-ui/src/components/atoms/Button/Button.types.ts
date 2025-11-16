@@ -4,7 +4,7 @@ import { IconPosition, IconProps } from '../Icon/Icon.types';
 
 export interface ButtonProps extends ViewProps {
   title?: string;
-  appearance: AppearanceType | Exclude<NeutralType, 'white'>;
+  appearance?: AppearanceType | Exclude<NeutralType, 'white'>;
   icon?: IconProps;
   iconPosition?: IconPosition;
   borderRadius?: 'rounded' | 'square';
@@ -13,6 +13,6 @@ export interface ButtonProps extends ViewProps {
   fullWidth?: boolean;
   withoutBorder?: boolean;
   style?: any;
-  onClick?: () => void;
+  onPress?: () => void;
   // disabled?: boolean; TODO
 }

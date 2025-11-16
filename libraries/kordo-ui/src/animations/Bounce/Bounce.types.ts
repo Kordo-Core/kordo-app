@@ -3,4 +3,5 @@ export interface BounceProps {
   scaleTo?: number; // échelle quand pressé
   duration?: number; // vitesse d’anim
   onPress?: () => void;
+  style?: any;
 }

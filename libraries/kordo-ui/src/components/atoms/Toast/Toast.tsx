@@ -18,7 +18,7 @@ export const Toast: React.FC<ToastProps> = (props) => {
   useEffect(() => {
     if (close) {
       fadeRef.current?.trigger('out');
-      props.delete();
+      setTimeout(() => props.delete(), 200);
     }
   }, [close]);
 
@@ -29,10 +29,11 @@ export const Toast: React.FC<ToastProps> = (props) => {
           {props.icon && <Styled.CustomIcon name={props.icon.name} size={20} />}
           <Text>{props.message}</Text>
           <Styled.CloseIcon
-            name="x"
-            size={20}
-            color={theme.colors.neutral.gray.base}
+            icon={{ name: 'x', color: theme.colors.neutral.gray.base }}
+            size="md"
             onPress={() => setClose(true)}
+            inverted
+            withoutBorder
           />
         </Styled.ToastContent>
         {props.showLoader && (

@@ -52,21 +52,28 @@ function HomeScreen() {
         inverted
         borderRadius="rounded"
         icon={{ name: 'arrow-right-circle', color: theme.colors.primary.base }}
-        onClick={() => {
+        onPress={() => {
           addToast({
             type: 'error',
             message: `Hello ${username}`,
             duration: 7000,
             showLoader: true,
+            isClosable: true,
           });
         }}
         size="lg"
-      /> */}
+      />
       <Button title="Show Success Toast" appearance="primary" borderRadius="rounded" size="lg" />
       <Suggestion
         isFollowing
         user={{ id: 'valentino-jacinto', username: 'Valentino Jacinto' }}
         location="Arkose Massy"
+        onPressLocation={(location) => console.log(location)}
+        onPressUser={(user) => console.log(user)}
+        onPressClose={() => console.log('close')}
+        onPressFollow={() => {
+          console.log('follow');
+        }}
       />
       <Card>
         <Button
@@ -77,13 +84,13 @@ function HomeScreen() {
           size="lg"
           fullWidth
         />
-      </Card>
+      </Card> */}
 
       <SegmentedControl
         segments={[
           { text: 'First', color: theme.colors.primary.base },
           { text: 'Second', color: theme.colors.secondary.base },
-          { text: 'Third', color: 'red' },
+          { text: 'erwann', color: 'purple' },
         ]}
         borderRadius="square"
         size="md"

@@ -21,7 +21,12 @@ export const Bounce: React.FC<BounceProps> = (props) => {
   };
 
   return (
-    <Pressable onPressIn={handlePressIn} onPressOut={handlePressOut} onPress={onPress}>
+    <Pressable
+      onPressIn={handlePressIn}
+      onPressOut={handlePressOut}
+      onPress={onPress}
+      style={props.style}
+    >
       <Animated.View style={animatedStyle}>{children}</Animated.View>
     </Pressable>
   );

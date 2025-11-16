@@ -6,35 +6,32 @@ import * as Styled from './ToastProvider.style';
 
 const ToastContext = React.createContext<ToastContextProps | undefined>(undefined);
 
-export const ToastProvider: React.FC<ToastProviderProps> = (props) => {
+export const ToastProvider: React.FC<ToastProviderProps> = ({ children }) => {
   const [toasts, setToasts] = React.useState<ToastProps[]>([]);
 
-  const addToast = (toast: Omit<ToastProps, 'id'>) => {
-    const id = Math.random().toString();
-    setToasts((prev) => [...prev, { ...toast, id }]);
-    setTimeout(() => {
-      setToasts((prev) => prev.filter((t) => t.id !== id));
-    }, toast.duration + 200);
+  const deleteToast = (id: string) => {
+    setToasts((prev) => prev.filter((toast) => toast.id !== id));
   };
 
-  const deleteToast = (id: string) => {
-    setTimeout(() => {
-      setToasts((prev) => prev.filter((toast) => toast.id !== id));
-    }, 200);
+  const addToast = (toast: Omit<ToastProps, 'id' | 'delete'>) => {
+    const id = Math.random().toString();
+    const newToast: ToastProps = {
+      ...toast,
+      id,
+      delete: () => deleteToast(id),
+    };
+
+    setToasts((prev) => [...prev, newToast]);
+
+    setTimeout(() => deleteToast(id), toast.duration + 200);
   };
 
   return (
     <ToastContext.Provider value={{ addToast }}>
-      {props.children}
+      {children}
       <Styled.ToastContainer>
         {toasts.map((toast) => (
-          <Toast
-            key={toast.id}
-            {...toast}
-            delete={() => {
-              deleteToast(toast.id);
-            }}
-          />
+          <Toast key={toast.id} {...toast} />
         ))}
       </Styled.ToastContainer>
     </ToastContext.Provider>

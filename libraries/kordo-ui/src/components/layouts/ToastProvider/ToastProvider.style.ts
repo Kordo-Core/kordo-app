@@ -7,4 +7,6 @@ export const ToastContainer = styled.View((props) => ({
   right: 0,
   paddingHorizontal: props.theme.spacing.lg,
   gap: props.theme.spacing.sm,
+  zIndex: 100,
+  elevation: 100,
 }));

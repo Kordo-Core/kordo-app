@@ -2,6 +2,7 @@ import styled from '@emotion/native';
 import { ToastProps } from './Toast.types';
 import { Loader } from '../Loader/Loader';
 import { Icon } from '../Icon/Icon';
+import { Button } from '../Button/Button';
 
 export const ToastContainer = styled.View<{ type: ToastProps['type'] }>((props) => {
   const typeColors: Record<ToastProps['type'], { border: string; background: string }> = {
@@ -50,7 +51,7 @@ export const CustomIcon = styled(Icon)({
   marginRight: 4,
 });
 
-export const CloseIcon = styled(Icon)({
+export const CloseIcon = styled(Button)({
   marginLeft: 'auto',
 });
 

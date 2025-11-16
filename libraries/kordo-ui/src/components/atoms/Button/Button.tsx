@@ -9,8 +9,9 @@ import { Icon } from '../Icon/Icon';
 export const Button: React.FC<ButtonProps> = (props) => {
   const theme = useTheme();
   return (
-    <Bounce onPress={props.onClick}>
+    <Bounce onPress={props.onPress}>
       <Styled.ButtonContainer
+        icon={props.icon}
         appearance={props.appearance}
         inverted={props.inverted}
         borderRadius={props.borderRadius}
