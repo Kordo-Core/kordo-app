@@ -3,21 +3,20 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "workspaces": [
-    "apps/*",
-    "kordo-ui/*"
-  ],
   "scripts": {
-    "dev:backend": "npm run dev --workspace apps/backend",
-    "start:mobile": "npm run start --workspace apps/frontend",
-    "build": "npm run build --workspaces",
+    "dev:backend": "pnpm --filter apps/backend dev",
+    "start:mobile": "pnpm --filter apps/frontend start",
+    "build": "pnpm -r build",
     "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
     "lint:fix": "eslint . --ext .ts,.tsx,.js,.jsx --fix"
   },
   "dependencies": {
     "@emotion/native": "^11.11.0",
     "@emotion/react": "^11.14.0",
-    "react": "19.1.0"
+    "@expo/vector-icons": "^15.0.3",
+    "@react-native-masked-view/masked-view": "^0.3.2",
+    "react": "19.1.0",
+    "react-native": "0.81.4"
   },
   "devDependencies": {
     "@types/react": "~19.1.10",

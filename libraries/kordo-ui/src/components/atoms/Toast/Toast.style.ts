@@ -2,7 +2,6 @@ import styled from '@emotion/native';
 import { ToastProps } from './Toast.types';
 import { Loader } from '../Loader/Loader';
 import { Icon } from '../Icon/Icon';
-import { Button } from '../Button/Button';
 
 export const ToastContainer = styled.View<{ type: ToastProps['type'] }>((props) => {
   const typeColors: Record<ToastProps['type'], { border: string; background: string }> = {
@@ -29,7 +28,7 @@ export const ToastContainer = styled.View<{ type: ToastProps['type'] }>((props) 
     borderLeftWidth: 6,
     borderColor: typeColors[props.type].border,
     backgroundColor: typeColors[props.type].background,
-    borderRadius: props.theme.borderRadius.md,
+    borderRadius: props.theme.borderRadius.square,
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
@@ -51,7 +50,7 @@ export const CustomIcon = styled(Icon)({
   marginRight: 4,
 });
 
-export const CloseIcon = styled(Button)({
+export const CloseIcon = styled(Icon)({
   marginLeft: 'auto',
 });
 

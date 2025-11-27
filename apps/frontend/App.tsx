@@ -21,7 +21,8 @@ import {
   ToastProvider,
   useToast,
   Suggestion,
-} from 'libraries/kordo-ui';
+  Slider,
+} from 'kordo-ui';
 
 export default function App() {
   const [fontsLoaded] = useFonts({ Outfit_400Regular, Outfit_500Medium, Outfit_700Bold });
@@ -46,12 +47,12 @@ function HomeScreen() {
 
   return (
     <View style={styles.container}>
-      {/* <Button
+      <Button
         title="Show Success Toast"
         appearance="primary"
         inverted
         borderRadius="rounded"
-        icon={{ name: 'arrow-right-circle', color: theme.colors.primary.base }}
+        icon={{ name: 'arrow-right-circle' }}
         onPress={() => {
           addToast({
             type: 'error',
@@ -63,28 +64,133 @@ function HomeScreen() {
         }}
         size="lg"
       />
-      <Button title="Show Success Toast" appearance="primary" borderRadius="rounded" size="lg" />
-      <Suggestion
-        isFollowing
-        user={{ id: 'valentino-jacinto', username: 'Valentino Jacinto' }}
-        location="Arkose Massy"
-        onPressLocation={(location) => console.log(location)}
-        onPressUser={(user) => console.log(user)}
-        onPressClose={() => console.log('close')}
-        onPressFollow={() => {
-          console.log('follow');
+
+      <Button
+        title="Show Success Toast"
+        appearance="black"
+        inverted
+        borderRadius="rounded"
+        icon={{ name: 'arrow-right-circle' }}
+        onPress={() => {
+          addToast({
+            type: 'error',
+            message: `Hello ${username}`,
+            duration: 7000,
+            showLoader: true,
+            isClosable: true,
+          });
         }}
+        size="lg"
       />
-      <Card>
-        <Button
-          title="Show Success Toast"
-          appearance="primary"
-          inverted
-          borderRadius="rounded"
-          size="lg"
-          fullWidth
+      <Button
+        title="Show Success Toast"
+        appearance="gray"
+        inverted
+        borderless
+        borderRadius="rounded"
+        icon={{ name: 'arrow-right-circle' }}
+        onPress={() => {
+          addToast({
+            type: 'error',
+            message: `Hello ${username}`,
+            duration: 7000,
+            showLoader: true,
+            isClosable: true,
+          });
+        }}
+        size="lg"
+      />
+      <Button
+        title="bonjour"
+        appearance="primary"
+        borderRadius="rounded"
+        size="lg"
+        inverted
+        icon={{ name: 'x' }}
+        onPress={() => console.log('camille le bg')}
+      />
+      <Button
+        title="Show Success Toast"
+        appearance="primary"
+        borderless
+        inverted
+        borderRadius="square"
+        icon={{ name: 'arrow-right-circle' }}
+        onPress={() => {
+          addToast({
+            type: 'error',
+            message: `Hello ${username}`,
+            duration: 7000,
+            showLoader: true,
+            isClosable: true,
+          });
+        }}
+        size="lg"
+      />
+      <Button
+        // title="Show Success Toast"
+        appearance="primary"
+        borderRadius="rounded"
+        icon={{ name: 'arrow-right-circle' }}
+        onPress={() => {
+          addToast({
+            type: 'error',
+            message: `Hello ${username}`,
+            duration: 7000,
+            showLoader: true,
+            isClosable: true,
+          });
+        }}
+        size="lg"
+        borderless
+      />
+
+      {/* <Slider height={300} gap={16}>
+        <Suggestion
+          isFollowing
+          user={{ id: 'valentino-jacinto', username: 'Valentino Jacinto' }}
+          location="Arkose Massy"
+          onPressLocation={(location) => console.log(location)}
+          onPressUser={(user) => console.log(user)}
+          onPressClose={() => console.log('close')}
+          onPressFollow={() => {
+            console.log('follow');
+          }}
         />
-      </Card> */}
+        <Suggestion
+          isFollowing
+          user={{ id: 'valentino-jacinto', username: 'Valentino Jacinto' }}
+          location="Arkose Massy"
+          onPressLocation={(location) => console.log(location)}
+          onPressUser={(user) => console.log(user)}
+          onPressClose={() => console.log('close')}
+          onPressFollow={() => {
+            console.log('follow');
+          }}
+        />
+        <Suggestion
+          isFollowing
+          user={{ id: 'valentino-jacinto', username: 'Valentino Jacinto' }}
+          location="Arkose Massy"
+          onPressLocation={(location) => console.log(location)}
+          onPressUser={(user) => console.log(user)}
+          onPressClose={() => console.log('close')}
+          onPressFollow={() => {
+            console.log('follow');
+          }}
+        />
+        <Suggestion
+          isFollowing
+          user={{ id: 'valentino-jacinto', username: 'Valentino Jacinto' }}
+          location="Arkose Massy"
+          onPressLocation={(location) => console.log(location)}
+          onPressUser={(user) => console.log(user)}
+          onPressClose={() => console.log('close')}
+          onPressFollow={() => {
+            console.log('follow');
+          }}
+        />
+      </Slider>
 
       <SegmentedControl
         segments={[
@@ -97,7 +203,8 @@ function HomeScreen() {
         selectedIndex={segmentedIndex}
         onSelect={setSegmentedIndex}
       />
-      <Input placeholder="Username" value={username} onChangeText={setUsername} required />
+
+      <Input placeholder="Username" value={username} onChangeText={setUsername} required /> */}
 
       <StatusBar style="auto" />
     </View>
@@ -110,7 +217,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffff',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 16,
+    // padding: 16,
     gap: 16,
   },
 });

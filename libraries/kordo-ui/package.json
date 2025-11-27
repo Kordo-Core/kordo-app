@@ -2,7 +2,16 @@
   "name": "kordo-ui",
   "version": "1.0.0",
   "private": true,
-  "main": "src/index.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc --build tsconfig.build.json",
+    "dev": "tsc --build tsconfig.build.json --watch"
+  },
+  "dependencies": {
+    "react-native-svg": "^15.14.0",
+    "core": "workspace:*"
+  },
   "peerDependencies": {
     "@emotion/native": "^11.11.0",
     "@emotion/react": "^11.14.0",
@@ -13,8 +22,5 @@
   "devDependencies": {
     "@types/react": "~19.1.10",
     "typescript": "^5.9.2"
-  },
-  "dependencies": {
-    "react-native-svg": "^15.14.0"
   }
 }

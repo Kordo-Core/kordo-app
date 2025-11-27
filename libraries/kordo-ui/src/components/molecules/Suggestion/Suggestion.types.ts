@@ -1,4 +1,4 @@
-import { UserPublic } from 'core/types/User';
+import { UserPublic } from 'core';
 
 export interface SuggestionProps {
   isFollowing: boolean;

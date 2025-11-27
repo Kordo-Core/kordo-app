@@ -29,11 +29,10 @@ export const Toast: React.FC<ToastProps> = (props) => {
           {props.icon && <Styled.CustomIcon name={props.icon.name} size={20} />}
           <Text>{props.message}</Text>
           <Styled.CloseIcon
-            icon={{ name: 'x', color: theme.colors.neutral.gray.base }}
-            size="md"
+            name="x"
+            color="gray"
+            size={theme.iconSizes.md}
             onPress={() => setClose(true)}
-            inverted
-            withoutBorder
           />
         </Styled.ToastContent>
         {props.showLoader && (

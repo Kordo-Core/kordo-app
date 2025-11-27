@@ -5,7 +5,7 @@ import {
   ExtendedSizeType,
   NeutralType,
   StatusType,
-} from '@kordo-ui/types/theme.types';
+} from '../../..//types/theme.types';
 
 export interface TextProps extends ReactTextProps {
   children: React.ReactNode;

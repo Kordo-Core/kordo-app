@@ -17,8 +17,8 @@ export const Content = styled.View(() => ({
 
 export const ButtonWrapper = styled.View(() => ({
   position: 'absolute',
-  top: 2,
-  right: 2,
+  top: 8,
+  right: 8,
 }));
 
 export const CustomImage = styled(Image)(() => ({

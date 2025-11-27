@@ -1,6 +1,7 @@
 import React from 'react';
 import { Feather } from '@expo/vector-icons';
 import { IconProps } from './Icon.types';
+import { getColor } from '../../../utils/getColors';
 
 export const Icon: React.FC<IconProps> = (props) => {
   return (
@@ -8,7 +9,7 @@ export const Icon: React.FC<IconProps> = (props) => {
       style={props.style}
       name={props.name}
       size={props.size}
-      color={props.color}
+      color={getColor(props.color!)}
       onPress={props.onPress}
     />
   );

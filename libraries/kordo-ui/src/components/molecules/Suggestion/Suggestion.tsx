@@ -2,10 +2,10 @@ import { Card } from '../../layouts/Card/Card';
 import { SuggestionProps } from './Suggestion.types';
 import { Button } from '../../atoms/Button/Button';
 import { Text } from '../../atoms/Text/Text';
-import { View, Image, Pressable } from 'react-native';
-import { Icon } from '../../atoms/Icon/Icon';
+import { Pressable } from 'react-native';
 import { useTheme } from '@emotion/react';
 import * as Styled from './Suggestion.styles';
+import { Icon } from '../../atoms/Icon/Icon';
 
 export const Suggestion: React.FC<SuggestionProps> = (props) => {
   const theme = useTheme();
@@ -14,13 +14,7 @@ export const Suggestion: React.FC<SuggestionProps> = (props) => {
     <Card>
       <Styled.Container>
         <Styled.ButtonWrapper>
-          <Button
-            size="md"
-            inverted
-            withoutBorder
-            icon={{ name: 'x', color: theme.colors.neutral.gray.base }}
-            onPress={props.onPressClose}
-          />
+          <Icon name="x" color="gray" size={theme.iconSizes.md} onPress={props.onPressClose} />
         </Styled.ButtonWrapper>
 
         <Styled.Content>

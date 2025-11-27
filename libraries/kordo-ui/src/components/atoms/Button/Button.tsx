@@ -10,23 +10,12 @@ export const Button: React.FC<ButtonProps> = (props) => {
   const theme = useTheme();
   return (
     <Bounce onPress={props.onPress}>
-      <Styled.ButtonContainer
-        icon={props.icon}
-        appearance={props.appearance}
-        inverted={props.inverted}
-        borderRadius={props.borderRadius}
-        size={props.size}
-        fullWidth={props.fullWidth}
-        withoutBorder={props.withoutBorder}
-        style={props.style}
-        title={props.title}
-        onLayout={props.onLayout}
-      >
-        {props.icon && props.iconPosition === 'left' && (
+      <Styled.ButtonContainer {...props}>
+        {props.icon && (
           <Icon
             name={props.icon.name}
             size={props.size == 'lg' ? theme.iconSizes.lg : theme.iconSizes.md}
-            color={props.icon.color}
+            color={props.inverted ? (props.icon.color ?? props.appearance) : 'white'}
           />
         )}
         {props.title && (
@@ -37,13 +26,6 @@ export const Button: React.FC<ButtonProps> = (props) => {
           >
             {props.title}
           </Text>
-        )}
-        {props.icon && props.iconPosition !== 'left' && (
-          <Icon
-            name={props.icon.name}
-            size={props.size == 'lg' ? theme.iconSizes.lg : theme.iconSizes.md}
-            color={props.icon.color}
-          />
         )}
       </Styled.ButtonContainer>
     </Bounce>

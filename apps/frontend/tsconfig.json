@@ -1,12 +1,7 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
-    "baseUrl": ".", 
-    "paths": {
-      "core/*": ["../../core/*"],
-      "libraries/kordo-ui/*": ["../../libraries/kordo-ui/src/*"],
-      "libraries/kordo-ui": ["../../libraries/kordo-ui/src/index"]
-    },
+    "baseUrl": ".",
     "types": ["react", "react-native"],
     "strict": true,
     "jsx": "react-jsx",
