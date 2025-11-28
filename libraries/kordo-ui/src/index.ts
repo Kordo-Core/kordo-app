@@ -10,4 +10,5 @@ export { SegmentedControl } from './components/molecules/SegmentedControl/Segmen
 export { Suggestion } from './components/molecules/Suggestion/Suggestion';
 export { Card } from './components/layouts/Card/Card';
 export { Slider } from './animations/Slider/Slider';
+export { UserInfo } from './components/molecules/UserInfo/UserInfo';
 export { theme } from './theme';

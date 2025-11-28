@@ -1,10 +1,9 @@
 import styled from '@emotion/native';
-import { Bounce } from '../../../animations/Bounce/Bounce';
 import { Image } from 'react-native';
 
 export const Container = styled.View(() => ({
   width: 200,
-  height: 230,
+  height: 240,
   alignItems: 'center',
   justifyContent: 'space-evenly',
 }));

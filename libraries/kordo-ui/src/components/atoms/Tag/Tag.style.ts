@@ -6,6 +6,7 @@ export const Tag = styled.View<{ appearance: TagProps['appearance'] }>((props) =
   paddingHorizontal: props.theme.spacing.md,
   height: 32,
   justifyContent: 'center',
+  alignItems: 'center',
   borderRadius: props.theme.borderRadius.rounded,
   backgroundColor: getColor(props.appearance ?? 'primary'),
 }));
