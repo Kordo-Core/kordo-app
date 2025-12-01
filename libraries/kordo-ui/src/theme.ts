@@ -11,6 +11,7 @@ export type KordoTheme = {
     error: { base: string; lighter: string };
     warning: { base: string; lighter: string };
     info: { base: string; lighter: string };
+    boulderGrade: Record<string, string>;
   };
   spacing: Record<string, number>;
   fontSizes: Record<string, number>;
@@ -48,7 +49,7 @@ export const theme: KordoTheme = {
       white: '#FFFFFF',
       black: '#000000',
       gray: {
-        light: '#F0F0F0',
+        light: '#dadadaff',
         base: '#888888',
       },
     },
@@ -67,6 +68,14 @@ export const theme: KordoTheme = {
     info: {
       base: '#2196F3',
       lighter: '#E8F3FD',
+    },
+    boulderGrade: {
+      yellow: '#f3e34eff',
+      green: '#27AE60',
+      blue: '#2F80ED',
+      red: '#EC3463',
+      black: '#000000',
+      purple: '#9B51E0',
     },
   },
   spacing: { xs: 4, sm: 8, md: 12, lg: 16, xl: 20, xxl: 32 },
