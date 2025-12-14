@@ -3,6 +3,7 @@ import { BoulderBadgeProps } from './BoulderBadge.types';
 import * as Styled from './BoulderBadge.styles';
 import Svg, { Circle } from 'react-native-svg';
 import { useTheme } from '@emotion/react';
+import { Bounce } from '../../../animations/Bounce/Bounce';
 
 export const BoulderBadge: React.FC<BoulderBadgeProps> = (props) => {
   const theme = useTheme();
@@ -21,7 +22,7 @@ export const BoulderBadge: React.FC<BoulderBadgeProps> = (props) => {
   const baseOffset = -circumference / 4 - spaceLength / 2; // to place the first dash at the top (12 o'clock)
 
   // compute the number of active dashes and their color based on props.grade
-  const grade = 16;
+  const grade = props.grade;
   let activeCount = 0;
   let activeColor = theme.colors.neutral.gray.light;
 

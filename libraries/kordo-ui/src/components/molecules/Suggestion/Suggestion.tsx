@@ -6,7 +6,6 @@ import { Pressable } from 'react-native';
 import { useTheme } from '@emotion/react';
 import * as Styled from './Suggestion.styles';
 import { Icon } from '../../atoms/Icon/Icon';
-import { UserInfo } from '../UserInfo/UserInfo';
 
 export const Suggestion: React.FC<SuggestionProps> = (props) => {
   const theme = useTheme();
@@ -18,9 +17,19 @@ export const Suggestion: React.FC<SuggestionProps> = (props) => {
           <Icon name="x" color="gray" size={theme.iconSizes.md} onPress={props.onPressClose} />
         </Styled.ButtonWrapper>
 
-        <UserInfo
-          user={props.user}
-          secondaryText={
+        <Styled.Content>
+          <Pressable onPress={() => props.onPressUser(props.user)}>
+            <Styled.CustomImage
+              source={{
+                uri: 'https://res.cloudinary.com/dqmegz5dn/image/upload/v1763334248/avatar-kordo_rwvjw4.png',
+              }}
+            />
+          </Pressable>
+
+          <Styled.UserInfo>
+            <Text size="lg" bold onPress={() => props.onPressUser(props.user)}>
+              {props.user.username}
+            </Text>
             <Text appearance="gray">
               {'croisé à '}
               {!!props.location && (
@@ -33,10 +42,8 @@ export const Suggestion: React.FC<SuggestionProps> = (props) => {
                 </Text>
               )}
             </Text>
-          }
-          layout="column"
-          onPressUser={props.onPressUser}
-        />
+          </Styled.UserInfo>
+        </Styled.Content>
 
         <Button
           title="Follow"

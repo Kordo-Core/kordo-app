@@ -9,8 +9,9 @@
     "dev": "tsc --build tsconfig.build.json --watch"
   },
   "dependencies": {
-    "react-native-svg": "^15.14.0",
-    "core": "workspace:*"
+    "core": "workspace:*",
+    "react-native-safe-area-context": "^5.6.2",
+    "react-native-svg": "^15.14.0"
   },
   "peerDependencies": {
     "@emotion/native": "^11.11.0",

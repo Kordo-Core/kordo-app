@@ -1,223 +1,130 @@
-// Externes
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View } from 'react-native';
+import { Pressable, ScrollView, View } from 'react-native';
 import { ThemeProvider } from '@emotion/react';
+import styled from '@emotion/native';
 import { useState } from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-// Fonts
-import {
-  useFonts,
-  Outfit_400Regular,
-  Outfit_500Medium,
-  Outfit_700Bold,
-} from '@expo-google-fonts/outfit';
+import { Button, theme, ToastProvider, useToast, ListRow, Text, Header } from 'kordo-ui';
 
-import {
-  Button,
-  Input,
-  SegmentedControl,
-  theme,
-  Card,
-  ToastProvider,
-  useToast,
-  Suggestion,
-  Slider,
-} from 'kordo-ui';
+/* --- CustomImage utilisant le theme correctement --- */
+const CustomImage = styled.Image(() => ({
+  width: theme.avatarSizes?.md,
+  height: theme.avatarSizes?.md,
+  borderRadius: theme.borderRadius?.rounded,
+}));
+
+const HeaderCustomImage = styled.Image(() => ({
+  width: theme.avatarSizes?.md + 8,
+  height: theme.avatarSizes?.md + 8,
+  borderRadius: theme.borderRadius?.rounded,
+}));
 
 export default function App() {
-  const [fontsLoaded] = useFonts({ Outfit_400Regular, Outfit_500Medium, Outfit_700Bold });
-
-  if (!fontsLoaded) return null;
-
   return (
     <ThemeProvider theme={theme}>
       <ToastProvider>
-        {/* Rendu de l’écran Home */}
+        {/* SafeAreaView englobe tout pour gérer le notch et la couleur du status bar */}
+        <SafeAreaView style={{ backgroundColor: 'white', zIndex: 10000 }} />
         <HomeScreen />
       </ToastProvider>
     </ThemeProvider>
   );
 }
 
-/* --- Écran Home --- */
+/* --- HomeScreen avec ScrollView --- */
 function HomeScreen() {
-  const [username, setUsername] = useState('');
   const { addToast } = useToast();
-  const [segmentedIndex, setSegmentedIndex] = useState(0);
+  const [scroll, setScroll] = useState(0);
 
   return (
-    <View style={styles.container}>
-      <Button
-        title="Show Success Toast"
-        appearance="primary"
-        inverted
-        borderRadius="rounded"
-        icon={{ name: 'arrow-right-circle' }}
-        onPress={() => {
-          addToast({
-            type: 'error',
-            message: `Hello ${username}`,
-            duration: 7000,
-            showLoader: true,
-            isClosable: true,
-          });
-        }}
-        size="lg"
+    <View style={{ flex: 1, position: 'relative' }}>
+      {/* Header indépendant et animé */}
+      <Header
+        smart
+        scrollY={scroll}
+        left={
+          <Pressable onPress={() => console.log('avatar pressed')}>
+            <HeaderCustomImage
+              source={{
+                uri: 'https://res.cloudinary.com/dqmegz5dn/image/upload/v1763334248/avatar-kordo_rwvjw4.png',
+              }}
+            />
+          </Pressable>
+        }
+        primaryText={
+          <Text size="lg" bold>
+            Jacinto Valentino
+          </Text>
+        }
+        right={
+          <>
+            <Button
+              inverted
+              borderless
+              appearance="black"
+              icon={{ name: 'activity' }}
+              borderRadius="square"
+              onPress={() => console.log('action 1')}
+            />
+            <Button
+              inverted
+              borderless
+              appearance="black"
+              icon={{ name: 'activity' }}
+              borderRadius="square"
+              onPress={() => console.log('action 2')}
+            />
+          </>
+        }
       />
 
-      <Button
-        title="Show Success Toast"
-        appearance="black"
-        inverted
-        borderRadius="rounded"
-        icon={{ name: 'arrow-right-circle' }}
-        onPress={() => {
-          addToast({
-            type: 'error',
-            message: `Hello ${username}`,
-            duration: 7000,
-            showLoader: true,
-            isClosable: true,
-          });
-        }}
-        size="lg"
-      />
-      <Button
-        title="Show Success Toast"
-        appearance="gray"
-        inverted
-        borderless
-        borderRadius="rounded"
-        icon={{ name: 'arrow-right-circle' }}
-        onPress={() => {
-          addToast({
-            type: 'error',
-            message: `Hello ${username}`,
-            duration: 7000,
-            showLoader: true,
-            isClosable: true,
-          });
-        }}
-        size="lg"
-      />
-      <Button
-        title="bonjour"
-        appearance="primary"
-        borderRadius="rounded"
-        size="lg"
-        inverted
-        icon={{ name: 'x' }}
-        onPress={() => console.log('camille le bg')}
-      />
-      <Button
-        title="Show Success Toast"
-        appearance="primary"
-        borderless
-        inverted
-        borderRadius="square"
-        icon={{ name: 'arrow-right-circle' }}
-        onPress={() => {
-          addToast({
-            type: 'error',
-            message: `Hello ${username}`,
-            duration: 7000,
-            showLoader: true,
-            isClosable: true,
-          });
-        }}
-        size="lg"
-      />
-      <Button
-        // title="Show Success Toast"
-        appearance="primary"
-        borderRadius="rounded"
-        icon={{ name: 'arrow-right-circle' }}
-        onPress={() => {
-          addToast({
-            type: 'error',
-            message: `Hello ${username}`,
-            duration: 7000,
-            showLoader: true,
-            isClosable: true,
-          });
-        }}
-        size="lg"
-        borderless
-      />
-
-      {/* <Slider height={300} gap={16}>
-        <Suggestion
-          isFollowing
-          user={{ id: 'valentino-jacinto', username: 'Valentino Jacinto' }}
-          location="Arkose Massy"
-          onPressLocation={(location) => console.log(location)}
-          onPressUser={(user) => console.log(user)}
-          onPressClose={() => console.log('close')}
-          onPressFollow={() => {
-            console.log('follow');
-          }}
-        />
-        <Suggestion
-          isFollowing
-          user={{ id: 'valentino-jacinto', username: 'Valentino Jacinto' }}
-          location="Arkose Massy"
-          onPressLocation={(location) => console.log(location)}
-          onPressUser={(user) => console.log(user)}
-          onPressClose={() => console.log('close')}
-          onPressFollow={() => {
-            console.log('follow');
-          }}
-        />
-        <Suggestion
-          isFollowing
-          user={{ id: 'valentino-jacinto', username: 'Valentino Jacinto' }}
-          location="Arkose Massy"
-          onPressLocation={(location) => console.log(location)}
-          onPressUser={(user) => console.log(user)}
-          onPressClose={() => console.log('close')}
-          onPressFollow={() => {
-            console.log('follow');
-          }}
-        />
-        <Suggestion
-          isFollowing
-          user={{ id: 'valentino-jacinto', username: 'Valentino Jacinto' }}
-          location="Arkose Massy"
-          onPressLocation={(location) => console.log(location)}
-          onPressUser={(user) => console.log(user)}
-          onPressClose={() => console.log('close')}
-          onPressFollow={() => {
-            console.log('follow');
-          }}
-        />
-      </Slider>
-
-      <SegmentedControl
-        segments={[
-          { text: 'First', color: theme.colors.primary.base },
-          { text: 'Second', color: theme.colors.secondary.base },
-          { text: 'erwann', color: 'purple' },
-        ]}
-        borderRadius="square"
-        size="md"
-        selectedIndex={segmentedIndex}
-        onSelect={setSegmentedIndex}
-      />
-
-      <Input placeholder="Username" value={username} onChangeText={setUsername} required /> */}
+      {/* Contenu scrollable */}
+      <ScrollView
+        contentContainerStyle={{ paddingTop: 82 }} // hauteur du header
+        onScroll={(e) => setScroll(e.nativeEvent.contentOffset.y)}
+        scrollEventThrottle={16}
+      >
+        {Array.from({ length: 50 }).map((_, i) => (
+          <ListRow
+            key={i}
+            left={
+              <Pressable onPress={() => console.log('avatar pressed')}>
+                <CustomImage
+                  source={{
+                    uri: 'https://res.cloudinary.com/dqmegz5dn/image/upload/v1763334248/avatar-kordo_rwvjw4.png',
+                  }}
+                />
+              </Pressable>
+            }
+            primaryText={
+              <Text size="md" bold>
+                Jacinto Valentino #{i + 1}
+              </Text>
+            }
+            secondaryText={
+              <Text appearance="gray">
+                par{' '}
+                <Text appearance="primary" bold onPress={() => console.log('Gunki pressed')}>
+                  Gunki
+                </Text>
+              </Text>
+            }
+            right={
+              <Text
+                appearance="gray"
+                bold
+                size="lg"
+                onPress={() => console.log(`${i * 100}pts pressed`)}
+              >
+                {i * 100}pts
+              </Text>
+            }
+          />
+        ))}
+      </ScrollView>
 
       <StatusBar style="auto" />
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#ffff',
-    alignItems: 'center',
-    justifyContent: 'center',
-    // padding: 16,
-    gap: 16,
-  },
-});

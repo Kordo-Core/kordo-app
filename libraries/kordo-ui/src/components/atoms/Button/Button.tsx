@@ -14,7 +14,13 @@ export const Button: React.FC<ButtonProps> = (props) => {
         {props.icon && (
           <Icon
             name={props.icon.name}
-            size={props.size == 'lg' ? theme.iconSizes.lg : theme.iconSizes.md}
+            size={
+              props.icon.size
+                ? props.icon.size
+                : props.size === 'lg'
+                  ? theme.iconSizes.lg
+                  : theme.iconSizes.md
+            }
             color={props.inverted ? (props.icon.color ?? props.appearance) : 'white'}
           />
         )}
