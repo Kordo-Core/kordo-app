@@ -4,7 +4,7 @@ import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-na
 import { BounceProps } from './Bounce.types';
 
 export const Bounce: React.FC<BounceProps> = (props) => {
-  const { children, onPress, scaleTo = 0.95, duration = 200 } = props;
+  const { children, onPress, scaleTo = 0.95, duration = 200, disabled = false } = props;
 
   const scale = useSharedValue(1);
 
@@ -13,18 +13,27 @@ export const Bounce: React.FC<BounceProps> = (props) => {
   }));
 
   const handlePressIn = () => {
-    scale.value = withTiming(scaleTo, { duration });
+    if (!disabled) {
+      scale.value = withTiming(scaleTo, { duration });
+    }
   };
 
   const handlePressOut = () => {
     scale.value = withTiming(1, { duration });
   };
 
+  const handlePress = () => {
+    if (!disabled && onPress) {
+      onPress();
+    }
+  };
+
   return (
     <Pressable
       onPressIn={handlePressIn}
       onPressOut={handlePressOut}
-      onPress={onPress}
+      onPress={handlePress}
+      disabled={disabled}
       style={props.style}
     >
       <Animated.View style={animatedStyle}>{children}</Animated.View>

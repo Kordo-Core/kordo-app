@@ -1,0 +1,99 @@
+import { BoulderBadgeProps } from './BoulderBadge.types';
+import * as Styled from './BoulderBadge.styles';
+import { useTheme } from '@emotion/react';
+
+export const BoulderBadge: React.FC<BoulderBadgeProps> = (props) => {
+  const theme = useTheme();
+
+  const strokeWidth = 3;
+  const dashCount = 5;
+  const avatarSize = theme.avatarSizes.md;
+  const radius = avatarSize / 2 + 4;
+  const circumference = 2 * Math.PI * radius;
+
+  const dashRatio = 4;
+  const segmentLength = circumference / dashCount;
+  const dashLength = segmentLength * (dashRatio / (1 + dashRatio));
+  const spaceLength = segmentLength - dashLength;
+  const baseOffset = -circumference / 4 - spaceLength / 2;
+
+  const grade = props.grade;
+  let activeCount = 0;
+  let activeColor = theme.colors.neutral.gray.light;
+
+  if (grade <= 5) {
+    activeCount = grade;
+    activeColor = theme.colors.boulderGrade.yellow;
+  } else if (grade <= 10) {
+    activeCount = grade - 5;
+    activeColor = theme.colors.boulderGrade.green;
+  } else if (grade <= 15) {
+    activeCount = grade - 10;
+    activeColor = theme.colors.boulderGrade.blue;
+  } else if (grade <= 20) {
+    activeCount = grade - 15;
+    activeColor = theme.colors.boulderGrade.red;
+  } else if (grade <= 25) {
+    activeCount = grade - 20;
+    activeColor = theme.colors.boulderGrade.black;
+  } else if (grade <= 30) {
+    activeCount = grade - 25;
+    activeColor = theme.colors.boulderGrade.purple;
+  }
+
+  const svgSize = radius * 2 + strokeWidth;
+  const center = radius + strokeWidth / 2;
+
+  const offsetForIndex = (i: number) => {
+    return -(dashLength + spaceLength) * i;
+  };
+
+  return (
+    <Styled.AvatarWrapper $svgSize={svgSize}>
+      <svg
+        width={svgSize}
+        height={svgSize}
+        style={{ position: 'absolute', top: 0, left: 0 }}
+      >
+        {/* Base circle: all dashes in gray */}
+        <circle
+          cx={center}
+          cy={center}
+          r={radius}
+          stroke={theme.colors.neutral.gray.light}
+          strokeWidth={strokeWidth}
+          strokeDashoffset={baseOffset}
+          strokeDasharray={`${dashLength}, ${spaceLength}`}
+          strokeLinecap="butt"
+          fill="transparent"
+        />
+
+        {/* Overlays: one circle per active dash */}
+        {Array.from({ length: activeCount }).map((_, i) => (
+          <circle
+            key={`active-${i}`}
+            cx={center}
+            cy={center}
+            r={radius}
+            stroke={activeColor}
+            strokeWidth={strokeWidth}
+            strokeDasharray={`${dashLength}, ${circumference - dashLength}`}
+            strokeDashoffset={baseOffset + offsetForIndex(i)}
+            strokeLinecap="butt"
+            fill="transparent"
+          />
+        ))}
+      </svg>
+
+      {/* Centered avatar */}
+      <Styled.CustomImage
+        src={props.avatarUrl}
+        alt="avatar"
+        style={{
+          width: avatarSize,
+          height: avatarSize,
+        }}
+      />
+    </Styled.AvatarWrapper>
+  );
+};

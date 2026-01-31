@@ -2,20 +2,26 @@ import React, { useState } from 'react';
 import { BounceProps } from './Bounce.types';
 
 export const Bounce: React.FC<BounceProps> = (props) => {
-  const { children, onPress, scaleTo = 0.95, duration = 200, style } = props;
+  const { children, onPress, scaleTo = 0.95, duration = 200, style, disabled = false } = props;
   const [isPressed, setIsPressed] = useState(false);
+
+  const handleClick = () => {
+    if (!disabled && onPress) {
+      onPress();
+    }
+  };
 
   return (
     <div
-      onMouseDown={() => setIsPressed(true)}
+      onMouseDown={() => !disabled && setIsPressed(true)}
       onMouseUp={() => setIsPressed(false)}
       onMouseLeave={() => setIsPressed(false)}
-      onClick={onPress}
+      onClick={handleClick}
       style={{
         ...style,
-        transform: isPressed ? `scale(${scaleTo})` : 'scale(1)',
+        transform: isPressed && !disabled ? `scale(${scaleTo})` : 'scale(1)',
         transition: `transform ${duration}ms ease-out`,
-        cursor: 'pointer',
+        cursor: disabled ? 'default' : 'pointer',
       }}
     >
       {children}

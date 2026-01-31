@@ -61,6 +61,10 @@ const meta: Meta<typeof Button> = {
       control: 'boolean',
       description: 'Supprime la bordure',
     },
+    disabled: {
+      control: 'boolean',
+      description: 'Désactive le bouton',
+    },
     onPress: {
       action: 'pressed',
       description: 'Callback au clic',
@@ -144,5 +148,16 @@ export const Rounded: Story = {
     title: 'Rounded',
     appearance: 'primary',
     borderRadius: 'rounded',
+  },
+};
+
+/**
+ * Bouton désactivé.
+ */
+export const Disabled: Story = {
+  args: {
+    title: 'Disabled',
+    appearance: 'primary',
+    disabled: true,
   },
 };

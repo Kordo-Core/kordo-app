@@ -7,10 +7,18 @@ import { Bounce } from '../../../animations/Bounce/Bounce';
 import { Icon } from '../Icon/Icon';
 
 export const Button: React.FC<ButtonProps> = (props) => {
+  const { disabled = false, onPress, ...rest } = props;
   const theme = useTheme();
+
+  const handlePress = () => {
+    if (!disabled && onPress) {
+      onPress();
+    }
+  };
+
   return (
-    <Bounce onPress={props.onPress}>
-      <Styled.ButtonContainer {...props}>
+    <Bounce onPress={handlePress} disabled={disabled}>
+      <Styled.ButtonContainer {...rest} disabled={disabled}>
         {props.icon && (
           <Icon
             name={props.icon.name}

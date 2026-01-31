@@ -1,16 +1,25 @@
-import { ViewProps } from 'react-native';
 import { AppearanceType, NeutralType, SizeType } from '../../../types/theme.types';
 import { IconProps } from '../Icon/Icon.types';
 
-export interface ButtonProps extends ViewProps {
+export interface ButtonProps {
+  /** Texte affiché dans le bouton */
   title?: string;
+  /** Couleur du bouton */
   appearance?: AppearanceType | Exclude<NeutralType, 'white'>;
+  /** Icône à afficher */
   icon?: IconProps;
+  /** Forme des coins */
   borderRadius?: 'rounded' | 'square';
+  /** Inverse les couleurs (fond blanc, texte/bordure colorés) */
   inverted?: boolean;
+  /** Taille du bouton */
   size?: Exclude<SizeType, 'sm'>;
+  /** Styles personnalisés */
   style?: any;
+  /** Callback au clic */
   onPress?: () => void;
+  /** Supprime la bordure */
   borderless?: boolean;
-  // disabled?: boolean; TODO
+  /** Désactive le bouton */
+  disabled?: boolean;
 }
