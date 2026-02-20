@@ -9,7 +9,7 @@ const config: StorybookConfig = {
     options: {},
   },
   typescript: {
-    reactDocgen: false, // Disable react-docgen to avoid issues with react-native
+    reactDocgen: 'react-docgen-typescript',
   },
   viteFinal: (config) => {
     return mergeConfig(config, {
