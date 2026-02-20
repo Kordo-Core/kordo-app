@@ -1,16 +1,31 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { ToastProvider, useToast } from './ToastProvider';
 
-const meta: Meta<typeof ToastProvider> = {
+/**
+ * Provider de notifications à envelopper autour de l'application.
+ * Expose le hook `useToast()` pour déclencher des toasts depuis n'importe quel composant enfant.
+ *
+ * ## Utilisation
+ * ```tsx
+ * // Racine de l'app
+ * <ToastProvider>
+ *   <App />
+ * </ToastProvider>
+ *
+ * // Dans un composant enfant
+ * const { addToast } = useToast();
+ * addToast({ message: 'Succès !', type: 'success', duration: 3000 });
+ * ```
+ */
+export default {
   title: 'Layouts/ToastProvider',
   component: ToastProvider,
   tags: ['autodocs'],
   parameters: {
     layout: 'fullscreen',
   },
-};
+} satisfies Meta<typeof ToastProvider>;
 
-export default meta;
 type Story = StoryObj<typeof ToastProvider>;
 
 const ToastButtons = () => {
@@ -19,60 +34,28 @@ const ToastButtons = () => {
   return (
     <div style={{ display: 'flex', gap: 10, padding: 20 }}>
       <button
-        onClick={() =>
-          addToast({
-            message: 'Opération réussie !',
-            type: 'success',
-            showLoader: true,
-            isClosable: true,
-            duration: 3000,
-          })
-        }
+        onClick={() => addToast({ message: 'Opération réussie !', type: 'success', showLoader: true, isClosable: true, duration: 3000 })}
         style={{ padding: '8px 16px', backgroundColor: '#22c55e', color: 'white', border: 'none', borderRadius: 4 }}
       >
-        Success Toast
+        Success
       </button>
       <button
-        onClick={() =>
-          addToast({
-            message: 'Une erreur est survenue.',
-            type: 'error',
-            showLoader: true,
-            isClosable: true,
-            duration: 3000,
-          })
-        }
+        onClick={() => addToast({ message: 'Une erreur est survenue.', type: 'error', showLoader: true, isClosable: true, duration: 3000 })}
         style={{ padding: '8px 16px', backgroundColor: '#ef4444', color: 'white', border: 'none', borderRadius: 4 }}
       >
-        Error Toast
+        Error
       </button>
       <button
-        onClick={() =>
-          addToast({
-            message: 'Attention !',
-            type: 'warning',
-            showLoader: false,
-            isClosable: true,
-            duration: 3000,
-          })
-        }
+        onClick={() => addToast({ message: 'Attention !', type: 'warning', showLoader: false, isClosable: true, duration: 3000 })}
         style={{ padding: '8px 16px', backgroundColor: '#f59e0b', color: 'white', border: 'none', borderRadius: 4 }}
       >
-        Warning Toast
+        Warning
       </button>
       <button
-        onClick={() =>
-          addToast({
-            message: 'Information importante.',
-            type: 'info',
-            showLoader: true,
-            isClosable: true,
-            duration: 3000,
-          })
-        }
+        onClick={() => addToast({ message: 'Information importante.', type: 'info', showLoader: true, isClosable: true, duration: 3000 })}
         style={{ padding: '8px 16px', backgroundColor: '#3b82f6', color: 'white', border: 'none', borderRadius: 4 }}
       >
-        Info Toast
+        Info
       </button>
     </div>
   );

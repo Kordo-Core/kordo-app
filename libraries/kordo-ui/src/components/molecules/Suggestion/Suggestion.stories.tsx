@@ -2,22 +2,14 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Suggestion } from './Suggestion';
 
 /**
- * Le composant **Suggestion** affiche une carte de suggestion d'utilisateur à suivre.
- * Utilisé dans le feed pour recommander des profils.
+ * Carte de suggestion d'utilisateur à suivre, affichée dans le feed.
+ * Affiche l'avatar, le pseudo, le lieu de rencontre optionnel et un bouton de suivi.
  *
- * ## Utilisation
- * ```tsx
- * <Suggestion
- *   user={{ id: '1', username: 'john_doe' }}
- *   location="Climb Up Paris"
- *   onPressUser={(user) => navigate(`/profile/${user.id}`)}
- *   onPressLocation={(loc) => navigate(`/gym/${loc}`)}
- *   onPressFollow={() => followUser()}
- *   onPressClose={() => dismissSuggestion()}
- * />
- * ```
+ * ## Variantes
+ * - **location**: si fourni, affiche le lieu où l'utilisateur a été croisé
+ * - **isFollowing**: change l'état du bouton Follow
  */
-const meta: Meta<typeof Suggestion> = {
+export default {
   title: 'Molecules/Suggestion',
   component: Suggestion,
   tags: ['autodocs'],
@@ -31,16 +23,15 @@ const meta: Meta<typeof Suggestion> = {
     },
     location: {
       control: 'text',
-      description: 'Lieu où vous avez croisé cet utilisateur',
+      description: 'Lieu où vous avez croisé cet utilisateur (optionnel)',
     },
     onPressUser: { action: 'user pressed' },
     onPressLocation: { action: 'location pressed' },
     onPressFollow: { action: 'follow pressed' },
     onPressClose: { action: 'close pressed' },
   },
-};
+} satisfies Meta<typeof Suggestion>;
 
-export default meta;
 type Story = StoryObj<typeof Suggestion>;
 
 export const Default: Story = {
@@ -55,6 +46,7 @@ export const Default: Story = {
   },
 };
 
+/** Suggestion sans localisation. */
 export const WithoutLocation: Story = {
   args: {
     isFollowing: false,

@@ -2,43 +2,38 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Header } from './Header';
 import { Text } from '../../atoms/Text/Text';
 import { Icon } from '../../atoms/Icon/Icon';
-import { Button } from '../../atoms/Button/Button';
 
 /**
- * Le composant **Header** est un header sticky qui utilise ListRow en interne.
- * Sur mobile, il peut se cacher/afficher au scroll avec la prop `smart`.
+ * Header sticky basé sur `ListRow`, affiché en haut de chaque écran.
+ * Sur mobile, supporte un comportement smart : se masque au scroll vers le bas,
+ * réapparaît au scroll vers le haut.
  *
- * ## Utilisation
- * ```tsx
- * <Header
- *   left={<Icon name="menu" />}
- *   primaryText={<Text size="xl" bold>Kordo</Text>}
- *   right={<Icon name="bell" />}
- * />
- * ```
+ * ## Slots
+ * - **left**: bouton retour, menu burger…
+ * - **primaryText**: titre de la page
+ * - **right**: actions (recherche, notifications…)
+ *
+ * ## Variantes
+ * - **smart**: active le masquage automatique au scroll (native uniquement)
  */
-const meta: Meta<typeof Header> = {
+export default {
   title: 'Organisms/Header',
   component: Header,
   tags: ['autodocs'],
   parameters: {
     layout: 'fullscreen',
   },
-};
+} satisfies Meta<typeof Header>;
 
-export default meta;
 type Story = StoryObj<typeof Header>;
 
 export const Default: Story = {
   args: {
-    primaryText: (
-      <Text size="xl" bold appearance="primary">
-        Kordo
-      </Text>
-    ),
+    primaryText: <Text size="xl" bold appearance="primary">Kordo</Text>,
   },
 };
 
+/** Header avec navigation retour et menu contextuel. */
 export const WithNavigation: Story = {
   args: {
     left: <Icon name="arrow-left" size={24} color="black" />,
@@ -47,14 +42,11 @@ export const WithNavigation: Story = {
   },
 };
 
+/** Header avec plusieurs icônes d'action à droite. */
 export const WithActions: Story = {
   args: {
     left: <Icon name="menu" size={24} color="black" />,
-    primaryText: (
-      <Text size="xl" bold appearance="primary">
-        Kordo
-      </Text>
-    ),
+    primaryText: <Text size="xl" bold appearance="primary">Kordo</Text>,
     right: (
       <div style={{ display: 'flex', gap: 8 }}>
         <Icon name="search" size={24} color="black" />

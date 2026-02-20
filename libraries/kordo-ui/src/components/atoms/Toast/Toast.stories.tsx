@@ -1,7 +1,16 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Toast } from './Toast';
 
-const meta: Meta<typeof Toast> = {
+/**
+ * Notification temporaire affichée en overlay, avec 4 types de statut.
+ * Généralement utilisé via `useToast()` depuis `ToastProvider`.
+ *
+ * ## Variantes
+ * - **type**: `success`, `error`, `warning`, `info`
+ * - **showLoader**: affiche une barre de progression qui se vide sur `duration` ms
+ * - **isClosable**: affiche un bouton de fermeture
+ */
+export default {
   title: 'Atoms/Toast',
   component: Toast,
   tags: ['autodocs'],
@@ -11,32 +20,31 @@ const meta: Meta<typeof Toast> = {
   argTypes: {
     message: {
       control: 'text',
-      description: 'Message du toast',
+      description: 'Message affiché dans le toast',
     },
     type: {
       control: 'select',
       options: ['success', 'error', 'info', 'warning'],
-      description: 'Type de toast',
+      description: 'Détermine la couleur et l\'icône du toast',
     },
     showLoader: {
       control: 'boolean',
-      description: 'Afficher la barre de progression',
+      description: 'Affiche une barre de progression',
     },
     duration: {
       control: { type: 'number', min: 1000, max: 10000 },
-      description: 'Durée d\'affichage en ms',
+      description: "Durée d'affichage en ms",
     },
   },
   decorators: [
-    (Story) => (
+    (Story: any) => (
       <div style={{ width: 350 }}>
         <Story />
       </div>
     ),
   ],
-};
+} satisfies Meta<typeof Toast>;
 
-export default meta;
 type Story = StoryObj<typeof Toast>;
 
 export const Success: Story = {
@@ -47,7 +55,7 @@ export const Success: Story = {
     showLoader: true,
     isClosable: true,
     duration: 5000,
-    delete: () => console.log('deleted'),
+    delete: () => {},
   },
 };
 
@@ -59,7 +67,7 @@ export const Error: Story = {
     showLoader: true,
     isClosable: true,
     duration: 5000,
-    delete: () => console.log('deleted'),
+    delete: () => {},
   },
 };
 
@@ -71,7 +79,7 @@ export const Warning: Story = {
     showLoader: false,
     isClosable: true,
     duration: 5000,
-    delete: () => console.log('deleted'),
+    delete: () => {},
   },
 };
 
@@ -84,6 +92,6 @@ export const Info: Story = {
     showLoader: true,
     isClosable: true,
     duration: 5000,
-    delete: () => console.log('deleted'),
+    delete: () => {},
   },
 };

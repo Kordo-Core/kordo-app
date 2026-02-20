@@ -3,19 +3,15 @@ import { UserInfo } from './UserInfo';
 import { Text } from '../../atoms/Text/Text';
 
 /**
- * Le composant **UserInfo** affiche les informations d'un utilisateur avec son avatar.
- * Peut être affiché en ligne (row) ou en colonne.
+ * Affiche les informations d'un utilisateur avec son avatar.
+ * Supporte deux dispositions et un texte secondaire/tertiaire.
  *
- * ## Utilisation
- * ```tsx
- * <UserInfo
- *   user={{ id: '1', username: 'john', avatarUrl: '...' }}
- *   layout="row"
- *   onPressUser={(user) => navigate(`/profile/${user.id}`)}
- * />
- * ```
+ * ## Variantes
+ * - **layout**: `row` (avatar + texte côte à côte) ou `column` (empilé)
+ * - **highlightedAvatar**: ajoute une bordure colorée autour de l'avatar
+ * - **secondaryText** / **tertiaryText**: slots de contenu sous le nom
  */
-const meta: Meta<typeof UserInfo> = {
+export default {
   title: 'Molecules/UserInfo',
   component: UserInfo,
   tags: ['autodocs'],
@@ -34,9 +30,8 @@ const meta: Meta<typeof UserInfo> = {
     },
     onPressUser: { action: 'user pressed' },
   },
-};
+} satisfies Meta<typeof UserInfo>;
 
-export default meta;
 type Story = StoryObj<typeof UserInfo>;
 
 const mockUser = {
@@ -61,6 +56,7 @@ export const Column: Story = {
   },
 };
 
+/** Avatar avec bordure colorée pour indiquer un statut actif. */
 export const HighlightedAvatar: Story = {
   args: {
     user: mockUser,
@@ -70,6 +66,7 @@ export const HighlightedAvatar: Story = {
   },
 };
 
+/** Avec texte tertiaire (ex: nombre de followers). */
 export const WithTertiaryText: Story = {
   args: {
     user: mockUser,

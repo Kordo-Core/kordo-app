@@ -2,16 +2,14 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Text } from './Text';
 
 /**
- * Le composant **Text** est le composant de base pour afficher du texte stylisé.
+ * Composant de base pour tout affichage textuel, cross-platform.
  *
- * ## Utilisation
- * ```tsx
- * <Text size="lg" appearance="primary" bold>
- *   Hello World
- * </Text>
- * ```
+ * ## Variantes
+ * - **size**: `xs`, `sm`, `md`, `lg`, `xl`, `xxl`
+ * - **appearance**: `primary`, `secondary`, `black`, `gray`, `white`
+ * - **bold**: passe la police en gras
  */
-const meta: Meta<typeof Text> = {
+export default {
   title: 'Atoms/Text',
   component: Text,
   tags: ['autodocs'],
@@ -26,7 +24,7 @@ const meta: Meta<typeof Text> = {
     size: {
       control: 'select',
       options: ['xs', 'sm', 'md', 'lg', 'xl', 'xxl'],
-      description: 'Taille du texte',
+      description: 'Taille de la police',
     },
     appearance: {
       control: 'select',
@@ -38,19 +36,15 @@ const meta: Meta<typeof Text> = {
       description: 'Texte en gras',
     },
   },
-};
+} satisfies Meta<typeof Text>;
 
-export default meta;
 type Story = StoryObj<typeof Text>;
 
 export const Default: Story = {
-  args: {
-    children: 'Hello World',
-    size: 'md',
-    appearance: 'black',
-  },
+  args: { children: 'Hello World', size: 'md', appearance: 'black' },
 };
 
+/** Toutes les tailles disponibles. */
 export const Sizes: Story = {
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
@@ -64,6 +58,7 @@ export const Sizes: Story = {
   ),
 };
 
+/** Toutes les couleurs disponibles. */
 export const Colors: Story = {
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
@@ -76,9 +71,5 @@ export const Colors: Story = {
 };
 
 export const Bold: Story = {
-  args: {
-    children: 'Bold Text',
-    size: 'lg',
-    bold: true,
-  },
+  args: { children: 'Bold Text', size: 'lg', bold: true },
 };

@@ -20,18 +20,12 @@ import { Button } from './Button';
  * - **borderRadius**: `square` (défaut), `rounded`
  * - **icon**: ajoute une icône Feather
  */
-const meta: Meta<typeof Button> = {
+export default {
   title: 'Atoms/Button',
   component: Button,
   tags: ['autodocs'],
   parameters: {
     layout: 'centered',
-    docs: {
-      description: {
-        component:
-          'Bouton avec animation bounce. Supporte les icônes, plusieurs tailles et styles.',
-      },
-    },
   },
   argTypes: {
     title: {
@@ -46,11 +40,11 @@ const meta: Meta<typeof Button> = {
     size: {
       control: 'radio',
       options: ['md', 'lg'],
-      description: 'Taille du bouton',
+      description: 'Taille du bouton (`md` = 36px, `lg` = 60px)',
     },
     inverted: {
       control: 'boolean',
-      description: 'Inverse les couleurs (fond blanc)',
+      description: 'Inverse les couleurs (fond blanc, texte/bordure colorés)',
     },
     borderRadius: {
       control: 'radio',
@@ -70,9 +64,8 @@ const meta: Meta<typeof Button> = {
       description: 'Callback au clic',
     },
   },
-};
+} satisfies Meta<typeof Button>;
 
-export default meta;
 type Story = StoryObj<typeof Button>;
 
 /**
@@ -88,7 +81,7 @@ export const Default: Story = {
 };
 
 /**
- * Bouton de grande taille.
+ * Bouton de grande taille (`size="lg"`). Hauteur de 60px avec un padding horizontal plus large.
  */
 export const Large: Story = {
   args: {
@@ -99,7 +92,7 @@ export const Large: Story = {
 };
 
 /**
- * Bouton avec couleurs inversées (fond blanc, texte coloré).
+ * Bouton avec couleurs inversées : fond blanc, texte et bordure de la couleur `appearance`.
  */
 export const Inverted: Story = {
   args: {
@@ -110,20 +103,10 @@ export const Inverted: Story = {
 };
 
 /**
- * Bouton avec une icône et du texte.
+ * Bouton icône : affiche uniquement une icône, sans texte.
+ * Le bouton prend une forme carrée (36x36 en `md`, 60x60 en `lg`).
  */
-export const WithIcon: Story = {
-  args: {
-    title: 'Send',
-    appearance: 'primary',
-    icon: { name: 'send' },
-  },
-};
-
-/**
- * Bouton avec uniquement une icône (sans texte).
- */
-export const IconOnly: Story = {
+export const IconButton: Story = {
   args: {
     appearance: 'primary',
     icon: { name: 'check' },
@@ -141,7 +124,7 @@ export const Secondary: Story = {
 };
 
 /**
- * Bouton arrondi (pill shape).
+ * Bouton arrondi (pill shape) avec `borderRadius="rounded"`.
  */
 export const Rounded: Story = {
   args: {
@@ -152,7 +135,7 @@ export const Rounded: Story = {
 };
 
 /**
- * Bouton désactivé.
+ * Bouton désactivé. L'opacité est réduite à 0.5 et le callback `onPress` est ignoré.
  */
 export const Disabled: Story = {
   args: {

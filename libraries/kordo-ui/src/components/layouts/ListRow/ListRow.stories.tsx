@@ -5,29 +5,23 @@ import { Icon } from '../../atoms/Icon/Icon';
 import { Button } from '../../atoms/Button/Button';
 
 /**
- * Le composant **ListRow** affiche une ligne avec des éléments à gauche, au centre et à droite.
- * Idéal pour les listes d'items, les paramètres, les menus.
+ * Ligne de liste flexible avec slots gauche, centre et droite.
+ * Utilisé comme base pour les menus, paramètres, listes d'items.
  *
- * ## Utilisation
- * ```tsx
- * <ListRow
- *   left={<Icon name="user" />}
- *   primaryText={<Text>Titre</Text>}
- *   secondaryText={<Text appearance="gray">Sous-titre</Text>}
- *   right={<Icon name="chevron-right" />}
- * />
- * ```
+ * ## Slots
+ * - **left**: élément à gauche (icône, avatar…)
+ * - **primaryText** / **secondaryText**: contenu central
+ * - **right**: élément à droite (icône, bouton, badge…)
  */
-const meta: Meta<typeof ListRow> = {
+export default {
   title: 'Layouts/ListRow',
   component: ListRow,
   tags: ['autodocs'],
   parameters: {
     layout: 'padded',
   },
-};
+} satisfies Meta<typeof ListRow>;
 
-export default meta;
 type Story = StoryObj<typeof ListRow>;
 
 export const Default: Story = {
@@ -37,6 +31,7 @@ export const Default: Story = {
   },
 };
 
+/** Ligne avec icônes à gauche et à droite. */
 export const WithIcons: Story = {
   args: {
     left: <Icon name="user" size={24} color="primary" />,
@@ -46,6 +41,7 @@ export const WithIcons: Story = {
   },
 };
 
+/** Ligne avec un bouton d'action à droite. */
 export const WithButton: Story = {
   args: {
     left: <Icon name="bell" size={24} color="secondary" />,
@@ -55,6 +51,7 @@ export const WithButton: Story = {
   },
 };
 
+/** Item de type paramètres avec chevron. */
 export const SettingsItem: Story = {
   args: {
     left: <Icon name="settings" size={24} color="gray" />,
