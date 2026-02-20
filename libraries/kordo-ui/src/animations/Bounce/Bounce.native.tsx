@@ -34,7 +34,7 @@ export const Bounce: React.FC<BounceProps> = (props) => {
       onPressOut={handlePressOut}
       onPress={handlePress}
       disabled={disabled}
-      style={props.style}
+      style={[{ alignSelf: 'center' }, props.style]}
     >
       <Animated.View style={animatedStyle}>{children}</Animated.View>
     </Pressable>
