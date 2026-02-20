@@ -5,12 +5,18 @@ import Animated from 'react-native-reanimated';
 import MaskedView from '@react-native-masked-view/masked-view';
 import { SegmentedControlProps } from './SegmentedControl.types';
 
+export const SegmentItem = styled.View(() => ({
+  flex: 1,
+  alignItems: 'center',
+  justifyContent: 'center',
+}));
+
 export const CustomText = styled(Text)(
   (props: { size?: SegmentedControlProps['size']; theme: Theme }) => ({
-    paddingHorizontal: props.theme.spacing.xxl,
     height: props.size === 'lg' ? 60 : 40,
     lineHeight: props.size === 'lg' ? 60 : 40,
     fontSize: props.size ? props.theme.fontSizes[props.size] : props.theme.fontSizes.md,
+    textAlign: 'center',
   }),
 );
 
@@ -25,6 +31,7 @@ export const SegmentedContainer = styled.View<{ borderRadius: string }>((props) 
   gap: props.theme.spacing.xs,
   position: 'relative',
   alignItems: 'center',
+  width: '100%',
 }));
 
 export const Pointer = styled(Animated.View)<{ borderRadius: string; color?: string }>((props) => ({
@@ -42,10 +49,12 @@ export const Pointer = styled(Animated.View)<{ borderRadius: string; color?: str
 export const MaskedContainer = styled(MaskedView)((props) => ({
   flexDirection: 'row',
   position: 'absolute',
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
   padding: props.theme.spacing.xs,
   gap: props.theme.spacing.xs,
-  width: '100%',
-  bottom: 0,
   zIndex: 1,
 }));
 

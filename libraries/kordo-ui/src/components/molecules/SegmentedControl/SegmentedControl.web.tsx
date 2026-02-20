@@ -46,7 +46,7 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = (props) => {
           size={props.size ?? 'lg'}
           bold
           isSelected={index === props.selectedIndex}
-          onPress={() => props.onSelect(index)}
+          onClick={() => props.onSelect(index)}
         >
           {segment.text}
         </Styled.CustomText>

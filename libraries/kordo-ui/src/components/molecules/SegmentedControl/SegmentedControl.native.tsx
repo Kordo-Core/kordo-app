@@ -76,35 +76,30 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = (props) => {
       {/* Masque du texte blanc */}
       <Styled.MaskedContainer maskElement={<Styled.MaskOverlay style={[overlayAnimatedStyle]} />}>
         {props.segments.map((segment, index) => (
-          <Styled.CustomText
-            key={segment.text}
-            size={props.size ?? 'lg'}
-            bold
-            appearance="white"
-            onPress={() => {
-              props.onSelect(index);
+          <Styled.SegmentItem key={segment.text}>
+            <Styled.CustomText
+              size={props.size ?? 'lg'}
+              bold
+              appearance="white"
+              onPress={() => {
+                props.onSelect(index);
 
-              // Animation de rebond
-              overlayScale.value = withTiming(0.95, { duration: 100 }, () => {
-                overlayScale.value = withTiming(1, { duration: 100 });
-              });
-            }}
-          >
-            {segment.text}
-          </Styled.CustomText>
+                // Animation de rebond
+                overlayScale.value = withTiming(0.95, { duration: 100 }, () => {
+                  overlayScale.value = withTiming(1, { duration: 100 });
+                });
+              }}
+            >
+              {segment.text}
+            </Styled.CustomText>
+          </Styled.SegmentItem>
         ))}
       </Styled.MaskedContainer>
 
       {/* Texte noir de base */}
       {props.segments.map((segment, index) => (
-        <Styled.CustomText
+        <Styled.SegmentItem
           key={segment.text + '-base'}
-          size={props.size ?? 'lg'}
-          bold
-          appearance="black"
-          onPress={() => {
-            props.onSelect(index);
-          }}
           onLayout={(event: LayoutChangeEvent) => {
             const { width } = event.nativeEvent.layout;
             setTextWidths((prev) => {
@@ -114,8 +109,17 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = (props) => {
             });
           }}
         >
-          {segment.text}
-        </Styled.CustomText>
+          <Styled.CustomText
+            size={props.size ?? 'lg'}
+            bold
+            appearance="black"
+            onPress={() => {
+              props.onSelect(index);
+            }}
+          >
+            {segment.text}
+          </Styled.CustomText>
+        </Styled.SegmentItem>
       ))}
     </Styled.SegmentedContainer>
   );
