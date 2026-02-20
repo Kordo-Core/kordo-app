@@ -7,8 +7,13 @@ export const Loader: React.FC<LoaderProps> = (props) => {
   return (
     <>
       {props.type === 'bar' && (
-        <Styled.ProgressBar appearance={props.appearance} style={props.style}>
-          <Styled.Bar infinite={props.infinite ?? false} appearance={props.appearance} />
+        <Styled.ProgressBar appearance={props.appearance}>
+          <Styled.Bar
+            infinite={props.infinite ?? false}
+            appearance={props.appearance}
+            reverse={props.reverse}
+            duration={props.duration}
+          />
         </Styled.ProgressBar>
       )}
 

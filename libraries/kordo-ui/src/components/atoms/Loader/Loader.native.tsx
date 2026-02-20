@@ -49,7 +49,7 @@ export const Loader: React.FC<LoaderProps> = (props) => {
   });
 
   const strokeDashoffset = useDerivedValue(() => {
-    if (props.infinite) return circumference * (1 - 30 / size);
+    if (props.infinite) return circumference * 0.25;
     return circumference * (1 - (progress.value * size) / size);
   });
 
