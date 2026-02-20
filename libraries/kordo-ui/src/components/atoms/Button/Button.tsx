@@ -32,7 +32,7 @@ export const Button: React.FC<ButtonProps> = (props) => {
             color={props.inverted ? (props.icon.color ?? props.appearance) : 'white'}
           />
         )}
-        {props.title && (
+        {props.title ? (
           <Text
             appearance={props.inverted ? props.appearance : 'white'}
             size={props.size}
@@ -40,7 +40,7 @@ export const Button: React.FC<ButtonProps> = (props) => {
           >
             {props.title}
           </Text>
-        )}
+        ) : null}
       </Styled.ButtonContainer>
     </Bounce>
   );
