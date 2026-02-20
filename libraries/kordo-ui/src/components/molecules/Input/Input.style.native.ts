@@ -1,13 +1,13 @@
 import styled from '@emotion/native';
-import { Text } from '../Text/Text';
+import { Text } from '../../atoms/Text/Text';
 import Animated from 'react-native-reanimated';
-import { IconPosition } from '../Icon/Icon.types';
+import { IconPosition } from '../../atoms/Icon/Icon.types';
 
 export const InputContainer = styled(Animated.View)((props) => ({
   borderWidth: 1,
   backgroundColor: props.theme.colors.neutral.white,
   paddingInline: props.theme.spacing.md,
-  borderRadius: props.theme.borderRadius.md,
+  borderRadius: props.theme.borderRadius.square,
   flexDirection: 'row',
   alignItems: 'center',
   width: '100%',

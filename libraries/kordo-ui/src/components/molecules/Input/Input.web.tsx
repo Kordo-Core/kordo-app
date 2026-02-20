@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import * as Styled from './Input.style';
 import { InputProps } from './Input.types';
 import { useTheme } from '@emotion/react';
-import { Text } from '../Text/Text';
+import { Text } from '../../atoms/Text/Text';
 import { Shake, ShakeRef } from '../../../animations/Shake/Shake';
 import { Fade, FadeRef } from '../../../animations/Fade/Fade';
-import { Icon } from '../Icon/Icon';
+import { Icon } from '../../atoms/Icon/Icon';
 import { StatusType } from 'types/theme.types';
 
 const inputTypeMap: Record<string, string> = {

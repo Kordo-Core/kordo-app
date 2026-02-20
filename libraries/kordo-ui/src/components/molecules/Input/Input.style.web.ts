@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
-import { Text } from '../Text/Text';
-import { IconPosition } from '../Icon/Icon.types';
+import { Text } from '../../atoms/Text/Text';
+import { IconPosition } from '../../atoms/Icon/Icon.types';
 
 export const InputContainer = styled.div<{ borderColor?: string }>((props) => ({
   borderWidth: 1,
@@ -9,7 +9,7 @@ export const InputContainer = styled.div<{ borderColor?: string }>((props) => ({
   backgroundColor: props.theme.colors.neutral.white,
   paddingLeft: props.theme.spacing.md,
   paddingRight: props.theme.spacing.md,
-  borderRadius: props.theme.borderRadius.md,
+  borderRadius: props.theme.borderRadius.square,
   display: 'flex',
   flexDirection: 'row',
   alignItems: 'center',
@@ -21,12 +21,17 @@ export const InputContainer = styled.div<{ borderColor?: string }>((props) => ({
 
 export const Input = styled.input<{ iconPosition?: IconPosition }>((props) => ({
   flex: 1,
+  height: '100%',
   paddingLeft: props.iconPosition === 'left' ? props.theme.spacing.sm : 0,
   border: 'none',
   outline: 'none',
   fontSize: props.theme.fontSizes.md,
   fontFamily: props.theme.fonts.regular,
   backgroundColor: 'transparent',
+  color: props.theme.colors.neutral.black,
+  '&::placeholder': {
+    color: props.theme.colors.neutral.gray.base,
+  },
 }));
 
 export const ErrorText = styled(Text)({

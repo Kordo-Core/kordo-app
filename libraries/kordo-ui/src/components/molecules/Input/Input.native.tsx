@@ -2,13 +2,13 @@ import React from 'react';
 import * as Styled from './Input.style';
 import { InputProps } from './Input.types';
 import { useTheme } from '@emotion/react';
-import { Text } from '../Text/Text';
+import { Text } from '../../atoms/Text/Text';
 import { View } from 'react-native';
 import { keyboardTypeMap, textContentTypeMap } from './utils/inputMaps';
 import { Shake, ShakeRef } from '../../../animations/Shake/Shake';
 import { Fade, FadeRef } from '../../../animations/Fade/Fade';
 import { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
-import { Icon } from '../Icon/Icon';
+import { Icon } from '../../atoms/Icon/Icon';
 import { StatusType } from 'types/theme.types';
 
 export const Input: React.FC<InputProps> = (props) => {
@@ -72,7 +72,13 @@ export const Input: React.FC<InputProps> = (props) => {
           {props.iconPosition === 'left' && props.icon && <Icon name={props.icon.name} size={20} />}
 
           <Styled.Input
-            {...props}
+            value={props.value}
+            onChangeText={props.onChangeText}
+            placeholder={props.placeholder}
+            editable={props.editable}
+            maxLength={props.maxLength}
+            multiline={props.multiline}
+            iconPosition={props.iconPosition}
             keyboardType={keyboardType}
             textContentType={textContentType}
             secureTextEntry={props.type === 'password'}

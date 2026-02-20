@@ -1,4 +1,4 @@
-import { IconPosition, IconProps } from '../Icon/Icon.types';
+import { IconPosition, IconProps } from '../../atoms/Icon/Icon.types';
 
 export interface InputProps {
   value: string;
