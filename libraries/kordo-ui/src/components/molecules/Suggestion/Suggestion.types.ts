@@ -5,7 +5,7 @@ export interface SuggestionProps {
   user: UserPublic;
   location?: string; //TODO a therme GymPublic
   commonFollowers?: number;
-  onPressUser: (user: { id: string; username: string }) => void;
+  onPressUser: (user: { id: string; username: string }) => void; //TODO UserPublic ?
   onPressLocation: (location: string) => void;
   onPressClose: () => void;
   onPressFollow: () => void;

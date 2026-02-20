@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
 
 export const Container = styled.div(() => ({
-  width: 200,
-  height: 240,
+  width: 180,
+  height: 220,
   display: 'flex',
   flexDirection: 'column' as const,
   alignItems: 'center',
@@ -18,8 +18,8 @@ export const Content = styled.div(() => ({
 
 export const ButtonWrapper = styled.div(() => ({
   position: 'absolute' as const,
-  top: 8,
-  right: 8,
+  top: 0,
+  right: 0,
   cursor: 'pointer',
 }));
 

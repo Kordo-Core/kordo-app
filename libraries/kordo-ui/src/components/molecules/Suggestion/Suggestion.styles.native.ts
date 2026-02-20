@@ -2,8 +2,8 @@ import styled from '@emotion/native';
 import { Image } from 'react-native';
 
 export const Container = styled.View(() => ({
-  width: 200,
-  height: 240,
+  width: 180,
+  height: 220,
   alignItems: 'center',
   justifyContent: 'space-evenly',
 }));
@@ -16,8 +16,8 @@ export const Content = styled.View(() => ({
 
 export const ButtonWrapper = styled.View(() => ({
   position: 'absolute',
-  top: 8,
-  right: 8,
+  top: 0,
+  right: 0,
 }));
 
 export const CustomImage = styled(Image)(() => ({
