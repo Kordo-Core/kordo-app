@@ -1,0 +1,75 @@
+import styled from '@emotion/styled';
+import { ToastProps } from './Toast.types';
+import { Icon } from '../Icon/Icon';
+
+export const ToastContainer = styled.div<{ type: ToastProps['type'] }>((props) => {
+  const typeColors: Record<
+    NonNullable<ToastProps['type']>,
+    { border: string; background: string }
+  > = {
+    success: {
+      border: props.theme.colors.success.base,
+      background: props.theme.colors.success.lighter,
+    },
+    error: {
+      border: props.theme.colors.error.base,
+      background: props.theme.colors.error.lighter,
+    },
+    warning: {
+      border: props.theme.colors.warning.base,
+      background: props.theme.colors.warning.lighter,
+    },
+    info: {
+      border: props.theme.colors.info.base,
+      background: props.theme.colors.info.lighter,
+    },
+  };
+
+  const colors = typeColors[props.type ?? 'info'];
+
+  return {
+    overflow: 'hidden',
+    borderLeftWidth: 6,
+    borderLeftStyle: 'solid',
+    borderColor: colors.border,
+    backgroundColor: colors.background,
+    borderRadius: props.theme.borderRadius.square,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    height: 60,
+    position: 'relative',
+    paddingInline: props.theme.spacing.sm,
+  };
+});
+
+export const ToastContent = styled.div((props) => ({
+  display: 'flex',
+  flexDirection: 'row',
+  width: '100%',
+  paddingLeft: props.theme.spacing.md,
+  paddingRight: props.theme.spacing.md,
+}));
+
+export const DataContent = styled.div((props) => ({
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
+  flex: 1,
+  gap: props.theme.spacing.sm,
+}));
+
+export const CloseIcon = styled(Icon)({
+  marginLeft: 'auto',
+  cursor: 'pointer',
+  flexShrink: 0,
+});
+
+export const LoaderWrapper = styled.div({
+  position: 'absolute',
+  bottom: 0,
+  left: 0,
+  right: 0,
+});

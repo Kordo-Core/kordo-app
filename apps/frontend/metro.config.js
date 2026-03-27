@@ -3,10 +3,16 @@ const path = require('path');
 
 const config = getDefaultConfig(__dirname);
 
-config.watchFolders = [path.resolve(__dirname, '../../kordo-ui/src')];
+const corePath = path.resolve(__dirname, '../../core');
+const uiPath = path.resolve(__dirname, '../../libraries/kordo-ui');
 
-config.resolver.extraNodeModules = {
-  'kordo-ui': path.resolve(__dirname, '../../kordo-ui/src'),
-};
+config.watchFolders = [...config.watchFolders, corePath, uiPath];
+
+config.resolver.extraNodeModules = new Proxy(
+  {},
+  {
+    get: (target, name) => path.join(__dirname, 'node_modules', name),
+  },
+);
 
 module.exports = config;
