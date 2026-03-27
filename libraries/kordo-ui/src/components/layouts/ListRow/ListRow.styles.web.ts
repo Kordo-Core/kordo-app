@@ -10,6 +10,7 @@ export const Row = styled.div(() => ({
   paddingTop: 8,
   paddingBottom: 8,
   gap: 16,
+  boxSizing: 'border-box' as const,
 }));
 
 export const Left = styled.div(() => ({

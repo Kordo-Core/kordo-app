@@ -3,10 +3,10 @@ import { Card } from './Card';
 import { Text } from '../../atoms/Text/Text';
 
 /**
- * Conteneur avec ombre et coins arrondis. Peut être rendu cliquable avec animation bounce.
+ * Container with rounded corners and a drop shadow.
  *
- * ## Variantes
- * - **isPressable**: active l'animation bounce au clic et passe `cursor: pointer`
+ * ## Variants
+ * - **isPressable**: enables bounce animation on press
  */
 export default {
   title: 'Layouts/Card',
@@ -18,11 +18,11 @@ export default {
   argTypes: {
     isPressable: {
       control: 'boolean',
-      description: 'Rend la carte cliquable avec animation bounce',
+      description: 'Makes the card pressable with a bounce animation',
     },
     onPress: {
       action: 'pressed',
-      description: 'Callback au clic (si `isPressable`)',
+      description: 'Callback fired on press (requires `isPressable`)',
     },
   },
 } satisfies Meta<typeof Card>;
@@ -32,22 +32,30 @@ type Story = StoryObj<typeof Card>;
 export const Default: Story = {
   args: {
     children: (
-      <div style={{ padding: 16 }}>
-        <Text size="lg" bold>Titre de la carte</Text>
-        <Text size="md" appearance="gray">Description de la carte avec du contenu.</Text>
+      <div style={{ gap: 8, display: 'flex', flexDirection: 'column' }}>
+        <Text size="lg" bold>
+          Card title
+        </Text>
+        <Text size="md" appearance="gray">
+          Card description with some content.
+        </Text>
       </div>
     ),
   },
 };
 
-/** Carte cliquable avec animation bounce au clic. */
+/** Pressable card with a bounce animation on click. */
 export const Pressable: Story = {
   args: {
     isPressable: true,
     children: (
-      <div style={{ padding: 16 }}>
-        <Text size="lg" bold>Carte cliquable</Text>
-        <Text size="md" appearance="gray">Cliquez-moi pour voir l'animation bounce.</Text>
+      <div style={{ gap: 8, display: 'flex', flexDirection: 'column' }}>
+        <Text size="lg" bold>
+          Pressable card
+        </Text>
+        <Text size="md" appearance="gray">
+          Click me to see the bounce animation.
+        </Text>
       </div>
     ),
   },
