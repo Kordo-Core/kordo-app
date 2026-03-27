@@ -2,16 +2,12 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Icon } from './Icon';
 
 /**
- * Icône cross-platform issue de la librairie **[Feather Icons](https://feathericons.com/)**.
- * Utilise `react-feather` sur web et `@expo/vector-icons` sur native.
+ * Cross-platform icon component based on Feather Icons (kebab-case names).
  *
- * Le nom est toujours en **kebab-case** (`arrow-left`, `check-circle`…),
- * la conversion PascalCase est gérée automatiquement sur web.
- *
- * ## Couleurs disponibles
- * - **Apparence** : `primary`, `secondary`
- * - **Neutre** : `black`, `gray`, `white`
- * - **Statut** : `success`, `error`, `warning`, `info`
+ * ## Variants
+ * - **name**: icon name in kebab-case (`arrow-left`, `check-circle`…)
+ * - **size**: size in pixels (default 24)
+ * - **color**: `primary`, `secondary`, `black`, `gray`, `white`, `success`, `error`, `warning`, `info`
  */
 export default {
   title: 'Atoms/Icon',
@@ -33,11 +29,11 @@ export default {
         'log-out', 'log-in', 'menu', 'more-horizontal', 'more-vertical',
       ],
       description:
-        "Nom de l'icône Feather en **kebab-case**. Toutes les icônes de [feathericons.com](https://feathericons.com/) sont supportées.",
+        'Feather icon name in **kebab-case**. All icons from [feathericons.com](https://feathericons.com/) are supported.',
     },
     size: {
       control: { type: 'number', min: 12, max: 64, step: 4 },
-      description: "Taille de l'icône en pixels.",
+      description: 'Icon size in pixels.',
       table: {
         defaultValue: { summary: '24' },
       },
@@ -46,16 +42,16 @@ export default {
       control: 'select',
       options: ['primary', 'secondary', 'black', 'gray', 'white', 'success', 'error', 'warning', 'info'],
       description:
-        "Couleur issue du thème, résolue via `getColor()`. Supporte les couleurs d'**apparence** (`primary`, `secondary`), **neutres** (`black`, `gray`, `white`) et de **statut** (`success`, `error`, `warning`, `info`).",
+        'Theme color resolved via `getColor()`. Supports **appearance** colors (`primary`, `secondary`), **neutral** colors (`black`, `gray`, `white`) and **status** colors (`success`, `error`, `warning`, `info`).',
     },
     onPress: {
       action: 'pressed',
       description:
-        'Callback déclenché au clic (web) ou au tap (native). Ajoute automatiquement `cursor: pointer` sur web lorsque défini.',
+        'Callback fired on click (web) or tap (native). Automatically adds `cursor: pointer` on web when defined.',
     },
     style: {
       control: false,
-      description: "Styles personnalisés appliqués directement sur l'icône.",
+      description: 'Custom styles applied directly to the icon element.',
     },
   },
 } satisfies Meta<typeof Icon>;
@@ -63,7 +59,7 @@ export default {
 type Story = StoryObj<typeof Icon>;
 
 /**
- * Icône par défaut — taille standard (24px), couleur primaire.
+ * Default icon — standard size (24px), primary color.
  */
 export const Default: Story = {
   args: {
@@ -74,8 +70,8 @@ export const Default: Story = {
 };
 
 /**
- * Icône en petite taille (16px).
- * Idéale pour les labels, badges ou les contextes à forte densité d'information.
+ * Small icon (16px).
+ * Suited for labels, badges, or high-density information contexts.
  */
 export const Small: Story = {
   args: {
@@ -86,8 +82,8 @@ export const Small: Story = {
 };
 
 /**
- * Icône en grande taille (40px).
- * Adaptée aux états vides (_empty states_), illustrations ou appels à l'action visuels.
+ * Large icon (40px).
+ * Suited for empty states, illustrations, or prominent visual calls to action.
  */
 export const Large: Story = {
   args: {
@@ -98,10 +94,10 @@ export const Large: Story = {
 };
 
 /**
- * Couleurs de statut : `success`, `error`, `warning`, `info`.
+ * Status colors: `success`, `error`, `warning`, `info`.
  *
- * Ces couleurs sont issues du thème et résolues automatiquement par `getColor()`.
- * À utiliser pour donner un feedback contextuel à l'utilisateur.
+ * These colors are resolved from the theme via `getColor()`.
+ * Use them to provide contextual feedback to the user.
  */
 export const StatusColors: Story = {
   render: () => (

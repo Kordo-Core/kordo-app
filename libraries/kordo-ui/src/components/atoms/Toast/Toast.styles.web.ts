@@ -1,10 +1,12 @@
 import styled from '@emotion/styled';
 import { ToastProps } from './Toast.types';
-import { Loader } from '../Loader/Loader';
 import { Icon } from '../Icon/Icon';
 
 export const ToastContainer = styled.div<{ type: ToastProps['type'] }>((props) => {
-  const typeColors: Record<NonNullable<ToastProps['type']>, { border: string; background: string }> = {
+  const typeColors: Record<
+    NonNullable<ToastProps['type']>,
+    { border: string; background: string }
+  > = {
     success: {
       border: props.theme.colors.success.base,
       background: props.theme.colors.success.lighter,
@@ -39,30 +41,33 @@ export const ToastContainer = styled.div<{ type: ToastProps['type'] }>((props) =
     width: '100%',
     height: 60,
     position: 'relative',
+    paddingInline: props.theme.spacing.sm,
   };
 });
 
 export const ToastContent = styled.div((props) => ({
   display: 'flex',
   flexDirection: 'row',
-  justifyContent: 'space-between',
-  alignItems: 'center',
   width: '100%',
   paddingLeft: props.theme.spacing.md,
   paddingRight: props.theme.spacing.md,
 }));
 
-export const CustomIcon = styled(Icon)({
-  marginLeft: 0,
-  marginRight: 4,
-});
+export const DataContent = styled.div((props) => ({
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
+  flex: 1,
+  gap: props.theme.spacing.sm,
+}));
 
 export const CloseIcon = styled(Icon)({
   marginLeft: 'auto',
   cursor: 'pointer',
+  flexShrink: 0,
 });
 
-export const CustomLoader = styled(Loader)({
+export const LoaderWrapper = styled.div({
   position: 'absolute',
   bottom: 0,
   left: 0,

@@ -2,13 +2,12 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Toast } from './Toast';
 
 /**
- * Notification temporaire affichée en overlay, avec 4 types de statut.
- * Généralement utilisé via `useToast()` depuis `ToastProvider`.
+ * Temporary overlay notification, used via `useToast()`.
  *
- * ## Variantes
+ * ## Variants
  * - **type**: `success`, `error`, `warning`, `info`
- * - **showLoader**: affiche une barre de progression qui se vide sur `duration` ms
- * - **isClosable**: affiche un bouton de fermeture
+ * - **showLoader**: shows a progress bar countdown
+ * - **isClosable**: shows a close button
  */
 export default {
   title: 'Atoms/Toast',
@@ -20,20 +19,20 @@ export default {
   argTypes: {
     message: {
       control: 'text',
-      description: 'Message affiché dans le toast',
+      description: 'Message displayed inside the toast',
     },
     type: {
       control: 'select',
       options: ['success', 'error', 'info', 'warning'],
-      description: 'Détermine la couleur et l\'icône du toast',
+      description: 'Determines the color and icon of the toast',
     },
     showLoader: {
       control: 'boolean',
-      description: 'Affiche une barre de progression',
+      description: 'Shows a progress bar countdown',
     },
     duration: {
       control: { type: 'number', min: 1000, max: 10000 },
-      description: "Durée d'affichage en ms",
+      description: 'Display duration in ms',
     },
   },
   decorators: [
@@ -50,7 +49,7 @@ type Story = StoryObj<typeof Toast>;
 export const Success: Story = {
   args: {
     id: '1',
-    message: 'Opération réussie !',
+    message: 'Operation successful!',
     type: 'success',
     showLoader: true,
     isClosable: true,
@@ -62,7 +61,7 @@ export const Success: Story = {
 export const Error: Story = {
   args: {
     id: '2',
-    message: 'Une erreur est survenue.',
+    message: 'An error occurred.',
     type: 'error',
     showLoader: true,
     isClosable: true,
@@ -74,7 +73,7 @@ export const Error: Story = {
 export const Warning: Story = {
   args: {
     id: '3',
-    message: 'Attention, action irréversible.',
+    message: 'Warning: this action cannot be undone.',
     type: 'warning',
     showLoader: false,
     isClosable: true,
@@ -86,7 +85,7 @@ export const Warning: Story = {
 export const Info: Story = {
   args: {
     id: '4',
-    message: 'Nouvelle mise à jour disponible.',
+    message: 'New update available.',
     type: 'info',
     icon: { name: 'info' },
     showLoader: true,

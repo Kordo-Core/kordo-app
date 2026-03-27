@@ -19,7 +19,7 @@ export const ButtonContainer = styled.div<Omit<ButtonProps, 'onPress' | 'style'>
     cursor: isDisabled ? 'not-allowed' : 'pointer',
     transition: 'opacity 0.2s ease',
 
-    // Bordure
+    // Border
     borderStyle: 'solid',
     borderColor: props.inverted ? color : 'transparent',
     borderWidth: props.borderless ? 0 : 1,
@@ -43,7 +43,7 @@ export const ButtonContainer = styled.div<Omit<ButtonProps, 'onPress' | 'style'>
     paddingLeft: horizontalPadding,
     paddingRight: horizontalPadding,
 
-    // Hover effect (seulement si pas disabled)
+    // Hover effect (only when not disabled)
     '&:hover': !isDisabled ? {
       opacity: 0.9,
     } : {},

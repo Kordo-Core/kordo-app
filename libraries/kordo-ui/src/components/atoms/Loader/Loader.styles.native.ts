@@ -1,6 +1,6 @@
 import styled from '@emotion/native';
 import Animated from 'react-native-reanimated';
-import { LoaderProps } from './Loder.type';
+import { LoaderProps } from './Loader.types';
 import Svg, { Circle } from 'react-native-svg';
 import { getColor } from '../../../utils/getColors';
 

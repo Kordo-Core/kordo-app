@@ -3,6 +3,7 @@ import { Feather } from '@expo/vector-icons';
 import { IconProps } from './Icon.types';
 import { getColor } from '../../../utils/getColors';
 
+// Wrapper natif autour de Feather qui traduit la couleur logique du thème en couleur réelle
 export const Icon: React.FC<IconProps> = (props) => {
   return (
     <Feather

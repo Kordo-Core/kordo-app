@@ -2,24 +2,24 @@ import { AppearanceType, NeutralType, SizeType } from '../../../types/theme.type
 import { IconProps } from '../Icon/Icon.types';
 
 export interface ButtonProps {
-  /** Texte affiché dans le bouton */
+  /** Text displayed inside the button */
   title?: string;
-  /** Couleur du bouton */
+  /** Color theme of the button */
   appearance?: AppearanceType | Exclude<NeutralType, 'white'>;
-  /** Icône à afficher */
+  /** Optional Feather icon displayed alongside the title */
   icon?: IconProps;
-  /** Forme des coins */
+  /** Corner shape of the button */
   borderRadius?: 'rounded' | 'square';
-  /** Inverse les couleurs (fond blanc, texte/bordure colorés) */
+  /** Inverts colors: white background with colored text and border */
   inverted?: boolean;
-  /** Taille du bouton */
+  /** Button size (`md` = 36px height, `lg` = 60px height) */
   size?: Exclude<SizeType, 'sm'>;
-  /** Styles personnalisés */
+  /** Custom styles applied to the wrapper */
   style?: any;
-  /** Callback au clic */
+  /** Callback fired on press */
   onPress?: () => void;
-  /** Supprime la bordure */
+  /** Removes the border */
   borderless?: boolean;
-  /** Désactive le bouton */
+  /** Disables the button and suppresses onPress */
   disabled?: boolean;
 }

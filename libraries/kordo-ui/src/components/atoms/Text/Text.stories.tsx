@@ -2,12 +2,12 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Text } from './Text';
 
 /**
- * Composant de base pour tout affichage textuel, cross-platform.
+ * Base typography component, cross-platform.
  *
- * ## Variantes
+ * ## Variants
  * - **size**: `xs`, `sm`, `md`, `lg`, `xl`, `xxl`
  * - **appearance**: `primary`, `secondary`, `black`, `gray`, `white`
- * - **bold**: passe la police en gras
+ * - **bold**: renders text in bold weight
  */
 export default {
   title: 'Atoms/Text',
@@ -19,21 +19,21 @@ export default {
   argTypes: {
     children: {
       control: 'text',
-      description: 'Contenu textuel',
+      description: 'Text content',
     },
     size: {
       control: 'select',
       options: ['xs', 'sm', 'md', 'lg', 'xl', 'xxl'],
-      description: 'Taille de la police',
+      description: 'Font size',
     },
     appearance: {
       control: 'select',
       options: ['primary', 'secondary', 'black', 'gray', 'white'],
-      description: 'Couleur du texte',
+      description: 'Text color',
     },
     bold: {
       control: 'boolean',
-      description: 'Texte en gras',
+      description: 'Renders text in bold weight',
     },
   },
 } satisfies Meta<typeof Text>;
@@ -44,7 +44,7 @@ export const Default: Story = {
   args: { children: 'Hello World', size: 'md', appearance: 'black' },
 };
 
-/** Toutes les tailles disponibles. */
+/** All available sizes. */
 export const Sizes: Story = {
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
@@ -58,7 +58,7 @@ export const Sizes: Story = {
   ),
 };
 
-/** Toutes les couleurs disponibles. */
+/** All available colors. */
 export const Colors: Story = {
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>

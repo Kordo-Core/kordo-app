@@ -2,9 +2,9 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Tag } from './Tag';
 
 /**
- * Label coloré pour représenter une catégorie, un statut ou une étiquette.
+ * Colored label for categories, statuses, or tags.
  *
- * ## Variantes
+ * ## Variants
  * - **appearance**: `primary`, `secondary`, `success`, `error`, `warning`, `info`
  */
 export default {
@@ -17,12 +17,12 @@ export default {
   argTypes: {
     title: {
       control: 'text',
-      description: 'Texte affiché dans le tag',
+      description: 'Text displayed inside the tag',
     },
     appearance: {
       control: 'select',
       options: ['primary', 'secondary', 'success', 'error', 'warning', 'info'],
-      description: 'Couleur du tag',
+      description: 'Color theme of the tag',
     },
   },
 } satisfies Meta<typeof Tag>;

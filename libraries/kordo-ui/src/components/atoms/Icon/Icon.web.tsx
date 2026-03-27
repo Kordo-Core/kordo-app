@@ -10,7 +10,8 @@ interface IconProps {
   style?: React.CSSProperties;
 }
 
-// Convert kebab-case to PascalCase (e.g., "arrow-left" -> "ArrowLeft")
+// Convertit un nom kebab-case en PascalCase pour correspondre aux exports de react-feather
+// (ex. : "arrow-left" -> "ArrowLeft")
 const toPascalCase = (str: string): string => {
   return str
     .split('-')
@@ -18,14 +19,18 @@ const toPascalCase = (str: string): string => {
     .join('');
 };
 
+// Composant icône web qui résout dynamiquement le composant react-feather à partir du nom
 export const Icon: React.FC<IconProps> = (props) => {
+  // Transforme le nom reçu en PascalCase pour chercher dans le catalogue react-feather
   const iconName = toPascalCase(props.name);
   const IconComponent = (FeatherIcons as Record<string, React.FC<any>>)[iconName];
 
+  // Fallback textuel si l'icône demandée n'existe pas dans react-feather
   if (!IconComponent) {
     return <span style={props.style}>{props.name}</span>;
   }
 
+  // Ajoute le comportement cliquable uniquement si un callback onPress est fourni
   const handleClick = props.onPress ? { onClick: props.onPress, style: { cursor: 'pointer' } } : {};
 
   return (

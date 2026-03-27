@@ -10,7 +10,7 @@ export const ButtonContainer = styled.View<Omit<ButtonProps, 'onPress' | 'style'
     backgroundColor: props.inverted ? props.theme.colors.neutral.white : color,
     opacity: isDisabled ? 0.5 : 1,
 
-    // Bordure
+    // Border
     borderColor: props.inverted ? color : 'transparent',
     borderWidth: props.borderless ? 0 : 1,
     borderRadius:

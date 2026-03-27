@@ -2,23 +2,14 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Button } from './Button';
 
 /**
- * Le composant **Button** est un bouton interactif avec animation bounce au clic.
+ * Interactive button with a bounce animation on press.
  *
- * ## Utilisation
- * ```tsx
- * <Button
- *   title="Valider"
- *   appearance="primary"
- *   onPress={() => console.log('clicked')}
- * />
- * ```
- *
- * ## Variantes
+ * ## Variants
  * - **appearance**: `primary`, `secondary`, `black`, `gray`
- * - **size**: `md` (défaut), `lg`
- * - **inverted**: inverse les couleurs (fond blanc, texte coloré)
- * - **borderRadius**: `square` (défaut), `rounded`
- * - **icon**: ajoute une icône Feather
+ * - **size**: `md` (default), `lg`
+ * - **inverted**: inverts colors (white background, colored text and border)
+ * - **borderRadius**: `square` (default), `rounded`
+ * - **icon**: adds a Feather icon
  */
 export default {
   title: 'Atoms/Button',
@@ -30,38 +21,38 @@ export default {
   argTypes: {
     title: {
       control: 'text',
-      description: 'Texte affiché dans le bouton',
+      description: 'Text displayed inside the button',
     },
     appearance: {
       control: 'select',
       options: ['primary', 'secondary', 'black', 'gray'],
-      description: 'Couleur du bouton',
+      description: 'Color theme of the button',
     },
     size: {
       control: 'radio',
       options: ['md', 'lg'],
-      description: 'Taille du bouton (`md` = 36px, `lg` = 60px)',
+      description: 'Button size (`md` = 36px height, `lg` = 60px height)',
     },
     inverted: {
       control: 'boolean',
-      description: 'Inverse les couleurs (fond blanc, texte/bordure colorés)',
+      description: 'Inverts colors: white background with colored text and border',
     },
     borderRadius: {
       control: 'radio',
       options: ['square', 'rounded'],
-      description: 'Forme des coins',
+      description: 'Corner shape of the button',
     },
     borderless: {
       control: 'boolean',
-      description: 'Supprime la bordure',
+      description: 'Removes the border',
     },
     disabled: {
       control: 'boolean',
-      description: 'Désactive le bouton',
+      description: 'Disables the button and suppresses onPress',
     },
     onPress: {
       action: 'pressed',
-      description: 'Callback au clic',
+      description: 'Callback fired on press',
     },
   },
 } satisfies Meta<typeof Button>;
@@ -69,7 +60,7 @@ export default {
 type Story = StoryObj<typeof Button>;
 
 /**
- * Bouton par défaut avec texte.
+ * Default button with text.
  */
 export const Default: Story = {
   args: {
@@ -81,7 +72,7 @@ export const Default: Story = {
 };
 
 /**
- * Bouton de grande taille (`size="lg"`). Hauteur de 60px avec un padding horizontal plus large.
+ * Large button (`size="lg"`). 60px height with wider horizontal padding.
  */
 export const Large: Story = {
   args: {
@@ -92,7 +83,7 @@ export const Large: Story = {
 };
 
 /**
- * Bouton avec couleurs inversées : fond blanc, texte et bordure de la couleur `appearance`.
+ * Inverted button: white background with text and border colored by `appearance`.
  */
 export const Inverted: Story = {
   args: {
@@ -103,8 +94,8 @@ export const Inverted: Story = {
 };
 
 /**
- * Bouton icône : affiche uniquement une icône, sans texte.
- * Le bouton prend une forme carrée (36x36 en `md`, 60x60 en `lg`).
+ * Icon-only button: displays a single icon with no text.
+ * The button takes a square shape (36×36 in `md`, 60×60 in `lg`).
  */
 export const IconButton: Story = {
   args: {
@@ -114,7 +105,7 @@ export const IconButton: Story = {
 };
 
 /**
- * Bouton secondaire.
+ * Secondary appearance button.
  */
 export const Secondary: Story = {
   args: {
@@ -124,7 +115,7 @@ export const Secondary: Story = {
 };
 
 /**
- * Bouton arrondi (pill shape) avec `borderRadius="rounded"`.
+ * Pill-shaped button using `borderRadius="rounded"`.
  */
 export const Rounded: Story = {
   args: {
@@ -135,7 +126,7 @@ export const Rounded: Story = {
 };
 
 /**
- * Bouton désactivé. L'opacité est réduite à 0.5 et le callback `onPress` est ignoré.
+ * Disabled button. Opacity is reduced to 0.5 and the `onPress` callback is suppressed.
  */
 export const Disabled: Story = {
   args: {

@@ -1,6 +1,5 @@
 import styled from '@emotion/native';
 import { ToastProps } from './Toast.types';
-import { Loader } from '../Loader/Loader';
 import { Icon } from '../Icon/Icon';
 
 export const ToastContainer = styled.View<{ type: ToastProps['type'] }>((props) => {
@@ -40,21 +39,26 @@ export const ToastContainer = styled.View<{ type: ToastProps['type'] }>((props) 
 export const ToastContent = styled.View((props) => ({
   display: 'flex',
   flexDirection: 'row',
-  justifyContent: 'space-between',
+  alignItems: 'center',
   width: '100%',
   paddingInline: props.theme.spacing.md,
 }));
 
-export const CustomIcon = styled(Icon)({
-  marginLeft: 0,
-  marginRight: 4,
-});
+export const DataContent = styled.View((props) => ({
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
+  flex: 1,
+  gap: props.theme.spacing.sm,
+}));
 
 export const CloseIcon = styled(Icon)({
   marginLeft: 'auto',
 });
 
-export const CustomLoader = styled(Loader)({
+export const LoaderWrapper = styled.View({
   position: 'absolute',
   bottom: 0,
+  left: 0,
+  right: 0,
 });

@@ -2,13 +2,13 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Loader } from './Loader';
 
 /**
- * Indicateur de chargement cross-platform disponible en deux formes.
+ * Cross-platform loading indicator (spinner or progress bar).
  *
- * ## Variantes
- * - **type**: `spinner` (cercle rotatif) ou `bar` (barre de progression horizontale)
- * - **size**: `sm`, `md`, `lg` — spinner uniquement
+ * ## Variants
+ * - **type**: `spinner` (rotating circle) or `bar` (horizontal progress bar)
+ * - **size**: `sm`, `md`, `lg` (spinner only)
  * - **appearance**: `primary`, `secondary`, `success`, `error`, `warning`, `info`
- * - **infinite**: boucle l'animation si `true`, joue une seule fois si `false`
+ * - **infinite**: loops the animation indefinitely
  */
 export default {
   title: 'Atoms/Loader',
@@ -21,25 +21,25 @@ export default {
     type: {
       control: 'radio',
       options: ['spinner', 'bar'],
-      description: '`spinner` = cercle rotatif, `bar` = barre horizontale',
+      description: '`spinner` = rotating circle, `bar` = horizontal progress bar',
     },
     size: {
       control: 'radio',
       options: ['sm', 'md', 'lg'],
-      description: 'Taille du spinner (ignoré pour `bar`)',
+      description: 'Size of the spinner (ignored for `bar`)',
     },
     appearance: {
       control: 'select',
       options: ['primary', 'secondary', 'success', 'error', 'warning', 'info'],
-      description: 'Couleur du loader',
+      description: 'Color theme of the loader',
     },
     duration: {
       control: { type: 'number', min: 500, max: 5000 },
-      description: "Durée d'un cycle d'animation en ms",
+      description: 'Duration of one animation cycle in ms',
     },
     infinite: {
       control: 'boolean',
-      description: 'Boucle l\'animation indéfiniment',
+      description: 'Loops the animation indefinitely',
     },
   },
   decorators: [
@@ -53,7 +53,7 @@ export default {
 
 type Story = StoryObj<typeof Loader>;
 
-/** Spinner de taille moyenne. */
+/** Medium-sized spinner. */
 export const Spinner: Story = {
   args: {
     type: 'spinner',
@@ -64,7 +64,7 @@ export const Spinner: Story = {
   },
 };
 
-/** Spinner petit. */
+/** Small spinner. */
 export const SpinnerSmall: Story = {
   args: {
     type: 'spinner',
@@ -75,7 +75,7 @@ export const SpinnerSmall: Story = {
   },
 };
 
-/** Spinner grand. */
+/** Large spinner. */
 export const SpinnerLarge: Story = {
   args: {
     type: 'spinner',
@@ -86,7 +86,7 @@ export const SpinnerLarge: Story = {
   },
 };
 
-/** Barre de chargement infinie. */
+/** Infinite looping progress bar. */
 export const Bar: Story = {
   args: {
     type: 'bar',
@@ -96,7 +96,7 @@ export const Bar: Story = {
   },
 };
 
-/** Barre de progression qui joue une seule fois. */
+/** Progress bar that plays once (non-infinite). */
 export const BarProgress: Story = {
   args: {
     type: 'bar',

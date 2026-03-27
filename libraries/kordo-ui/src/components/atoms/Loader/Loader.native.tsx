@@ -8,18 +8,25 @@ import {
   useAnimatedProps,
   cancelAnimation,
 } from 'react-native-reanimated';
-import { Bar, ProgressBar } from './Loader.style';
+import { Bar, ProgressBar } from './Loader.styles';
 import { useEffect, useState } from 'react';
-import * as Styled from './Loader.style';
-import { LoaderProps } from './Loder.type';
+import * as Styled from './Loader.styles';
+import { LoaderProps } from './Loader.types';
 import { Circle } from 'react-native-svg';
 import { useTheme } from '@emotion/react';
 
+// Composant Loader natif supportant deux variantes : barre de progression et spinner circulaire
 export const Loader: React.FC<LoaderProps> = (props) => {
+  // Accès au thème pour les couleurs du spinner
   const theme = useTheme();
+  // Valeur partagée Reanimated pilotant toutes les animations ; initialisée à 0 ou 1 selon le sens
   const progress = useSharedValue(props.infinite ? 0 : props.reverse ? 1 : 0);
+  // Largeur réelle de la barre mesurée via onLayout, nécessaire pour calculer le déplacement en mode infini
   const [width, setWidth] = useState(0);
 
+  // Lance l'animation dès que les paramètres changent :
+  // - mode infini : boucle sans fin (avec aller-retour pour la barre, rotation continue pour le spinner)
+  // - mode fini : transition unique de 0->1 ou 1->0 selon le sens
   useEffect(() => {
     if (props.infinite) {
       progress.value = withRepeat(
@@ -30,15 +37,18 @@ export const Loader: React.FC<LoaderProps> = (props) => {
     } else {
       progress.value = withTiming(props.reverse ? 0 : 1, { duration: props.duration });
     }
+    // Nettoyage : annule l'animation en cours pour éviter les fuites mémoire au démontage
     return () => {
       cancelAnimation(progress);
     };
   }, [width, props.duration, props.reverse, props.infinite]);
 
+  // Calcul des dimensions du cercle SVG en fonction de la taille demandée
   const size = props.size === 'sm' ? 20 : props.size === 'md' ? 30 : 40;
   const radius = (size - 4) / 2;
   const circumference = 2 * Math.PI * radius;
 
+  // Style animé de la barre : translation horizontale en mode infini, mise à l'échelle en mode fini
   const barStyle = useAnimatedStyle(() => {
     if (props.infinite) {
       return {
@@ -48,15 +58,18 @@ export const Loader: React.FC<LoaderProps> = (props) => {
     return { transform: [{ scaleX: progress.value }], transformOrigin: 'left' };
   });
 
+  // Décalage du trait SVG du spinner : fixe à 25% en mode infini, proportionnel à la progression sinon
   const strokeDashoffset = useDerivedValue(() => {
     if (props.infinite) return circumference * 0.25;
     return circumference * (1 - (progress.value * size) / size);
   });
 
+  // Expose le strokeDashoffset comme prop animée pour le cercle SVG natif
   const animatedProps = useAnimatedProps(() => {
     return { strokeDashoffset: strokeDashoffset.value };
   });
 
+  // Rotation continue du conteneur SVG pour l'effet de spinner tournant
   const spinnerStyle = useAnimatedStyle(() => {
     const rotation = `${progress.value * 360}deg`;
     return { transform: [{ rotate: rotation }] };
