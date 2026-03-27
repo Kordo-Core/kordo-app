@@ -1,20 +1,19 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { useState } from 'react';
 import { Header } from './Header';
 import { Text } from '../../atoms/Text/Text';
-import { Icon } from '../../atoms/Icon/Icon';
+import { Button } from '../../atoms/Button/Button';
 
 /**
- * Header sticky basé sur `ListRow`, affiché en haut de chaque écran.
- * Sur mobile, supporte un comportement smart : se masque au scroll vers le bas,
- * réapparaît au scroll vers le haut.
+ * Sticky header built on top of `ListRow` with optional scroll-based auto-hide.
  *
  * ## Slots
- * - **left**: bouton retour, menu burger…
- * - **primaryText**: titre de la page
- * - **right**: actions (recherche, notifications…)
+ * - **left**: back button, hamburger menu…
+ * - **primaryText**: page title
+ * - **right**: actions (search, notifications…)
  *
- * ## Variantes
- * - **smart**: active le masquage automatique au scroll (native uniquement)
+ * ## Variants
+ * - **smart**: automatically hides on scroll down and reappears on scroll up
  */
 export default {
   title: 'Organisms/Header',
@@ -27,31 +26,112 @@ export default {
 
 type Story = StoryObj<typeof Header>;
 
-export const Default: Story = {
-  args: {
-    primaryText: <Text size="xl" bold appearance="primary">Kordo</Text>,
-  },
-};
-
-/** Header avec navigation retour et menu contextuel. */
-export const WithNavigation: Story = {
-  args: {
-    left: <Icon name="arrow-left" size={24} color="black" />,
-    primaryText: <Text size="lg" bold>Page Title</Text>,
-    right: <Icon name="more-vertical" size={24} color="black" />,
-  },
-};
-
-/** Header avec plusieurs icônes d'action à droite. */
-export const WithActions: Story = {
-  args: {
-    left: <Icon name="menu" size={24} color="black" />,
-    primaryText: <Text size="xl" bold appearance="primary">Kordo</Text>,
-    right: (
-      <div style={{ display: 'flex', gap: 8 }}>
-        <Icon name="search" size={24} color="black" />
-        <Icon name="bell" size={24} color="black" />
+const ScrollContent = () => (
+  <>
+    {Array.from({ length: 20 }, (_, i) => (
+      <div
+        key={i}
+        style={{
+          padding: 16,
+          backgroundColor: '#f5f5f5',
+          borderRadius: 8,
+          flexShrink: 0,
+        }}
+      >
+        <Text>Scroll content item {i + 1}</Text>
       </div>
-    ),
-  },
+    ))}
+  </>
+);
+
+const headerProps = {
+  left: (
+    <Button
+      inverted
+      borderless
+      appearance="black"
+      icon={{ name: 'menu' }}
+      borderRadius="square"
+      onPress={() => {}}
+    />
+  ),
+  primaryText: (
+    <Text size="xl" bold appearance="primary">
+      Kordo
+    </Text>
+  ),
+  right: (
+    <div style={{ display: 'flex', gap: 4 }}>
+      <Button
+        inverted
+        borderless
+        appearance="black"
+        icon={{ name: 'search' }}
+        borderRadius="square"
+        onPress={() => {}}
+      />
+      <Button
+        inverted
+        borderless
+        appearance="black"
+        icon={{ name: 'bell' }}
+        borderRadius="square"
+        onPress={() => {}}
+      />
+    </div>
+  ),
+};
+
+export const Default: Story = {
+  render: () => (
+    <div style={{ display: 'flex', flexDirection: 'column', height: 400 }}>
+      <Header {...headerProps} />
+      <div
+        style={{
+          flex: 1,
+          overflow: 'auto',
+          padding: 20,
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 12,
+        }}
+      >
+        <ScrollContent />
+      </div>
+    </div>
+  ),
+};
+
+const SmartHeaderDemo = () => {
+  const [scrollY, setScrollY] = useState(0);
+
+  return (
+    <div style={{ position: 'relative', height: 400, overflow: 'hidden' }}>
+      <div
+        style={{
+          height: '100%',
+          overflow: 'auto',
+          paddingTop: 60,
+        }}
+        onScroll={(e) => setScrollY(e.currentTarget.scrollTop)}
+      >
+        <div
+          style={{
+            padding: 20,
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 12,
+          }}
+        >
+          <ScrollContent />
+        </div>
+      </div>
+      <Header smart scrollY={scrollY} {...headerProps} />
+    </div>
+  );
+};
+
+/** Smart header: hides on scroll down, reappears on scroll up. */
+export const Smart: Story = {
+  render: () => <SmartHeaderDemo />,
 };
