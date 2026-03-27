@@ -2,16 +2,11 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { BoulderBadge } from './BoulderBadge';
 
 /**
- * Badge d'avatar coloré selon le grade de bloc de l'utilisateur.
- * La couleur du contour change automatiquement en fonction de la plage de `grade`.
+ * Avatar badge colored according to the user's boulder grade.
  *
- * ## Couleurs par grade
- * - **0–5** : Jaune
- * - **6–10** : Vert
- * - **11–15** : Bleu
- * - **16–20** : Rouge
- * - **21–25** : Noir
- * - **26+** : Violet
+ * ## Variants
+ * - **grade**: `0–5` yellow, `6–10` green, `11–15` blue, `16–20` red, `21–25` black, `26+` purple
+ * - **avatarUrl**: URL of the avatar image
  */
 export default {
   title: 'Molecules/BoulderBadge',
@@ -23,11 +18,11 @@ export default {
   argTypes: {
     grade: {
       control: { type: 'range', min: 0, max: 30, step: 1 },
-      description: 'Grade de bloc (0–30) — détermine la couleur du badge',
+      description: 'Boulder grade (0–30) — determines the badge color',
     },
     avatarUrl: {
       control: 'text',
-      description: "URL de l'image d'avatar",
+      description: 'URL of the avatar image',
     },
   },
 } satisfies Meta<typeof BoulderBadge>;

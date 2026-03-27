@@ -2,12 +2,11 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Suggestion } from './Suggestion';
 
 /**
- * Carte de suggestion d'utilisateur à suivre, affichée dans le feed.
- * Affiche l'avatar, le pseudo, le lieu de rencontre optionnel et un bouton de suivi.
+ * Suggestion card for a user to follow.
  *
- * ## Variantes
- * - **location**: si fourni, affiche le lieu où l'utilisateur a été croisé
- * - **isFollowing**: change l'état du bouton Follow
+ * ## Variants
+ * - **location**: gym or location where the user was encountered (optional)
+ * - **isFollowing**: current follow state of the Follow button
  */
 export default {
   title: 'Molecules/Suggestion',
@@ -19,11 +18,11 @@ export default {
   argTypes: {
     isFollowing: {
       control: 'boolean',
-      description: "Indique si l'utilisateur est déjà suivi",
+      description: 'Indicates whether the user is already being followed',
     },
     location: {
       control: 'text',
-      description: 'Lieu où vous avez croisé cet utilisateur (optionnel)',
+      description: 'Location where you encountered this user (optional)',
     },
     onPressUser: { action: 'user pressed' },
     onPressLocation: { action: 'location pressed' },
@@ -46,7 +45,7 @@ export const Default: Story = {
   },
 };
 
-/** Suggestion sans localisation. */
+/** Suggestion card without a location. */
 export const WithoutLocation: Story = {
   args: {
     isFollowing: false,

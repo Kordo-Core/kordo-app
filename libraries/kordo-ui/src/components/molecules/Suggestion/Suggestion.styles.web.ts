@@ -16,17 +16,17 @@ export const Content = styled.div(() => ({
   gap: 8,
 }));
 
-export const ButtonWrapper = styled.div(() => ({
+export const ButtonWrapper = styled.div((props) => ({
   position: 'absolute' as const,
-  top: 0,
-  right: 0,
+  top: props.theme.spacing.md,
+  right: props.theme.spacing.md,
   cursor: 'pointer',
 }));
 
-export const CustomImage = styled.img(() => ({
-  width: 80,
-  height: 80,
-  borderRadius: 40,
+export const CustomImage = styled.img((props) => ({
+  width: props.theme.avatarSizes.lg,
+  height: props.theme.avatarSizes.lg,
+  borderRadius: props.theme.borderRadius.rounded,
   objectFit: 'cover' as const,
 }));
 

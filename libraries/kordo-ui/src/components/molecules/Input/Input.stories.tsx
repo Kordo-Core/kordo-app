@@ -3,13 +3,12 @@ import { Input } from './Input';
 import { useState } from 'react';
 
 /**
- * Champ de saisie cross-platform avec validation intégrée, animations d'erreur (shake + fade)
- * et support des icônes Feather.
+ * Cross-platform text input with built-in validation and error animations.
  *
- * ## Variantes
- * - **type**: `email`, `password`, `number` (validation automatique au blur)
- * - **icon**: icône Feather positionnée à `left` ou `right`
- * - **required**: affiche `*` et déclenche une erreur si le champ est vide au blur
+ * ## Variants
+ * - **type**: `email`, `password`, `number` (validated on blur)
+ * - **icon**: Feather icon positioned at `left` or `right`
+ * - **required**: marks the field as required with a `*` indicator
  */
 export default {
   title: 'Molecules/Input',
@@ -21,29 +20,29 @@ export default {
   argTypes: {
     label: {
       control: 'text',
-      description: 'Label affiché au-dessus du champ',
+      description: 'Label displayed above the field',
     },
     placeholder: {
       control: 'text',
-      description: 'Texte indicatif dans le champ vide',
+      description: 'Placeholder text shown when the field is empty',
     },
     type: {
       control: 'select',
       options: ['email', 'password', 'number'],
-      description: 'Type du champ — détermine le clavier (native), la validation et le masquage (password)',
+      description: 'Field type — determines keyboard (native), validation rules, and masking (password)',
     },
     required: {
       control: 'boolean',
-      description: 'Rend le champ obligatoire — affiche `*` et valide à la perte du focus',
+      description: 'Marks the field as required — shows `*` and validates on blur',
     },
     iconPosition: {
       control: 'radio',
       options: ['left', 'right'],
-      description: "Position de l'icône dans le champ",
+      description: 'Position of the icon inside the field',
     },
     onChangeText: {
       action: 'changed',
-      description: 'Callback appelé à chaque changement de valeur',
+      description: 'Callback fired on every value change',
     },
   },
   decorators: [
@@ -63,51 +62,51 @@ const InputWithState = (args: any) => {
 };
 
 /**
- * Champ email avec validation au blur.
+ * Email field with validation on blur.
  */
 export const Default: Story = {
   render: (args) => <InputWithState {...args} />,
   args: {
     label: 'Email',
-    placeholder: 'Entrez votre email',
+    placeholder: 'Enter your email',
     type: 'email',
   },
 };
 
 /**
- * Champ mot de passe — masque la saisie, valide la longueur (8–32 caractères).
+ * Password field — masks input, validates length (8–32 characters).
  */
 export const Password: Story = {
   render: (args) => <InputWithState {...args} />,
   args: {
-    label: 'Mot de passe',
-    placeholder: 'Entrez votre mot de passe',
+    label: 'Password',
+    placeholder: 'Enter your password',
     type: 'password',
     required: true,
   },
 };
 
 /**
- * Champ avec icône à gauche.
+ * Field with an icon on the left.
  */
 export const WithIcon: Story = {
   render: (args) => <InputWithState {...args} />,
   args: {
-    label: 'Recherche',
-    placeholder: 'Rechercher...',
+    label: 'Search',
+    placeholder: 'Search...',
     icon: { name: 'search' },
     iconPosition: 'left',
   },
 };
 
 /**
- * Champ obligatoire — shake + message d'erreur si laissé vide.
+ * Required field — triggers a shake animation and error message when left empty on blur.
  */
 export const Required: Story = {
   render: (args) => <InputWithState {...args} />,
   args: {
-    label: 'Champ requis',
-    placeholder: 'Ce champ est obligatoire',
+    label: 'Required field',
+    placeholder: 'This field is required',
     required: true,
   },
 };

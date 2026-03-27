@@ -6,31 +6,35 @@ import { useTheme } from '@emotion/react';
 import { Bounce } from '../../../animations/Bounce/Bounce';
 
 export const BoulderBadge: React.FC<BoulderBadgeProps> = (props) => {
+  // Accès au thème pour récupérer les couleurs et tailles dynamiques
   const theme = useTheme();
 
+  // Géométrie de l'anneau SVG : 5 tirets régulièrement espacés autour de l'avatar
   const strokeWidth = 3;
-  const dashCount = 5; // always 5 dashes
+  const dashCount = 5;
   const avatarSize = theme.avatarSizes.md;
-  const radius = avatarSize / 2 + 4; // 2px margin on each side inside the calculation
+  const radius = avatarSize / 2 + 4;
   const circumference = 2 * Math.PI * radius;
 
-  // dash/space ratio (e.g. dash = 4x space). Adjust if needed.
+  // Ratio tiret/espace pour que chaque tiret soit visuellement dominant par rapport à l'écart
   const dashRatio = 4;
   const segmentLength = circumference / dashCount;
   const dashLength = segmentLength * (dashRatio / (1 + dashRatio));
   const spaceLength = segmentLength - dashLength;
-  const baseOffset = -circumference / 4 - spaceLength / 2; // to place the first dash at the top (12 o'clock)
+  // Décalage de base pour que le premier tiret démarre à midi (12h) au lieu de 3h par défaut
+  const baseOffset = -circumference / 4 - spaceLength / 2;
 
-  // compute the number of active dashes and their color based on props.grade
+  // Algorithme de correspondance grade → nombre de tirets actifs et couleur de palier
+  // Le grade numérique est découpé en tranches de 5, chaque tranche correspondant à un niveau de difficulté avec sa couleur
   const grade = props.grade;
   let activeCount = 0;
   let activeColor = theme.colors.neutral.gray.light;
 
   if (grade <= 5) {
-    activeCount = grade; // 0..5 for first group
+    activeCount = grade;
     activeColor = theme.colors.boulderGrade.yellow;
   } else if (grade <= 10) {
-    activeCount = grade - 5; // 1..5 for second group
+    activeCount = grade - 5;
     activeColor = theme.colors.boulderGrade.green;
   } else if (grade <= 15) {
     activeCount = grade - 10;
@@ -46,13 +50,12 @@ export const BoulderBadge: React.FC<BoulderBadgeProps> = (props) => {
     activeColor = theme.colors.boulderGrade.purple;
   }
 
-  // SVG size / centering
+  // Dimensions du viewbox SVG et point central pour positionner les cercles
   const svgSize = radius * 2 + strokeWidth;
   const center = radius + strokeWidth / 2;
 
-  // helper to compute the offset of the i-th dash (0-based)
+  // Calcule le décalage strokeDashoffset du i-ème tiret pour le positionner correctement sur le cercle
   const offsetForIndex = (i: number) => {
-    // shift by a full segment (dash + space) multiplied by i
     return -(dashLength + spaceLength) * i;
   };
 

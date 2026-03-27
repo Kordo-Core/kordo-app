@@ -3,13 +3,12 @@ import { SegmentedControl } from './SegmentedControl';
 import { useState } from 'react';
 
 /**
- * Sélecteur à segments, alternative aux onglets ou aux radios.
- * Chaque segment peut avoir une couleur d'indicateur personnalisée.
+ * Segmented selector, an alternative to tabs or radio buttons.
  *
- * ## Variantes
+ * ## Variants
  * - **size**: `md`, `lg`
  * - **borderRadius**: `rounded`, `square`
- * - **segments**: tableau de `{ text, color? }` — `color` surcharge la couleur de l'indicateur actif
+ * - **segments**: array of `{ text, color? }`
  */
 export default {
   title: 'Molecules/SegmentedControl',
@@ -22,12 +21,12 @@ export default {
     size: {
       control: 'radio',
       options: ['md', 'lg'],
-      description: 'Taille du contrôle',
+      description: 'Size of the control',
     },
     borderRadius: {
       control: 'radio',
       options: ['rounded', 'square'],
-      description: 'Forme des coins',
+      description: 'Corner shape',
     },
   },
 } satisfies Meta<typeof SegmentedControl>;
@@ -42,13 +41,13 @@ const SegmentedControlWithState = (args: any) => {
 export const Default: Story = {
   render: (args) => <SegmentedControlWithState {...args} />,
   args: {
-    segments: [{ text: 'Jour' }, { text: 'Semaine' }, { text: 'Mois' }],
+    segments: [{ text: 'Day' }, { text: 'Week' }, { text: 'Month' }],
     size: 'lg',
     borderRadius: 'rounded',
   },
 };
 
-/** Chaque segment avec sa propre couleur d'indicateur. */
+/** Each segment with its own indicator color. */
 export const WithColors: Story = {
   render: (args) => <SegmentedControlWithState {...args} />,
   args: {

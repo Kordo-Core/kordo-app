@@ -1,9 +1,9 @@
 import styled from '@emotion/native';
-import { Text } from '../../atoms/Text/Text.style';
 import { Theme } from '@emotion/react/dist/declarations/src';
 import Animated from 'react-native-reanimated';
 import MaskedView from '@react-native-masked-view/masked-view';
 import { SegmentedControlProps } from './SegmentedControl.types';
+import { Text } from '../../atoms/Text/Text';
 
 export const SegmentItem = styled.View(() => ({
   flex: 1,

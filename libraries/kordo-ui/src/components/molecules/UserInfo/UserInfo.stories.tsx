@@ -3,13 +3,12 @@ import { UserInfo } from './UserInfo';
 import { Text } from '../../atoms/Text/Text';
 
 /**
- * Affiche les informations d'un utilisateur avec son avatar.
- * Supporte deux dispositions et un texte secondaire/tertiaire.
+ * Displays user information with their avatar.
  *
- * ## Variantes
- * - **layout**: `row` (avatar + texte côte à côte) ou `column` (empilé)
- * - **highlightedAvatar**: ajoute une bordure colorée autour de l'avatar
- * - **secondaryText** / **tertiaryText**: slots de contenu sous le nom
+ * ## Variants
+ * - **layout**: `row` (side by side) or `column` (stacked)
+ * - **highlightedAvatar**: colored border around the avatar
+ * - **secondaryText** / **tertiaryText**: content below the username
  */
 export default {
   title: 'Molecules/UserInfo',
@@ -22,11 +21,11 @@ export default {
     layout: {
       control: 'radio',
       options: ['row', 'column'],
-      description: "Disposition de l'avatar et du texte",
+      description: 'Layout direction for the avatar and text',
     },
     highlightedAvatar: {
       control: 'boolean',
-      description: "Ajoute une bordure colorée autour de l'avatar",
+      description: 'Adds a colored border around the avatar',
     },
     onPressUser: { action: 'user pressed' },
   },
@@ -56,17 +55,17 @@ export const Column: Story = {
   },
 };
 
-/** Avatar avec bordure colorée pour indiquer un statut actif. */
+/** Avatar with a colored border to indicate an active or online status. */
 export const HighlightedAvatar: Story = {
   args: {
     user: mockUser,
     layout: 'row',
     highlightedAvatar: true,
-    secondaryText: <Text appearance="gray">En ligne</Text>,
+    secondaryText: <Text appearance="gray">Online</Text>,
   },
 };
 
-/** Avec texte tertiaire (ex: nombre de followers). */
+/** With tertiary text (e.g. follower count). */
 export const WithTertiaryText: Story = {
   args: {
     user: mockUser,

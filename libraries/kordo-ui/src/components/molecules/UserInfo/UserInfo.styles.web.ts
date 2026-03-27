@@ -18,27 +18,33 @@ export const Row = styled.div(() => ({
 export const AvatarWrapper = styled.div<Pick<UserInfoProps, 'highlightedAvatar'>>((props) => {
   if (!props.highlightedAvatar) {
     return {
-      borderWidth: 0,
-      padding: 0,
       position: 'relative' as const,
     };
   }
 
+  const size = props.theme.avatarSizes.md + 8;
   return {
+    width: size,
+    height: size,
     borderColor: props.theme.colors.secondary.base,
     borderWidth: 2,
     borderStyle: 'solid',
-    borderRadius: props.theme.borderRadius.rounded,
+    borderRadius: '50%',
     padding: 2,
     position: 'relative' as const,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    boxSizing: 'border-box' as const,
   };
 });
 
 export const CustomImage = styled.img<Pick<UserInfoProps, 'layout'>>((props) => ({
   width: props.layout === 'column' ? props.theme.avatarSizes.lg : props.theme.avatarSizes.md,
   height: props.layout === 'column' ? props.theme.avatarSizes.lg : props.theme.avatarSizes.md,
-  borderRadius: props.theme.borderRadius.rounded,
+  borderRadius: '50%',
   objectFit: 'cover' as const,
+  display: 'block' as const,
 }));
 
 export const UserData = styled.div<Pick<UserInfoProps, 'layout'>>((props) => ({
@@ -58,6 +64,7 @@ export const Now = styled.div((props) => ({
   borderRadius: props.theme.borderRadius.square,
   backgroundColor: props.theme.colors.secondary.base,
   position: 'absolute' as const,
-  bottom: -6,
-  left: 9,
+  bottom: -5,
+  left: '50%',
+  transform: 'translateX(-50%)',
 }));

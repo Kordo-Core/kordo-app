@@ -3,20 +3,26 @@ import * as Styled from './BoulderBadge.styles';
 import { useTheme } from '@emotion/react';
 
 export const BoulderBadge: React.FC<BoulderBadgeProps> = (props) => {
+  // Accès au thème pour récupérer les couleurs et tailles dynamiques
   const theme = useTheme();
 
+  // Géométrie de l'anneau SVG : 5 tirets régulièrement espacés autour de l'avatar
   const strokeWidth = 3;
   const dashCount = 5;
   const avatarSize = theme.avatarSizes.md;
   const radius = avatarSize / 2 + 4;
   const circumference = 2 * Math.PI * radius;
 
+  // Ratio tiret/espace pour que chaque tiret soit visuellement dominant par rapport à l'écart
   const dashRatio = 4;
   const segmentLength = circumference / dashCount;
   const dashLength = segmentLength * (dashRatio / (1 + dashRatio));
   const spaceLength = segmentLength - dashLength;
+  // Décalage de base pour que le premier tiret démarre à midi (12h) au lieu de 3h par défaut
   const baseOffset = -circumference / 4 - spaceLength / 2;
 
+  // Algorithme de correspondance grade → nombre de tirets actifs et couleur de palier
+  // Le grade numérique est découpé en tranches de 5, chaque tranche correspondant à un niveau de difficulté avec sa couleur
   const grade = props.grade;
   let activeCount = 0;
   let activeColor = theme.colors.neutral.gray.light;
@@ -41,9 +47,11 @@ export const BoulderBadge: React.FC<BoulderBadgeProps> = (props) => {
     activeColor = theme.colors.boulderGrade.purple;
   }
 
+  // Dimensions du viewbox SVG et point central pour positionner les cercles
   const svgSize = radius * 2 + strokeWidth;
   const center = radius + strokeWidth / 2;
 
+  // Calcule le décalage strokeDashoffset du i-ème tiret pour le positionner correctement sur le cercle
   const offsetForIndex = (i: number) => {
     return -(dashLength + spaceLength) * i;
   };

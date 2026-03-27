@@ -7,7 +7,9 @@ import { useTheme } from '@emotion/react';
 import * as Styled from './Suggestion.styles';
 import { Icon } from '../../atoms/Icon/Icon';
 
+// Carte de suggestion d'utilisateur pour la version native, avec avatar, nom, lieu de rencontre et bouton follow
 export const Suggestion: React.FC<SuggestionProps> = (props) => {
+  // Accès au thème pour dimensionner l'icône de fermeture selon les tailles définies
   const theme = useTheme();
 
   return (
@@ -30,9 +32,9 @@ export const Suggestion: React.FC<SuggestionProps> = (props) => {
             <Text size="lg" bold onPress={() => props.onPressUser(props.user)}>
               {props.user.username}
             </Text>
-            <Text appearance="gray">
-              {'croisé à '}
-              {!!props.location && (
+            {!!props.location && (
+              <Text appearance="gray">
+                {'met at '}
                 <Text
                   appearance="primary"
                   bold
@@ -40,8 +42,8 @@ export const Suggestion: React.FC<SuggestionProps> = (props) => {
                 >
                   {props.location}
                 </Text>
-              )}
-            </Text>
+              </Text>
+            )}
           </Styled.UserInfo>
         </Styled.Content>
 
