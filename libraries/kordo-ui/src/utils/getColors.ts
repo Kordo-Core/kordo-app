@@ -1,6 +1,10 @@
 import { theme } from '../theme';
 import { AppearanceType, NeutralType, StatusType } from 'types/theme.types';
 
+// Convertit un jeton sémantique d'apparence en sa couleur hexadécimale correspondante depuis le thème.
+// Utilisé par les composants pour résoudre des noms logiques (ex: "primary", "error") en vraies valeurs CSS,
+// ce qui centralise la correspondance et facilite les changements de thème.
+// Retourne la couleur primaire par défaut si le jeton n'est pas reconnu.
 export const getColor = (appearance: AppearanceType | NeutralType | StatusType): string => {
   switch (appearance) {
     case 'primary':
