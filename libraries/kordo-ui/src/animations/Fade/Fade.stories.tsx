@@ -1,7 +1,19 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Fade } from './Fade';
 import { useRef, useState } from 'react';
+import { Button } from '../../components/atoms/Button/Button';
+import { Card } from '../../components/layouts/Card/Card';
+import { Text } from '../../components/atoms/Text/Text';
+import { theme } from '../../theme';
 
+/**
+ * Fade animation with directional translation, imperatively controlled via ref.
+ *
+ * ## Variants
+ * - **direction**: `up`, `down`, `left`, `right`
+ * - **duration**: animation duration in ms
+ * - **distance**: translation distance in pixels
+ */
 const meta: Meta<typeof Fade> = {
   title: 'Animations/Fade',
   component: Fade,
@@ -13,15 +25,15 @@ const meta: Meta<typeof Fade> = {
     direction: {
       control: 'select',
       options: ['up', 'down', 'left', 'right'],
-      description: 'Direction du mouvement',
+      description: 'Direction of movement during the fade',
     },
     duration: {
       control: { type: 'number', min: 100, max: 1000 },
-      description: 'Durée de l\'animation en ms',
+      description: 'Animation duration in ms',
     },
     distance: {
       control: { type: 'number', min: 5, max: 50 },
-      description: 'Distance du mouvement en pixels',
+      description: 'Translation distance in pixels',
     },
   },
 };
@@ -44,57 +56,28 @@ const FadeDemo = (args: any) => {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 20 }}>
-      <button onClick={toggle} style={{ padding: '8px 16px' }}>
-        {visible ? 'Hide' : 'Show'}
-      </button>
+      <Button
+        title={visible ? 'Hide' : 'Show'}
+        appearance="primary"
+        onPress={toggle}
+      />
       <Fade ref={fadeRef} {...args}>
-        <div
-          style={{
-            padding: 20,
-            backgroundColor: '#6366f1',
-            color: 'white',
-            borderRadius: 8,
-          }}
-        >
-          Contenu animé
-        </div>
+        <Card>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: theme.spacing.sm }}>
+            <Text bold>Animated content</Text>
+            <Text appearance="gray">This content appears with a fade</Text>
+          </div>
+        </Card>
       </Fade>
     </div>
   );
 };
 
-export const Up: Story = {
+export const Default: Story = {
   render: (args) => <FadeDemo {...args} />,
   args: {
     direction: 'up',
     duration: 200,
     distance: 20,
-  },
-};
-
-export const Down: Story = {
-  render: (args) => <FadeDemo {...args} />,
-  args: {
-    direction: 'down',
-    duration: 200,
-    distance: 20,
-  },
-};
-
-export const Left: Story = {
-  render: (args) => <FadeDemo {...args} />,
-  args: {
-    direction: 'left',
-    duration: 300,
-    distance: 30,
-  },
-};
-
-export const Right: Story = {
-  render: (args) => <FadeDemo {...args} />,
-  args: {
-    direction: 'right',
-    duration: 300,
-    distance: 30,
   },
 };

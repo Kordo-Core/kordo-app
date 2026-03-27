@@ -1,13 +1,13 @@
 export interface BounceProps {
   children: React.ReactNode;
-  /** Échelle quand pressé (0.8 - 1) */
+  /** Target scale when pressed (0.8 = strong, 1 = no effect) */
   scaleTo?: number;
-  /** Durée de l'animation en ms */
+  /** Animation duration in ms */
   duration?: number;
-  /** Callback au clic */
+  /** Callback fired on press */
   onPress?: () => void;
-  /** Styles personnalisés */
+  /** Custom styles applied to the wrapper */
   style?: any;
-  /** Désactive l'interaction */
+  /** Disables interaction and animation */
   disabled?: boolean;
 }

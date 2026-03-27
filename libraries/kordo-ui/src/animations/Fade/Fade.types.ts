@@ -1,8 +1,8 @@
 export interface FadeProps {
   children: React.ReactNode;
-  type?: 'in' | 'out'; // fadeIn ou fadeOut
-  direction?: 'up' | 'down' | 'left' | 'right'; // direction du mouvement
+  type?: 'in' | 'out'; // fade in or fade out
+  direction?: 'up' | 'down' | 'left' | 'right'; // direction of movement
   duration?: number;
   delay?: number;
-  distance?: number; // distance du mouvement (px)
+  distance?: number; // translation distance in pixels
 }

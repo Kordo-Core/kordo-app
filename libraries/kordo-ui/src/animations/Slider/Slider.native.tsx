@@ -3,6 +3,7 @@ import { ScrollView } from 'react-native';
 import { SliderProps } from './Slider.types';
 import * as Styled from './Slider.styles';
 
+// Composant de défilement horizontal natif, affiche les enfants dans un carrousel avec espacement configurable
 export const Slider: FC<SliderProps> = (props) => {
   return (
     <Styled.SliderContainer height={props.height ?? 0}>
@@ -13,6 +14,7 @@ export const Slider: FC<SliderProps> = (props) => {
           paddingHorizontal: (props.gap ?? 0) / 2,
         }}
       >
+        {/* Itère sur chaque enfant pour l'envelopper individuellement avec l'espacement approprié */}
         {React.Children.map(props.children, (child, index) => (
           <Styled.ItemWrapper
             key={index}
