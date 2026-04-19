@@ -1,18 +1,21 @@
 const { getDefaultConfig } = require('expo/metro-config');
 const path = require('path');
 
-const config = getDefaultConfig(__dirname);
+const projectRoot = __dirname;
+const workspaceRoot = path.resolve(projectRoot, '../..');
 
-const corePath = path.resolve(__dirname, '../../core');
-const uiPath = path.resolve(__dirname, '../../libraries/kordo-ui');
+const config = getDefaultConfig(projectRoot);
 
-config.watchFolders = [...config.watchFolders, corePath, uiPath];
+// Watch the entire monorepo so Metro picks up changes in kordo-ui and core instantly
+config.watchFolders = [workspaceRoot];
 
-config.resolver.extraNodeModules = new Proxy(
-  {},
-  {
-    get: (target, name) => path.join(__dirname, 'node_modules', name),
-  },
-);
+// Resolve modules from local node_modules first, then workspace root
+config.resolver.nodeModulesPaths = [
+  path.resolve(projectRoot, 'node_modules'),
+  path.resolve(workspaceRoot, 'node_modules'),
+];
+
+// Follow pnpm symlinks
+config.resolver.unstable_enableSymlinks = true;
 
 module.exports = config;
