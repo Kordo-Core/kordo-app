@@ -18,6 +18,11 @@
     "react": "19.1.0",
     "react-native": "0.81.4"
   },
+  "pnpm": {
+    "overrides": {
+      "@expo/metro-runtime": "6.1.2"
+    }
+  },
   "devDependencies": {
     "@types/react": "~19.1.10",
     "@typescript-eslint/eslint-plugin": "^8.44.0",
