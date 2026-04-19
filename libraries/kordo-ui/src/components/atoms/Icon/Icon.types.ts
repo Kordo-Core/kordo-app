@@ -1,10 +1,9 @@
-import { Feather } from '@expo/vector-icons';
-import { AppearanceType, NeutralType } from 'types/theme.types';
+import { AppearanceType, NeutralType, StatusType } from 'types/theme.types';
 
 export interface IconProps {
-  name: keyof typeof Feather.glyphMap;
+  name: string;
   size?: number;
-  color?: AppearanceType | NeutralType;
+  color?: AppearanceType | NeutralType | StatusType;
   onPress?: () => void;
   style?: any;
 }

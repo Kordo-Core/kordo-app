@@ -33,7 +33,7 @@ export const Default: Story = {
 /** Row with icons on both left and right. */
 export const WithIcons: Story = {
   args: {
-    left: <Icon name="user" size={24} color="primary" />,
+    left: <Icon name="person" size={24} color="primary" />,
     primaryText: <Text size="lg">My profile</Text>,
     secondaryText: <Text appearance="gray">View and edit</Text>,
     right: <Icon name="chevron-right" size={20} color="gray" />,
@@ -43,7 +43,7 @@ export const WithIcons: Story = {
 /** Row with an action button on the right. */
 export const WithButton: Story = {
   args: {
-    left: <Icon name="bell" size={24} color="secondary" />,
+    left: <Icon name="alert" size={24} color="secondary" />,
     primaryText: <Text size="lg">Notifications</Text>,
     secondaryText: <Text appearance="gray">3 new</Text>,
     right: <Button title="View" appearance="primary" size="md" />,

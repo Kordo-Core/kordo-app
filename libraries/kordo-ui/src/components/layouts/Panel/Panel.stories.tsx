@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
-import { Panel } from './Panel.web';
+import { Panel } from './Panel';
 import { Button } from '../../atoms/Button/Button';
 import { Text } from '../../atoms/Text/Text';
 

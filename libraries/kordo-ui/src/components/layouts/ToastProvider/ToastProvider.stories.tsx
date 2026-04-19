@@ -76,7 +76,7 @@ const ToastButtons = () => {
               showLoader: false,
               isClosable: true,
               duration: 3000,
-              icon: { name: 'alert-triangle' },
+              icon: { name: 'warning' },
             })
           }
         />
@@ -112,7 +112,7 @@ const ToastButtons = () => {
               showLoader: true,
               isClosable: true,
               duration: 4000,
-              icon: { name: 'check' },
+              icon: { name: 'checkmark' },
             })
           }
         />
@@ -140,7 +140,7 @@ const ToastButtons = () => {
               showLoader: true,
               isClosable: true,
               duration: 5000,
-              icon: { name: 'refresh-cw' },
+              icon: { name: 'arrow-sync' },
             })
           }
         />

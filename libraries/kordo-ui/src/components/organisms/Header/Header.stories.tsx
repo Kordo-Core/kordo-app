@@ -50,7 +50,7 @@ const headerProps = {
       inverted
       borderless
       appearance="black"
-      icon={{ name: 'menu' }}
+      icon={{ name: 'navigation' }}
       borderRadius="square"
       onPress={() => {}}
     />
@@ -74,7 +74,7 @@ const headerProps = {
         inverted
         borderless
         appearance="black"
-        icon={{ name: 'bell' }}
+        icon={{ name: 'alert' }}
         borderRadius="square"
         onPress={() => {}}
       />

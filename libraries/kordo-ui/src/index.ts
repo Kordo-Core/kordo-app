@@ -14,5 +14,7 @@ export { UserInfo } from './components/molecules/UserInfo/UserInfo';
 export { BoulderBadge } from './components/molecules/BoulderBadge/BoulderBadge';
 export { ListRow } from './components/layouts/ListRow/ListRow';
 export { Header } from './components/organisms/Header/Header';
+export { BottomNavBar } from './components/organisms/BottomNavBar/BottomNavBar';
+export type { BottomNavBarProps } from './components/organisms/BottomNavBar/BottomNavBar.types';
 export { Panel } from './components/layouts/Panel/Panel';
 export { theme } from './theme';

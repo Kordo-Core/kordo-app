@@ -100,7 +100,7 @@ export const Inverted: Story = {
 export const IconButton: Story = {
   args: {
     appearance: 'primary',
-    icon: { name: 'check' },
+    icon: { name: 'checkmark' },
   },
 };
 

@@ -26,6 +26,7 @@
   "devDependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
+    "@fluentui/react-icons": "^2.0.268",
     "@storybook/addon-essentials": "^8.4.0",
     "@storybook/react": "^8.4.0",
     "@storybook/react-vite": "^8.4.0",
@@ -33,7 +34,6 @@
     "@types/react-dom": "~19.1.6",
     "react": "19.1.0",
     "react-dom": "19.1.0",
-    "react-feather": "^2.0.10",
     "react-native-web": "^0.19.13",
     "storybook": "^8.4.0",
     "typescript": "^5.9.2",

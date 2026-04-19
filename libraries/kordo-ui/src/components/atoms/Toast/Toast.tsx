@@ -41,7 +41,7 @@ export const Toast: React.FC<ToastProps> = (props) => {
             <Text>{props.message}</Text>
           </Styled.DataContent>
           <Styled.CloseIcon
-            name="x"
+            name="DismissRegular"
             color="gray"
             size={theme.iconSizes.md}
             onPress={() => setClose(true)}
