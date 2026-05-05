@@ -29,23 +29,29 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = (props) => {
   // Couleur cible pour la transition (couleur du segment nouvellement sélectionné)
   const nextColor = useSharedValue(props.segments[props.selectedIndex].color);
 
-  // Recalcule la position et la largeur de l'indicateur lorsque la sélection ou les mesures changent
+  // Snap sans animation quand les largeurs sont mesurées (layout initial)
   useEffect(() => {
     if (!textWidths || textWidths.length === 0) return;
-
-    // Calcule le décalage gauche en additionnant les largeurs des segments précédents + les espacements
-    const left =
-      textWidths.reduce(
-        (acc, width, index) => (index < props.selectedIndex ? acc + width : acc),
-        0,
-      ) +
-      props.selectedIndex * 4;
-
     const width = textWidths[props.selectedIndex] || 0;
+    if (width === 0) return;
+    const left =
+      textWidths.reduce((acc, w, i) => (i < props.selectedIndex ? acc + w : acc), 0) +
+      props.selectedIndex * 4;
+    overlayLeft.value = left + 4;
+    overlayWidth.value = width;
+  }, [textWidths]);
 
+  // Animation quand l'utilisateur change de segment
+  useEffect(() => {
+    if (!textWidths || textWidths.length === 0) return;
+    const width = textWidths[props.selectedIndex] || 0;
+    if (width === 0) return;
+    const left =
+      textWidths.reduce((acc, w, i) => (i < props.selectedIndex ? acc + w : acc), 0) +
+      props.selectedIndex * 4;
     overlayLeft.value = withTiming(left + 4, { duration: 200 });
     overlayWidth.value = withTiming(width, { duration: 200 });
-  }, [props.selectedIndex, textWidths]);
+  }, [props.selectedIndex]);
 
   // Lance une transition de couleur fluide quand un nouveau segment est sélectionné
   useEffect(() => {
@@ -89,20 +95,18 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = (props) => {
       {/* Couche masquée pour afficher le texte en blanc uniquement au-dessus de l'indicateur coloré */}
       <Styled.MaskedContainer maskElement={<Styled.MaskOverlay style={[overlayAnimatedStyle]} />}>
         {props.segments.map((segment, index) => (
-          <Styled.SegmentItem key={segment.text}>
-            <Styled.CustomText
-              size={props.size ?? 'lg'}
-              bold
-              appearance="white"
-              onPress={() => {
-                props.onSelect(index);
+          <Styled.SegmentItem
+            key={segment.text}
+            onTouchEnd={() => {
+              props.onSelect(index);
 
-                // Effet de rebond visuel sur l'indicateur pour confirmer la sélection à l'utilisateur
-                overlayScale.value = withTiming(0.95, { duration: 100 }, () => {
-                  overlayScale.value = withTiming(1, { duration: 100 });
-                });
-              }}
-            >
+              // Effet de rebond visuel sur l'indicateur pour confirmer la sélection à l'utilisateur
+              overlayScale.value = withTiming(0.95, { duration: 100 }, () => {
+                overlayScale.value = withTiming(1, { duration: 100 });
+              });
+            }}
+          >
+            <Styled.CustomText size={props.size ?? 'lg'} bold appearance="white">
               {segment.text}
             </Styled.CustomText>
           </Styled.SegmentItem>
@@ -123,14 +127,7 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = (props) => {
             });
           }}
         >
-          <Styled.CustomText
-            size={props.size ?? 'lg'}
-            bold
-            appearance="black"
-            onPress={() => {
-              props.onSelect(index);
-            }}
-          >
+          <Styled.CustomText size={props.size ?? 'lg'} bold appearance="black">
             {segment.text}
           </Styled.CustomText>
         </Styled.SegmentItem>

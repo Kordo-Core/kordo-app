@@ -31,7 +31,7 @@ export const SegmentedContainer = styled.View<{ borderRadius: string }>((props) 
   gap: props.theme.spacing.xs,
   position: 'relative',
   alignItems: 'center',
-  width: '100%',
+  flex: 1,
 }));
 
 export const Pointer = styled(Animated.View)<{ borderRadius: string; color?: string }>((props) => ({

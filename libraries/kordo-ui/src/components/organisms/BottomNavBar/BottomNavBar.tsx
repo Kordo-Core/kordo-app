@@ -9,18 +9,14 @@ export function BottomNavBar(props: BottomNavBarProps) {
   const [tabs, setTabs] = React.useState(props.tabs);
   const [activeTab, setActiveTab] = React.useState<number>(tabs.findIndex((t) => t.isAction));
 
-  const animatedX = useSharedValue(0);
   const paddingHorizontal = 16;
   const screenWidth = Dimensions.get('window').width;
-  const containerWidth = screenWidth * 0.92 - paddingHorizontal * 2; // Total width minus padding
+  const containerWidth = screenWidth * 0.92 - paddingHorizontal * 2;
   const tabWidth = containerWidth / tabs.length;
-  const barWidth = tabWidth * 0.6; // 30% of tab width
-  const barOffset = (tabWidth - barWidth) / 2; // Center bar under icon
+  const barWidth = tabWidth * 0.6;
+  const barOffset = (tabWidth - barWidth) / 2;
 
-  // Initialize animation to active tab
-  React.useEffect(() => {
-    animatedX.value = activeTab * tabWidth + barOffset;
-  }, []);
+  const animatedX = useSharedValue(paddingHorizontal + activeTab * tabWidth + barOffset);
 
   const animatedBarStyle = useAnimatedStyle(
     () => ({
