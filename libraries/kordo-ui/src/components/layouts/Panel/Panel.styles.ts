@@ -10,8 +10,8 @@ export const Container = styled.View({
 });
 
 export const Sheet = styled.View((props) => ({
-  borderTopLeftRadius: 20,
-  borderTopRightRadius: 20,
+  borderTopLeftRadius: 30,
+  borderTopRightRadius: 30,
   overflow: 'hidden',
   backgroundColor: props.theme.colors.neutral.white,
 }));

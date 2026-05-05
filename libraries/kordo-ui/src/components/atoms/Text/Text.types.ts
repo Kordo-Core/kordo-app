@@ -10,7 +10,8 @@ import {
 export interface TextProps extends ReactTextProps {
   children: React.ReactNode;
   appearance?: AppearanceType | NeutralType | StatusType;
-  size?: ExtendedSizeType;
+  size?: ExtendedSizeType | number;
   bold?: boolean;
+  extraBold?: boolean;
   style?: any;
 }

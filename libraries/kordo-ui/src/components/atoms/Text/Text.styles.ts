@@ -12,11 +12,16 @@ export const Text = styled.Text<Omit<TextProps, 'children'>>((props) => {
     xs: props.theme.fontSizes.xs,
   };
 
-  const fontSize = fontSizesMap[props.size ?? 'md'];
+  const size = props.size ?? 'md';
+  const fontSize = typeof size === 'number' ? size : fontSizesMap[size];
 
   return {
     fontSize,
-    fontFamily: props.bold ? props.theme.fonts.medium : props.theme.fonts.regular,
+    fontFamily: props.extraBold
+      ? props.theme.fonts.bold
+      : props.bold
+        ? props.theme.fonts.medium
+        : props.theme.fonts.regular,
     color: getColor(props.appearance ?? 'black'),
   };
 });
