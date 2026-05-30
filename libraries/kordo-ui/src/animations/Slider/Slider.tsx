@@ -11,7 +11,7 @@ export const Slider: FC<SliderProps> = (props) => {
         horizontal
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{
-          paddingHorizontal: (props.gap ?? 0) / 2,
+          paddingHorizontal: props.gap ?? 0,
         }}
       >
         {/* Itère sur chaque enfant pour l'envelopper individuellement avec l'espacement approprié */}
