@@ -5,23 +5,27 @@ import { useTheme } from '@emotion/react';
 import { Text } from '../Text/Text';
 import { Bounce } from '../../../animations/Bounce/Bounce';
 import { Icon } from '../Icon/Icon';
+import { getColor } from '../../../utils/getColors';
 
 // Composant bouton universel (web + native) avec animation de rebond au clic
 export const Button: React.FC<ButtonProps> = (props) => {
-  const { disabled = false, onPress, ...rest } = props;
   // Accès au thème pour déterminer dynamiquement les tailles d'icônes
   const theme = useTheme();
 
   // Garde qui empêche le déclenchement de l'action si le bouton est désactivé
   const handlePress = () => {
-    if (!disabled && onPress) {
-      onPress();
+    if (!props.disabled && props.onPress) {
+      props.onPress();
     }
   };
 
   return (
-    <Bounce onPress={handlePress} disabled={disabled}>
-      <Styled.ButtonContainer {...rest} disabled={disabled}>
+    <Bounce
+      onPress={handlePress}
+      disabled={props.disabled}
+      style={props.fullWidth ? { width: '100%' } : undefined}
+    >
+      <Styled.ButtonContainer {...props} disabled={props.disabled}>
         {/* Affiche l'icône optionnelle en adaptant sa taille selon la taille du bouton
             et sa couleur selon le mode inversé */}
         {props.icon && (
@@ -34,7 +38,11 @@ export const Button: React.FC<ButtonProps> = (props) => {
                   ? theme.iconSizes.lg
                   : theme.iconSizes.md
             }
-            color={props.inverted ? (props.icon.color ?? props.appearance) : 'white'}
+            color={
+              props.inverted
+                ? (props.icon.color ?? getColor(props.appearance ?? 'primary'))
+                : (props.icon.color ?? theme.colors.neutral.white)
+            }
           />
         )}
         {/* Affiche le libellé du bouton avec une apparence inversée ou blanche

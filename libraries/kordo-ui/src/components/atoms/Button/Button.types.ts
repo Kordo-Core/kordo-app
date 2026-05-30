@@ -22,4 +22,6 @@ export interface ButtonProps {
   borderless?: boolean;
   /** Disables the button and suppresses onPress */
   disabled?: boolean;
+  /** Makes the button take the full width of its container */
+  fullWidth?: boolean;
 }

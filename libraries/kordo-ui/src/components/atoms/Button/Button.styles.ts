@@ -25,7 +25,14 @@ export const ButtonContainer = styled.View<Omit<ButtonProps, 'onPress' | 'style'
     alignSelf: 'flex-start',
     height: props.size === 'lg' ? 60 : 36,
     minWidth: !props.icon && props.title ? 80 : undefined,
-    width: props.icon && !props.title ? (props.size === 'lg' ? 60 : 36) : undefined,
+    width:
+      props.icon && !props.title
+        ? props.size === 'lg'
+          ? 60
+          : 36
+        : props.fullWidth
+          ? '100%'
+          : undefined,
     gap: props.theme.spacing.sm,
 
     paddingHorizontal:
