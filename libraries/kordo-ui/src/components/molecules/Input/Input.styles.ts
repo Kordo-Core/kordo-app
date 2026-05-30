@@ -11,7 +11,7 @@ export const InputContainer = styled(Animated.View)((props) => ({
   flexDirection: 'row',
   alignItems: 'center',
   width: '100%',
-  height: 48,
+  height: 42,
   marginTop: 4,
 }));
 
@@ -21,6 +21,7 @@ export const Input = styled.TextInput<{ iconPosition?: IconPosition }>((props) =
 }));
 
 export const ErrorText = styled(Text)({
-  marginBottom: 4,
-  marginLeft: 12,
+  marginBottom: 2,
+  marginTop: 2,
+  marginLeft: 0,
 });

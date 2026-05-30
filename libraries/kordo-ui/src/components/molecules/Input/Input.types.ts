@@ -2,7 +2,7 @@ import { IconPosition, IconProps } from '../../atoms/Icon/Icon.types';
 
 export interface InputProps {
   value: string;
-  onChangeText: (text: string) => void;
+  onChange: (text: string) => void;
   label?: string;
   placeholder?: string;
   type?: 'email' | 'password' | 'number';
@@ -13,4 +13,5 @@ export interface InputProps {
   icon?: IconProps;
   iconPosition?: IconPosition;
   required?: boolean;
+  autoFocus?: boolean;
 }

@@ -29,7 +29,8 @@ export default {
     type: {
       control: 'select',
       options: ['email', 'password', 'number'],
-      description: 'Field type — determines keyboard (native), validation rules, and masking (password)',
+      description:
+        'Field type — determines keyboard (native), validation rules, and masking (password)',
     },
     required: {
       control: 'boolean',
@@ -40,7 +41,7 @@ export default {
       options: ['left', 'right'],
       description: 'Position of the icon inside the field',
     },
-    onChangeText: {
+    onChange: {
       action: 'changed',
       description: 'Callback fired on every value change',
     },
@@ -58,7 +59,7 @@ type Story = StoryObj<typeof Input>;
 
 const InputWithState = (args: any) => {
   const [value, setValue] = useState('');
-  return <Input {...args} value={value} onChangeText={setValue} />;
+  return <Input {...args} value={value} onChange={setValue} />;
 };
 
 /**

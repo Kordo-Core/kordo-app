@@ -81,7 +81,7 @@ export const Input: React.FC<InputProps> = (props) => {
 
           <Styled.Input
             value={props.value}
-            onChangeText={props.onChangeText}
+            onChangeText={props.onChange}
             placeholder={props.placeholder}
             editable={props.editable}
             maxLength={props.maxLength}
@@ -90,6 +90,7 @@ export const Input: React.FC<InputProps> = (props) => {
             keyboardType={keyboardType}
             textContentType={textContentType}
             secureTextEntry={props.type === 'password'}
+            autoFocus={props.autoFocus}
             // Au focus : masquer le message d'erreur et remettre la bordure à sa couleur neutre
             onFocus={() => {
               fadeRef.current?.trigger('out');
