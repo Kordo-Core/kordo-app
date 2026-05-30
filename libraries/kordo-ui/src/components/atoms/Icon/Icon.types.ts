@@ -1,9 +1,7 @@
-import { AppearanceType, NeutralType, StatusType } from 'types/theme.types';
-
 export interface IconProps {
   name: string;
   size?: number;
-  color?: AppearanceType | NeutralType | StatusType;
+  color?: string;
   onPress?: () => void;
   style?: any;
 }

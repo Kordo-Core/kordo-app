@@ -8,13 +8,12 @@ import Animated, {
   interpolateColor,
 } from 'react-native-reanimated';
 import { fluentIcons } from '../../../utils/fluent-icons';
-import { getColor } from '../../../utils/getColors';
 import { IconProps } from './Icon.types';
 
 const AnimatedPath = Animated.createAnimatedComponent(Path);
 
-export const Icon: React.FC<IconProps> = ({ name, size = 24, color, onPress, style }) => {
-  const fill = color ? getColor(color) : '#000000';
+export const Icon: React.FC<IconProps> = (props) => {
+  const fill = props.color ?? '#000000';
   const from = useSharedValue(fill);
   const to = useSharedValue(fill);
   const progress = useSharedValue(1);
@@ -29,29 +28,47 @@ export const Icon: React.FC<IconProps> = ({ name, size = 24, color, onPress, sty
     prev.current = fill;
   }, [fill]);
 
-  const animatedProps = useAnimatedProps(() => ({
-    fill: interpolateColor(progress.value, [0, 1], [from.value, to.value]),
-  }));
+  const animatedProps = useAnimatedProps(() => {
+    if (from.value === to.value) {
+      return { fill: to.value };
+    }
+    return {
+      fill: interpolateColor(progress.value, [0, 1], [from.value, to.value]),
+    };
+  });
 
-  const icon = (fluentIcons as Record<string, typeof fluentIcons[keyof typeof fluentIcons]>)[name];
+  const icon = (fluentIcons as Record<string, (typeof fluentIcons)[keyof typeof fluentIcons]>)[
+    props.name
+  ];
   if (!icon) return null;
 
   const svg = (
-    <Svg width={size} height={size} viewBox={icon.viewBox} style={style}>
-      {(icon.paths as { d: string; fillRule?: string; clipRule?: string }[]).map((p, i) => (
-        <AnimatedPath
-          key={i}
-          d={p.d}
-          animatedProps={animatedProps}
-          fillRule={p.fillRule as any}
-          clipRule={p.clipRule as any}
-        />
-      ))}
+    <Svg width={props.size} height={props.size} viewBox={icon.viewBox} style={props.style}>
+      {(icon.paths as { d: string; fillRule?: string; clipRule?: string; fill?: string }[]).map(
+        (p, i) =>
+          p.fill ? (
+            <Path
+              key={i}
+              d={p.d}
+              fill={p.fill}
+              fillRule={p.fillRule as any}
+              clipRule={p.clipRule as any}
+            />
+          ) : (
+            <AnimatedPath
+              key={i}
+              d={p.d}
+              animatedProps={animatedProps}
+              fillRule={p.fillRule as any}
+              clipRule={p.clipRule as any}
+            />
+          )
+      )}
     </Svg>
   );
 
-  if (onPress) {
-    return <Pressable onPress={onPress}>{svg}</Pressable>;
+  if (props.onPress) {
+    return <Pressable onPress={props.onPress}>{svg}</Pressable>;
   }
 
   return svg;
