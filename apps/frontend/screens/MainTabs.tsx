@@ -5,14 +5,14 @@ import HomeScreen from './tabs/HomeScreen';
 import SearchScreen from './tabs/SearchScreen';
 import AddScreen from './tabs/AddScreen';
 import DataScreen from './tabs/DataScreen';
-import ProfileScreen from './tabs/ProfileScreen';
+import GymsScreen from './tabs/GymsScreen';
 
 export type MainTabsParamList = {
   Home: undefined;
   Search: undefined;
   Add: undefined;
   Data: undefined;
-  Profile: undefined;
+  Gyms: undefined;
 };
 
 const TABS: NavTab[] = [
@@ -44,7 +44,7 @@ export default function MainTabs() {
       <Tab.Screen name="Search" component={SearchScreen} />
       <Tab.Screen name="Add" component={AddScreen} />
       <Tab.Screen name="Data" component={DataScreen} />
-      <Tab.Screen name="Profile" component={ProfileScreen} />
+      <Tab.Screen name="Gyms" component={GymsScreen} />
     </Tab.Navigator>
   );
 }

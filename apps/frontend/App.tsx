@@ -37,7 +37,10 @@ export default function App() {
         <ThemeProvider theme={theme}>
           <ToastProvider>
             <NavigationContainer>
-              <Stack.Navigator screenOptions={{ headerShown: false, animation: 'none' }}>
+              <Stack.Navigator
+                screenOptions={{ headerShown: false, animation: 'none' }}
+                initialRouteName="MainTabs"
+              >
                 <Stack.Screen name="Landing" component={LandingScreen} />
                 <Stack.Screen name="Login" component={LoginScreen} />
                 <Stack.Screen name="LoginForm" component={LoginFormScreen} />
