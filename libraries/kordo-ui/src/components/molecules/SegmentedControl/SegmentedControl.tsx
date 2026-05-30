@@ -16,6 +16,7 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = (props) => {
   const [textWidths, setTextWidths] = useState<number[]>([]);
   // Accès au thème pour les couleurs par défaut de l'indicateur
   const theme = useTheme();
+  const defaultColor = theme.colors.primary.base;
   // Position horizontale animée de l'indicateur glissant
   const overlayLeft = useSharedValue(4);
   // Largeur animée de l'indicateur, adaptée au segment sélectionné
@@ -25,9 +26,9 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = (props) => {
   // Progression de l'interpolation de couleur entre l'ancien et le nouveau segment (0 à 1)
   const colorProgress = useSharedValue(0);
   // Couleur de départ pour la transition (couleur du segment précédemment sélectionné)
-  const currentColor = useSharedValue(props.segments[props.selectedIndex].color);
+  const currentColor = useSharedValue(props.segments[props.selectedIndex].color ?? defaultColor);
   // Couleur cible pour la transition (couleur du segment nouvellement sélectionné)
-  const nextColor = useSharedValue(props.segments[props.selectedIndex].color);
+  const nextColor = useSharedValue(props.segments[props.selectedIndex].color ?? defaultColor);
 
   // Snap sans animation quand les largeurs sont mesurées (layout initial)
   useEffect(() => {
@@ -55,7 +56,7 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = (props) => {
 
   // Lance une transition de couleur fluide quand un nouveau segment est sélectionné
   useEffect(() => {
-    nextColor.value = props.segments[props.selectedIndex].color;
+    nextColor.value = props.segments[props.selectedIndex].color ?? defaultColor;
     colorProgress.value = 0;
     colorProgress.value = withTiming(1, { duration: 200 });
   }, [props.selectedIndex]);
@@ -66,15 +67,12 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = (props) => {
     const bgColor = interpolateColor(
       colorProgress.value,
       [0, 1],
-      [
-        currentColor.value ?? theme.colors.primary.base,
-        nextColor.value ?? theme.colors.primary.base,
-      ],
+      [currentColor.value ?? defaultColor, nextColor.value ?? defaultColor],
     );
 
     // Met à jour la couleur courante une fois la transition terminée pour le prochain changement
     if (colorProgress.value === 1)
-      currentColor.value = nextColor.value ?? theme.colors.primary.base;
+      currentColor.value = nextColor.value ?? defaultColor;
 
     return {
       left: overlayLeft.value,

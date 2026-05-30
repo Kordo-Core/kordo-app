@@ -16,7 +16,12 @@ export const Suggestion: React.FC<SuggestionProps> = (props) => {
     <Card>
       <Styled.Container>
         <Styled.ButtonWrapper>
-          <Icon name="dismiss" color="gray" size={theme.iconSizes.md} onPress={props.onPressClose} />
+          <Icon
+            name="dismiss"
+            color={theme.colors.neutral.gray.base}
+            size={theme.iconSizes.md}
+            onPress={props.onPressClose}
+          />
         </Styled.ButtonWrapper>
 
         <Styled.Content>

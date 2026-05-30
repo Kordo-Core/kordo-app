@@ -35,14 +35,12 @@ export const Toast: React.FC<ToastProps> = (props) => {
       <Styled.ToastContainer type={props.type}>
         <Styled.ToastContent>
           <Styled.DataContent>
-            {props.icon && (
-              <Icon name={props.icon.name} size={20} color={props.type ?? 'info'} />
-            )}
+            {props.icon && <Icon name={props.icon.name} size={20} color={props.type ?? 'info'} />}
             <Text>{props.message}</Text>
           </Styled.DataContent>
           <Styled.CloseIcon
             name="DismissRegular"
-            color="gray"
+            color="theme.colors.neutral.gray"
             size={theme.iconSizes.md}
             onPress={() => setClose(true)}
           />

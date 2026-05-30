@@ -4,6 +4,7 @@ import { Icon } from '../../atoms/Icon/Icon';
 import React from 'react';
 import { Dimensions } from 'react-native';
 import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
+import { getColor } from '../../../utils/getColors';
 
 export function BottomNavBar(props: BottomNavBarProps) {
   const [tabs, setTabs] = React.useState(props.tabs);
@@ -53,7 +54,7 @@ export function BottomNavBar(props: BottomNavBarProps) {
           onPress={() => handleTabPress(index)}
           activeOpacity={1}
         >
-          <Icon name={tab.icon} size={32} color={tab.isAction ? 'primary' : 'black'} />
+          <Icon name={tab.icon} size={32} color={tab.isAction ? getColor('primary') : getColor('black')} />
         </Styled.Tab>
       ))}
     </Styled.Container>
