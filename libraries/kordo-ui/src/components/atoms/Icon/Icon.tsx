@@ -8,6 +8,7 @@ import Animated, {
   interpolateColor,
 } from 'react-native-reanimated';
 import { fluentIcons } from '../../../utils/fluent-icons';
+import { resolveIconSize } from '../../../utils/resolveSize';
 import { IconProps } from './Icon.types';
 
 const AnimatedPath = Animated.createAnimatedComponent(Path);
@@ -42,8 +43,10 @@ export const Icon: React.FC<IconProps> = (props) => {
   ];
   if (!icon) return null;
 
+  const size = resolveIconSize(props.size);
+
   const svg = (
-    <Svg width={props.size} height={props.size} viewBox={icon.viewBox} style={props.style}>
+    <Svg width={size} height={size} viewBox={icon.viewBox} style={props.style}>
       {(icon.paths as { d: string; fillRule?: string; clipRule?: string; fill?: string }[]).map(
         (p, i) =>
           p.fill ? (
@@ -62,7 +65,7 @@ export const Icon: React.FC<IconProps> = (props) => {
               fillRule={p.fillRule as any}
               clipRule={p.clipRule as any}
             />
-          )
+          ),
       )}
     </Svg>
   );

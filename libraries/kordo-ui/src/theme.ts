@@ -29,7 +29,7 @@ export const theme: KordoTheme = {
   colors: {
     primary: {
       lightest: '#fffdef',
-      lighter: '#fcead2ff',
+      lighter: 'rgb(249, 224, 189)',
       light: '#F7D081',
       base: '#F3B24E',
       dark: '#DB9840',
@@ -38,7 +38,7 @@ export const theme: KordoTheme = {
     },
     secondary: {
       lightest: '#eefaf8',
-      lighter: '#CCE6DF',
+      lighter: '#bce3d9',
       light: '#81B8A4',
       base: '#57987D',
       dark: '#468A6B',
@@ -80,7 +80,7 @@ export const theme: KordoTheme = {
   },
   spacing: { xs: 4, sm: 8, md: 12, lg: 16, xl: 20, xxl: 32 },
   fontSizes: { xs: 12, sm: 14, md: 16, lg: 20, xl: 24, xxl: 32 },
-  iconSizes: { md: 24, lg: 32, xl: 40 },
+  iconSizes: { sm: 20, md: 24, lg: 32 },
   avatarSizes: { md: 50, lg: 80 },
   borderRadius: { square: 8, rounded: 100 },
   fonts: {

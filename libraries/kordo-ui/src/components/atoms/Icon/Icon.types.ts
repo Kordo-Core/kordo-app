@@ -1,6 +1,8 @@
+import { SizeType } from 'types/theme.types';
+
 export interface IconProps {
   name: string;
-  size?: number;
+  size?: SizeType | number;
   color?: string;
   onPress?: () => void;
   style?: any;
