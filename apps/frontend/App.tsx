@@ -10,10 +10,10 @@ import {
   Outfit_500Medium,
   Outfit_700Bold,
 } from '@expo-google-fonts/outfit';
-import LandingScreen from './screens/LandingScreen';
-import LoginScreen from './screens/LoginScreen';
-import LoginFormScreen from './screens/LoginFormScreen';
-import SignUpScreen from './screens/SignUpScreen';
+import LandingScreen from './screens/LandingScreen/LandingScreen';
+import LoginScreen from './screens/LoginScreen/LoginScreen';
+import LoginFormScreen from './screens/LoginFormScreen/LoginFormScreen';
+import SignUpScreen from './screens/SignUpScreen/SignUpScreen';
 import MainTabs from './screens/MainTabs';
 
 export type RootStackParamList = {

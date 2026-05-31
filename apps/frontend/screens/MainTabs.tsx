@@ -1,11 +1,11 @@
 import { createBottomTabNavigator, BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { BottomNavBar } from 'kordo-ui';
 import { NavTab } from 'kordo-ui/src/components/organisms/BottomNavBar/BottomNavBar.types';
-import HomeScreen from './tabs/HomeScreen';
-import SearchScreen from './tabs/SearchScreen';
-import AddScreen from './tabs/AddScreen';
-import DataScreen from './tabs/DataScreen';
-import GymsScreen from './tabs/GymsScreen';
+import HomeScreen from './tabs/HomeScreen/HomeScreen';
+import SearchScreen from './tabs/SearchScreen/SearchScreen';
+import AddScreen from './tabs/AddScreen/AddScreen';
+import DataScreen from './tabs/DataScreen/DataScreen';
+import GymsScreen from './tabs/GymsScreen/GymsScreen';
 
 export type MainTabsParamList = {
   Home: undefined;

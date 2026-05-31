@@ -1,8 +1,8 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Button, Text, theme } from 'kordo-ui';
-import { RootStackParamList } from '../App';
 import { AntDesign, Feather } from '@expo/vector-icons';
 import * as Styled from './LoginScreen.styles';
+import { RootStackParamList } from 'App';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
 
@@ -38,6 +38,7 @@ export default function LoginScreen({ navigation }: Props) {
           borderRadius="rounded"
           inverted
           borderless
+          containerStyle={{ backgroundColor: '#F2F2F7' }}
           icon={{ name: 'google', size: 24, color: 'red' }}
           fullWidth
         />
@@ -48,6 +49,7 @@ export default function LoginScreen({ navigation }: Props) {
           borderRadius="rounded"
           inverted
           borderless
+          containerStyle={{ backgroundColor: '#F2F2F7' }}
           icon={{ name: 'apple', size: 24, color: theme.colors.neutral.black }}
           fullWidth
         />
@@ -68,7 +70,7 @@ export default function LoginScreen({ navigation }: Props) {
         En continuant, j'accepte les{' '}
         <Text size="md" style={{ textDecorationLine: 'underline' }}>
           CGU
-        </Text>{' '}
+        </Text>
         et la{' '}
         <Text size="md" style={{ textDecorationLine: 'underline' }}>
           politique de confidentialité

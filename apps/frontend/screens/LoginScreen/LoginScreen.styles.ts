@@ -41,6 +41,4 @@ export const BottomSection = styled(View)({
   width: '94%',
 });
 
-export const SocialButton = styled(Button)({
-  backgroundColor: '#F2F2F7',
-});
+export const SocialButton = Button;

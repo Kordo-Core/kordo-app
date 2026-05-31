@@ -31,8 +31,7 @@ export const Header = styled(View)({
 });
 
 export const Actions = styled(View)({
-  flexDirection: 'row',
   width: '100%',
-  alignItems: 'center',
+  flexDirection: 'row',
   gap: theme.spacing.lg,
 });

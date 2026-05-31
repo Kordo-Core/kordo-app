@@ -1,5 +1,7 @@
 import { useRef, useState, ReactNode } from 'react';
 import { View, ImageBackground } from 'react-native';
+import { BlurView } from 'expo-blur';
+import { LinearGradient } from 'expo-linear-gradient';
 import { GestureDetector, Gesture } from 'react-native-gesture-handler';
 import Animated, {
   useSharedValue,
@@ -10,13 +12,12 @@ import Animated, {
   makeMutable,
   SharedValue,
 } from 'react-native-reanimated';
-import { Card, theme } from 'kordo-ui';
+import { Button, Card, Icon, Tag, Text, theme } from 'kordo-ui';
+import { Bounce } from 'kordo-ui/src/animations/Bounce/Bounce';
+import { Gym } from '../../../fake_data/gyms.fake';
 
 const AnimatedCard = Animated.createAnimatedComponent(Card);
 
-const GYM_IMG = {
-  uri: 'https://res.cloudinary.com/dqmegz5dn/image/upload/v1776866438/mark-mcgregor-Ns8trMR4Om8-unsplash_qodikf.jpg',
-};
 
 const PEEK = 44;
 const SPRING = { damping: 50, stiffness: 500 };
@@ -51,6 +52,7 @@ interface CardProps {
   innerWidth: number;
   cardHeight: number;
   color: string;
+  imageUri: string;
   isFront: boolean;
   gesture: ReturnType<typeof Gesture.Pan>;
   children?: ReactNode;
@@ -67,6 +69,7 @@ function GymCard({
   innerWidth,
   cardHeight,
   color,
+  imageUri,
   isFront,
   gesture,
   children,
@@ -87,9 +90,21 @@ function GymCard({
   const content = (
     <AnimatedCard style={[animStyle, { backgroundColor: color }]}>
       <ImageBackground
-        source={GYM_IMG}
+        source={{ uri: imageUri }}
         style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}
         imageStyle={{ borderRadius: theme.borderRadius.square }}
+      />
+      <LinearGradient
+        colors={['transparent', 'rgba(0,0,0,0.75)']}
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          height: '55%',
+          borderBottomLeftRadius: theme.borderRadius.square,
+          borderBottomRightRadius: theme.borderRadius.square,
+        }}
       />
       {children}
     </AnimatedCard>
@@ -104,10 +119,11 @@ function GymCard({
 interface Props {
   cardWidth: number;
   cardHeight?: number;
-  count?: number;
+  gyms: Gym[];
 }
 
-export function GymCardStack({ cardWidth, cardHeight = 300, count = 3 }: Props) {
+export function GymCardStack({ cardWidth, cardHeight = 300, gyms }: Props) {
+  const count = gyms.length;
   const innerWidth = cardWidth - PEEK * 2;
   const ranks = useRef(buildRanks(count)).current;
   const colors = useRef(buildColors(count)).current;
@@ -187,9 +203,75 @@ export function GymCardStack({ cardWidth, cardHeight = 300, count = 3 }: Props) 
           innerWidth={innerWidth}
           cardHeight={cardHeight}
           color={colors[i]}
+          imageUri={gyms[i].imageUri}
           isFront={i === frontIndex}
           gesture={pan}
-        />
+        >
+          <View style={{ flex: 1, justifyContent: 'space-between', padding: theme.spacing.md }}>
+            <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
+              <Tag
+                title={(i + 1).toString()}
+                appearance="secondary"
+                icon={{ name: 'TrophyRegular' }}
+              />
+            </View>
+            <View style={{ gap: theme.spacing.sm }}>
+              <View style={{ gap: theme.spacing.sm }}>
+                <Tag title={gyms[i].shortName} appearance="primary" />
+                <View>
+                  <Text appearance="white" size={'lg'} extraBold>
+                    {gyms[i].name}
+                  </Text>
+                  <Text appearance="white" bold>
+                    {gyms[i].address}
+                  </Text>
+                </View>
+              </View>
+              <Bounce>
+                <BlurView
+                  intensity={60}
+                  tint="default"
+                  style={{
+                    height: 50,
+                    borderRadius: theme.borderRadius.rounded,
+                    overflow: 'hidden',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      gap: theme.spacing.sm,
+                      width: '100%',
+                      padding: theme.spacing.xs,
+                      paddingLeft: theme.spacing.md,
+                    }}
+                  >
+                    <View />
+                    <Text appearance="white" bold>
+                      Voir plus
+                    </Text>
+                    <View
+                      style={{
+                        backgroundColor: 'white',
+                        height: 50 - 2 * theme.spacing.xs,
+                        width: 50 - 2 * theme.spacing.xs,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        borderRadius: theme.borderRadius.rounded,
+                      }}
+                    >
+                      <Icon name="ArrowRightFilled" size={'sm'} />
+                    </View>
+                  </View>
+                </BlurView>
+              </Bounce>
+            </View>
+          </View>
+        </GymCard>
       ))}
     </View>
   );

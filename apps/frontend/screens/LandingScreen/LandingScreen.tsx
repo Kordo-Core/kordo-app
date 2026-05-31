@@ -1,9 +1,9 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Icon, SegmentedControl, Text, theme } from 'kordo-ui';
-import { RootStackParamList } from '../App';
 import React from 'react';
 import { Bounce } from 'kordo-ui/src/animations/Bounce/Bounce';
 import * as Styled from './LandingScreen.styles';
+import { RootStackParamList } from 'App';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Landing'>;
 
@@ -49,12 +49,10 @@ export default function LandingScreen({ navigation }: Props) {
             onSelect={setSelectedIndex}
           />
 
-          <Bounce
-            onPress={() => navigation.navigate('Login')}
-          >
+          <Bounce onPress={() => navigation.navigate('Login')} style={{ alignSelf: 'center' }}>
             <Icon
               name="ArrowCircleUpRegular"
-              size={theme.iconSizes.xl}
+              size={46}
               color={selectedIndex === 0 ? theme.colors.primary.base : theme.colors.secondary.base}
             />
           </Bounce>
