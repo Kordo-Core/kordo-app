@@ -22,7 +22,6 @@ export const ButtonContainer = styled.View<Omit<ButtonProps, 'onPress' | 'style'
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    alignSelf: 'flex-start',
     height: props.size === 'lg' ? 60 : 36,
     minWidth: !props.icon && props.title ? 80 : undefined,
     width:

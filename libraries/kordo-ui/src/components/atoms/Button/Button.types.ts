@@ -16,6 +16,8 @@ export interface ButtonProps {
   size?: Exclude<SizeType, 'sm'>;
   /** Custom styles applied to the wrapper */
   style?: any;
+  /** Custom styles applied to the inner ButtonContainer */
+  containerStyle?: any;
   /** Callback fired on press */
   onPress?: () => void;
   /** Removes the border */

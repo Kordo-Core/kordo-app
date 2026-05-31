@@ -23,21 +23,15 @@ export const Button: React.FC<ButtonProps> = (props) => {
     <Bounce
       onPress={handlePress}
       disabled={props.disabled}
-      style={props.fullWidth ? { width: '100%' } : undefined}
+      style={[props.fullWidth ? { width: '100%' } : undefined, props.style]}
     >
-      <Styled.ButtonContainer {...props} disabled={props.disabled}>
+      <Styled.ButtonContainer {...props} disabled={props.disabled} style={props.containerStyle}>
         {/* Affiche l'icône optionnelle en adaptant sa taille selon la taille du bouton
             et sa couleur selon le mode inversé */}
         {props.icon && (
           <Icon
             name={props.icon.name}
-            size={
-              props.icon.size
-                ? props.icon.size
-                : props.size === 'lg'
-                  ? theme.iconSizes.lg
-                  : theme.iconSizes.md
-            }
+            size={props.icon.size ?? 'md'}
             color={
               props.inverted
                 ? (props.icon.color ?? getColor(props.appearance ?? 'primary'))
