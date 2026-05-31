@@ -71,8 +71,7 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = (props) => {
     );
 
     // Met à jour la couleur courante une fois la transition terminée pour le prochain changement
-    if (colorProgress.value === 1)
-      currentColor.value = nextColor.value ?? defaultColor;
+    if (colorProgress.value === 1) currentColor.value = nextColor.value ?? defaultColor;
 
     return {
       left: overlayLeft.value,
@@ -83,7 +82,7 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = (props) => {
   });
 
   return (
-    <Styled.SegmentedContainer borderRadius={props.borderRadius ?? 'rounded'}>
+    <Styled.SegmentedContainer borderRadius={props.borderRadius ?? 'rounded'} style={props.style}>
       {/* Indicateur coloré glissant qui suit le segment sélectionné */}
       <Styled.Pointer
         borderRadius={props.borderRadius ?? 'rounded'}

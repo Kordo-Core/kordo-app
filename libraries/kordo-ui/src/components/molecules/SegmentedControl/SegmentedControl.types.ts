@@ -9,5 +9,6 @@ export interface SegmentedControlProps {
   onSelect: (index: number) => void;
   size?: Exclude<SizeType, 'sm'>;
   borderRadius?: 'rounded' | 'square';
+  style?: any;
   // TODO: add inverted prop to swap styles
 }
