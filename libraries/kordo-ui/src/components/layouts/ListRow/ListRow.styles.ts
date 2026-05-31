@@ -21,8 +21,9 @@ export const Right = styled.View(() => ({
 }));
 
 export const TextWrapper = styled.View(() => ({
-  flexShrink: 1,
-  justifyContent: 'flex-start',
-  alignItems: 'flex-start',
-  gap: 0,
+  position: 'absolute',
+  left: 0,
+  right: 0,
+  alignItems: 'center',
+  pointerEvents: 'none',
 }));
