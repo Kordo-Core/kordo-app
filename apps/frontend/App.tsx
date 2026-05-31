@@ -15,6 +15,7 @@ import LoginScreen from './screens/LoginScreen/LoginScreen';
 import LoginFormScreen from './screens/LoginFormScreen/LoginFormScreen';
 import SignUpScreen from './screens/SignUpScreen/SignUpScreen';
 import MainTabs from './screens/MainTabs';
+import AllGymScreen from './screens/gyms/AllGymScreen';
 
 export type RootStackParamList = {
   Landing: undefined;
@@ -22,6 +23,7 @@ export type RootStackParamList = {
   LoginForm: undefined;
   SignUp: undefined;
   MainTabs: undefined;
+  AllGym: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -39,13 +41,14 @@ export default function App() {
             <NavigationContainer>
               <Stack.Navigator
                 screenOptions={{ headerShown: false, animation: 'none' }}
-                initialRouteName="MainTabs"
+                // initialRouteName="MainTabs"
               >
                 <Stack.Screen name="Landing" component={LandingScreen} />
                 <Stack.Screen name="Login" component={LoginScreen} />
                 <Stack.Screen name="LoginForm" component={LoginFormScreen} />
                 <Stack.Screen name="SignUp" component={SignUpScreen} />
                 <Stack.Screen name="MainTabs" component={MainTabs} />
+                <Stack.Screen name="AllGym" component={AllGymScreen} />
               </Stack.Navigator>
             </NavigationContainer>
           </ToastProvider>
