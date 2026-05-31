@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ListRow } from '../../layouts/ListRow/ListRow';
+import { View } from 'react-native';
 import { HeaderProps } from './Header.types';
 import * as Styled from './Header.styles';
 import { useEffect, useRef } from 'react';
@@ -49,18 +49,35 @@ export const Header: React.FC<HeaderProps & { scrollY?: number }> = (props) => {
     transform: [{ translateY: translateY.value }],
   }));
 
+  const smartStyle = props.smart
+    ? { position: 'absolute' as const, top: 0, left: 0, right: 0 }
+    : undefined;
+
   return (
     <>
-      <Styled.CustomSafeAreaView style={{ height: insets.top }} />
+      {props.smart && <Styled.CustomSafeAreaView style={{ height: insets.top }} />}
       <Styled.Header
-        style={[{ paddingTop: insets.top }, props.smart ? animatedStyle : undefined]}
-        // Callback de mesure : capture la hauteur réelle du header après le premier rendu pour permettre le calcul d'animation
+        style={[{ paddingTop: insets.top }, smartStyle, props.smart ? animatedStyle : undefined]}
         onLayout={(e: LayoutChangeEvent) => {
           setHeight(e.nativeEvent.layout.height);
           props.onLayout?.(e);
         }}
       >
-        <ListRow {...props} />
+        <Styled.Row>
+          {props.left && <View>{props.left}</View>}
+          {!props.centerChildren && <Styled.ChildrenWrapper>{props.children}</Styled.ChildrenWrapper>}
+          {props.centerChildren && (
+            <Styled.ChildrenGhost pointerEvents="none">
+              {props.children}
+            </Styled.ChildrenGhost>
+          )}
+          {props.right ?? null}
+          {props.centerChildren && (
+            <Styled.ChildrenOverlay pointerEvents="none">
+              {props.children}
+            </Styled.ChildrenOverlay>
+          )}
+        </Styled.Row>
       </Styled.Header>
     </>
   );
