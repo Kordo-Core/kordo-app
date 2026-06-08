@@ -57,7 +57,12 @@ export const Header: React.FC<HeaderProps & { scrollY?: number }> = (props) => {
     <>
       {props.smart && <Styled.CustomSafeAreaView style={{ height: insets.top }} />}
       <Styled.Header
-        style={[{ paddingTop: insets.top }, smartStyle, props.smart ? animatedStyle : undefined]}
+        style={[
+          { paddingTop: insets.top },
+          smartStyle,
+          props.smart ? animatedStyle : undefined,
+          props.style,
+        ]}
         onLayout={(e: LayoutChangeEvent) => {
           setHeight(e.nativeEvent.layout.height);
           props.onLayout?.(e);
@@ -65,17 +70,15 @@ export const Header: React.FC<HeaderProps & { scrollY?: number }> = (props) => {
       >
         <Styled.Row>
           {props.left && <View>{props.left}</View>}
-          {!props.centerChildren && <Styled.ChildrenWrapper>{props.children}</Styled.ChildrenWrapper>}
+          {!props.centerChildren && (
+            <Styled.ChildrenWrapper>{props.children}</Styled.ChildrenWrapper>
+          )}
           {props.centerChildren && (
-            <Styled.ChildrenGhost pointerEvents="none">
-              {props.children}
-            </Styled.ChildrenGhost>
+            <Styled.ChildrenGhost pointerEvents="none">{props.children}</Styled.ChildrenGhost>
           )}
           {props.right ?? null}
           {props.centerChildren && (
-            <Styled.ChildrenOverlay pointerEvents="none">
-              {props.children}
-            </Styled.ChildrenOverlay>
+            <Styled.ChildrenOverlay pointerEvents="none">{props.children}</Styled.ChildrenOverlay>
           )}
         </Styled.Row>
       </Styled.Header>

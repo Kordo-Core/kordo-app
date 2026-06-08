@@ -8,4 +8,5 @@ export interface HeaderProps {
   smart?: boolean;
   scrollY?: number;
   onLayout?: (event: LayoutChangeEvent) => void;
+  style?: any;
 }
