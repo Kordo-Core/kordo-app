@@ -24,6 +24,7 @@ export const Card = styled(View)({
   padding: theme.spacing.xxl,
   paddingBottom: 60,
   justifyContent: 'space-between',
+  boxShadow: '0px -2px 6px rgba(0, 0, 0, 0.05)',
 });
 
 export const Header = styled(View)({

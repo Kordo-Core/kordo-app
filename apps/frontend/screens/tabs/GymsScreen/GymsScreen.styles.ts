@@ -20,4 +20,5 @@ export const Card = styled(View)({
   borderTopRightRadius: 30,
   width: '100%',
   overflow: 'hidden',
+  boxShadow: '0px -2px 6px rgba(0, 0, 0, 0.05)',
 });
