@@ -6,11 +6,5 @@ export const Card = styled.View((props) => ({
   position: 'relative',
   alignSelf: 'flex-start',
   padding: props.theme.spacing.md,
-  // Shadow iOS
-  shadowColor: props.theme.colors.neutral.black,
-  shadowOffset: { width: 0, height: 2 },
-  shadowRadius: 4,
-
-  // Shadow Android
-  elevation: 3,
+  boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.15)',
 }));
