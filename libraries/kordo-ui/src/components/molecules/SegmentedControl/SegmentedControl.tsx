@@ -82,7 +82,12 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = (props) => {
   });
 
   return (
-    <Styled.SegmentedContainer borderRadius={props.borderRadius ?? 'rounded'} style={props.style}>
+    <Styled.SegmentedContainer
+      borderRadius={props.borderRadius ?? 'rounded'}
+      style={props.style}
+      intensity={14}
+      tint="dark"
+    >
       {/* Indicateur coloré glissant qui suit le segment sélectionné */}
       <Styled.Pointer
         borderRadius={props.borderRadius ?? 'rounded'}

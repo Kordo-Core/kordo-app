@@ -2,6 +2,7 @@ import styled from '@emotion/native';
 import { Theme } from '@emotion/react/dist/declarations/src';
 import Animated from 'react-native-reanimated';
 import MaskedView from '@react-native-masked-view/masked-view';
+import { BlurView } from 'expo-blur';
 import { SegmentedControlProps } from './SegmentedControl.types';
 import { Text } from '../../atoms/Text/Text';
 
@@ -20,9 +21,9 @@ export const CustomText = styled(Text)(
   }),
 );
 
-export const SegmentedContainer = styled.View<{ borderRadius: string }>((props) => ({
+export const SegmentedContainer = styled(BlurView)<{ borderRadius: string }>((props) => ({
   flexDirection: 'row',
-  backgroundColor: props.theme.colors.neutral.gray.light,
+  backgroundColor: 'transparent',
   padding: props.theme.spacing.xs,
   borderRadius:
     props.borderRadius === 'rounded'
@@ -32,6 +33,7 @@ export const SegmentedContainer = styled.View<{ borderRadius: string }>((props) 
   position: 'relative',
   alignItems: 'center',
   flex: 1,
+  overflow: 'hidden',
 }));
 
 export const Pointer = styled(Animated.View)<{ borderRadius: string; color?: string }>((props) => ({
