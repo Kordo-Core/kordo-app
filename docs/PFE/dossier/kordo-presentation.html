@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<title>Kordo — Présentation PFE</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
+
+  :root {
+    --green: #3f8f6b;
+    --green-dark: #2f6e52;
+    --green-soft: #eaf3ee;
+    --orange: #e0902f;
+    --orange-soft: #fbf2e3;
+    --dark: #232323;
+    --text: #2b2b2b;
+    --muted: #6b6b6b;
+    --line: #e2e2de;
+    --blue: #3f78b5;
+    --blue-soft: #e8f0f8;
+    --purple: #7e57a8;
+    --purple-soft: #f1eaf7;
+    --red: #c0563b;
+    --red-soft: #f8ece8;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+  @page { size: 13.333in 7.5in; margin: 0; }
+
+  body {
+    font-family: 'Outfit', 'Segoe UI', system-ui, sans-serif;
+    color: var(--text);
+    counter-reset: slide;
+  }
+
+  .slide {
+    width: 13.333in;
+    height: 7.5in;
+    position: relative;
+    overflow: hidden;
+    padding: 0.55in 0.7in 0.7in;
+    background: #fff;
+    page-break-after: always;
+    counter-increment: slide;
+    display: flex;
+    flex-direction: column;
+  }
+  .slide:last-child { page-break-after: auto; }
+
+  /* footer */
+  .slide::before {
+    content: "Kordo · Soutenance PFE 2025–2026";
+    position: absolute; left: 0.7in; bottom: 0.32in;
+    font-size: 8.5pt; color: var(--muted); letter-spacing: .2px;
+  }
+  .slide::after {
+    content: counter(slide) " / 20";
+    position: absolute; right: 0.7in; bottom: 0.32in;
+    font-size: 8.5pt; color: var(--muted); font-weight: 600;
+  }
+  .slide.cover::before, .slide.cover::after { content: none; }
+
+  /* ---- headings ---- */
+  .kicker {
+    font-size: 12pt; font-weight: 700; letter-spacing: 1.5px;
+    text-transform: uppercase; color: var(--orange);
+  }
+  h1.title {
+    font-size: 30pt; font-weight: 700; color: var(--dark);
+    line-height: 1.08; margin: 4px 0 2px;
+  }
+  .title-rule {
+    width: 70px; height: 5px; border-radius: 3px;
+    background: linear-gradient(90deg, var(--green) 0 60%, var(--orange) 60% 100%);
+    margin: 12px 0 22px;
+  }
+  .subtitle { font-size: 14pt; color: var(--muted); margin-bottom: 18px; }
+
+  .body { flex: 1; display: flex; flex-direction: column; }
+
+  /* ---- cover ---- */
+  .slide.cover {
+    background: linear-gradient(135deg, var(--green-dark) 0%, var(--green) 65%, #4ba07b 100%);
+    color: #fff; justify-content: center; padding: 0.9in 1in;
+  }
+  .cover .brand { font-size: 92pt; font-weight: 900; letter-spacing: -2px; line-height: 1; }
+  .cover .brand .dot { color: var(--orange); }
+  .cover .ctag { font-size: 20pt; font-weight: 300; opacity: .95; margin-top: 6px; }
+  .cover .cline { width: 120px; height: 5px; background: var(--orange); border-radius: 3px; margin: 28px 0; }
+  .cover .cmeta { font-size: 15pt; font-weight: 600; }
+  .cover .cmeta span { font-weight: 300; opacity: .9; }
+  .cover .cauthor { margin-top: 40px; font-size: 14pt; }
+  .cover .cauthor b { font-weight: 600; }
+  .cover .cphoto-note {
+    position: absolute; right: 1in; bottom: .8in; font-size: 9pt;
+    opacity: .5; font-style: italic;
+  }
+
+  /* ---- generic grids ---- */
+  .cards { display: flex; gap: 18px; }
+  .cards.col2 > * { flex: 1; }
+  .card {
+    border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px;
+    background: #fff; flex: 1;
+  }
+  .card.soft { background: var(--green-soft); border-color: transparent; }
+  .card .ic { font-size: 22pt; margin-bottom: 6px; }
+  .card h3 { font-size: 13.5pt; color: var(--green-dark); margin-bottom: 6px; }
+  .card p { font-size: 11pt; color: var(--muted); line-height: 1.45; }
+
+  ul.feat { list-style: none; }
+  ul.feat li {
+    font-size: 12.5pt; padding: 7px 0 7px 26px; position: relative; line-height: 1.35;
+  }
+  ul.feat li::before {
+    content: "▹"; position: absolute; left: 0; color: var(--green); font-weight: 700;
+  }
+
+  /* placeholder */
+  .ph {
+    border: 2px dashed #c4c4be; border-radius: 14px; background: #fafaf8;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    color: #9a9a93; text-align: center; padding: 18px; gap: 8px;
+  }
+  .ph .ph-ic { font-size: 30pt; }
+  .ph .ph-t { font-size: 10.5pt; font-weight: 600; color: #8a8a82; }
+  .ph .ph-d { font-size: 9.5pt; color: #a8a8a0; max-width: 80%; }
+
+  /* stat cards */
+  .stats { display: flex; flex-wrap: wrap; gap: 16px; }
+  .stat {
+    flex: 1 1 28%; border-radius: 12px; padding: 16px 18px; background: var(--green-soft);
+    min-width: 2.4in;
+  }
+  .stat .n { font-size: 27pt; font-weight: 800; color: var(--green-dark); line-height: 1; }
+  .stat .l { font-size: 11pt; color: var(--muted); margin-top: 5px; }
+  .stat.o { background: var(--orange-soft); } .stat.o .n { color: #b9711a; }
+  .stat.b { background: var(--blue-soft); } .stat.b .n { color: var(--blue); }
+
+  /* TAM SAM SOM */
+  .funnel { display: flex; align-items: center; justify-content: center; gap: 40px; flex: 1; }
+  .circles { position: relative; width: 3.6in; height: 3.6in; }
+  .circ {
+    position: absolute; border-radius: 50%; display: flex; align-items: flex-start;
+    justify-content: center; left: 50%; transform: translateX(-50%);
+  }
+  .c-tam { width: 3.6in; height: 3.6in; background: var(--green-soft); top: 0; }
+  .c-sam { width: 2.5in; height: 2.5in; background: #cfe6da; top: 0.55in; }
+  .c-som { width: 1.45in; height: 1.45in; background: var(--green); top: 1.07in; }
+  .circ .lab { margin-top: 12px; font-size: 9.5pt; font-weight: 700; color: var(--green-dark); }
+  .c-som .lab { color: #fff; margin-top: 18px; }
+  .legend2 { display: flex; flex-direction: column; gap: 16px; }
+  .lg { display: flex; gap: 12px; align-items: baseline; }
+  .lg .sw { width: 16px; height: 16px; border-radius: 4px; flex-shrink: 0; position: relative; top: 2px; }
+  .lg .t b { font-size: 14pt; color: var(--dark); } .lg .t .n2 { font-size: 17pt; font-weight: 800; color: var(--green-dark); }
+  .lg .t p { font-size: 10.5pt; color: var(--muted); }
+
+  /* competitor */
+  .comp { display: flex; gap: 16px; }
+  .comp .cc { flex: 1; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+  .comp .cc .nm { background: var(--dark); color: #fff; font-weight: 700; font-size: 13pt; padding: 10px 14px; text-align: center; }
+  .comp .cc .bd { padding: 12px 14px; }
+  .comp .cc .role { font-size: 11pt; font-weight: 600; color: var(--orange); margin-bottom: 6px; }
+  .comp .cc .ms { font-size: 10pt; color: var(--muted); line-height: 1.4; }
+  .comp-foot {
+    margin-top: 18px; background: var(--green-soft); border-radius: 12px; padding: 14px 20px;
+    text-align: center; font-size: 13pt; color: var(--green-dark); font-weight: 600;
+  }
+
+  /* revenue */
+  .rev { display: flex; gap: 16px; }
+  .rev .r { flex: 1; border-radius: 12px; padding: 16px 18px; border: 1px solid var(--line); }
+  .rev .r .tag { font-size: 9.5pt; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: var(--orange); }
+  .rev .r h3 { font-size: 14pt; color: var(--dark); margin: 4px 0 6px; }
+  .rev .r .pr { font-size: 12pt; font-weight: 700; color: var(--green-dark); }
+  .rev .r p { font-size: 9.5pt; color: var(--muted); margin-top: 5px; line-height: 1.4; }
+
+  /* timeline */
+  .tl { display: flex; gap: 0; align-items: stretch; }
+  .tl .step { flex: 1; position: relative; padding: 0 8px; }
+  .tl .step .dot { width: 16px; height: 16px; border-radius: 50%; background: var(--green); margin: 0 auto 10px; position: relative; z-index: 2; }
+  .tl .step .bar { position: absolute; top: 8px; left: 50%; width: 100%; height: 3px; background: var(--line); z-index: 1; }
+  .tl .step:last-child .bar { display: none; }
+  .tl .step.done .dot { background: var(--green); }
+  .tl .step.now .dot { background: var(--orange); }
+  .tl .step.launch .dot { background: var(--red); }
+  .tl .step .box { border: 1px solid var(--line); border-radius: 10px; padding: 12px 12px; min-height: 1.7in; }
+  .tl .step .ph2 { font-size: 12pt; font-weight: 700; color: var(--dark); }
+  .tl .step .pw { font-size: 9pt; color: var(--orange); font-weight: 600; margin-bottom: 6px; }
+  .tl .step ul { list-style: none; }
+  .tl .step li { font-size: 9.5pt; color: var(--muted); padding: 2px 0 2px 12px; position: relative; }
+  .tl .step li::before { content: "·"; position: absolute; left: 2px; color: var(--green); font-weight: 700; }
+
+  /* swot */
+  .swot { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; flex: 1; }
+  .sq { border-radius: 12px; padding: 16px 20px; }
+  .sq h3 { font-size: 13pt; margin-bottom: 8px; }
+  .sq ul { list-style: none; }
+  .sq li { font-size: 10.5pt; padding: 3px 0 3px 16px; position: relative; line-height: 1.3; }
+  .sq li::before { content: "•"; position: absolute; left: 0; }
+  .sq.s { background: var(--green-soft); } .sq.s h3, .sq.s li::before { color: var(--green-dark); }
+  .sq.w { background: var(--orange-soft); } .sq.w h3, .sq.w li::before { color: #b9711a; }
+  .sq.o { background: var(--blue-soft); } .sq.o h3, .sq.o li::before { color: var(--blue); }
+  .sq.t { background: var(--purple-soft); } .sq.t h3, .sq.t li::before { color: var(--purple); }
+
+  /* agile flow */
+  .flow { display: flex; align-items: center; gap: 14px; margin-bottom: 24px; }
+  .flow .fb { flex: 1; border-radius: 12px; padding: 18px; text-align: center; color: #fff; }
+  .flow .fb h3 { font-size: 15pt; } .flow .fb p { font-size: 10pt; opacity: .92; margin-top: 4px; }
+  .flow .fb.b1 { background: var(--green); } .flow .fb.b2 { background: var(--orange); } .flow .fb.b3 { background: var(--blue); }
+  .flow .arrow { font-size: 24pt; color: var(--muted); }
+  .chips { display: flex; gap: 12px; flex-wrap: wrap; }
+  .chip { background: var(--green-soft); color: var(--green-dark); border-radius: 20px; padding: 8px 18px; font-size: 11.5pt; font-weight: 600; }
+
+  /* story map mini */
+  .smap { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+  .smap .h { color: #fff; text-align: center; font-size: 10pt; font-weight: 700; padding: 7px 4px; border-radius: 6px; }
+  .smap .cell { background: var(--green-soft); border-radius: 6px; text-align: center; font-size: 9pt; padding: 7px 4px; color: #234; }
+  .smap .cell.post { background: #efefef; color: #999; font-style: italic; }
+  .smap-line { height: 4px; background: var(--orange); border-radius: 2px; margin: 8px 0; }
+
+  /* in/out */
+  .io { display: flex; gap: 18px; flex: 1; }
+  .io .side { flex: 1; border-radius: 12px; overflow: hidden; border: 1px solid var(--line); }
+  .io .side h3 { color: #fff; padding: 12px 18px; font-size: 14pt; }
+  .io .in h3 { background: var(--green); } .io .out h3 { background: #8a8a8a; }
+  .io .side ul { list-style: none; padding: 12px 18px; }
+  .io .in li, .io .out li { font-size: 10.8pt; padding: 4px 0 4px 20px; position: relative; line-height: 1.3; }
+  .io .in li::before { content: "✓"; position: absolute; left: 0; color: var(--green); font-weight: 700; }
+  .io .out li { color: var(--muted); }
+  .io .out li::before { content: "✗"; position: absolute; left: 0; color: #b0b0b0; }
+
+  /* tech badges */
+  .techs { display: flex; flex-wrap: wrap; gap: 14px; align-content: flex-start; }
+  .tb {
+    border: 1px solid var(--line); border-left: 4px solid var(--green); border-radius: 10px;
+    padding: 14px 18px; min-width: 2.6in; flex: 1 1 28%;
+  }
+  .tb b { font-size: 13pt; color: var(--dark); }
+  .tb p { font-size: 10pt; color: var(--muted); margin-top: 3px; }
+  .tb.o { border-left-color: var(--orange); } .tb.b { border-left-color: var(--blue); } .tb.p { border-left-color: var(--purple); }
+
+  /* architecture */
+  .arch { display: flex; flex-direction: column; gap: 16px; flex: 1; justify-content: center; }
+  .layer { display: flex; gap: 14px; align-items: center; justify-content: center; }
+  .ab { border-radius: 12px; padding: 16px 22px; text-align: center; color: #fff; font-weight: 600; font-size: 12.5pt; min-width: 2.6in; }
+  .ab small { display: block; font-weight: 400; font-size: 9.5pt; opacity: .9; margin-top: 3px; }
+  .ab.app { background: var(--green); } .ab.api { background: var(--blue); } .ab.db { background: var(--dark); }
+  .arch .down { text-align: center; font-size: 20pt; color: var(--muted); }
+  .mono { display: flex; gap: 10px; margin-top: 6px; }
+  .mono .m { flex: 1; background: var(--green-soft); border-radius: 10px; padding: 10px; text-align: center; font-size: 10pt; }
+  .mono .m b { color: var(--green-dark); font-size: 11pt; }
+
+  /* difficulties */
+  .diffs { display: flex; flex-direction: column; gap: 16px; flex: 1; justify-content: center; }
+  .df { display: flex; gap: 18px; align-items: flex-start; border: 1px solid var(--line); border-radius: 12px; padding: 18px 22px; }
+  .df .num { font-size: 26pt; font-weight: 800; color: var(--orange); line-height: 1; min-width: 48px; }
+  .df .tx h3 { font-size: 14pt; color: var(--dark); margin-bottom: 4px; }
+  .df .tx p { font-size: 11pt; color: var(--muted); line-height: 1.4; }
+
+  /* closing */
+  .slide.closing {
+    background: linear-gradient(135deg, var(--green-dark) 0%, var(--green) 70%); color: #fff;
+    justify-content: center; align-items: center; text-align: center;
+  }
+  .closing .ty { font-size: 56pt; font-weight: 800; }
+  .closing .q { font-size: 22pt; font-weight: 300; margin-top: 8px; opacity: .95; }
+  .closing .ct { margin-top: 36px; font-size: 14pt; opacity: .9; }
+  .closing .cb { margin-top: 10px; font-size: 30pt; font-weight: 900; }
+  .closing .cb .dot { color: var(--orange); }
+
+  .two { display: flex; gap: 28px; flex: 1; }
+  .two .l { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+  .two .r { flex: 1; display: flex; flex-direction: column; }
+</style>
+</head>
+<body>
+
+<!-- 1 — COVER -->
+<section class="slide cover">
+  <div class="brand">Kordo<span class="dot">.</span></div>
+  <div class="ctag">Réseau social d'escalade indoor</div>
+  <div class="cline"></div>
+  <div class="cmeta">Soutenance <span>· Projet de Fin d'Études · 2025–2026</span></div>
+  <div class="cauthor"><b>Jacinto Valentino</b> — M2 Développement, cursus Tech Lead · ECV Paris</div>
+  <div class="cphoto-note">🖼️ Fond : photo d'ambiance bloc indoor (optionnel)</div>
+</section>
+
+<!-- 2 — QUI SUIS-JE -->
+<section class="slide">
+  <div class="kicker">Présentation</div>
+  <h1 class="title">Qui suis-je ?</h1>
+  <div class="title-rule"></div>
+  <div class="two">
+    <div class="r">
+      <div class="ph" style="flex:1">
+        <div class="ph-ic">🖼️</div>
+        <div class="ph-t">Photo de toi à insérer</div>
+        <div class="ph-d">Portrait ou photo en salle de bloc</div>
+      </div>
+    </div>
+    <div class="l">
+      <ul class="feat">
+        <li><b>Jacinto Valentino</b></li>
+        <li>Étudiant <b>M2 Développement</b> à l'ECV Paris — cursus <b>Tech Lead</b></li>
+        <li>Grimpeur <b>depuis 2020</b> (post-Covid)</li>
+        <li>Passionné d'escalade indoor et de produit mobile</li>
+        <li>Kordo est né de ma propre pratique et de ses frustrations</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 3 — LE PROBLÈME -->
+<section class="slide">
+  <div class="kicker">Le constat</div>
+  <h1 class="title">Le problème</h1>
+  <div class="title-rule"></div>
+  <div class="subtitle">Un grimpeur jongle entre 4 outils — aucun ne réunit tout.</div>
+  <div class="cards">
+    <div class="card"><div class="ic">📸</div><h3>Instagram</h3><p>Pour partager ses sessions… mais aucune donnée d'escalade.</p></div>
+    <div class="card"><div class="ic">📊</div><h3>Un tableur</h3><p>Pour suivre sa progression et ses blocs validés, à la main.</p></div>
+    <div class="card"><div class="ic">💬</div><h3>WhatsApp</h3><p>Pour trouver un partenaire de grimpe au dernier moment.</p></div>
+    <div class="card"><div class="ic">📋</div><h3>Le tableau de la salle</h3><p>Pour repérer les blocs, les grades et les ouvreurs.</p></div>
+  </div>
+  <div class="comp-foot" style="background:var(--orange-soft);color:#b9711a;margin-top:auto">
+    Résultat : une expérience fragmentée et des données perdues à chaque session.
+  </div>
+</section>
+
+<!-- 4 — SOLUTION -->
+<section class="slide">
+  <div class="kicker">La solution</div>
+  <h1 class="title">Kordo</h1>
+  <div class="title-rule"></div>
+  <div class="two">
+    <div class="l">
+      <p style="font-size:15pt;line-height:1.5;color:var(--text);margin-bottom:20px">
+        La première plateforme <b>indoor-first</b> qui réunit <b>réseau social</b>,
+        <b>suivi de progression</b> et <b>exploration des salles</b> dans un seul produit.
+      </p>
+      <div class="card soft">
+        <h3>🎯 Objectif du projet</h3>
+        <p style="color:var(--text);font-size:11.5pt">Valider l'usage auprès de <b>3 salles pilotes</b> et <b>100+ grimpeurs</b>,
+        avec une rétention <b>J7 &gt; 40 %</b> comme signal de product-market fit.</p>
+      </div>
+    </div>
+    <div class="r">
+      <div class="ph" style="flex:1">
+        <div class="ph-ic">📱</div>
+        <div class="ph-t">Capture d'écran à insérer</div>
+        <div class="ph-d">Écran d'accueil / feed de l'app Kordo</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 5 — LE PRODUIT -->
+<section class="slide">
+  <div class="kicker">Le produit</div>
+  <h1 class="title">Kordo en un coup d'œil</h1>
+  <div class="title-rule"></div>
+  <div class="two">
+    <div class="l" style="flex:1.15;justify-content:flex-start">
+      <div class="card soft" style="margin-bottom:14px">
+        <h3>4 types de publication</h3>
+        <p style="color:var(--text);font-size:11pt"><b>Post</b> (photo) · <b>Message</b> (texte) · <b>Activité</b> (séance : salle, blocs validés, vidéos) · <b>Now</b> (présence live)</p>
+      </div>
+      <div class="card" style="border-color:var(--line)">
+        <h3>Indoor — le cœur de l'app</h3>
+        <p style="color:var(--text);font-size:11pt">Salles + filtres (favoris, populaires, récentes) · Blocs &amp; validation · <b>Vidéos de méthode</b> · Classement par salle</p>
+      </div>
+    </div>
+    <div class="r" style="flex-direction:row;gap:14px">
+      <div class="ph" style="flex:1"><div class="ph-ic">📱</div><div class="ph-t">Écran Feed</div><div class="ph-d">à insérer</div></div>
+      <div class="ph" style="flex:1"><div class="ph-ic">🧗</div><div class="ph-t">Fiche bloc + vidéo</div><div class="ph-d">à insérer</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 6 — MARCHÉ 1 -->
+<section class="slide">
+  <div class="kicker">Étude de marché · 1/3</div>
+  <h1 class="title">Un marché en pleine croissance</h1>
+  <div class="title-rule"></div>
+  <div class="subtitle">Porté par les Jeux Olympiques de Paris 2024, l'escalade indoor explose.</div>
+  <div class="stats">
+    <div class="stat"><div class="n">1,2 M</div><div class="l">pratiquants en France</div></div>
+    <div class="stat b"><div class="n">8 M+</div><div class="l">pratiquants en Europe</div></div>
+    <div class="stat o"><div class="n">600+</div><div class="l">salles indoor en France</div></div>
+    <div class="stat o"><div class="n">28 ans</div><div class="l">âge médian (Gen Z ↑)</div></div>
+    <div class="stat"><div class="n">+12–15 %</div><div class="l">croissance par an</div></div>
+    <div class="stat b"><div class="n">+25 %</div><div class="l">d'inscriptions post-JO 2024</div></div>
+  </div>
+</section>
+
+<!-- 7 — TAM SAM SOM -->
+<section class="slide">
+  <div class="kicker">Étude de marché · 2/3</div>
+  <h1 class="title">Marché adressable</h1>
+  <div class="title-rule"></div>
+  <div class="subtitle">Mesuré en nombre de grimpeurs.</div>
+  <div class="funnel">
+    <div class="circles">
+      <div class="circ c-tam"><div class="lab">TAM</div></div>
+      <div class="circ c-sam"><div class="lab">SAM</div></div>
+      <div class="circ c-som"><div class="lab">SOM</div></div>
+    </div>
+    <div class="legend2">
+      <div class="lg"><div class="sw" style="background:var(--green-soft)"></div><div class="t"><div class="n2">≈ 44,5 M</div><b>TAM</b><p>Grimpeurs dans le monde, toutes pratiques</p></div></div>
+      <div class="lg"><div class="sw" style="background:#cfe6da"></div><div class="t"><div class="n2">≈ 8 M</div><b>SAM</b><p>Grimpeurs indoor en Europe équipés smartphone</p></div></div>
+      <div class="lg"><div class="sw" style="background:var(--green)"></div><div class="t"><div class="n2">≈ 75 000</div><b>SOM</b><p>France + Benelux, an 1–3, pénétration ~5 %</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 8 — CONCURRENCE -->
+<section class="slide">
+  <div class="kicker">Étude de marché · 3/3</div>
+  <h1 class="title">Concurrence</h1>
+  <div class="title-rule"></div>
+  <div class="subtitle">Chacun couvre une brique — aucun ne réunit le tout pour l'indoor.</div>
+  <div class="comp">
+    <div class="cc"><div class="nm">Arkose+</div><div class="bd"><div class="role">La salle</div><div class="ms">App d'enseigne : résa, infos. Mono-enseigne, pas de social ouvert.</div></div></div>
+    <div class="cc"><div class="nm">Strava</div><div class="bd"><div class="role">Le social sportif</div><div class="ms">Feed &amp; gamification puissants. Mais pas d'escalade, ni blocs ni salles.</div></div></div>
+    <div class="cc"><div class="nm">Instagram</div><div class="bd"><div class="role">Le partage</div><div class="ms">Audience massive. Aucune donnée grimpe structurée ni classement.</div></div></div>
+    <div class="cc"><div class="nm">8a.nu</div><div class="bd"><div class="role">Le carnet de blocs</div><div class="ms">Logbook &amp; base de voies. Orienté outdoor, UX datée, social faible.</div></div></div>
+  </div>
+  <div class="comp-foot">Kordo = la seule plateforme à réunir salle indoor + progression + social en un produit.</div>
+</section>
+
+<!-- 9 — BUSINESS MODEL -->
+<section class="slide">
+  <div class="kicker">Business Plan · 1/2</div>
+  <h1 class="title">Modèle économique</h1>
+  <div class="title-rule"></div>
+  <div class="subtitle">Un modèle hybride <b>B2B2C</b> aligné sur l'usage réel.</div>
+  <div class="rev">
+    <div class="r"><div class="tag">B2B · Salles</div><h3>Setup Fee</h3><div class="pr">500 – 2 000 €</div><p>Frais unique d'intégration, configuration des blocs &amp; formation.</p></div>
+    <div class="r"><div class="tag">B2B · Salles</div><h3>SaaS récurrent</h3><div class="pr">1 – 3 €/user/mois</div><p>Abonnement selon le nombre d'utilisateurs actifs de la salle.</p></div>
+    <div class="r"><div class="tag">B2C · Grimpeurs</div><h3>Premium</h3><div class="pr">4,99 €/mois</div><p>Stats avancées, badges exclusifs, personnalisation.</p></div>
+    <div class="r"><div class="tag">B2C · Grimpeurs</div><h3>Freemium</h3><div class="pr">Gratuit</div><p>Feed, profil, blocs — acquisition &amp; masse critique.</p></div>
+  </div>
+  <div class="comp-foot" style="margin-top:auto">Revenus salles prévisibles + conversion freemium → premium côté grimpeurs.</div>
+</section>
+
+<!-- 10 — GTM + PROJECTIONS -->
+<section class="slide">
+  <div class="kicker">Business Plan · 2/2</div>
+  <h1 class="title">Go-to-market &amp; projections</h1>
+  <div class="title-rule"></div>
+  <div class="tl" style="margin-bottom:22px">
+    <div class="step done"><div class="bar"></div><div class="dot"></div><div class="box"><div class="ph2">Pilote</div><div class="pw">T3 2026</div><ul><li>3 salles partenaires</li><li>MVP déployé</li><li>500 utilisateurs</li></ul></div></div>
+    <div class="step now"><div class="bar"></div><div class="dot"></div><div class="box"><div class="ph2">Lancement</div><div class="pw">T4 2026</div><ul><li>App Store + Play Store</li><li>Influenceurs &amp; PR</li><li>3 000 téléchargements</li></ul></div></div>
+    <div class="step"><div class="bar"></div><div class="dot"></div><div class="box"><div class="ph2">Croissance</div><div class="pw">2027</div><ul><li>20 salles</li><li>5 000 actifs/mois</li><li>Premium lancé</li></ul></div></div>
+    <div class="step"><div class="dot"></div><div class="box"><div class="ph2">Expansion</div><div class="pw">2028</div><ul><li>BE, CH, ES, DE</li><li>50+ salles · 20 000 actifs</li><li>Levée Série A</li></ul></div></div>
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="n">~ 9 k€</div><div class="l">Revenu année 1 — amorçage</div></div>
+    <div class="stat o"><div class="n">~ 84 k€</div><div class="l">Revenu année 2 — seuil de rentabilité</div></div>
+    <div class="stat b"><div class="n">~ 300 k€</div><div class="l">Revenu année 3 — croissance rentable</div></div>
+  </div>
+</section>
+
+<!-- 11 — SWOT -->
+<section class="slide">
+  <div class="kicker">Stratégie</div>
+  <h1 class="title">Analyse SWOT</h1>
+  <div class="title-rule"></div>
+  <div class="swot">
+    <div class="sq s"><h3>Forces</h3><ul><li>1er réseau social escalade indoor</li><li>Approche B2B2C (salles + grimpeurs)</li><li>Vidéos de méthode sur les blocs — unique</li><li>Stack moderne &amp; design system Kordo-UI</li></ul></div>
+    <div class="sq w"><h3>Faiblesses</h3><ul><li>Équipe réduite, 0 traction commerciale</li><li>Pas de financement initial</li><li>Dépendance à l'adoption des salles</li><li>Notoriété nulle au démarrage</li></ul></div>
+    <div class="sq o"><h3>Opportunités</h3><ul><li>Marché +12 %/an, boost post-JO durable</li><li>Gen Z très tech-native</li><li>Peu de concurrents sur l'indoor social</li><li>SaaS B2B scalable (600+ salles FR)</li></ul></div>
+    <div class="sq t"><h3>Menaces</h3><ul><li>Strava / Arkose comblant la brique manquante</li><li>Instagram &amp; TikTok captent l'attention</li><li>Cycles d'acquisition B2B longs</li><li>RGPD sur les données sportives</li></ul></div>
+  </div>
+</section>
+
+<!-- 12 — ROADMAP -->
+<section class="slide">
+  <div class="kicker">Pilotage projet</div>
+  <h1 class="title">Roadmap — vue d'ensemble</h1>
+  <div class="title-rule"></div>
+  <div class="tl" style="flex:1;align-items:stretch">
+    <div class="step done"><div class="bar"></div><div class="dot"></div><div class="box"><div class="ph2">Sprint 1–2</div><div class="pw">Mars 2026 · Terminés</div><ul><li>Init projet</li><li>Design System</li><li>Kordo-UI stable</li></ul></div></div>
+    <div class="step now"><div class="bar"></div><div class="dot"></div><div class="box"><div class="ph2">Sprint 3–4</div><div class="pw">Mar–Avr 2026</div><ul><li>Auth · Profil</li><li>Feed &amp; publications</li><li>Notifications</li></ul></div></div>
+    <div class="step now"><div class="bar"></div><div class="dot"></div><div class="box"><div class="ph2">Sprint 5–6</div><div class="pw">Avr–Mai 2026</div><ul><li>Indoor · blocs · vidéos</li><li>Classements</li><li>Messagerie · paramètres</li></ul></div></div>
+    <div class="step launch"><div class="dot"></div><div class="box"><div class="ph2">MVP Launch</div><div class="pw">Juin 2026</div><ul><li>App Store + Play Store</li><li>3 salles pilotes</li><li>Monitoring &amp; RGPD</li></ul></div></div>
+  </div>
+</section>
+
+<!-- 13 — MÉTHODE AGILE -->
+<section class="slide">
+  <div class="kicker">Pilotage projet</div>
+  <h1 class="title">Méthode agile</h1>
+  <div class="title-rule"></div>
+  <div class="flow">
+    <div class="fb b1"><h3>Backlog</h3><p>Épics &amp; user stories</p></div>
+    <div class="arrow">→</div>
+    <div class="fb b2"><h3>Sprint</h3><p>Itérations de 2 semaines</p></div>
+    <div class="arrow">→</div>
+    <div class="fb b3"><h3>Tâches</h3><p>Découpage &amp; réalisation</p></div>
+  </div>
+  <div class="subtitle" style="margin-bottom:12px">Priorisation et estimation structurées :</div>
+  <div class="chips">
+    <div class="chip">MoSCoW (Critique → Faible)</div>
+    <div class="chip">Estimation Fibonacci (1·2·3·5·8·13)</div>
+    <div class="chip">Vélocité ~30 pts / sprint</div>
+    <div class="chip">25 user stories · 124 points</div>
+    <div class="chip">Dépendances explicites</div>
+  </div>
+</section>
+
+<!-- 14 — STORY MAPPING -->
+<section class="slide">
+  <div class="kicker">Pilotage projet</div>
+  <h1 class="title">Story Mapping</h1>
+  <div class="title-rule"></div>
+  <div class="subtitle">Parcours utilisateur (colonnes) × priorité (lignes). La ligne orange = frontière MVP.</div>
+  <div class="smap">
+    <div class="h" style="background:var(--green)">ONBOARDING</div>
+    <div class="h" style="background:var(--orange)">INDOOR</div>
+    <div class="h" style="background:#c9772f">FEED &amp; SOCIAL</div>
+    <div class="h" style="background:var(--purple)">PROFIL</div>
+    <div class="h" style="background:var(--blue)">MESSAGES</div>
+
+    <div class="cell">Inscription / Connexion</div>
+    <div class="cell">Liste salles + filtres</div>
+    <div class="cell">Fil d'actualité</div>
+    <div class="cell">Profil public</div>
+    <div class="cell">Notifications</div>
+
+    <div class="cell">OAuth Google / Apple</div>
+    <div class="cell">Blocs + validation</div>
+    <div class="cell">Post · Message · Activité · Now</div>
+    <div class="cell">Modifier profil + avatar</div>
+    <div class="cell">Messagerie 1:1</div>
+
+    <div class="cell" style="visibility:hidden"></div>
+    <div class="cell">Vidéos de méthode · Classement</div>
+    <div class="cell">Like &amp; commentaire</div>
+    <div class="cell">Follow / Abonnements</div>
+    <div class="cell" style="visibility:hidden"></div>
+  </div>
+  <div class="smap-line"></div>
+  <div class="smap">
+    <div class="cell post">Suppression compte</div>
+    <div class="cell post">Check-in · Détection géoloc</div>
+    <div class="cell post">Now auto · Résumé hebdo</div>
+    <div class="cell post">Graphiques · Premium</div>
+    <div class="cell post">Appels · Événements</div>
+  </div>
+  <div style="text-align:center;color:var(--muted);font-size:9pt;margin-top:8px;font-style:italic">Vert = MVP (S3–S6) · Gris = post-MVP</div>
+</section>
+
+<!-- 15 — MVP -->
+<section class="slide">
+  <div class="kicker">Le périmètre</div>
+  <h1 class="title">Le MVP : choisi vs reporté</h1>
+  <div class="title-rule"></div>
+  <div class="io">
+    <div class="side in">
+      <h3>✓ Dans le MVP</h3>
+      <ul>
+        <li>Auth email + Google / Apple</li>
+        <li>Profil public + modification &amp; avatar</li>
+        <li>Feed + 4 publications (Now manuel)</li>
+        <li>Like &amp; commentaire</li>
+        <li>Follow / unfollow</li>
+        <li>Notifications + messagerie (sans appel)</li>
+        <li>Salles + filtres · blocs + validation</li>
+        <li>Vidéos de méthode · classement salle</li>
+      </ul>
+    </div>
+    <div class="side out">
+      <h3>✗ Reporté (post-MVP)</h3>
+      <ul>
+        <li>Check-in dématérialisé + Now auto</li>
+        <li>Détection grimpeurs (Meet, géoloc)</li>
+        <li>Graphiques de progression</li>
+        <li>Badges &amp; trophées</li>
+        <li>Compte Premium B2C</li>
+        <li>Création d'événements · résumé hebdo</li>
+        <li>Mode sombre · multilingue · appels</li>
+        <li>Dashboard gérant (B2B)</li>
+      </ul>
+    </div>
+  </div>
+  <div class="comp-foot" style="margin-top:16px;background:var(--orange-soft);color:#b9711a">Le vrai défi : couper des features d'un projet auquel on croit, pour livrer l'essentiel.</div>
+</section>
+
+<!-- 16 — STACK -->
+<section class="slide">
+  <div class="kicker">Développement · 1/2</div>
+  <h1 class="title">Stack technique</h1>
+  <div class="title-rule"></div>
+  <div class="techs">
+    <div class="tb"><b>React Native + Expo</b><p>Application mobile cross-platform iOS &amp; Android</p></div>
+    <div class="tb b"><b>TypeScript</b><p>Typage strict de bout en bout</p></div>
+    <div class="tb o"><b>Supabase</b><p>Auth · PostgreSQL · Realtime · Storage</p></div>
+    <div class="tb p"><b>expo-router</b><p>Navigation par fichiers</p></div>
+    <div class="tb o"><b>Emotion</b><p>Styling cross-platform (native + web)</p></div>
+    <div class="tb b"><b>pnpm monorepo</b><p>core · kordo-ui · frontend · backend</p></div>
+    <div class="tb"><b>Kordo-UI</b><p>Design system atoms → organisms, Storybook</p></div>
+    <div class="tb p"><b>Sentry · PostHog</b><p>Monitoring &amp; analytics produit</p></div>
+  </div>
+</section>
+
+<!-- 17 — ARCHITECTURE -->
+<section class="slide">
+  <div class="kicker">Développement · 2/2</div>
+  <h1 class="title">Architecture</h1>
+  <div class="title-rule"></div>
+  <div class="arch">
+    <div class="layer"><div class="ab app">📱 Application mobile<small>React Native + Expo · expo-router</small></div></div>
+    <div class="down">↓ API REST · Realtime</div>
+    <div class="layer"><div class="ab api">⚙️ Supabase<small>Auth · Realtime · Storage · Edge Functions</small></div></div>
+    <div class="down">↓</div>
+    <div class="layer"><div class="ab db">🗄️ PostgreSQL<small>Users · Gyms · Boulders · Posts · Messages</small></div></div>
+    <div class="mono">
+      <div class="m"><b>core</b><br>types domaine</div>
+      <div class="m"><b>kordo-ui</b><br>design system</div>
+      <div class="m"><b>frontend</b><br>app Expo</div>
+      <div class="m"><b>backend</b><br>API</div>
+    </div>
+  </div>
+</section>
+
+<!-- 18 — DIFFICULTÉS -->
+<section class="slide">
+  <div class="kicker">Retour d'expérience</div>
+  <h1 class="title">Difficultés rencontrées</h1>
+  <div class="title-rule"></div>
+  <div class="diffs">
+    <div class="df"><div class="num">1</div><div class="tx"><h3>Les contraintes de temps</h3><p>Mener de front conception, design, architecture et développement en solo impose des arbitrages permanents sur le périmètre.</p></div></div>
+    <div class="df"><div class="num">2</div><div class="tx"><h3>Réduire le périmètre du MVP</h3><p>Vouloir tout mettre dans le MVP. Il est difficile de couper des fonctionnalités d'un projet auquel on croit — apprendre à prioriser (MoSCoW, frontière MVP) a été clé.</p></div></div>
+    <div class="df"><div class="num">3</div><div class="tx"><h3>Un business model réaliste &amp; rentable</h3><p>Construire un modèle viable : équilibrer la valeur B2B (salles) et B2C (grimpeurs) pour quelque chose de crédible et rentable.</p></div></div>
+  </div>
+</section>
+
+<!-- 19 — DÉMO -->
+<section class="slide">
+  <div class="kicker">Place à la pratique</div>
+  <h1 class="title">Démo du MVP</h1>
+  <div class="title-rule"></div>
+  <div class="two" style="gap:18px">
+    <div class="r" style="flex-direction:row;gap:14px">
+      <div class="ph" style="flex:1"><div class="ph-ic">📱</div><div class="ph-t">Écran 1</div><div class="ph-d">Feed / publication</div></div>
+      <div class="ph" style="flex:1"><div class="ph-ic">🧗</div><div class="ph-t">Écran 2</div><div class="ph-d">Indoor / fiche bloc</div></div>
+    </div>
+    <div class="l">
+      <div class="card soft">
+        <h3>🎬 Démonstration live</h3>
+        <p style="color:var(--text);font-size:12pt;line-height:1.5">Parcours : inscription → exploration d'une salle → validation d'un bloc → publication d'une activité → feed social.</p>
+      </div>
+      <div class="ph" style="margin-top:14px;min-height:1.4in"><div class="ph-ic">📷</div><div class="ph-t">QR code / lien démo (optionnel)</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 20 — MERCI -->
+<section class="slide closing">
+  <div class="ty">Merci !</div>
+  <div class="q">Questions ?</div>
+  <div class="ct">Jacinto Valentino · M2 Développement — ECV Paris · 2025–2026</div>
+  <div class="cb">Kordo<span class="dot">.</span></div>
+</section>
+
+</body>
+</html>

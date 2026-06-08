@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<title>Kordo — Texte de présentation</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+
+  :root {
+    --green: #3f8f6b;
+    --green-dark: #2f6e52;
+    --green-soft: #eaf3ee;
+    --orange: #e0902f;
+    --orange-soft: #fbf2e3;
+    --dark: #2b2b2b;
+    --text: #232323;
+    --muted: #6b6b6b;
+    --line: #e2e2de;
+  }
+
+  * { box-sizing: border-box; }
+  @page { size: A4; margin: 16mm 16mm 16mm 16mm; }
+  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+  body {
+    font-family: 'Outfit', 'Segoe UI', system-ui, sans-serif;
+    color: var(--text);
+    font-size: 11pt;
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  /* ---- cover ---- */
+  .cover {
+    height: 258mm;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center; text-align: center;
+    page-break-after: always;
+  }
+  .cover .brand { font-size: 60pt; font-weight: 800; letter-spacing: -1px; color: var(--dark); line-height: 1; }
+  .cover .brand .dot { color: var(--orange); }
+  .cover .tagline { font-size: 14pt; color: var(--muted); margin-top: 8px; }
+  .cover .rule { width: 200px; height: 4px; margin: 26px 0; border-radius: 2px;
+    background: linear-gradient(90deg, var(--green) 0 50%, var(--orange) 50% 100%); }
+  .cover .doc-type { font-size: 24pt; font-weight: 700; color: var(--green-dark); }
+  .cover .subtitle { font-size: 11pt; color: var(--muted); margin-top: 10px; }
+  .cover .meta { margin-top: 60px; font-size: 10pt; color: var(--muted); }
+  .cover .timing { margin-top: 6px; font-size: 10pt; color: var(--green-dark); font-weight: 600; }
+
+  /* ---- slide block ---- */
+  .slide-block { break-inside: avoid; page-break-inside: avoid; margin: 0 0 18px; }
+  .slide-head {
+    display: flex; align-items: baseline; gap: 10px;
+    border-bottom: 2px solid var(--green); padding-bottom: 5px; margin-bottom: 9px;
+  }
+  .slide-num {
+    background: var(--green); color: #fff; font-weight: 700; font-size: 10pt;
+    border-radius: 5px; padding: 2px 9px; min-width: 30px; text-align: center;
+  }
+  .slide-title { font-size: 13pt; font-weight: 700; color: var(--dark); flex: 1; }
+  .slide-tag { font-size: 8.5pt; font-weight: 600; color: var(--orange); text-transform: uppercase; letter-spacing: .5px; }
+
+  .speech p { margin: 0 0 8px; }
+  .cue { color: var(--orange); font-style: italic; font-weight: 500; }
+  strong { font-weight: 700; color: var(--green-dark); }
+
+  .demo-box {
+    background: var(--orange-soft); border-left: 3px solid var(--orange);
+    border-radius: 0 6px 6px 0; padding: 10px 14px; margin: 8px 0;
+  }
+  .demo-box .dh { font-weight: 700; color: #b9711a; margin-bottom: 6px; }
+  .demo-box ul { margin: 0; padding-left: 18px; }
+  .demo-box li { margin: 3px 0; font-size: 10pt; }
+
+  /* ---- timing footer page ---- */
+  .timing-page { page-break-before: always; }
+  .timing-page h2 { font-size: 18pt; color: var(--green-dark); margin: 0 0 14px; }
+  table { width: 100%; border-collapse: collapse; font-size: 10.5pt; margin-top: 6px; }
+  th { background: var(--dark); color: #fff; text-align: left; padding: 8px 12px; font-weight: 600; }
+  td { padding: 7px 12px; border-bottom: 1px solid var(--line); }
+  tbody tr:nth-child(even) td { background: var(--green-soft); }
+  td.t { white-space: nowrap; font-weight: 700; color: var(--green-dark); }
+  .tip { background: var(--green-soft); border-radius: 6px; padding: 12px 16px; margin-top: 16px; font-size: 10pt; }
+</style>
+</head>
+<body>
+
+<section class="cover">
+  <div class="brand">Kordo<span class="dot">.</span></div>
+  <div class="tagline">Réseau social d'escalade indoor</div>
+  <div class="rule"></div>
+  <div class="doc-type">Texte de présentation</div>
+  <div class="subtitle">Discours complet · Soutenance PFE 2025–2026</div>
+  <div class="meta">Jacinto Valentino — M2 Développement, cursus Tech Lead · ECV Paris</div>
+  <div class="timing">⏱ Durée cible : 15–20 min · ~2 400 mots · ton jovial</div>
+</section>
+
+<!-- 1 -->
+<div class="slide-block">
+  <div class="slide-head"><div class="slide-num">1</div><div class="slide-title">Couverture</div><div class="slide-tag">~30 s</div></div>
+  <div class="speech">
+    <p>« Bonjour à toutes et à tous ! Merci d'être là. Aujourd'hui, je vais vous parler d'un projet qui me tient vraiment à cœur — au sens propre comme au figuré, parce qu'il est né d'une passion. Ça s'appelle <strong>Kordo</strong>, et c'est le premier réseau social dédié à l'escalade indoor. Je m'appelle Jacinto Valentino, je suis en M2 Développement, cursus Tech Lead à l'ECV Paris. Alors attachez vos baudriers… on grimpe ! »</p>
+  </div>
+</div>
+
+<!-- 2 -->
+<div class="slide-block">
+  <div class="slide-head"><div class="slide-num">2</div><div class="slide-title">Qui suis-je ?</div><div class="slide-tag">~45 s</div></div>
+  <div class="speech">
+    <p>« Avant de parler du produit, deux mots sur moi — promis, ça va vite. Je grimpe depuis 2020, en pleine période post-Covid. Comme beaucoup de monde, j'ai poussé la porte d'une salle de bloc un peu par hasard… et je n'en suis jamais vraiment ressorti. <span class="cue">[sourire]</span></p>
+    <p>Je suis passionné à la fois par l'escalade indoor et par le produit mobile. Et Kordo, c'est exactement le croisement des deux : le projet est né de <strong>ma propre pratique</strong> et, surtout, de mes propres frustrations de grimpeur. C'est ça qui rend le sujet authentique pour moi — je suis le premier utilisateur de l'app que je construis. »</p>
+  </div>
+</div>
+
+<!-- 3 -->
+<div class="slide-block">
+  <div class="slide-head"><div class="slide-num">3</div><div class="slide-title">Le problème</div><div class="slide-tag">~55 s</div></div>
+  <div class="speech">
+    <p>« Justement, parlons de ces frustrations. Quand vous êtes grimpeur aujourd'hui, vous jonglez entre <strong>quatre outils différents</strong> — et aucun ne fait le job en entier.</p>
+    <p>Vous avez <strong>Instagram</strong> pour partager vos sessions… mais zéro donnée d'escalade. Vous avez <strong>un tableur Excel</strong>, fait à la main, pour suivre vos blocs validés et votre progression. Vous avez <strong>WhatsApp</strong> pour, à la dernière minute, trouver quelqu'un pour grimper. Et enfin, <strong>le bon vieux tableau de la salle</strong> pour repérer les blocs, les niveaux, les ouvreurs.</p>
+    <p>Résultat ? Une expérience complètement éclatée, et des données qui partent à la poubelle à chaque session. À chaque fois, on recommence à zéro. C'est ça, le vrai problème. »</p>
+  </div>
+</div>
+
+<!-- 4 -->
+<div class="slide-block">
+  <div class="slide-head"><div class="slide-num">4</div><div class="slide-title">La solution : Kordo</div><div class="slide-tag">~55 s</div></div>
+  <div class="speech">
+    <p>« Et donc, la solution, vous l'avez deviné, c'est <strong>Kordo</strong>. <span class="cue">[ton qui monte]</span></p>
+    <p>Kordo, c'est la première plateforme pensée <strong>indoor-first</strong> — d'abord pour la salle — qui réunit trois choses dans un seul produit : un <strong>réseau social</strong>, un <strong>suivi de progression</strong>, et l'<strong>exploration des salles</strong>. Tout. Au même endroit.</p>
+    <p>L'objectif du projet, concrètement, c'est de valider l'usage auprès de <strong>3 salles pilotes</strong> et <strong>plus de 100 grimpeurs</strong>, avec un signal clair : une rétention à 7 jours <strong>supérieure à 40 %</strong>. En clair : est-ce que les gens reviennent une semaine après ? Si oui, on tient quelque chose. C'est notre boussole de product-market fit. »</p>
+  </div>
+</div>
+
+<!-- 5 -->
+<div class="slide-block">
+  <div class="slide-head"><div class="slide-num">5</div><div class="slide-title">Le produit en un coup d'œil</div><div class="slide-tag">~1 min</div></div>
+  <div class="speech">
+    <p>« Concrètement, à quoi ça ressemble ? Le cœur de Kordo, c'est <strong>quatre types de publication</strong>. Le <strong>Post</strong>, une photo, façon Instagram. Le <strong>Message</strong>, du texte court, façon tweet. L'<strong>Activité</strong>, qui est le truc le plus riche : une vraie séance, avec la salle, les blocs validés, les vidéos — un peu à la Strava. Et le <strong>Now</strong> : "Valentino grimpe en ce moment à Nation" — la présence en direct.</p>
+    <p>Et puis il y a la partie <strong>Indoor</strong>, qui est vraiment le moteur de l'app : l'annuaire des salles avec des filtres — favoris, populaires, récemment visitées —, le catalogue des blocs avec validation, les fameuses <strong>vidéos de méthode</strong> sur chaque bloc, et un <strong>classement</strong> par salle. Ça, les vidéos de méthode, c'est notre petite pépite — j'y reviens. »</p>
+  </div>
+</div>
+
+<!-- 6 -->
+<div class="slide-block">
+  <div class="slide-head"><div class="slide-num">6</div><div class="slide-title">Un marché en croissance</div><div class="slide-tag">~50 s</div></div>
+  <div class="speech">
+    <p>« Bon, une bonne idée, c'est bien. Mais est-ce qu'il y a un marché derrière ? <span class="cue">[pause]</span> La réponse est oui, et il explose.</p>
+    <p>L'escalade indoor a été dopée par les <strong>Jeux Olympiques de Paris 2024</strong>. Les chiffres : <strong>1,2 million</strong> de pratiquants en France, <strong>plus de 8 millions</strong> en Europe, <strong>600 salles</strong> indoor rien qu'en France. L'âge médian ? <strong>28 ans</strong> — la Gen Z débarque en masse. Le marché grandit de <strong>12 à 15 % par an</strong>, et on a vu <strong>+25 % d'inscriptions</strong> juste après les JO.</p>
+    <p>Bref, c'est un marché jeune, tech-native, et en pleine accélération. Le bon moment, c'est maintenant. »</p>
+  </div>
+</div>
+
+<!-- 7 -->
+<div class="slide-block">
+  <div class="slide-head"><div class="slide-num">7</div><div class="slide-title">Marché adressable (TAM / SAM / SOM)</div><div class="slide-tag">~50 s</div></div>
+  <div class="speech">
+    <p>« Pour situer notre cible, le petit classique du TAM-SAM-SOM, mesuré ici en nombre de grimpeurs.</p>
+    <p>Le <strong>TAM</strong>, le marché total : environ <strong>44,5 millions</strong> de grimpeurs dans le monde, toutes pratiques confondues. Le <strong>SAM</strong>, ce qu'on peut raisonnablement adresser : <strong>8 millions</strong> de grimpeurs indoor en Europe avec un smartphone. Et le <strong>SOM</strong>, notre cible réaliste sur les trois premières années : <strong>75 000 grimpeurs</strong> sur la France et le Benelux, soit une pénétration d'environ 5 %.</p>
+    <p>C'est ambitieux mais crédible — on ne vise pas la lune dès l'an 1, on vise une communauté solide. »</p>
+  </div>
+</div>
+
+<!-- 8 -->
+<div class="slide-block">
+  <div class="slide-head"><div class="slide-num">8</div><div class="slide-title">La concurrence</div><div class="slide-tag">~55 s</div></div>
+  <div class="speech">
+    <p>« "Mais ça existe déjà, non ?" — c'est LA question qu'on me pose. Alors regardons les concurrents.</p>
+    <p><strong>Arkose+</strong>, c'est l'app de la salle : résa, infos. Mais mono-enseigne, et pas de social ouvert. <strong>Strava</strong>, c'est le social sportif par excellence, super feed, super gamification… mais zéro escalade : ni blocs, ni salles. <strong>Instagram</strong>, audience énorme, mais aucune donnée de grimpe structurée. Et <strong>8a.nu</strong>, le carnet de blocs historique, mais orienté outdoor, interface un peu datée et social faible.</p>
+    <p>Vous voyez le truc ? <span class="cue">[sourire]</span> Chacun couvre <strong>une brique</strong>. Personne ne réunit la salle indoor + la progression + le social. Et c'est exactement cette case vide que Kordo vient occuper. »</p>
+  </div>
+</div>
+
+<!-- 9 -->
+<div class="slide-block">
+  <div class="slide-head"><div class="slide-num">9</div><div class="slide-title">Le modèle économique</div><div class="slide-tag">~55 s</div></div>
+  <div class="speech">
+    <p>« Une app, c'est bien, mais ça doit aussi gagner de l'argent. Notre modèle est <strong>hybride, B2B2C</strong>.</p>
+    <p>Côté <strong>salles</strong>, en B2B : un <strong>setup fee</strong> unique, entre 500 et 2 000 €, pour l'intégration et la config des blocs ; puis un <strong>abonnement SaaS récurrent</strong>, 1 à 3 € par utilisateur actif et par mois. Côté <strong>grimpeurs</strong>, en B2C : un <strong>Premium</strong> à 4,99 €/mois pour les stats avancées et les badges, et bien sûr le <strong>Freemium</strong>, gratuit — le feed, le profil, les blocs — qui sert à atteindre la masse critique.</p>
+    <p>L'idée : des revenus prévisibles côté salles, et une conversion progressive du gratuit vers le premium côté grimpeurs. »</p>
+  </div>
+</div>
+
+<!-- 10 -->
+<div class="slide-block">
+  <div class="slide-head"><div class="slide-num">10</div><div class="slide-title">Go-to-market &amp; projections</div><div class="slide-tag">~1 min</div></div>
+  <div class="speech">
+    <p>« Comment on va sur le marché ? En quatre temps. Un <strong>pilote</strong> au troisième trimestre 2026 : 3 salles, le MVP, 500 utilisateurs. Le <strong>lancement</strong> fin 2026 sur les stores, avec influenceurs et presse, objectif 3 000 téléchargements. La <strong>croissance</strong> en 2027 : 20 salles, 5 000 actifs par mois, et le Premium qui arrive. Et l'<strong>expansion</strong> en 2028 : Belgique, Suisse, Espagne, Allemagne, 50 salles, et une levée en Série A.</p>
+    <p>Côté finances, des projections volontairement prudentes : environ <strong>9 000 €</strong> la première année — c'est l'amorçage. Environ <strong>84 000 €</strong> la deuxième — on atteint le seuil de rentabilité. Et environ <strong>300 000 €</strong> la troisième — croissance rentable. On ne vend pas du rêve, on construit pas à pas. »</p>
+  </div>
+</div>
+
+<!-- 11 -->
+<div class="slide-block">
+  <div class="slide-head"><div class="slide-num">11</div><div class="slide-title">Analyse SWOT</div><div class="slide-tag">~50 s</div></div>
+  <div class="speech">
+    <p>« Soyons honnêtes deux minutes, avec un SWOT.</p>
+    <p>Nos <strong>forces</strong> : on est le premier réseau social escalade indoor, avec une approche B2B2C, et ces fameuses vidéos de méthode qui sont uniques. Nos <strong>faiblesses</strong>, et je les assume : une équipe réduite, zéro traction commerciale pour l'instant, pas de financement initial. Les <strong>opportunités</strong> : un marché à +12 % par an, une Gen Z ultra tech, peu de concurrents sur l'indoor social. Et les <strong>menaces</strong> : que Strava ou Arkose comblent la case manquante avant nous, et bien sûr le RGPD sur les données sportives.</p>
+    <p>Bref, une fenêtre de tir réelle — mais qu'il faut saisir vite. »</p>
+  </div>
+</div>
+
+<!-- 12 -->
+<div class="slide-block">
+  <div class="slide-head"><div class="slide-num">12</div><div class="slide-title">Roadmap</div><div class="slide-tag">~45 s</div></div>
+  <div class="speech">
+    <p>« Passons au pilotage du projet. Voici la roadmap. Les <strong>sprints 1 et 2</strong>, en mars 2026, sont <strong>terminés</strong> : l'init du projet et tout le design system, Kordo-UI, qui est aujourd'hui stable. Les <strong>sprints 3 et 4</strong> : auth, profil, feed et publications, notifications. Les <strong>sprints 5 et 6</strong> : la partie indoor — blocs, vidéos, classements — et la messagerie. Et au bout, en <strong>juin 2026</strong>, le <strong>lancement du MVP</strong> sur l'App Store et le Play Store, avec 3 salles pilotes, le monitoring et la conformité RGPD. »</p>
+  </div>
+</div>
+
+<!-- 13 -->
+<div class="slide-block">
+  <div class="slide-head"><div class="slide-num">13</div><div class="slide-title">Méthode agile</div><div class="slide-tag">~50 s</div></div>
+  <div class="speech">
+    <p>« Côté méthode, j'ai travaillé en <strong>agile</strong>, même en solo. Un <strong>backlog</strong> d'épics et de user stories, des <strong>sprints</strong> de deux semaines, puis le découpage en <strong>tâches</strong>.</p>
+    <p>Pour prioriser, j'ai utilisé <strong>MoSCoW</strong> — du critique au faible. Pour estimer, la suite de <strong>Fibonacci</strong> : 1, 2, 3, 5, 8, 13. Avec une vélocité d'environ <strong>30 points par sprint</strong>. Au total, <strong>25 user stories</strong> pour <strong>124 points</strong>, et des dépendances explicites entre les stories. C'est ce qui m'a permis de garder le cap tout seul sans partir dans tous les sens. »</p>
+  </div>
+</div>
+
+<!-- 14 -->
+<div class="slide-block">
+  <div class="slide-head"><div class="slide-num">14</div><div class="slide-title">Story Mapping</div><div class="slide-tag">~45 s</div></div>
+  <div class="speech">
+    <p>« Pour décider quoi mettre dans le MVP, j'ai fait une <strong>story map</strong>. En colonnes, le parcours utilisateur : onboarding, indoor, feed &amp; social, profil, messages. En lignes, la priorité.</p>
+    <p>Et il y a cette <strong>ligne orange</strong> — la frontière du MVP. Tout ce qui est en vert au-dessus, c'est ce qu'on livre au premier lancement. Tout ce qui est en gris en dessous — le check-in automatique, les graphiques, le Premium — c'est reporté en post-MVP. Visuellement, ça rend la décision super claire : on voit d'un coup d'œil ce qui part en prod et ce qui attend. »</p>
+  </div>
+</div>
+
+<!-- 15 -->
+<div class="slide-block">
+  <div class="slide-head"><div class="slide-num">15</div><div class="slide-title">Le MVP : choisi vs reporté</div><div class="slide-tag">~1 min</div></div>
+  <div class="speech">
+    <p>« Et donc, le MVP. À gauche, ce qu'on <strong>garde</strong> : l'auth email + Google et Apple, le profil, le feed avec les 4 publications, les likes et commentaires, le follow, les notifications et la messagerie, et toute la partie indoor — salles, blocs, validation, vidéos de méthode, classement.</p>
+    <p>À droite, ce qu'on <strong>reporte</strong> : le check-in dématérialisé, la détection des grimpeurs présents, les graphiques, les badges, le Premium, les événements, le mode sombre…</p>
+    <p>Et là, je vais être franc <span class="cue">[ton plus posé]</span> : le vrai défi, ce n'était pas d'ajouter des fonctionnalités. C'était d'en <strong>couper</strong>. Couper des features d'un projet auquel on croit à fond, pour livrer l'essentiel. Ça, c'est dur. »</p>
+  </div>
+</div>
+
+<!-- 16 -->
+<div class="slide-block">
+  <div class="slide-head"><div class="slide-num">16</div><div class="slide-title">Stack technique</div><div class="slide-tag">~50 s</div></div>
+  <div class="speech">
+    <p>« Passons à la technique — rapidement, promis. <span class="cue">[clin d'œil]</span></p>
+    <p>L'app, c'est <strong>React Native + Expo</strong>, donc iOS et Android avec une seule base de code. Du <strong>TypeScript</strong> en typage strict de bout en bout. <strong>Supabase</strong> pour l'auth, la base PostgreSQL, le temps réel et le stockage. <strong>expo-router</strong> pour la navigation. <strong>Emotion</strong> pour le styling cross-platform. Le tout dans un <strong>monorepo pnpm</strong> : core, kordo-ui, frontend, backend. Notre design system maison, <strong>Kordo-UI</strong>, organisé en atomes, molécules, organismes, avec Storybook. Et pour finir, <strong>Sentry et PostHog</strong> pour le monitoring et l'analytics produit. »</p>
+  </div>
+</div>
+
+<!-- 17 -->
+<div class="slide-block">
+  <div class="slide-head"><div class="slide-num">17</div><div class="slide-title">Architecture</div><div class="slide-tag">~45 s</div></div>
+  <div class="speech">
+    <p>« L'architecture, en une image. En haut, l'<strong>application mobile</strong> React Native. Elle parle, via une API REST et du temps réel, à <strong>Supabase</strong> — qui gère l'auth, le realtime, le storage et les edge functions. Et en dessous, la base <strong>PostgreSQL</strong> : utilisateurs, salles, blocs, posts, messages.</p>
+    <p>Et tout ça vit dans le monorepo, avec quatre packages bien séparés : <strong>core</strong> pour les types métier, <strong>kordo-ui</strong> pour le design system, <strong>frontend</strong> pour l'app, et <strong>backend</strong> pour l'API. Chaque chose à sa place. »</p>
+  </div>
+</div>
+
+<!-- 18 -->
+<div class="slide-block">
+  <div class="slide-head"><div class="slide-num">18</div><div class="slide-title">Difficultés rencontrées</div><div class="slide-tag">~55 s</div></div>
+  <div class="speech">
+    <p>« Aucun projet n'est un long fleuve tranquille. Trois grosses difficultés.</p>
+    <p><strong>Un</strong>, les <strong>contraintes de temps</strong>. Mener de front la conception, le design, l'architecture ET le dev, tout seul, ça impose des arbitrages permanents. <strong>Deux</strong> — et c'est la plus dure psychologiquement —, <strong>réduire le périmètre du MVP</strong>. On veut tout mettre dans le premier lancement. Apprendre à prioriser, à dire "non, pas maintenant", ça a été la vraie leçon. <strong>Trois</strong>, construire un <strong>business model réaliste et rentable</strong> : équilibrer la valeur côté salles et côté grimpeurs pour quelque chose de crédible.</p>
+    <p>Mais honnêtement ? C'est dans ces difficultés que j'ai le plus appris. »</p>
+  </div>
+</div>
+
+<!-- 19 -->
+<div class="slide-block">
+  <div class="slide-head"><div class="slide-num">19</div><div class="slide-title">Démo du MVP</div><div class="slide-tag">~3–4 min</div></div>
+  <div class="speech">
+    <p>« Et maintenant… le moment que vous attendez tous : <strong>la démo !</strong> <span class="cue">[respirer]</span></p>
+    <p>Je vais vous faire le parcours complet : je m'inscris, j'explore une salle, je valide un bloc, je publie une activité de ma séance, et on voit le tout remonter dans le feed social. En gros, une session de grimpe, de A à Z, dans Kordo. <span class="cue">[basculer sur l'app]</span> »</p>
+    <div class="demo-box">
+      <div class="dh">🎬 À narrer pendant la démo</div>
+      <ul>
+        <li>« Là, je crée mon compte… email ou Google/Apple en un tap. »</li>
+        <li>« J'arrive sur le feed. Je vais dans l'Indoor… voici mes salles, avec les filtres. »</li>
+        <li>« J'ouvre une salle, ses blocs. Je clique sur un bloc — grade, ouvreur, et les <strong>vidéos de méthode</strong> de la communauté. »</li>
+        <li>« Je valide le bloc. Et je publie une <strong>Activité</strong> : ma salle, mes blocs validés. »</li>
+        <li>« Et hop — ça apparaît dans le feed. La boucle est bouclée. »</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- 20 -->
+<div class="slide-block">
+  <div class="slide-head"><div class="slide-num">20</div><div class="slide-title">Merci !</div><div class="slide-tag">~30 s</div></div>
+  <div class="speech">
+    <p>« Et voilà ! <span class="cue">[grand sourire]</span> On a fait le tour de Kordo : le problème, le marché, le business, le produit, la technique, et la démo.</p>
+    <p>Kordo, pour résumer, c'est l'app qu'on ouvre <strong>avant</strong> de décoller du sol… et <strong>après</strong> avoir touché la dernière prise. La plateforme qui réunit enfin tout ce dont un grimpeur a besoin, en un seul endroit.</p>
+    <p>Merci beaucoup pour votre attention — et je serai ravi de répondre à toutes vos <strong>questions</strong> ! »</p>
+  </div>
+</div>
+
+<!-- TIMING -->
+<section class="timing-page">
+  <h2>Repères de timing</h2>
+  <table>
+    <thead><tr><th>Bloc</th><th>Slides</th><th>Durée</th></tr></thead>
+    <tbody>
+      <tr><td>Intro &amp; produit</td><td>1 → 5</td><td class="t">~5 min</td></tr>
+      <tr><td>Marché &amp; business</td><td>6 → 11</td><td class="t">~5 min</td></tr>
+      <tr><td>Projet &amp; technique</td><td>12 → 18</td><td class="t">~4 min</td></tr>
+      <tr><td>Démo live</td><td>19</td><td class="t">~3–4 min</td></tr>
+      <tr><td>Conclusion</td><td>20</td><td class="t">~30 s</td></tr>
+    </tbody>
+  </table>
+  <div class="tip">
+    💡 <strong>Conseils :</strong> respire entre chaque grande partie · regarde le jury, pas les slides · ralentis sur les chiffres (marché, projections) · garde de l'énergie pour la démo, c'est le moment fort · si tu débordes, raccourcis les slides 13–14 (méthode/story map).
+  </div>
+</section>
+
+</body>
+</html>
