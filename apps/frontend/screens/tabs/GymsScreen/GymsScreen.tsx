@@ -125,6 +125,7 @@ export default function GymsScreen() {
                     borderless
                     borderRadius="rounded"
                     style={{ alignSelf: 'flex-end' }}
+                    onPress={() => navigation.navigate('Gym', { gymId: gym.id })}
                   />
                 </Card>
               ))}
@@ -157,7 +158,7 @@ export default function GymsScreen() {
               Vos salles favorites
             </Text>
             <View style={{ width: Dimensions.get('window').width, marginLeft: -theme.spacing.xl }}>
-              <Slider height={320} gap={theme.spacing.lg}>
+              <Slider selectMode height={320} gap={theme.spacing.lg}>
                 {FAVORITE_GYMS.map((gym) => (
                   <Card
                     key={gym.id}
@@ -427,7 +428,7 @@ export default function GymsScreen() {
               appearance="primary"
               title="Voir tout"
               onPress={() => {
-                navigation.navigate('AllGym');
+                navigation.navigate('AllGyms');
               }}
             />
           </View>

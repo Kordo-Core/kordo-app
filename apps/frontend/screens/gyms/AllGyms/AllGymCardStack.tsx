@@ -6,10 +6,13 @@ import Animated, {
   useSharedValue,
   useAnimatedStyle,
   withSpring,
+  runOnJS,
   SharedValue,
 } from 'react-native-reanimated';
-import { Card, Tag, Text, theme } from 'kordo-ui';
-import { Gym } from '../../fake_data/gyms.fake';
+import { Card, Icon, Tag, Text, theme } from 'kordo-ui';
+import { Gym } from '../../../fake_data/gyms.fake';
+import BlurView from 'expo-blur/build/BlurView';
+import { Bounce } from 'kordo-ui/src/animations/Bounce/Bounce';
 
 /**
  * Pile de cartes de salles en profondeur, façon « deck » vertical, parcourue par glissement.
@@ -46,6 +49,8 @@ const SCALE_STEP = 0.06;
 // Échelle minimale (cartes les plus lointaines) et maximale (cartes passées les plus proches)
 const SCALE_MIN = 0.6;
 const SCALE_MAX = 1.25;
+// Débordement (px) de la carte de devant sous le bas visible : garantit qu'elle est toujours coupée
+const BOTTOM_OVERFLOW = 180;
 // Distance de glissement (px) à parcourir pour avancer d'une carte
 const DRAG_PER_CARD = 140;
 // Ressort d'aimantation appliqué à `progress` quand on relâche le geste
@@ -73,6 +78,9 @@ interface CardItemProps {
   baseOffset: number;
   /** Remontée à appliquer au bloc d'infos pour compenser le débordement bas de la carte */
   contentBottom: number;
+  /** Seule la carte de devant est interactive : les autres laissent passer les touches (sinon une carte
+   *  passée, invisible mais au-dessus, bloquerait le onPress de la nouvelle carte de devant) */
+  isFront: boolean;
   gym: Gym;
 }
 
@@ -84,6 +92,7 @@ function CardItem({
   height,
   baseOffset,
   contentBottom,
+  isFront,
   gym,
 }: CardItemProps) {
   // Style de la carte : position/échelle/opacité dérivées en continu du rang relatif `r`.
@@ -128,7 +137,16 @@ function CardItem({
   });
 
   return (
-    <AnimatedCard style={[animStyle, { backgroundColor: theme.colors.neutral.gray.light }]}>
+    <AnimatedCard
+      style={[
+        animStyle,
+        {
+          backgroundColor: theme.colors.neutral.gray.light,
+          // Seule la carte de devant capte les touches (pointerEvents via style, supporté en RN 0.81)
+          pointerEvents: isFront ? 'auto' : 'none',
+        },
+      ]}
+    >
       {/* Photo de la salle : remplit toute la carte, déborde donc avec elle par le bas */}
       <ImageBackground
         source={{ uri: gym.imageUri }}
@@ -136,11 +154,19 @@ function CardItem({
         imageStyle={{ borderRadius: theme.borderRadius.square }}
       />
       {/* Overlay du contenu, géré en fondu : gradient ancré tout en bas, infos remontées au bas visible */}
-      <Animated.View style={[{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }, infoStyle]}>
+      <Animated.View
+        style={[{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }, infoStyle]}
+      >
         {/* Le gradient part toujours du bas réel de la carte et monte assez haut pour couvrir le texte */}
         <LinearGradient
-          colors={['transparent', 'rgba(0,0,0,0.8)']}
-          style={{ position: 'absolute', left: 0, right: 0, bottom: 0, height: contentBottom + 220 }}
+          colors={['transparent', 'rgb(0, 0, 0)']}
+          style={{
+            position: 'absolute',
+            left: 0,
+            right: 0,
+            bottom: 0,
+            height: contentBottom + 300,
+          }}
         />
         <View
           style={{
@@ -154,13 +180,56 @@ function CardItem({
         >
           <Tag title={gym.shortName} appearance="primary" />
           <View>
-            <Text appearance="white" size={'lg'} extraBold>
+            <Text appearance="white" size={'xxl'} extraBold>
               {gym.name}
             </Text>
-            <Text appearance="white" bold>
+            <Text appearance="white" size={'lg'}>
               {gym.address}
             </Text>
           </View>
+
+          <Bounce>
+            <BlurView
+              intensity={60}
+              tint="default"
+              style={{
+                height: 70,
+                borderRadius: theme.borderRadius.rounded,
+                overflow: 'hidden',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  gap: theme.spacing.sm,
+                  width: '100%',
+                  padding: theme.spacing.xs,
+                  paddingLeft: theme.spacing.md,
+                }}
+              >
+                <View />
+                <Text appearance="white" bold size={'lg'}>
+                  Voir plus
+                </Text>
+                <View
+                  style={{
+                    backgroundColor: 'white',
+                    height: 70 - 2 * theme.spacing.xs,
+                    width: 70 - 2 * theme.spacing.xs,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    borderRadius: theme.borderRadius.rounded,
+                  }}
+                >
+                  <Icon name="ArrowRightFilled" size={'md'} />
+                </View>
+              </View>
+            </BlurView>
+          </Bounce>
         </View>
       </Animated.View>
     </AnimatedCard>
@@ -179,23 +248,27 @@ interface Props {
 export function AllGymCardStack({ gyms, cardWidth, cardHeight }: Props) {
   const count = gyms.length;
   const width = cardWidth ?? Dimensions.get('window').width - theme.spacing.lg * 2;
-  // Carte de devant volontairement très haute : elle déborde et se fait couper par le bas du conteneur
-  const frontHeight = cardHeight ?? Math.round(Dimensions.get('window').height * 0.62);
   // Décalage de base pour laisser la place aux cartes à venir qui remontent au-dessus de la carte de devant
   const baseOffset = MAX_BACK * PEEK_Y;
 
   // Hauteur réellement affichée du conteneur, mesurée au layout. Initialisée à une estimation pour
   // éviter un saut visuel à la première frame, puis corrigée par `onLayout`.
-  const [visibleHeight, setVisibleHeight] = useState(Math.round(Dimensions.get('window').height * 0.5));
-  // De combien la carte de devant dépasse en bas = (haut de carte + sa hauteur) - hauteur visible.
-  // On remonte le bloc d'infos d'autant, plus une marge de respiration, pour qu'il reste à l'écran.
-  const contentBottom =
-    Math.max(baseOffset + frontHeight - visibleHeight, 0) + theme.spacing.lg;
+  const [visibleHeight, setVisibleHeight] = useState(
+    Math.round(Dimensions.get('window').height * 0.5),
+  );
+  // Hauteur de la carte de devant calée sur la zone visible mesurée : elle remplit tout l'espace
+  // disponible PUIS déborde de BOTTOM_OVERFLOW sous le bas, donc elle est toujours coupée quel que
+  // soit l'espace restant au-dessus (header, sélecteur de filtre, etc.).
+  const frontHeight = cardHeight ?? visibleHeight - baseOffset + BOTTOM_OVERFLOW;
+  // Le bloc d'infos est remonté du débordement (+ une marge) pour rester dans la zone affichée.
+  const contentBottom = Math.max(baseOffset + frontHeight - visibleHeight, 0) + theme.spacing.lg;
 
   // Position continue dans la pile : 0 = première carte devant, count-1 = dernière carte devant
   const progress = useSharedValue(0);
   // Mémorise `progress` au début du geste pour appliquer le déplacement relatif du doigt
   const start = useSharedValue(0);
+  // Index entier de la carte de devant, côté JS : sert à n'activer les touches que sur elle
+  const [frontIndex, setFrontIndex] = useState(0);
 
   const pan = Gesture.Pan()
     .onStart(() => {
@@ -210,6 +283,8 @@ export function AllGymCardStack({ gyms, cardWidth, cardHeight }: Props) {
       const projected = progress.value + (e.velocityY / DRAG_PER_CARD) * 0.08;
       const target = clampWorklet(Math.round(projected), 0, count - 1);
       progress.value = withSpring(target, SPRING);
+      // Synchronise l'index JS de la carte de devant pour basculer l'interactivité sur la nouvelle carte
+      runOnJS(setFrontIndex)(target);
     });
 
   return (
@@ -231,6 +306,7 @@ export function AllGymCardStack({ gyms, cardWidth, cardHeight }: Props) {
             height={frontHeight}
             baseOffset={baseOffset}
             contentBottom={contentBottom}
+            isFront={i === frontIndex}
             gym={gym}
           />
         ))}

@@ -15,7 +15,8 @@ import LoginScreen from './screens/LoginScreen/LoginScreen';
 import LoginFormScreen from './screens/LoginFormScreen/LoginFormScreen';
 import SignUpScreen from './screens/SignUpScreen/SignUpScreen';
 import MainTabs from './screens/MainTabs';
-import AllGymScreen from './screens/gyms/AllGymScreen';
+import AllGymsScreen from './screens/gyms/AllGyms/AllGymsScreen';
+import GymScreen from './screens/gyms/GymScreen/GymScreen';
 
 export type RootStackParamList = {
   Landing: undefined;
@@ -23,7 +24,8 @@ export type RootStackParamList = {
   LoginForm: undefined;
   SignUp: undefined;
   MainTabs: undefined;
-  AllGym: undefined;
+  AllGyms: undefined;
+  Gym: { gymId: string };
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -48,7 +50,8 @@ export default function App() {
                 <Stack.Screen name="LoginForm" component={LoginFormScreen} />
                 <Stack.Screen name="SignUp" component={SignUpScreen} />
                 <Stack.Screen name="MainTabs" component={MainTabs} />
-                <Stack.Screen name="AllGym" component={AllGymScreen} />
+                <Stack.Screen name="AllGyms" component={AllGymsScreen} />
+                <Stack.Screen name="Gym" component={GymScreen} />
               </Stack.Navigator>
             </NavigationContainer>
           </ToastProvider>
