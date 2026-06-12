@@ -1,6 +1,7 @@
 import styled from '@emotion/native';
 import { Image } from 'react-native';
 import { UserInfoProps } from './UserInfo.types';
+import { Text } from '../../atoms/Text/Text';
 
 export const Column = styled.View(() => ({
   alignItems: 'center',
@@ -42,6 +43,10 @@ export const UserData = styled.View<Pick<UserInfoProps, 'layout'>>((props) => ({
   display: 'flex',
   justifyContent: 'flex-start',
   gap: props.layout === 'column' ? 2 : 0,
+}));
+
+export const CustomText = styled(Text)<Pick<UserInfoProps, 'layout'>>((props) => ({
+  textAlign: props.layout === 'column' ? 'center' : 'left',
 }));
 
 export const Now = styled.View((props) => ({

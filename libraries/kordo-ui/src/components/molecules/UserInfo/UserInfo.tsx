@@ -20,9 +20,14 @@ export const UserInfo: React.FC<UserInfoProps> = (props) => {
           </Pressable>
 
           <Styled.UserData layout={props.layout}>
-            <Text size="lg" bold onPress={() => props.onPressUser(props.user)}>
-              {props.user.username}
-            </Text>
+            <Styled.CustomText
+              size="lg"
+              bold
+              onPress={() => props.onPressUser(props.user)}
+              layout={props.layout}
+            >
+              {props.primaryText || props.user.username}
+            </Styled.CustomText>
             {props.secondaryText}
             {props.tertiaryText}
           </Styled.UserData>
@@ -52,7 +57,7 @@ export const UserInfo: React.FC<UserInfoProps> = (props) => {
 
           <Styled.UserData layout={props.layout}>
             <Text size="lg" bold onPress={() => props.onPressUser(props.user)}>
-              {props.user.username}
+              {props.primaryText || props.user.username}
             </Text>
             {props.secondaryText}
             {props.tertiaryText}
