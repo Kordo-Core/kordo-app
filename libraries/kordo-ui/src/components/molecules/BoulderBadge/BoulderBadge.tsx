@@ -91,13 +91,14 @@ export const BoulderBadge: React.FC<BoulderBadgeProps> = (props) => {
         ))}
       </Svg>
 
-      {/* Centered avatar */}
+      {/* Centered image (neutral circle when no image is provided) */}
       <Styled.CustomImage
-        source={{ uri: props.avatarUrl }}
+        source={props.avatarUrl ? { uri: props.avatarUrl } : undefined}
         style={{
           width: avatarSize,
           height: avatarSize,
           borderRadius: avatarSize / 2,
+          backgroundColor: theme.colors.neutral.gray.light,
         }}
       />
     </Styled.AvatarWrapper>
