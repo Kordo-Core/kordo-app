@@ -1,10 +1,9 @@
 import styled from '@emotion/native';
 
-export const Row = styled.View(() => ({
+export const Row = styled.View((props) => ({
   flexDirection: 'row',
   alignItems: 'center',
   width: '100%',
-  paddingHorizontal: 16,
   paddingVertical: 8,
   gap: 16,
 }));
@@ -21,9 +20,10 @@ export const Right = styled.View(() => ({
 }));
 
 export const TextWrapper = styled.View(() => ({
-  position: 'absolute',
-  left: 0,
-  right: 0,
-  alignItems: 'center',
+  //TODO alignItems: 'center',
   pointerEvents: 'none',
+}));
+
+export const LeftWrapper = styled.View((props) => ({
+  minWidth: props.theme.spacing.xxl,
 }));
