@@ -1,5 +1,4 @@
 import styled from '@emotion/native';
-import { Theme } from '@emotion/react/dist/declarations/src';
 import Animated from 'react-native-reanimated';
 import MaskedView from '@react-native-masked-view/masked-view';
 import { BlurView } from 'expo-blur';
@@ -12,14 +11,12 @@ export const SegmentItem = styled.View(() => ({
   justifyContent: 'center',
 }));
 
-export const CustomText = styled(Text)(
-  (props: { size?: SegmentedControlProps['size']; theme: Theme }) => ({
-    height: props.size === 'lg' ? 60 : 40,
-    lineHeight: props.size === 'lg' ? 60 : 40,
-    fontSize: props.size ? props.theme.fontSizes[props.size] : props.theme.fontSizes.md,
-    textAlign: 'center',
-  }),
-);
+export const CustomText = styled(Text)<{ size?: SegmentedControlProps['size'] }>((props) => ({
+  height: props.size === 'lg' ? 60 : 40,
+  lineHeight: props.size === 'lg' ? 60 : 40,
+  fontSize: props.size ? props.theme.fontSizes[props.size] : props.theme.fontSizes.md,
+  textAlign: 'center',
+}));
 
 export const SegmentedContainer = styled(BlurView)<{ borderRadius: string }>((props) => ({
   flexDirection: 'row',

@@ -13,5 +13,4 @@ export interface TextProps extends ReactTextProps {
   size?: ExtendedSizeType | number;
   bold?: boolean;
   extraBold?: boolean;
-  style?: any;
 }
