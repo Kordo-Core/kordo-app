@@ -590,6 +590,22 @@ export const fluentIcons = {
       },
     ],
   },
+  TriangleUpFilled: {
+    viewBox: '0 0 24 24',
+    paths: [
+      {
+        d: 'M13.24 6.17 18.76 15.83Q20 18 17.5 18L6.5 18Q4 18 5.24 15.83L10.76 6.17Q12 4 13.24 6.17Z',
+      },
+    ],
+  },
+  TriangleDownFilled: {
+    viewBox: '0 0 24 24',
+    paths: [
+      {
+        d: 'M13.24 17.83 18.76 8.17Q20 6 17.5 6L6.5 6Q4 6 5.24 8.17L10.76 17.83Q12 20 13.24 17.83Z',
+      },
+    ],
+  },
   ChevronLeftRegular: {
     viewBox: '0 0 20 20',
     paths: [
