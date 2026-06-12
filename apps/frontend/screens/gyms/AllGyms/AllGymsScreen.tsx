@@ -1,7 +1,8 @@
 import { useNavigation } from '@react-navigation/native';
 import * as Styled from './AllGymsScreen.styles';
 import { Header, Icon, Slider, Text, theme } from 'kordo-ui';
-import { View } from 'react-native';
+import { useWindowDimensions, View } from 'react-native';
+import { SvgUri } from 'react-native-svg';
 import React from 'react';
 import { AllGymCardStack } from './AllGymCardStack';
 import { GYMS } from '../../../fake_data/gyms.fake';
@@ -11,6 +12,7 @@ const FILTERS = Array.from(new Set(GYMS.map((g) => g.shortName)));
 
 export default function AllGymsScreen() {
   const navigation = useNavigation();
+  const { height, width } = useWindowDimensions();
   const [selectedIndex, setSelectedIndex] = React.useState(0);
 
   // Salles correspondant au filtre centré dans le sélecteur
@@ -18,8 +20,18 @@ export default function AllGymsScreen() {
 
   return (
     <Styled.Container>
+      <Styled.Background pointerEvents="none">
+        <SvgUri
+          width={height}
+          height={width}
+          uri="https://res.cloudinary.com/dqmegz5dn/image/upload/v1781135028/topo-primary-dark_wdsvmf.svg"
+          preserveAspectRatio="xMidYMid slice"
+          style={{ transform: [{ rotate: '90deg' }] }}
+        />
+      </Styled.Background>
       <Header
         centerChildren
+        style={{ backgroundColor: 'transparent' }}
         left={<Icon name="ArrowLeftRegular" size="md" onPress={() => navigation.goBack()} />}
       >
         <Text bold size="lg">
