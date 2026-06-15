@@ -18,7 +18,6 @@ import { Gym } from '../../../fake_data/gyms.fake';
 
 const AnimatedCard = Animated.createAnimatedComponent(Card);
 
-
 const PEEK = 44;
 const SPRING = { damping: 50, stiffness: 500 };
 const SWIPE_THRESHOLD = 80;
@@ -219,12 +218,10 @@ export function GymCardStack({ cardWidth, cardHeight = 300, gyms }: Props) {
               <View style={{ gap: theme.spacing.sm }}>
                 <Tag title={gyms[i].shortName} appearance="primary" />
                 <View>
-                  <Text appearance="white" size={'lg'} extraBold>
+                  <Text appearance="white" size={'lg'} bold>
                     {gyms[i].name}
                   </Text>
-                  <Text appearance="white" bold>
-                    {gyms[i].address}
-                  </Text>
+                  <Text appearance="white">{gyms[i].address}</Text>
                 </View>
               </View>
               <Bounce>

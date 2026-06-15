@@ -9,6 +9,7 @@ import { GymCardStack } from './GymCardStack';
 import { BlurView } from 'expo-blur';
 import { FAVORITE_GYMS, POPULAR_GYMS, RECENTLY_VISITED } from '../../../fake_data/gyms.fake';
 import { RootStackParamList } from '../../../App';
+import { Bounce } from 'kordo-ui/src/animations/Bounce/Bounce';
 
 const IMAGE_FRACTION = 0.25;
 const CARD_FRACTION = 0.75;
@@ -136,7 +137,7 @@ export default function GymsScreen() {
                   borderRadius: theme.borderRadius.square,
                 }}
               >
-                <Text bold size="md" appearance="gray">
+                <Text size="md" appearance="gray">
                   Pensez à mettre à jour les blocs réussi lors de vos séances afin de grimper plus
                   haut dans le classement !
                 </Text>
@@ -188,24 +189,25 @@ export default function GymsScreen() {
                       }}
                     />
                     <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
-                      <BlurView
-                        intensity={20}
-                        tint="dark"
-                        style={{
-                          padding: theme.spacing.sm,
-                          borderWidth: 1,
-                          borderColor: 'rgba(255, 255, 255, 0.57)',
-                          borderRadius: theme.borderRadius.rounded,
-                          overflow: 'hidden',
-                        }}
-                      >
-                        <Icon
-                          name={likedGyms.has(gym.id) ? 'HeartFilled' : 'heart'}
-                          size="md"
-                          color={likedGyms.has(gym.id) ? 'red' : 'white'}
-                          onPress={() => toggleLike(gym.id)}
-                        />
-                      </BlurView>
+                      <Bounce onPress={() => toggleLike(gym.id)}>
+                        <BlurView
+                          intensity={20}
+                          tint="dark"
+                          style={{
+                            padding: theme.spacing.sm,
+                            borderWidth: 1,
+                            borderColor: 'rgba(255, 255, 255, 0.57)',
+                            borderRadius: theme.borderRadius.rounded,
+                            overflow: 'hidden',
+                          }}
+                        >
+                          <Icon
+                            name={likedGyms.has(gym.id) ? 'HeartFilled' : 'heart'}
+                            size="md"
+                            color={likedGyms.has(gym.id) ? 'red' : 'white'}
+                          />
+                        </BlurView>
+                      </Bounce>
                     </View>
                     <View style={{ gap: theme.spacing.sm }}>
                       <Tag title={gym.shortName} appearance="primary" />
@@ -219,10 +221,10 @@ export default function GymsScreen() {
                         }}
                       >
                         <View>
-                          <Text appearance="white" extraBold size="xl">
+                          <Text appearance="white" bold size="lg">
                             {gym.name}
                           </Text>
-                          <Text appearance="white" bold size="md">
+                          <Text appearance="white" size="md">
                             {gym.description}
                           </Text>
                         </View>
@@ -323,24 +325,25 @@ export default function GymsScreen() {
                       }}
                     />
                     <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
-                      <BlurView
-                        intensity={20}
-                        tint="dark"
-                        style={{
-                          padding: theme.spacing.sm,
-                          borderWidth: 1,
-                          borderColor: 'rgba(255, 255, 255, 0.57)',
-                          borderRadius: theme.borderRadius.rounded,
-                          overflow: 'hidden',
-                        }}
-                      >
-                        <Icon
-                          name={likedGyms.has(gym.id) ? 'HeartFilled' : 'heart'}
-                          size="md"
-                          color={likedGyms.has(gym.id) ? 'red' : 'white'}
-                          onPress={() => toggleLike(gym.id)}
-                        />
-                      </BlurView>
+                      <Bounce onPress={() => toggleLike(gym.id)}>
+                        <BlurView
+                          intensity={20}
+                          tint="dark"
+                          style={{
+                            padding: theme.spacing.sm,
+                            borderWidth: 1,
+                            borderColor: 'rgba(255, 255, 255, 0.57)',
+                            borderRadius: theme.borderRadius.rounded,
+                            overflow: 'hidden',
+                          }}
+                        >
+                          <Icon
+                            name={likedGyms.has(gym.id) ? 'HeartFilled' : 'heart'}
+                            size="md"
+                            color={likedGyms.has(gym.id) ? 'red' : 'white'}
+                          />
+                        </BlurView>
+                      </Bounce>
                     </View>
                     <View style={{ gap: theme.spacing.sm }}>
                       <Tag title={gym.shortName} appearance="primary" />
@@ -354,10 +357,10 @@ export default function GymsScreen() {
                         }}
                       >
                         <View>
-                          <Text appearance="white" extraBold size="xl">
+                          <Text appearance="white" bold size="lg">
                             {gym.name}
                           </Text>
-                          <Text appearance="white" bold size="md">
+                          <Text appearance="white" size="md">
                             {gym.description}
                           </Text>
                         </View>
