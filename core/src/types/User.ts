@@ -6,6 +6,8 @@ export type UserPublic = {
   bio?: string;
   isSetter?: boolean;
   avatarUrl?: string;
+  /** Whether the current user follows this user (drives the follow button state). */
+  isFollowing?: boolean;
 
   //   updated_at: Date; //TODO
   //   created_at: Date;

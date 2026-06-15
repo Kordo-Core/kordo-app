@@ -10,4 +10,5 @@ export type BoulderPublic = {
   points: number; // bloc.points
   blocUrl?: string; // bloc.bloc_url — image de couverture du bloc
   createdAt: string; // bloc.created_at (ISO)
+  isValidated?: boolean; // l'utilisateur courant a-t-il validé ce bloc (relatif au viewer, pas à l'auteur)
 };
