@@ -28,6 +28,8 @@ const config: StorybookConfig = {
           { find: /^react-native-reanimated$/, replacement: path.join(mocksDir, 'reanimated.ts') },
           // gesture-handler → mock
           { find: 'react-native-gesture-handler', replacement: path.join(mocksDir, 'gesture-handler.ts') },
+          // expo-video → mock (module natif, indisponible sur le web Vite)
+          { find: /^expo-video$/, replacement: path.join(mocksDir, 'expo-video.ts') },
           // masked-view → mock
           { find: '@react-native-masked-view/masked-view', replacement: path.join(mocksDir, 'masked-view.ts') },
           // safe-area-context → mock
