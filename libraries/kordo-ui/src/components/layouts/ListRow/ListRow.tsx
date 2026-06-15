@@ -5,9 +5,13 @@ import { ListRowProps } from './ListRow.types';
 export const ListRow: React.FC<ListRowProps> = (props) => {
   return (
     <Styled.Row>
-      <Styled.LeftWrapper>
-        <Styled.Left>{props.left}</Styled.Left>
-      </Styled.LeftWrapper>
+      {/* Colonne gauche optionnelle : sans `left`, on ne réserve pas l'espace pour
+          que le texte principal reste collé au bord gauche */}
+      {props.left != null && (
+        <Styled.LeftWrapper>
+          <Styled.Left>{props.left}</Styled.Left>
+        </Styled.LeftWrapper>
+      )}
       {/* Zone centrale pour afficher le texte principal et secondaire empilés verticalement */}
       <Styled.TextWrapper>
         {props.primaryText}
