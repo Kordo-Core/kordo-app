@@ -190,7 +190,7 @@ export const Slider: FC<SliderProps> = (props) => {
   if (props.selectMode) return <SelectSlider {...props} />;
 
   return (
-    <Styled.SliderContainer height={props.height ?? 0}>
+    <Styled.SliderContainer height={props.height ?? 0} style={props.style}>
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}

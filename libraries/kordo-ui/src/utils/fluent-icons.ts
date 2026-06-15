@@ -606,6 +606,14 @@ export const fluentIcons = {
       },
     ],
   },
+  play: {
+    viewBox: '0 0 24 24',
+    paths: [
+      {
+        d: 'M8.16 5.4 18.2 11.13Q19.5 11.87 18.2 12.6L8.16 18.35Q6.5 19.3 6.5 17.4L6.5 6.35Q6.5 4.45 8.16 5.4Z',
+      },
+    ],
+  },
   ChevronLeftRegular: {
     viewBox: '0 0 20 20',
     paths: [

@@ -17,4 +17,5 @@ export interface SliderProps {
   onChange?: (index: number) => void;
   /** (selectMode) Largeur fixe optionnelle des slots ; par défaut chaque item prend sa largeur naturelle */
   itemWidth?: number;
+  style?: any;
 }
