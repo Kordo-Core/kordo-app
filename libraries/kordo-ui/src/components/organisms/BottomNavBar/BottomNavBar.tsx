@@ -47,16 +47,24 @@ export function BottomNavBar(props: BottomNavBarProps) {
   return (
     <Styled.Container style={props.style}>
       <Styled.highlightedBar style={animatedBarStyle} />
-      {tabs.map((tab, index) => (
-        <Styled.Tab
-          key={tab.key}
-          isAction={tab.isAction}
-          onPress={() => handleTabPress(index)}
-          activeOpacity={1}
-        >
-          <Icon name={tab.icon} size={32} color={tab.isAction ? getColor('primary') : getColor('black')} />
-        </Styled.Tab>
-      ))}
+      {tabs.map((tab, index) => {
+        const color = tab.isAction ? getColor('primary') : getColor('black');
+        const TabIcon = tab.icon;
+        return (
+          <Styled.Tab
+            key={tab.key}
+            isAction={tab.isAction}
+            onPress={() => handleTabPress(index)}
+            activeOpacity={1}
+          >
+            {typeof TabIcon === 'string' ? (
+              <Icon name={TabIcon} size={32} color={color} />
+            ) : (
+              <TabIcon size={32} color={color} />
+            )}
+          </Styled.Tab>
+        );
+      })}
     </Styled.Container>
   );
 }
