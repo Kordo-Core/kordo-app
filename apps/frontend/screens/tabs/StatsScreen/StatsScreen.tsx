@@ -1,11 +1,12 @@
 import { View, StyleSheet } from 'react-native';
 import { Text } from 'kordo-ui';
 
-export default function DataScreen() {
+// Page des statistiques / progression de l'utilisateur.
+export default function StatsScreen() {
   return (
     <View style={styles.container}>
       <Text size="xl" bold>
-        Données
+        Progression
       </Text>
     </View>
   );
