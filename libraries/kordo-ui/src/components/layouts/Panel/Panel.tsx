@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { Pressable, useWindowDimensions } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { LayoutChangeEvent, Pressable, useWindowDimensions } from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
   withTiming,
+  withDecay,
   runOnJS,
   interpolate,
   Extrapolation,
@@ -12,26 +13,45 @@ import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import { PanelProps } from './Panel.types';
 import * as Styled from './Panel.styles';
 
-// Seuil en pixels au-delà duquel un glissement vers le bas déclenche la fermeture du panneau
-const CLOSE_THRESHOLD = 150;
+// Distance (en px) de glissement vers le bas au-delà de la position ouverte qui déclenche la fermeture
+const CLOSE_THRESHOLD = 200;
+// Vélocité minimale (px/s) vers le bas pour fermer d'un coup ; élevée pour exiger un geste franc
+const CLOSE_VELOCITY = 1200;
 // Durée de l'animation de fermeture en millisecondes
 const CLOSE_DURATION = 250;
+// Fraction de l'écran visible à l'ouverture quand le contenu est plus grand que l'écran
+const OPEN_RATIO = 0.75;
 
-// Composant panneau coulissant (bottom sheet)
+// Composant panneau coulissant (bottom sheet) : le bloc entier (handle + contenu) glisse pour révéler le contenu qui dépasse
 export const Panel: React.FC<PanelProps> = ({ title, children, isOpen = false, onClose }) => {
-  // Hauteur totale de la fenêtre, utilisée pour positionner le panneau hors-écran initialement et calculer le seuil de fermeture par glissement
+  // Hauteur de la fenêtre, base de tous les calculs de position
   const { height } = useWindowDimensions();
-  // Contrôle le montage/démontage du composant dans le DOM pour éviter de rendre un panneau invisible
+  // Contrôle le montage/démontage pour éviter de rendre un panneau invisible
   const [visible, setVisible] = useState(isOpen);
+  // Hauteur réelle du bloc une fois mesurée (handle + contenu), peut dépasser la hauteur de l'écran
+  const [sheetHeight, setSheetHeight] = useState(0);
+  // Empêche de rejouer l'animation d'entrée à chaque changement de mesure
+  const didOpen = useRef(false);
 
-  // Valeur animée pour le décalage vertical du panneau (0 = ouvert, height = hors écran)
+  // Position du haut du bloc au repos : ancré en bas pour un petit contenu, sinon top à 25% pour montrer 75% de l'écran
+  const restTop = Math.max(height * (1 - OPEN_RATIO), height - sheetHeight);
+  // Position la plus haute atteignable : le bas du bloc aligné sur le bas de l'écran (révèle la fin du contenu)
+  const topMin = height - sheetHeight;
+
+  // Décalage vertical du haut du bloc (0 = collé en haut, height = entièrement hors écran en bas)
   const translateY = useSharedValue(height);
-  // Valeur animée pour l'opacité du fond sombre derrière le panneau
+  // Position du bloc au début d'un geste, pour suivre le doigt de façon relative
+  const startY = useSharedValue(height);
+  // Opacité du fond sombre derrière le panneau
   const overlayOpacity = useSharedValue(0);
 
-  // Synchronise l'état d'ouverture externe avec la visibilité interne : monte le composant à l'ouverture, anime la fermeture puis démonte
+  // Synchronise l'ouverture externe : monte le composant à l'ouverture, anime la sortie puis démonte à la fermeture
   useEffect(() => {
     if (isOpen) {
+      didOpen.current = false;
+      // Réinitialise la mesure : l'animation d'entrée doit se baser sur la hauteur
+      // du contenu courant, pas sur celle (périmée) de l'ouverture précédente
+      setSheetHeight(0);
       setVisible(true);
     } else {
       translateY.value = withTiming(height, { duration: CLOSE_DURATION }, (finished) => {
@@ -41,32 +61,50 @@ export const Panel: React.FC<PanelProps> = ({ title, children, isOpen = false, o
     }
   }, [isOpen]);
 
-  // Déclenche l'animation d'entrée une fois le composant monté, pour garantir que le panneau est dans le DOM avant d'animer
+  // Anime l'entrée une fois le bloc mesuré, pour partir vers la bonne position de repos (dépend de sheetHeight)
   useEffect(() => {
-    if (visible) {
-      translateY.value = withTiming(0, { duration: 300 });
+    if (visible && sheetHeight > 0 && !didOpen.current) {
+      didOpen.current = true;
+      translateY.value = withTiming(restTop, { duration: 300 });
       overlayOpacity.value = withTiming(1, { duration: 300 });
     }
-  }, [visible]);
+  }, [visible, sheetHeight, restTop]);
 
-  // Geste de glissement vertical pour permettre à l'utilisateur de fermer le panneau en le tirant vers le bas
+  // Mesure la hauteur du bloc pour calculer les bornes de glissement
+  const handleLayout = (e: LayoutChangeEvent) => {
+    setSheetHeight(e.nativeEvent.layout.height);
+  };
+
+  // Geste de glissement : déplace tout le bloc entre topMin (révèle la fin) et la fermeture
   const panGesture = Gesture.Pan()
+    // Ne capture que les mouvements verticaux : s'active après 10px en Y, et abandonne dès
+    // 15px en X pour laisser les scrolls horizontaux internes (Slider, carrousels) fonctionner.
+    .activeOffsetY([-10, 10])
+    .failOffsetX([-15, 15])
+    .onBegin(() => {
+      startY.value = translateY.value;
+    })
     .onUpdate((e) => {
-      // Ne suit le doigt que vers le bas (translationY > 0) pour empêcher de glisser le panneau vers le haut
-      if (e.translationY > 0) {
-        translateY.value = e.translationY;
-        // Réduit progressivement l'opacité de l'overlay proportionnellement au déplacement vers le bas
-        overlayOpacity.value = interpolate(
-          e.translationY,
-          [0, height * 0.5],
-          [1, 0],
-          Extrapolation.CLAMP,
-        );
-      }
+      // Suit le doigt en bornant en haut à topMin et en bas à la sortie totale d'écran
+      const next = startY.value + e.translationY;
+      translateY.value = Math.min(Math.max(next, topMin), height);
+      // Atténue l'overlay uniquement quand on descend sous la position de repos (vers la fermeture)
+      overlayOpacity.value = interpolate(
+        translateY.value,
+        [restTop, height],
+        [1, 0],
+        Extrapolation.CLAMP,
+      );
     })
     .onEnd((e) => {
-      // Ferme le panneau si l'utilisateur a dépassé le seuil de distance ou la vélocité minimale
-      if (e.translationY > CLOSE_THRESHOLD || e.velocityY > 800) {
+      // La fermeture n'est possible que si le bloc est réellement descendu SOUS sa position de repos :
+      // un glissement vers le haut (lecture du contenu) ne doit jamais fermer, même avec une vélocité résiduelle
+      const draggedDown = translateY.value > restTop;
+      // Ferme uniquement si descendu sous le repos ET assez bas, ou avec une vélocité franche vers le bas
+      if (
+        draggedDown &&
+        (translateY.value > restTop + CLOSE_THRESHOLD || e.velocityY > CLOSE_VELOCITY)
+      ) {
         translateY.value = withTiming(height, { duration: CLOSE_DURATION }, (finished) => {
           if (finished) {
             runOnJS(setVisible)(false);
@@ -74,24 +112,27 @@ export const Panel: React.FC<PanelProps> = ({ title, children, isOpen = false, o
           }
         });
         overlayOpacity.value = withTiming(0, { duration: CLOSE_DURATION });
-      } else {
-        // Le glissement n'est pas assez fort : on ramène le panneau à sa position ouverte
-        translateY.value = withTiming(0, { duration: 200 });
+      } else if (draggedDown) {
+        // Tiré vers le bas sans aller jusqu'à fermer : on revient à la position de repos
+        translateY.value = withTiming(restTop, { duration: 200 });
         overlayOpacity.value = withTiming(1, { duration: 200 });
+      } else {
+        // Plage de lecture : on prolonge le geste par inertie (momentum) borné entre topMin et le repos, pour un scroll fluide
+        translateY.value = withDecay({ velocity: e.velocityY, clamp: [topMin, restTop] });
       }
     });
 
-  // Style animé qui applique la translation verticale au panneau
+  // Applique la translation verticale au bloc
   const panelAnimatedStyle = useAnimatedStyle(() => ({
     transform: [{ translateY: translateY.value }],
   }));
 
-  // Style animé qui applique l'opacité à l'overlay sombre
+  // Applique l'opacité à l'overlay sombre
   const overlayAnimatedStyle = useAnimatedStyle(() => ({
     opacity: overlayOpacity.value,
   }));
 
-  // Ne rend rien si le panneau n'est pas visible, pour éviter un rendu inutile
+  // Ne rend rien si le panneau n'est pas visible
   if (!visible) return null;
 
   return (
@@ -111,21 +152,22 @@ export const Panel: React.FC<PanelProps> = ({ title, children, isOpen = false, o
       >
         <Pressable style={{ flex: 1 }} onPress={onClose} />
       </Animated.View>
-      <Animated.View
-        style={[{ position: 'absolute', bottom: 0, left: 0, right: 0 }, panelAnimatedStyle]}
-      >
-        <Styled.Sheet>
-          <GestureDetector gesture={panGesture}>
+      <GestureDetector gesture={panGesture}>
+        <Animated.View
+          onLayout={handleLayout}
+          style={[{ position: 'absolute', top: 0, left: 0, right: 0 }, panelAnimatedStyle]}
+        >
+          <Styled.Sheet>
             <Styled.HandleArea>
               <Styled.Handle />
             </Styled.HandleArea>
-          </GestureDetector>
-          <Styled.Panel>
-            <Styled.Title>{title}</Styled.Title>
-            {children}
-          </Styled.Panel>
-        </Styled.Sheet>
-      </Animated.View>
+            <Styled.Content>
+              {title && <Styled.Title>{title}</Styled.Title>}
+              {children}
+            </Styled.Content>
+          </Styled.Sheet>
+        </Animated.View>
+      </GestureDetector>
     </Styled.Container>
   );
 };

@@ -29,7 +29,7 @@ export const Handle = styled.View((props) => ({
   borderRadius: props.theme.borderRadius.rounded,
 }));
 
-export const Panel = styled.View((props) => ({
+export const Content = styled.View((props) => ({
   backgroundColor: props.theme.colors.neutral.white,
   padding: props.theme.spacing.md,
   minHeight: 200,
