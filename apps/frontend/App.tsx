@@ -25,7 +25,7 @@ export type RootStackParamList = {
   SignUp: undefined;
   MainTabs: undefined;
   AllGyms: undefined;
-  Gym: { gymId: string };
+  Gym: { gymId: string; blocId?: string };
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
