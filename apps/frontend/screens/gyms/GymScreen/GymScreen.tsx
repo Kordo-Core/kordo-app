@@ -1,5 +1,11 @@
-import { useMemo, useState } from 'react';
-import { LayoutChangeEvent, useWindowDimensions } from 'react-native';
+import React, { useMemo, useState } from 'react';
+import {
+  Image,
+  InteractionManager,
+  LayoutChangeEvent,
+  useWindowDimensions,
+  View,
+} from 'react-native';
 import { SvgUri } from 'react-native-svg';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import {
@@ -9,7 +15,10 @@ import {
   ListRow,
   Panel,
   SegmentedControl,
+  Slider,
+  Tag,
   Text,
+  VideoStories,
   theme,
 } from 'kordo-ui';
 import * as Styled from './GymScreen.styles';
@@ -17,7 +26,8 @@ import { RankingTab } from './RankingTab/RankingTab';
 import { BlocsTab } from './BlocsTab/BlocsTab';
 import { CardGeometry } from './utils/CardGeometry.types';
 import { RootStackParamList } from '../../../App';
-import { BlocDetail, GYMS } from '../../../fake_data';
+import { BlocDetail, GYMS, getMediaByBloc, getBlocDetailById } from '../../../fake_data';
+import { MethodVideoSlide } from './components/MethodVideoSlide/MethodVideoSlide';
 
 const SEGMENTS = [
   { text: 'Classement', color: theme.colors.secondary.base },
@@ -35,11 +45,39 @@ export default function GymScreen() {
   const gym = GYMS.find((g) => g.id === params.gymId);
   const [activeTab, setActiveTab] = useState(0);
 
-  const { height } = useWindowDimensions();
+  const { height, width } = useWindowDimensions();
 
   const [headerHeight, setHeaderHeight] = useState(0);
   const [segmentedHeight, setSegmentedHeight] = useState(0);
   const [selectedBoulder, setSelectedBoulder] = useState<BlocDetail | null>(null);
+  const [isOpen, setIsOpen] = useState(false);
+  // Visionneuse "stories" des vidéos de méthode du bloc sélectionné (null = fermée)
+  const [storiesIndex, setStoriesIndex] = useState<number | null>(null);
+
+  // Vidéos de méthode du bloc ouvert, au format attendu par VideoStories
+  const blocVideos = useMemo(
+    () =>
+      selectedBoulder
+        ? getMediaByBloc(selectedBoulder.bloc.id).map((e) => ({ id: e.media.id, url: e.media.url }))
+        : [],
+    [selectedBoulder],
+  );
+
+  React.useEffect(() => {
+    setIsOpen(!!selectedBoulder);
+  }, [selectedBoulder]);
+
+  // Deep-link : arrivée avec un blocId (ex. depuis une activité) → onglet blocs + panneau du bloc ouvert.
+  // On diffère l'ouverture après la transition de navigation : sinon l'animation du Panel se joue
+  // pendant le push d'écran et n'aboutit pas (le panneau reste fermé).
+  React.useEffect(() => {
+    if (!params.blocId) return;
+    const detail = getBlocDetailById(params.blocId);
+    if (!detail) return;
+    setActiveTab(1);
+    const task = InteractionManager.runAfterInteractions(() => setSelectedBoulder(detail));
+    return () => task.cancel();
+  }, [params.blocId]);
 
   // Géométrie commune aux deux onglets (même slot hero, même docking)
   const geometry = useMemo<CardGeometry>(() => {
@@ -80,18 +118,26 @@ export default function GymScreen() {
         />
       )}
 
-      <Panel title="test" isOpen={!!selectedBoulder} onClose={() => setSelectedBoulder(null)}>
-        {selectedBoulder && (
+      <Panel
+        isOpen={!!isOpen}
+        onClose={() => {
+          setIsOpen(false);
+          setTimeout(() => {
+            setSelectedBoulder(null);
+          }, 300);
+        }}
+      >
+        <>
           <ListRow
             left={
               <BoulderBadge
-                avatarUrl={selectedBoulder.bloc.blocUrl}
-                grade={selectedBoulder.bloc.grade}
+                avatarUrl={selectedBoulder?.bloc.blocUrl}
+                grade={selectedBoulder?.bloc.grade || 1}
               />
             }
             primaryText={
               <Text size="lg" bold>
-                {selectedBoulder.bloc.name}
+                {selectedBoulder?.bloc.name}
               </Text>
             }
             secondaryText={
@@ -99,17 +145,92 @@ export default function GymScreen() {
                 <Text size="sm" appearance="gray">
                   par{' '}
                 </Text>
-                {selectedBoulder.setter?.firstName}
+                {selectedBoulder?.setter?.firstName}
               </Text>
             }
             right={
               <Text size="lg" bold appearance="gray">
-                {selectedBoulder.bloc.points}pts
+                {selectedBoulder?.bloc.points}pts
               </Text>
             }
           />
-        )}
+          <Image
+            source={{ uri: selectedBoulder?.bloc.blocUrl }}
+            style={{
+              width: width,
+              height: 500,
+              backgroundColor: theme.colors.secondary.light,
+              marginLeft: -theme.spacing.md,
+              marginTop: theme.spacing.sm,
+            }}
+          />
+          <View style={{ gap: theme.spacing.md }}>
+            <View
+              style={{
+                flexDirection: 'row',
+                flexWrap: 'wrap',
+                gap: theme.spacing.sm,
+                marginTop: theme.spacing.md,
+              }}
+            >
+              {selectedBoulder?.tags.map((tag) => (
+                <Tag key={tag.id} title={tag.name} appearance="secondary" />
+              ))}
+            </View>
+            <Text>{selectedBoulder?.bloc.description}</Text>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                gap: theme.spacing.sm,
+              }}
+            >
+              <Icon name="calendar" size="md" />
+              <Text>{selectedBoulder?.bloc.createdAt}</Text>
+            </View>
+            <Slider
+              height={260}
+              gap={theme.spacing.md}
+              style={{
+                width: width,
+                marginLeft: -theme.spacing.md,
+              }}
+            >
+              <View
+                style={{
+                  width: 180,
+                  height: 260,
+                  borderRadius: theme.borderRadius.square,
+                  borderWidth: 2,
+                  borderColor: theme.colors.primary.base,
+                  borderStyle: 'dashed',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <Icon name="image" size="lg" color={theme.colors.primary.base} />
+                <Text appearance="primary">Ajouter votre vidéo</Text>
+              </View>
+              {getMediaByBloc(selectedBoulder?.bloc.id || '').map((entry, index) => (
+                <MethodVideoSlide
+                  key={entry.media.id}
+                  entry={entry}
+                  onPress={() => setStoriesIndex(index)}
+                />
+              ))}
+            </Slider>
+          </View>
+        </>
       </Panel>
+
+      {/* Visionneuse "stories" des vidéos de méthode (tap gauche/droite = vidéo préc./suiv.) */}
+      {storiesIndex !== null && (
+        <VideoStories
+          videos={blocVideos}
+          initialIndex={storiesIndex}
+          onClose={() => setStoriesIndex(null)}
+        />
+      )}
 
       {/* Sélecteur figé sous le header */}
       <Styled.SegmentedWrapper

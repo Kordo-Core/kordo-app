@@ -24,9 +24,9 @@ export function RankingRow({ entry }: RankingRowProps) {
       right={
         entry.trend === 'up' ? (
           <Icon name="TriangleUpFilled" size="lg" color={theme.colors.success.base} />
-        ) : (
+        ) : entry.trend === 'down' ? (
           <Icon name="TriangleDownFilled" size="lg" color={theme.colors.error.base} />
-        )
+        ) : null
       }
     />
   );
