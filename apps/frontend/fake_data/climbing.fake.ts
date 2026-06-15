@@ -2,6 +2,7 @@ import {
   Bloc,
   BlocDetail,
   BlocMedia,
+  BlocMediaWithAuthor,
   BlocTag,
   Brand,
   GymRanking,
@@ -108,8 +109,41 @@ const SETTERS = USERS.filter((u) => u.isSetter);
 const CLIMBERS = USERS.filter((u) => !u.isSetter);
 const BLOC_ADJ = ['Bleu', 'Rouge', 'Vert', 'Jaune', 'Noir', 'Violet', 'Rose', 'Orange'];
 const BLOC_NOUN = ['Traversée', 'Réta', 'Dülfer', 'Arête', 'Toit', 'Pince', 'Dalle', 'Mur'];
+
+// Briques de description (intro / mouvement clé / conseil) combinées pour un texte varié.
+const DESC_INTRO = [
+  'Un bloc engagé qui démarre fort dès les premières prises.',
+  'Une ligne fluide pensée pour enchaîner sans temps mort.',
+  'Un problème technique où la lecture compte autant que la force.',
+  'Un bloc physique qui ne pardonne pas le manque de gainage.',
+  'Une ouverture ludique accessible mais piégeuse sur la fin.',
+];
+const DESC_MOVE = [
+  'Le crux se joue sur un mouvement de force vers une réglette fuyante.',
+  'Un grand jeté vient récompenser un bon placement de bassin.',
+  'Une section en dévers demande de garder les pieds hauts.',
+  'Un passage en adhérence sur la dalle teste la confiance dans les pieds.',
+  'Une pince ingrate oblige à compresser entre deux volumes.',
+];
+const DESC_TIP = [
+  "Conseil de l'ouvreur : reste patient et respire avant le crux.",
+  'Pense à bien repérer le talon avant de te lancer.',
+  'La clé est dans le rythme, ne casse pas le flow.',
+  'Économise tes avant-bras, les prises arrivent vite.',
+  'Vise la propreté plutôt que la vitesse pour le flash.',
+];
 // Points proportionnels au grade (grades de 1 à 30)
 const gradePoints = (grade: number): number => grade * 50;
+
+// URLs de vidéos de méthode (échantillons mp4 publics) postées par les utilisateurs sur les blocs
+const METHOD_VIDEOS = [
+  'https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/360/Big_Buck_Bunny_360_10s_1MB.mp4',
+  'https://test-videos.co.uk/vids/jellyfish/mp4/h264/360/Jellyfish_360_10s_1MB.mp4',
+  'https://test-videos.co.uk/vids/sintel/mp4/h264/360/Sintel_360_10s_1MB.mp4',
+  'https://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_320x180.mp4',
+  'https://www.w3schools.com/html/mov_bbb.mp4',
+  'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4',
+];
 
 // --- Génération secteurs / sessions / blocs / tags / tops / médias par salle ---
 export const SECTORS: Sector[] = [];
@@ -162,6 +196,7 @@ GYMS_DB.forEach((gym) => {
       points: gradePoints(grade),
       sectorId: sector.id,
       blocUrl: `https://picsum.photos/seed/${blocId}/96/96`,
+      description: `${pick(rng, DESC_INTRO)} ${pick(rng, DESC_MOVE)} ${pick(rng, DESC_TIP)}`,
       createdAt: session.createdAt,
     };
     BLOCS.push(bloc);
@@ -188,14 +223,23 @@ GYMS_DB.forEach((gym) => {
         createdAt: '2025-05-18',
       };
       TOPS.push(top);
-      if (rng() > 0.85) {
-        BLOC_MEDIA.push({
-          id: `${top.id}-media`,
-          topId: top.id,
-          url: 'https://images.unsplash.com/photo-1522163182402-834f871fd851?w=600&q=80',
-          createdAt: top.createdAt,
-        });
-      }
+    });
+
+    // Vidéos de méthode : n'importe quel utilisateur peut en poster sur le bloc,
+    // indépendamment d'un top (pas besoin d'avoir validé). Un user = une vidéo par bloc.
+    const videoCount = 1 + Math.floor(rng() * 4); // 1..4 vidéos par bloc
+    const videoAuthors = new Set<string>();
+    range(videoCount).forEach((v) => {
+      const author = pick(rng, USERS);
+      if (videoAuthors.has(author.id)) return;
+      videoAuthors.add(author.id);
+      BLOC_MEDIA.push({
+        id: `${bloc.id}-video-${v + 1}`,
+        blocId: bloc.id,
+        userId: author.id,
+        url: pick(rng, METHOD_VIDEOS),
+        createdAt: '2025-05-18',
+      });
     });
   });
 });
@@ -253,5 +297,27 @@ export function getBlocsByGym(gymId: string): BlocDetail[] {
   }));
 }
 
+/** Détail complet d'un bloc par son id (pour ouvrir directement son panneau). */
+export function getBlocDetailById(blocId: string): BlocDetail | undefined {
+  const bloc = BLOCS.find((b) => b.id === blocId);
+  if (!bloc) return undefined;
+  return {
+    bloc,
+    setter: USERS.find((u) => u.id === bloc.setterId),
+    sector: SECTORS.find((s) => s.id === bloc.sectorId)!,
+    tags: BLOC_TAGS.filter((bt) => bt.blocId === bloc.id)
+      .map((bt) => TAGS.find((t) => t.id === bt.tagId)!)
+      .filter(Boolean),
+  };
+}
+
 export const getSectorsByGym = (gymId: string): Sector[] =>
   SECTORS.filter((s) => s.gymId === gymId);
+
+/** Vidéos de méthode d'un bloc, avec leur auteur (n'importe quel utilisateur). */
+export function getMediaByBloc(blocId: string): BlocMediaWithAuthor[] {
+  return BLOC_MEDIA.filter((m) => m.blocId === blocId).map((media) => ({
+    media,
+    author: USERS.find((u) => u.id === media.userId),
+  }));
+}

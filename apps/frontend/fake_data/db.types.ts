@@ -64,6 +64,8 @@ export interface Bloc {
   sectorId: string;
   /** Image de couverture du bloc. */
   blocUrl?: string;
+  /** Description du bloc (style, mouvements clés, conseils de l'ouvreur). */
+  description: string;
   createdAt: string;
 }
 
@@ -78,7 +80,9 @@ export interface Top {
 
 export interface BlocMedia {
   id: string;
-  topId: string;
+  blocId: string;
+  userId: string;
+  /** URL de la vidéo de méthode. `bloc_media` ne contient que des vidéos de méthode. */
   url: string;
   createdAt: string;
 }
@@ -134,6 +138,8 @@ export interface Post {
 export interface SessionPost {
   id: string; // = post.id
   gymId: string;
+  title: string;
+  description: string;
 }
 
 export interface PhotoPost {
@@ -215,4 +221,9 @@ export interface BlocDetail {
   setter?: User;
   sector: Sector;
   tags: Tag[];
+}
+
+export interface BlocMediaWithAuthor {
+  media: BlocMedia;
+  author?: User;
 }
