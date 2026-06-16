@@ -5,6 +5,7 @@ from pptx.util import Inches, Pt
 from pptx.dml.color import RGBColor
 from pptx.enum.text import PP_ALIGN, MSO_ANCHOR
 from pptx.enum.shapes import MSO_SHAPE
+from PIL import Image, ImageOps
 import os
 
 # ---- palette ----
@@ -25,6 +26,11 @@ RED        = RGBColor(0xc0, 0x56, 0x3b)
 WHITE      = RGBColor(0xff, 0xff, 0xff)
 GREY_OUT   = RGBColor(0x8a, 0x8a, 0x8a)
 FONT = "Segoe UI"
+
+# Nombre total de slides (affiché dans le pied de page)
+TOTAL_SLIDES = 21
+# Dossier des images illustratives (racine du repo / img-ia)
+IMG = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..", "img-ia")
 
 prs = Presentation()
 prs.slide_width = Inches(13.333)
@@ -108,7 +114,7 @@ def subtitle(s, text, y=1.85):
 
 def footer(s, n):
     tx(s, 0.7, 7.0, 6, 0.3, "Kordo · Soutenance PFE 2025–2026", size=8.5, color=MUTED)
-    tx(s, 7.0, 7.0, 5.63, 0.3, f"{n} / 20", size=8.5, color=MUTED, bold=True, align=PP_ALIGN.RIGHT)
+    tx(s, 7.0, 7.0, 5.63, 0.3, f"{n} / {TOTAL_SLIDES}", size=8.5, color=MUTED, bold=True, align=PP_ALIGN.RIGHT)
 
 
 def placeholder(s, l, t, w, h, title, desc=""):
@@ -116,6 +122,32 @@ def placeholder(s, l, t, w, h, title, desc=""):
     set_text(sp, ("🖼  " + title + ("\n" + desc if desc else "")), size=11,
              color=RGBColor(0x9a, 0x9a, 0x93), align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
     return sp
+
+
+_IMG_CACHE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "_img_cache")
+
+
+def image_fit(s, name, l, t, w, h, bgc=RGBColor(0xf2, 0xf2, 0xef)):
+    """Insère img-ia/<name> contenue (contain) et centrée dans la boîte, avec fond letterbox.
+    L'orientation EXIF est appliquée (PowerPoint l'ignore) via une copie normalisée."""
+    rect(s, l, t, w, h, fill=bgc, line=LINE, line_w=1.0)
+    os.makedirs(_IMG_CACHE, exist_ok=True)
+    im = ImageOps.exif_transpose(Image.open(os.path.join(IMG, name)))
+    path = os.path.join(_IMG_CACHE, name)
+    im.save(path)
+    iw, ih = im.size
+    box_ratio, img_ratio = w / h, iw / ih
+    if img_ratio > box_ratio:
+        pw, ph = w, w / img_ratio
+    else:
+        ph, pw = h, h * img_ratio
+    pic = s.shapes.add_picture(path, Inches(l + (w - pw) / 2), Inches(t + (h - ph) / 2),
+                               Inches(pw), Inches(ph))
+    try:
+        no_shadow(pic)
+    except Exception:
+        pass
+    return pic
 
 
 # =================== SLIDE 1 — COVER ===================
@@ -132,7 +164,7 @@ tx(s, 6.8, 6.9, 5.8, 0.3, "🖼  Fond : photo d'ambiance bloc indoor (optionnel)
 
 # =================== SLIDE 2 — QUI SUIS-JE ===================
 s = slide(); header(s, "Présentation", "Qui suis-je ?"); footer(s, 2)
-placeholder(s, 0.7, 2.1, 5.2, 4.4, "Photo de toi à insérer", "Portrait ou photo en salle de bloc")
+image_fit(s, "me-1.jpg", 0.7, 2.1, 5.2, 4.4)
 items = [
     "Jacinto Valentino",
     "Étudiant M2 Développement à l'ECV Paris — cursus Tech Lead",
@@ -175,7 +207,7 @@ tx(s, 0.95, 4.25, 5.5, 0.5, "🎯  Objectif du projet", size=14, color=GREEN_DAR
 tx(s, 0.95, 4.85, 5.5, 1.2,
    "Valider l'usage auprès de 3 salles pilotes et 100+ grimpeurs, avec une rétention J7 > 40 % comme signal de product-market fit.",
    size=12, color=DARK, spacing=1.2)
-placeholder(s, 7.2, 2.1, 5.43, 4.4, "Capture d'écran à insérer", "Écran d'accueil / feed de l'app Kordo")
+image_fit(s, "activity-post.png", 7.2, 2.1, 5.43, 4.4)
 
 # =================== SLIDE 5 — PRODUIT ===================
 s = slide(); header(s, "Le produit", "Kordo en un coup d'œil"); footer(s, 5)
@@ -187,8 +219,8 @@ b2 = rect(s, 0.7, 4.15, 6.4, 1.95, fill=WHITE, line=LINE)
 tx(s, 0.95, 4.35, 6.0, 0.5, "Indoor — le cœur de l'app", size=14, color=GREEN_DARK, bold=True)
 tx(s, 0.95, 4.9, 6.0, 1.1, "Salles + filtres (favoris, populaires, récentes) · Blocs & validation · Vidéos de méthode · Classement par salle",
    size=11.5, color=DARK, spacing=1.15)
-placeholder(s, 7.3, 2.1, 2.6, 4.0, "Écran Feed", "à insérer")
-placeholder(s, 10.03, 2.1, 2.6, 4.0, "Fiche bloc + vidéo", "à insérer")
+image_fit(s, "now-post-et-message-post.png", 7.3, 2.1, 2.6, 4.0)
+image_fit(s, "blocs-page.png", 10.03, 2.1, 2.6, 4.0)
 
 # =================== SLIDE 6 — MARCHE 1 ===================
 s = slide(); header(s, "Étude de marché · 1/3", "Un marché en pleine croissance"); footer(s, 6)
@@ -325,10 +357,10 @@ for (qx, qy), (title, fill, col, items) in zip(positions, swot):
 # =================== SLIDE 12 — ROADMAP ===================
 s = slide(); header(s, "Pilotage projet", "Roadmap — vue d'ensemble"); footer(s, 12)
 road = [
-    ("Sprint 1–2", "Mars 2026 · Terminés", "Init projet\nDesign System\nKordo-UI stable", GREEN),
-    ("Sprint 3–4", "Mar–Avr 2026", "Auth · Profil\nFeed & publications\nNotifications", ORANGE),
-    ("Sprint 5–6", "Avr–Mai 2026", "Indoor · blocs · vidéos\nClassements\nMessagerie · paramètres", ORANGE),
-    ("MVP Launch", "Juin 2026", "App Store + Play Store\n3 salles pilotes\nMonitoring & RGPD", RED),
+    ("Sprint 1–2", "Mars 2026 · Terminé", "Init projet\nDesign System\nKordo-UI stable", GREEN),
+    ("Sprint 3–4", "Mar–Avr 2026 · Terminé", "Auth · Profil\nFeed & publications\nNotifications", GREEN),
+    ("Sprint 5–6", "Avr–Mai 2026 · Terminé", "Indoor · blocs · vidéos\nClassements\nMessagerie · paramètres", GREEN),
+    ("MVP Launch", "Juin 2026 · En cours", "App Store + Play Store\n3 salles pilotes\nMonitoring & RGPD", ORANGE),
 ]
 cw = 2.85; x = 0.7
 for ph, pw, body, col in road:
@@ -389,8 +421,43 @@ for i, cell in enumerate(postmvp):
     set_text(c, cell, size=8.5, color=RGBColor(0x99,0x99,0x99), align=PP_ALIGN.CENTER)
 tx(s, 0.7, 5.4, 11.9, 0.3, "Vert = MVP (S3–S6) · Gris = post-MVP", size=9, color=MUTED, italic=True, align=PP_ALIGN.CENTER)
 
-# =================== SLIDE 15 — MVP ===================
-s = slide(); header(s, "Le périmètre", "Le MVP : choisi vs reporté"); footer(s, 15)
+# =================== SLIDE 15 — USER STORIES & PARCOURS ===================
+s = slide(); header(s, "Conception produit", "User Stories & parcours utilisateur"); footer(s, 15)
+subtitle(s, "3 stories cœur du MVP — persona, besoin et valeur — puis le parcours type d'un grimpeur.")
+us = [
+    ("US-01 · Sprint 3", "Authentification & onboarding", "Lucas — nouveau grimpeur",
+     "Créer un compte et se connecter pour rejoindre la communauté et suivre ses sessions.",
+     "Critique · 8 pts", GREEN),
+    ("US-02 · Sprint 5", "Exploration indoor — salles & blocs", "Sofía — grimpeuse confirmée",
+     "Consulter les blocs d'une salle, leurs vidéos de méthode et le classement pour préparer sa session.",
+     "Critique · 13 pts", ORANGE),
+    ("US-03 · Sprint 4", "Fil social & publications", "Lucas — grimpeur actif",
+     "Publier (Post · Message · Activité · Now) et réagir pour documenter sa progression et échanger.",
+     "Haute · 13 pts", BLUE),
+]
+cw = 3.85; x = 0.7; cy = 2.5; chh = 2.55
+for tag, title, persona, story, meta, col in us:
+    rect(s, x, cy, cw, chh, fill=WHITE, line=LINE)
+    rect(s, x, cy, 0.08, chh, fill=col, rounded=False)
+    tx(s, x+0.25, cy+0.18, cw-0.45, 0.3, tag.upper(), size=9.5, color=ORANGE, bold=True)
+    tx(s, x+0.25, cy+0.5, cw-0.45, 0.6, title, size=12.5, color=DARK, bold=True)
+    tx(s, x+0.25, cy+1.12, cw-0.45, 0.35, persona, size=10.5, color=GREEN_DARK, italic=True)
+    tx(s, x+0.25, cy+1.5, cw-0.45, 0.9, story, size=10, color=MUTED, spacing=1.12)
+    tx(s, x+0.25, cy+chh-0.42, cw-0.45, 0.3, meta, size=10, color=col, bold=True)
+    x += cw + 0.19
+tx(s, 0.7, 5.35, 11.9, 0.4, "Parcours type — du premier lancement à la communauté", size=13, color=DARK, bold=True)
+journey = ["S'inscrire", "Explorer une salle", "Valider un bloc", "Publier une activité", "Interagir"]
+jcols = [GREEN, GREEN, GREEN, ORANGE, ORANGE]
+bw = 2.0; ax = 0.7; jy = 5.85
+for i, step in enumerate(journey):
+    b = rect(s, ax, jy, bw, 0.7, fill=jcols[i])
+    set_text(b, step, size=11, color=WHITE, bold=True, align=PP_ALIGN.CENTER)
+    if i < len(journey) - 1:
+        tx(s, ax+bw+0.02, jy+0.08, 0.33, 0.5, "→", size=20, color=MUTED, align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
+    ax += bw + 0.35
+
+# =================== SLIDE 16 — MVP ===================
+s = slide(); header(s, "Le périmètre", "Le MVP : choisi vs reporté"); footer(s, 16)
 inn = ["Auth email + Google / Apple", "Profil public + modification & avatar", "Feed + 4 publications (Now manuel)", "Like & commentaire", "Follow / unfollow", "Notifications + messagerie (sans appel)", "Salles + filtres · blocs + validation", "Vidéos de méthode · classement salle"]
 out = ["Check-in dématérialisé + Now auto", "Détection grimpeurs (Meet, géoloc)", "Graphiques de progression", "Badges & trophées", "Compte Premium B2C", "Création d'événements · résumé hebdo", "Mode sombre · multilingue · appels", "Dashboard gérant (B2B)"]
 # IN
@@ -408,7 +475,7 @@ set_text(band, "Le vrai défi : couper des features d'un projet auquel on croit,
          size=12.5, color=ORANGE_D, bold=True, align=PP_ALIGN.CENTER)
 
 # =================== SLIDE 16 — STACK ===================
-s = slide(); header(s, "Développement · 1/2", "Stack technique"); footer(s, 16)
+s = slide(); header(s, "Développement · 1/2", "Stack technique"); footer(s, 17)
 techs = [
     ("React Native + Expo", "Application mobile cross-platform iOS & Android", GREEN),
     ("TypeScript", "Typage strict de bout en bout", BLUE),
@@ -429,7 +496,7 @@ for i, (h, p, col) in enumerate(techs):
     tx(s, x+0.25, y+0.55, cw-0.4, 0.45, p, size=10, color=MUTED)
 
 # =================== SLIDE 17 — ARCHITECTURE ===================
-s = slide(); header(s, "Développement · 2/2", "Architecture"); footer(s, 17)
+s = slide(); header(s, "Développement · 2/2", "Architecture"); footer(s, 18)
 def archbox(s, l, t, w, h, color, title, sub):
     b = rect(s, l, t, w, h, fill=color)
     tf = b.text_frame; tf.word_wrap = True; tf.vertical_anchor = MSO_ANCHOR.MIDDLE
@@ -450,7 +517,7 @@ for nm, d in mono:
     x += mw + 0.19
 
 # =================== SLIDE 18 — DIFFICULTES ===================
-s = slide(); header(s, "Retour d'expérience", "Difficultés rencontrées"); footer(s, 18)
+s = slide(); header(s, "Retour d'expérience", "Difficultés rencontrées"); footer(s, 19)
 diffs = [
     ("1", "Les contraintes de temps", "Mener de front conception, design, architecture et développement en solo impose des arbitrages permanents sur le périmètre."),
     ("2", "Réduire le périmètre du MVP", "Vouloir tout mettre dans le MVP. Couper des fonctionnalités d'un projet auquel on croit est difficile — apprendre à prioriser (MoSCoW, frontière MVP) a été clé."),
@@ -465,9 +532,9 @@ for num, h, p in diffs:
     y += 1.52
 
 # =================== SLIDE 19 — DEMO ===================
-s = slide(); header(s, "Place à la pratique", "Démo du MVP"); footer(s, 19)
-placeholder(s, 0.7, 2.2, 2.85, 3.8, "Écran 1", "Feed / publication")
-placeholder(s, 3.7, 2.2, 2.85, 3.8, "Écran 2", "Indoor / fiche bloc")
+s = slide(); header(s, "Place à la pratique", "Démo du MVP"); footer(s, 20)
+image_fit(s, "activity-post.png", 0.7, 2.2, 2.85, 3.8)
+image_fit(s, "blocs-page.png", 3.7, 2.2, 2.85, 3.8)
 card = rect(s, 6.85, 2.2, 5.78, 1.9, fill=GREEN_SOFT)
 tx(s, 7.1, 2.4, 5.3, 0.5, "🎬  Démonstration live", size=14, color=GREEN_DARK, bold=True)
 tx(s, 7.1, 2.95, 5.3, 1.1, "Parcours : inscription → exploration d'une salle → validation d'un bloc → publication d'une activité → feed social.",
