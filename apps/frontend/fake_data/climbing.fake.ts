@@ -321,3 +321,8 @@ export function getMediaByBloc(blocId: string): BlocMediaWithAuthor[] {
     author: USERS.find((u) => u.id === media.userId),
   }));
 }
+
+/** Vidéo de méthode postée par l'utilisateur courant sur un bloc, si elle existe. */
+export function getCurrentUserBlocMethod(blocId: string): BlocMedia | undefined {
+  return BLOC_MEDIA.find((m) => m.blocId === blocId && m.userId === CURRENT_USER.id);
+}

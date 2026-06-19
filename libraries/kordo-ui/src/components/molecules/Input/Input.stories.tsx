@@ -7,7 +7,7 @@ import { useState } from 'react';
  *
  * ## Variants
  * - **type**: `email`, `password`, `number` (validated on blur)
- * - **icon**: Feather icon positioned at `left` or `right`
+ * - **leftIcon / rightIcon**: Feather icons, can be used independently or together
  * - **required**: marks the field as required with a `*` indicator
  */
 export default {
@@ -35,11 +35,6 @@ export default {
     required: {
       control: 'boolean',
       description: 'Marks the field as required — shows `*` and validates on blur',
-    },
-    iconPosition: {
-      control: 'radio',
-      options: ['left', 'right'],
-      description: 'Position of the icon inside the field',
     },
     onChange: {
       action: 'changed',
@@ -95,8 +90,20 @@ export const WithIcon: Story = {
   args: {
     label: 'Search',
     placeholder: 'Search...',
-    icon: { name: 'search' },
-    iconPosition: 'left',
+    leftIcon: { name: 'search' },
+  },
+};
+
+/**
+ * Field with icons on both sides.
+ */
+export const WithBothIcons: Story = {
+  render: (args) => <InputWithState {...args} />,
+  args: {
+    label: 'Search',
+    placeholder: 'Search...',
+    leftIcon: { name: 'search' },
+    rightIcon: { name: 'x' },
   },
 };
 

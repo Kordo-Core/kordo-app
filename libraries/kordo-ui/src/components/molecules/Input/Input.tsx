@@ -67,6 +67,8 @@ export const Input: React.FC<InputProps> = (props) => {
     }
   };
 
+  fadeRef.current?.trigger('in');
+
   return (
     <View>
       {(props.label || props.required) && (
@@ -76,8 +78,15 @@ export const Input: React.FC<InputProps> = (props) => {
         </Text>
       )}
       <Shake ref={shakeRef} duration={50} amplitude={5}>
-        <Styled.InputContainer style={animatedBorderStyle}>
-          {props.iconPosition === 'left' && props.icon && <Icon name={props.icon.name} size={20} />}
+        <Styled.InputContainer multiline={props.multiline} style={animatedBorderStyle}>
+          {props.leftIcon && (
+            <Icon
+              name={props.leftIcon.name}
+              size={props.leftIcon.size ?? 20}
+              color={props.leftIcon.color}
+              onPress={props.leftIcon.onPress}
+            />
+          )}
 
           <Styled.Input
             value={props.value}
@@ -86,7 +95,8 @@ export const Input: React.FC<InputProps> = (props) => {
             editable={props.editable}
             maxLength={props.maxLength}
             multiline={props.multiline}
-            iconPosition={props.iconPosition}
+            style={props.multiline ? { textAlignVertical: 'top', alignSelf: 'stretch' } : undefined}
+            hasLeftIcon={!!props.leftIcon}
             keyboardType={keyboardType}
             textContentType={textContentType}
             secureTextEntry={props.type === 'password'}
@@ -111,15 +121,23 @@ export const Input: React.FC<InputProps> = (props) => {
             }}
           />
 
-          {props.iconPosition !== 'left' && props.icon && <Icon name={props.icon.name} size={20} />}
+          {props.rightIcon && (
+            <Icon
+              name={props.rightIcon.name}
+              size={props.rightIcon.size ?? 20}
+              color={props.rightIcon.color}
+              onPress={props.rightIcon.onPress}
+            />
+          )}
         </Styled.InputContainer>
       </Shake>
-
-      <Fade ref={fadeRef} direction="down" duration={200} distance={6}>
-        <Styled.ErrorText appearance="error" size="sm">
-          {errorMessage || ' '}
-        </Styled.ErrorText>
-      </Fade>
+      {errorMessage && (
+        <Fade ref={fadeRef} direction="down" duration={200} distance={6}>
+          <Styled.ErrorText appearance="error" size="sm">
+            {errorMessage || ' '}
+          </Styled.ErrorText>
+        </Fade>
+      )}
     </View>
   );
 };

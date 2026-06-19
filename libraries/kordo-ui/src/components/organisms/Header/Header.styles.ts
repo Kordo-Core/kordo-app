@@ -14,7 +14,6 @@ export const Header = styled(Animated.View)((props) => ({
   zIndex: 2,
   width: '100%',
   backgroundColor: props.theme.colors.neutral.white,
-  shadowColor: '#000',
 }));
 
 export const Row = styled.View({

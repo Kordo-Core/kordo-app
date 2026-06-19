@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { LayoutChangeEvent, Pressable, useWindowDimensions } from 'react-native';
+import { Keyboard, LayoutChangeEvent, Platform, Pressable, useWindowDimensions } from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -32,11 +32,15 @@ export const Panel: React.FC<PanelProps> = ({ title, children, isOpen = false, o
   const [sheetHeight, setSheetHeight] = useState(0);
   // Empêche de rejouer l'animation d'entrée à chaque changement de mesure
   const didOpen = useRef(false);
+  // Clavier : hauteur + durée d'animation native (events JS — fiables y compris dans un Modal)
+  const [keyboard, setKeyboard] = useState({ height: 0, duration: 250 });
 
+  // Hauteur réellement disponible une fois le clavier ouvert
+  const availableHeight = height - keyboard.height;
   // Position du haut du bloc au repos : ancré en bas pour un petit contenu, sinon top à 25% pour montrer 75% de l'écran
   const restTop = Math.max(height * (1 - OPEN_RATIO), height - sheetHeight);
-  // Position la plus haute atteignable : le bas du bloc aligné sur le bas de l'écran (révèle la fin du contenu)
-  const topMin = height - sheetHeight;
+  // Position la plus haute atteignable : le bas du bloc aligné sur le bas de la zone visible (au-dessus du clavier)
+  const topMin = availableHeight - sheetHeight;
 
   // Décalage vertical du haut du bloc (0 = collé en haut, height = entièrement hors écran en bas)
   const translateY = useSharedValue(height);
@@ -69,6 +73,33 @@ export const Panel: React.FC<PanelProps> = ({ title, children, isOpen = false, o
       overlayOpacity.value = withTiming(1, { duration: 300 });
     }
   }, [visible, sheetHeight, restTop]);
+
+  // Écoute le clavier (hauteur + durée d'animation). Will* sur iOS (suit le mouvement),
+  // Did* sur Android. Le remplissage blanc sous le panneau masque tout vide pendant la fermeture.
+  useEffect(() => {
+    const showEvt = Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow';
+    const hideEvt = Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide';
+    const show = Keyboard.addListener(showEvt, (e) =>
+      setKeyboard({ height: e.endCoordinates.height, duration: e.duration || 250 }),
+    );
+    const hide = Keyboard.addListener(hideEvt, (e) =>
+      setKeyboard({ height: 0, duration: e.duration || 200 }),
+    );
+    return () => {
+      show.remove();
+      hide.remove();
+    };
+  }, []);
+
+  // Panneau déjà ouvert : on remonte le bloc pour caler son bas (champ de saisie) juste
+  // au-dessus du clavier à l'ouverture, et on revient au repos à la fermeture.
+  useEffect(() => {
+    if (!visible || sheetHeight === 0 || !didOpen.current) return;
+    translateY.value = withTiming(keyboard.height > 0 ? topMin : restTop, {
+      duration: keyboard.duration,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [keyboard, sheetHeight, visible]);
 
   // Mesure la hauteur du bloc pour calculer les bornes de glissement
   const handleLayout = (e: LayoutChangeEvent) => {
@@ -166,6 +197,9 @@ export const Panel: React.FC<PanelProps> = ({ title, children, isOpen = false, o
               {children}
             </Styled.Content>
           </Styled.Sheet>
+          {/* Prolonge le fond blanc sous le panneau (zone du clavier) : aucun vide sombre
+              n'apparaît le temps que le bloc redescende à la fermeture du clavier. */}
+          <Styled.Filler pointerEvents="none" />
         </Animated.View>
       </GestureDetector>
     </Styled.Container>

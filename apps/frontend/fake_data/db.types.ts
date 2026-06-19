@@ -1,9 +1,14 @@
 // Types calqués sur le schéma SQL (snake_case -> camelCase, DATE/TIMESTAMP -> string ISO).
 // Données fictives uniquement, destinées à alimenter les interfaces de l'app.
 
-export type PostType = 'session' | 'photo' | 'text' | 'now';
+export type PostType = 'activity' | 'publication' | 'text' | 'now';
 export type MediaType = 'image' | 'video';
-export type NotificationType = 'like' | 'comment' | 'follow' | 'gym_meet' | 'message';
+export type NotificationType =
+  | 'follow' // a commencé à vous suivre
+  | 'follow_accept' // a accepté votre demande de suivi
+  | 'like_post' // a aimé votre publication
+  | 'meet' // croisé en salle et présent sur Kordo
+  | 'new_bloc'; // nouveau bloc ouvert dans une salle favorite
 
 // Coordonnées (équivalent GEOGRAPHY(POINT,4326))
 export interface GeoPoint {
@@ -73,7 +78,7 @@ export interface Top {
   id: string;
   userId: string;
   blocId: string;
-  sessionPostId?: string;
+  activityPostId?: string;
   isFlash: boolean;
   createdAt: string;
 }
@@ -135,19 +140,24 @@ export interface Post {
   createdAt: string;
 }
 
-export interface SessionPost {
+export interface ActivityPost {
   id: string; // = post.id
   gymId: string;
   title: string;
   description: string;
+  likesEnabled: boolean;
+  commentsEnabled: boolean;
 }
 
-export interface PhotoPost {
+export interface PublicationPost {
   id: string; // = post.id
+  title: string;
   description: string;
+  likesEnabled: boolean;
+  commentsEnabled: boolean;
 }
 
-export interface PhotoMedia {
+export interface PublicationMedia {
   id: string;
   postId: string;
   url: string;
@@ -157,6 +167,8 @@ export interface PhotoMedia {
 export interface TextPost {
   id: string; // = post.id
   content: string;
+  likesEnabled: boolean;
+  commentsEnabled: boolean;
 }
 
 export interface NowPost {
@@ -198,9 +210,12 @@ export interface Message {
 
 export interface Notification {
   id: string;
-  userId: string;
+  userId: string; // destinataire (utilisateur courant)
+  actorId?: string; // auteur de l'action (absent pour new_bloc, qui concerne une salle)
   type: NotificationType;
-  content?: string;
+  postId?: string; // like_post → publication concernée (pour la miniature)
+  gymId?: string; // meet / new_bloc → salle concernée
+  blocId?: string; // new_bloc → bloc ouvert (pour la miniature)
   isRead: boolean;
   createdAt: string;
 }

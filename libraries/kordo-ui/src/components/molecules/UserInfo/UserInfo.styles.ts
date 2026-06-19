@@ -43,6 +43,9 @@ export const UserData = styled.View<Pick<UserInfoProps, 'layout'>>((props) => ({
   display: 'flex',
   justifyContent: 'flex-start',
   gap: props.layout === 'column' ? 2 : 0,
+  // En mode ligne, autorise le bloc texte à se rétrécir pour revenir à la ligne
+  // au lieu de déborder (ex. message long d'une notification à côté d'un bouton).
+  flexShrink: props.layout === 'column' ? 0 : 1,
 }));
 
 export const CustomText = styled(Text)<Pick<UserInfoProps, 'layout'>>((props) => ({

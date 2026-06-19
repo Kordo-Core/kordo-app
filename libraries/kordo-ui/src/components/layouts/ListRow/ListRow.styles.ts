@@ -22,6 +22,9 @@ export const Right = styled.View(() => ({
 export const TextWrapper = styled.View(() => ({
   //TODO alignItems: 'center',
   pointerEvents: 'none',
+  // Borne la zone de texte à l'espace disponible entre Left et Right → le texte long
+  // revient à la ligne au lieu de déborder sur la droite.
+  flex: 1,
 }));
 
 export const LeftWrapper = styled.View((props) => ({

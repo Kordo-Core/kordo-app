@@ -18,6 +18,9 @@ export type ActivityPublic = {
   videos: { id: string; blocId: string; url: string }[]; // bloc_media de l'user sur les blocs validés
 
   // — interactions —
+  likesEnabled: boolean; // l'auteur autorise-t-il les j'aime sur ce post ?
+  commentsEnabled: boolean; // l'auteur autorise-t-il les commentaires sur ce post ?
+  isLiked: boolean; // l'utilisateur courant a-t-il liké ce post ?
   likes: { id: string; user: UserPublic }[]; // like(post_id)
   comments: { id: string; user: UserPublic; content: string; createdAt: string }[]; // comment(post_id)
 };

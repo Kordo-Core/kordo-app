@@ -3,7 +3,7 @@ import { BottomNavBar } from 'kordo-ui';
 import { NavTab } from 'kordo-ui/src/components/organisms/BottomNavBar/BottomNavBar.types';
 import HomeScreen from './tabs/HomeScreen/HomeScreen';
 import SearchScreen from './tabs/SearchScreen/SearchScreen';
-import AddScreen from './tabs/AddScreen/AddScreen';
+import PostForm from './tabs/PostForm/PostForm';
 import GymsScreen from './tabs/GymsScreen/GymsScreen';
 import StatsScreen from './tabs/StatsScreen/StatsScreen';
 import { ClimbingShoesIcon } from '../components/icons/ClimbingShoesIcon';
@@ -32,6 +32,7 @@ function CustomTabBar({ state, navigation }: BottomTabBarProps) {
   return (
     <BottomNavBar
       tabs={TABS}
+      activeIndex={state.index}
       onTabPress={(index) => navigation.navigate(state.routeNames[index])}
     />
   );
@@ -45,7 +46,7 @@ export default function MainTabs() {
     >
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Search" component={SearchScreen} />
-      <Tab.Screen name="Add" component={AddScreen} />
+      <Tab.Screen name="Add" component={PostForm} />
       <Tab.Screen name="Gyms" component={GymsScreen} />
       <Tab.Screen name="Stats" component={StatsScreen} />
     </Tab.Navigator>

@@ -11,6 +11,7 @@ import { ListRow } from '../../layouts/ListRow/ListRow';
 import { Panel } from '../../layouts/Panel/Panel';
 import { BoulderBadge } from '../../molecules/BoulderBadge/BoulderBadge';
 import { VideoStories } from '../VideoStories/VideoStories';
+import { CommentsPanel } from '../CommentsPanel/CommentsPanel';
 import { BoulderPublic } from 'core';
 
 // Paliers de grade de largeur 5 (1-5, 6-10, …, 26-30) → couleur du palier (idx 0..5).
@@ -43,10 +44,29 @@ const formatActivityDate = (iso: string) => {
 const GRID_HEIGHT = 200;
 
 // Carte d'une activité (séance) : header, stats, meets, grille vidéos, compteurs, description.
-export const Activity: React.FC<ActivityProps> = ({ activity, onPressBloc, style }) => {
+export const Activity: React.FC<ActivityProps> = ({
+  activity,
+  currentUser,
+  onPressBloc,
+  onPressUser,
+  style,
+}) => {
   const theme = useTheme();
   const fullName = [activity.user.firstName, activity.user.lastName].filter(Boolean).join(' ');
   const posterFor = (blocId: string) => activity.blocks.find((b) => b.id === blocId)?.blocUrl;
+
+  // Like optimiste local + panneau des commentaires
+  const [liked, setLiked] = useState(activity.isLiked);
+  const [commentsOpen, setCommentsOpen] = useState(false);
+  const likeCount = activity.likes.length - (activity.isLiked ? 1 : 0) + (liked ? 1 : 0);
+  const [comments, setComments] = useState(activity.comments);
+  const addComment = (content: string) => {
+    if (!currentUser) return;
+    setComments((prev) => [
+      ...prev,
+      { id: `local-${Date.now()}`, user: currentUser, content, createdAt: new Date().toISOString() },
+    ]);
+  };
 
   // Visionneuse vidéos : index de la vidéo ouverte (null = fermée)
   const [storiesIndex, setStoriesIndex] = useState<number | null>(null);
@@ -86,19 +106,19 @@ export const Activity: React.FC<ActivityProps> = ({ activity, onPressBloc, style
     >
       <ListRow
         left={<BoulderBadge avatarUrl={b.blocUrl} grade={b.grade} />}
-      primaryText={
-        <Text size="lg" bold appearance={b.isValidated ? 'success' : undefined}>
-          {b.name}
-        </Text>
-      }
-      secondaryText={
-        <Text appearance="primary" size="sm">
-          <Text size="sm" appearance="gray">
-            par{' '}
+        primaryText={
+          <Text size="lg" bold appearance={b.isValidated ? 'success' : undefined}>
+            {b.name}
           </Text>
-          {b.setter?.firstName}
-        </Text>
-      }
+        }
+        secondaryText={
+          <Text appearance="primary" size="sm">
+            <Text size="sm" appearance="gray">
+              par{' '}
+            </Text>
+            {b.setter?.firstName}
+          </Text>
+        }
         right={
           b.isValidated ? (
             <Icon name="CheckmarkCircleFilled" size="md" color={theme.colors.success.base} />
@@ -177,7 +197,7 @@ export const Activity: React.FC<ActivityProps> = ({ activity, onPressBloc, style
         {
           width: '100%',
           backgroundColor: theme.colors.neutral.white,
-          padding: theme.spacing.lg,
+          padding: theme.spacing.md,
           gap: theme.spacing.md,
           boxShadow: '0px 2px 2px rgba(0, 0, 0, 0.05)',
         },
@@ -198,7 +218,7 @@ export const Activity: React.FC<ActivityProps> = ({ activity, onPressBloc, style
             {activity.gym.name}
           </Text>
         }
-        onPressUser={() => {}}
+        onPressUser={() => onPressUser?.(activity.user)}
       />
 
       {!!activity.title && (
@@ -301,21 +321,37 @@ export const Activity: React.FC<ActivityProps> = ({ activity, onPressBloc, style
         </View>
       )}
 
-      {/* Compteurs likes / commentaires */}
-      <View style={{ flexDirection: 'row', alignItems: 'center', gap: theme.spacing.lg }}>
-        <View style={{ flexDirection: 'row', alignItems: 'center', gap: theme.spacing.xs }}>
-          <Icon name="HeartRegular" size="md" color={theme.colors.neutral.gray.base} />
-          <Text appearance="gray" size="sm">
-            {activity.likes.length}
-          </Text>
+      {/* Compteurs likes / commentaires (cliquables, selon les autorisations de l'auteur) */}
+      {(activity.likesEnabled || activity.commentsEnabled) && (
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: theme.spacing.lg }}>
+          {activity.likesEnabled && (
+            <Pressable
+              onPress={() => setLiked((prev) => !prev)}
+              style={{ flexDirection: 'row', alignItems: 'center', gap: theme.spacing.xs }}
+            >
+              <Icon
+                name={liked ? 'HeartFilled' : 'HeartRegular'}
+                size="md"
+                color={liked ? theme.colors.error.base : theme.colors.neutral.gray.base}
+              />
+              <Text appearance="gray" size="sm">
+                {likeCount}
+              </Text>
+            </Pressable>
+          )}
+          {activity.commentsEnabled && (
+            <Pressable
+              onPress={() => setCommentsOpen(true)}
+              style={{ flexDirection: 'row', alignItems: 'center', gap: theme.spacing.xs }}
+            >
+              <Icon name="ChatRegular" size="md" color={theme.colors.neutral.gray.base} />
+              <Text appearance="gray" size="sm">
+                {comments.length}
+              </Text>
+            </Pressable>
+          )}
         </View>
-        <View style={{ flexDirection: 'row', alignItems: 'center', gap: theme.spacing.xs }}>
-          <Icon name="ChatRegular" size="md" color={theme.colors.neutral.gray.base} />
-          <Text appearance="gray" size="sm">
-            {activity.comments.length}
-          </Text>
-        </View>
-      </View>
+      )}
 
       {/* Description */}
       {!!activity.description && <Text numberOfLines={3}>{activity.description}</Text>}
@@ -374,6 +410,15 @@ export const Activity: React.FC<ActivityProps> = ({ activity, onPressBloc, style
           </Panel>
         </GestureHandlerRootView>
       </Modal>
+
+      <CommentsPanel
+        isOpen={commentsOpen}
+        onClose={() => setCommentsOpen(false)}
+        comments={comments}
+        currentUser={currentUser}
+        onAddComment={addComment}
+        onPressUser={onPressUser}
+      />
     </View>
   );
 };

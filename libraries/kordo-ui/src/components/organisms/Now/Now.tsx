@@ -47,7 +47,7 @@ export const Now: React.FC<NowProps> = ({ now, onPressUser, onPressGym }) => {
         width: '100%',
         paddingHorizontal: theme.spacing.md,
         backgroundColor: theme.colors.neutral.white,
-        paddingVertical: theme.spacing.sm,
+        paddingVertical: theme.spacing.md,
         boxShadow: '0px 2px 2px rgba(0, 0, 0, 0.05)',
       }}
     >

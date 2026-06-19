@@ -1,4 +1,4 @@
-import { IconPosition, IconProps } from '../../atoms/Icon/Icon.types';
+import { IconProps } from '../../atoms/Icon/Icon.types';
 
 export interface InputProps {
   value: string;
@@ -10,8 +10,10 @@ export interface InputProps {
   maxLength?: number;
   minLength?: number;
   multiline?: boolean;
-  icon?: IconProps;
-  iconPosition?: IconPosition;
+  // Icône optionnelle affichée à gauche du champ
+  leftIcon?: IconProps;
+  // Icône optionnelle affichée à droite du champ (peut coexister avec leftIcon)
+  rightIcon?: IconProps;
   required?: boolean;
   autoFocus?: boolean;
 }

@@ -11,6 +11,7 @@ export type NavTab = {
 
 export interface BottomNavBarProps {
   tabs: NavTab[];
+  activeIndex?: number;
   style?: any;
   onTabPress?: (index: number, key: string) => void;
 }

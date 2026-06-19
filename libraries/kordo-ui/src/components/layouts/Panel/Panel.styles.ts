@@ -35,6 +35,17 @@ export const Content = styled.View((props) => ({
   minHeight: 200,
 }));
 
+// Bande blanche prolongeant le panneau vers le bas (hors mesure car absolue) : masque le
+// fond sombre dans la zone du clavier pendant la fermeture, évitant tout vide transitoire.
+export const Filler = styled.View((props) => ({
+  position: 'absolute',
+  top: '100%',
+  left: 0,
+  right: 0,
+  height: 1000,
+  backgroundColor: props.theme.colors.neutral.white,
+}));
+
 export const Title = styled.Text((props) => ({
   fontSize: props.theme.fontSizes.lg,
   fontWeight: 'bold',

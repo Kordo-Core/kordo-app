@@ -1,24 +1,23 @@
 import { useMemo, useState } from 'react';
 import {
+  FlatList,
   LayoutChangeEvent,
   NativeScrollEvent,
   NativeSyntheticEvent,
-  ScrollView,
   useWindowDimensions,
 } from 'react-native';
 import { SvgUri } from 'react-native-svg';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Activity, Header, Icon, Now, UserInfo, theme } from 'kordo-ui';
+import { Activity, Header, Icon, Now, Publication, TextPost, UserInfo, theme } from 'kordo-ui';
 import * as Styled from './HomeScreen.styles';
-import { USERS, getNowFeed, getActivityFeed } from 'fake_data';
+import { CURRENT_USER, getHomeFeed, HomeFeedItem } from 'fake_data';
 import { RootStackParamList } from '../../../App';
 
 export default function HomeScreen() {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const { height } = useWindowDimensions();
-  const nowFeed = useMemo(() => getNowFeed(), []);
-  const activityFeed = useMemo(() => getActivityFeed(), []);
+  const homeFeed = useMemo(() => getHomeFeed(), []);
 
   // Position de scroll passée au header "smart" + hauteur du header pour décaler le contenu
   const [scrollY, setScrollY] = useState(0);
@@ -40,11 +39,20 @@ export default function HomeScreen() {
         smart
         scrollY={scrollY}
         onLayout={(e: LayoutChangeEvent) => setHeaderHeight(e.nativeEvent.layout.height)}
-        left={<UserInfo user={USERS[0]} onPressUser={() => {}} />}
+        left={
+          <UserInfo
+            user={CURRENT_USER}
+            onPressUser={(user) => navigation.navigate('UserProfile', { userId: user.id })}
+          />
+        }
         right={
           <>
             {/* Cloche : notifications */}
-            <Icon name="AlertRegular" size="lg" onPress={() => {}} />
+            <Icon
+              name="AlertRegular"
+              size="lg"
+              onPress={() => navigation.navigate('Notifications')}
+            />
             {/* Bulle de message (tout à droite) : vers la page Messages (à créer) */}
             <Icon name="ChatRegular" size="lg" onPress={() => {}} />
           </>
@@ -52,8 +60,10 @@ export default function HomeScreen() {
         style={{ boxShadow: '0px 1px 3px rgba(0, 0, 0, 0.1)' }}
       />
 
-      <ScrollView
+      <FlatList
         style={{ flex: 1 }}
+        data={homeFeed}
+        keyExtractor={(item) => item.data.id}
         scrollEventThrottle={16}
         onScroll={(e: NativeSyntheticEvent<NativeScrollEvent>) =>
           setScrollY(e.nativeEvent.contentOffset.y)
@@ -61,27 +71,47 @@ export default function HomeScreen() {
         contentContainerStyle={{
           paddingTop: headerHeight + theme.spacing.xs,
           gap: theme.spacing.xs,
-          paddingBottom: 120,
+          paddingBottom: 110,
         }}
-      >
-        {nowFeed.map((now) => (
-          <Now
-            key={now.id}
-            now={now}
-            onPressGym={(gym) => navigation.navigate('Gym', { gymId: gym.id })}
-          />
-        ))}
-
-        {activityFeed.map((activity) => (
-          <Activity
-            key={activity.id}
-            activity={activity}
-            onPressBloc={(bloc) =>
-              navigation.navigate('Gym', { gymId: activity.gym.id, blocId: bloc.id })
-            }
-          />
-        ))}
-      </ScrollView>
+        renderItem={({ item }: { item: HomeFeedItem }) => {
+          switch (item.kind) {
+            case 'now':
+              return (
+                <Now
+                  now={item.data}
+                  onPressGym={(gym) => navigation.navigate('Gym', { gymId: gym.id })}
+                />
+              );
+            case 'activity':
+              return (
+                <Activity
+                  activity={item.data}
+                  currentUser={CURRENT_USER}
+                  onPressUser={(user) => navigation.navigate('UserProfile', { userId: user.id })}
+                  onPressBloc={(bloc) =>
+                    navigation.navigate('Gym', { gymId: item.data.gym.id, blocId: bloc.id })
+                  }
+                />
+              );
+            case 'publication':
+              return (
+                <Publication
+                  publication={item.data}
+                  currentUser={CURRENT_USER}
+                  onPressUser={(user) => navigation.navigate('UserProfile', { userId: user.id })}
+                />
+              );
+            case 'text':
+              return (
+                <TextPost
+                  textPost={item.data}
+                  currentUser={CURRENT_USER}
+                  onPressUser={(user) => navigation.navigate('UserProfile', { userId: user.id })}
+                />
+              );
+          }
+        }}
+      />
     </Styled.Container>
   );
 }

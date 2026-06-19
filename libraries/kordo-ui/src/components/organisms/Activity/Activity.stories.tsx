@@ -54,20 +54,30 @@ const mockActivity: ActivityPublic = {
     blocId: `b-${i + 1}`,
     url: 'https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/360/Big_Buck_Bunny_360_10s_1MB.mp4',
   })),
+  likesEnabled: true,
+  commentsEnabled: true,
+  isLiked: false,
   likes: Array.from({ length: 123 }, (_, i) => ({
     id: `l-${i}`,
     user: { id: `u-${i}`, username: `user${i}` },
   })),
   comments: Array.from({ length: 24 }, (_, i) => ({
     id: `c-${i}`,
-    user: { id: `u-${i}`, username: `user${i}` },
-    content: 'Bravo !',
-    createdAt: '2025-03-24',
+    user: { id: `u-${i}`, username: `user${i}`, firstName: 'Léo', lastName: 'Martin', avatarUrl: avatar },
+    content: 'Bravo, belle séance !',
+    createdAt: new Date(Date.now() - (i + 1) * 3 * 3600_000).toISOString(),
   })),
 };
 
 export const Default: Story = {
   args: {
     activity: mockActivity,
+    currentUser: {
+      id: 'u-me',
+      username: 'me',
+      firstName: 'Léo',
+      lastName: 'Martin',
+      avatarUrl: avatar,
+    },
   },
 };
