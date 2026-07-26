@@ -3,7 +3,7 @@ import { ScrollView, useWindowDimensions, View } from 'react-native';
 import Svg, { Circle, Path, SvgUri } from 'react-native-svg';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Card, Header, Icon, NotificationItem, Text, theme } from 'kordo-ui';
+import { Header, Icon, NotificationItem, Section, Text, theme } from 'kordo-ui';
 import * as Styled from './NotificationsScreen.styles';
 import { getNotificationFeed } from 'fake_data';
 import { RootStackParamList } from '../../App';
@@ -61,13 +61,6 @@ export default function NotificationsScreen() {
     return { lastUnreadId: lastUnread?.id, hasUnread: !!lastUnread };
   }, [sections]);
 
-  // Conteneur de section : pleine largeur, sans arrondi, ombre légère identique aux cartes de post
-  const sectionStyle = {
-    width: '100%' as const,
-    borderRadius: 0,
-    boxShadow: '0px 2px 2px rgba(0, 0, 0, 0.05)',
-  };
-
   return (
     <Styled.Container>
       <Styled.Background pointerEvents="none">
@@ -100,14 +93,14 @@ export default function NotificationsScreen() {
       >
         {/* Aucune non-lue : le bandeau "à jour" est affiché en tête */}
         {!hasUnread && (
-          <Card style={sectionStyle}>
+          <Section>
             <CaughtUpBanner />
-          </Card>
+          </Section>
         )}
 
         {sections.map((section) => (
-          <Card key={section.key} style={sectionStyle}>
-            <Text size="md" bold style={{ marginBottom: theme.spacing.sm }}>
+          <Section key={section.key}>
+            <Text size="md" bold>
               {section.title}
             </Text>
             {section.items.map((notification) => (
@@ -121,7 +114,7 @@ export default function NotificationsScreen() {
                 {notification.id === lastUnreadId && <CaughtUpBanner />}
               </React.Fragment>
             ))}
-          </Card>
+          </Section>
         ))}
       </ScrollView>
     </Styled.Container>

@@ -20,12 +20,3 @@ export const Background = styled(View)(() => ({
   justifyContent: 'center',
   overflow: 'hidden',
 }));
-
-// Séparateur fin entre les lignes de la liste de navigation.
-export const Separator = styled(View)(() => ({
-  height: 1,
-  backgroundColor: theme.colors.neutral.gray.light,
-}));
-
-// Le composant Card a `alignSelf: flex-start` : sans largeur explicite il se rétracte au contenu.
-export const cardFull = { width: '100%' as const };

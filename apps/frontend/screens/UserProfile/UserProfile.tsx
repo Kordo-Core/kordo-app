@@ -3,7 +3,7 @@ import { ScrollView, useWindowDimensions } from 'react-native';
 import { SvgUri } from 'react-native-svg';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Card, Header, Icon, ListRow, Text, theme } from 'kordo-ui';
+import { Header, Icon, ListRow, Section, Text, theme } from 'kordo-ui';
 import * as Styled from './UserProfile.styles';
 import { ProfileSummary } from './components/ProfileSummary/ProfileSummary';
 import { FollowStatus } from './components/ProfileSummary/ProfileSummary.types';
@@ -54,11 +54,7 @@ export default function UserProfile() {
         left={<Icon name="ArrowLeftRegular" size="md" onPress={() => navigation.goBack()} />}
         centerChildren
         right={
-          <Icon
-            name={isOwnProfile ? 'settings' : 'more-vertical'}
-            size="md"
-            onPress={() => {}}
-          />
+          <Icon name={isOwnProfile ? 'settings' : 'more-vertical'} size="md" onPress={() => {}} />
         }
         style={{ boxShadow: '0px 1px 3px rgba(0, 0, 0, 0.1)' }}
       >
@@ -71,11 +67,11 @@ export default function UserProfile() {
         style={{ flex: 1 }}
         contentContainerStyle={{
           gap: theme.spacing.sm,
-          padding: theme.spacing.sm,
+          paddingBlock: theme.spacing.sm,
           paddingBottom: theme.spacing.xxl,
         }}
       >
-        <Card style={Styled.cardFull}>
+        <Section>
           <ProfileSummary
             user={user}
             stats={stats}
@@ -84,28 +80,23 @@ export default function UserProfile() {
             onToggleFollow={handleToggleFollow}
             onPressMessage={() => {}}
           />
-        </Card>
+        </Section>
 
-        <Card style={Styled.cardFull}>
-          {NAV_ITEMS.map((item, index) => (
+        <Section>
+          {NAV_ITEMS.map((item) => (
             <Fragment key={item.label}>
-              {index > 0 && <Styled.Separator />}
               <ListRow
-                left={
-                  <Icon name={item.icon} size="md" color={theme.colors.neutral.gray.base} />
-                }
+                left={<Icon name={item.icon} />}
                 primaryText={<Text>{item.label}</Text>}
-                right={
-                  <Icon name="chevron-right" size="md" color={theme.colors.neutral.gray.base} />
-                }
+                right={<Icon name="chevron-right" color={theme.colors.neutral.gray.base} />}
               />
             </Fragment>
           ))}
-        </Card>
+        </Section>
 
-        <Card style={Styled.cardFull}>
+        <Section>
           <TrophyShelf title={isOwnProfile ? 'Mes Trophées' : 'Collection de trophées'} />
-        </Card>
+        </Section>
       </ScrollView>
     </Styled.Container>
   );

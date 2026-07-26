@@ -11,6 +11,8 @@ export type { CheckboxProps } from './components/atoms/Checkbox/Checkbox.types';
 export { SegmentedControl } from './components/molecules/SegmentedControl/SegmentedControl';
 export { Suggestion } from './components/molecules/Suggestion/Suggestion';
 export { Card } from './components/layouts/Card/Card';
+export { Section } from './components/layouts/Section/Section';
+export type { SectionProps } from './components/layouts/Section/Section.types';
 export { Slider } from './animations/Slider/Slider';
 export { UserInfo } from './components/molecules/UserInfo/UserInfo';
 export { BoulderBadge } from './components/molecules/BoulderBadge/BoulderBadge';
