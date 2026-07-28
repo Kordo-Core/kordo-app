@@ -14,7 +14,6 @@ export const TrophyShelf: React.FC<TrophyShelfProps> = ({ title }) => {
           <Styled.Slot key={i} />
         ))}
       </Styled.Slots>
-      <Styled.Separator />
       <Styled.Footer>
         <Text>Tout les trophées</Text>
         <Icon name="chevron-right" size="md" color={theme.colors.neutral.gray.base} />

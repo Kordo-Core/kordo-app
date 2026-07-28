@@ -2,7 +2,7 @@ import styled from '@emotion/native';
 import { theme } from 'kordo-ui';
 
 // Emplacement de trophée (cercle gris, visuel uniquement).
-const TROPHY_SIZE = 60;
+const TROPHY_SIZE = 80;
 
 export const Container = styled.View(() => ({
   gap: theme.spacing.sm,
