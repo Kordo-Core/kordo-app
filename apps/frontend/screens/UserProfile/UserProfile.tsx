@@ -82,6 +82,10 @@ export default function UserProfile() {
           />
         </Section>
 
+        <Section style={{ paddingBlock: 80 }}>
+          <Text>Work in progress...</Text>
+        </Section>
+
         <Section>
           {NAV_ITEMS.map((item) => (
             <Fragment key={item.label}>
