@@ -20,3 +20,22 @@ export const Background = styled(View)(() => ({
   justifyContent: 'center',
   overflow: 'hidden',
 }));
+
+// Contenu sous le header : occupe toute la hauteur restante, sans scroll.
+export const Content = styled.View(() => ({
+  flex: 1,
+}));
+
+// Espacement vertical du contenu, proportionnel à la hauteur d'écran.
+export const contentSpacing = (gap: number) => ({ gap, paddingBlock: gap });
+
+// Padding/gap interne des sections, mis à l'échelle de la hauteur d'écran.
+export const sectionSpacing = (padding: number, gap: number) => ({ padding, gap });
+
+// Section élastique : absorbe l'espace restant pour que la page fasse pile 100%.
+export const filler = {
+  flex: 1,
+  justifyContent: 'center' as const,
+  alignItems: 'center' as const,
+};
+
