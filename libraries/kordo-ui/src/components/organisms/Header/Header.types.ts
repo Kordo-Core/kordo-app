@@ -1,4 +1,4 @@
-import { LayoutChangeEvent } from 'react-native';
+import { LayoutChangeEvent, StyleProp, ViewStyle } from 'react-native';
 
 export interface HeaderProps {
   left?: React.ReactNode;
@@ -8,5 +8,5 @@ export interface HeaderProps {
   smart?: boolean;
   scrollY?: number;
   onLayout?: (event: LayoutChangeEvent) => void;
-  style?: any;
+  style?: StyleProp<ViewStyle>;
 }

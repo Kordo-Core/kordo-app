@@ -1,3 +1,4 @@
+import { StyleProp, ViewStyle } from 'react-native';
 import { TextPostPublic, UserPublic } from 'core';
 
 export interface TextPostProps {
@@ -7,5 +8,5 @@ export interface TextPostProps {
   currentUser?: UserPublic;
   /** Clic sur l'utilisateur (header) → ouvrir son profil */
   onPressUser?: (user: UserPublic) => void;
-  style?: any;
+  style?: StyleProp<ViewStyle>;
 }

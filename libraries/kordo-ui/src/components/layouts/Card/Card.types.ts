@@ -1,3 +1,4 @@
+import { StyleProp, ViewStyle } from 'react-native';
 export interface CardProps {
   /** Content rendered inside the card */
   children?: React.ReactNode;
@@ -5,5 +6,5 @@ export interface CardProps {
   onPress?: () => void;
   /** Enables bounce animation and press interaction */
   isPressable?: boolean;
-  style?: any;
+  style?: StyleProp<ViewStyle>;
 }

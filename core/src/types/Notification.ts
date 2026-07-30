@@ -9,7 +9,7 @@ export type NotificationKind =
   | 'new_bloc'; // nouveau bloc ouvert dans une salle favorite
 
 // Vue frontend d'une notification (table notification enrichie de l'acteur et du contexte).
-// Tout ce qu'il faut pour afficher un NotificationItem, sans requête côté UI.
+// Tout ce qu'il faut pour afficher une Notification, sans requête côté UI.
 export type NotificationPublic = {
   id: string;
   kind: NotificationKind;

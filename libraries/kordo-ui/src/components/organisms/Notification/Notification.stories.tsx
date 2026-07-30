@@ -1,24 +1,51 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { View } from 'react-native';
-import { NotificationItem } from './NotificationItem';
+import { Notification } from './Notification';
+import { Section } from '../../layouts/Section/Section';
 import { NotificationPublic } from 'core';
+import { phoneFrame } from '../../../__stories__/decorators';
 
 /**
- * Ligne de notification. Gère 5 types : follow, follow_accept, like_post, like_comment, meet.
- * Affiche un bouton Follow/Following (types de suivi/rencontre) ou une miniature (types like).
+ * Notification row, covering 5 kinds: follow, follow_accept, like_post, new_bloc, meet.
+ *
+ * Shows a Follow/Following button (follow, follow_accept and meet kinds) or a thumbnail
+ * (like_post, new_bloc).
+ *
+ * A notification carries no background or side margins of its own: like in the app, it is
+ * stacked inside a `Section`, which is what the decorator below does.
+ *
+ * > It deliberately does not build on `ListRow`: a row's text column is `pointerEvents: 'none'`,
+ * > while a notification's text is interactive — the actor's name and the gym's name are links.
  */
 export default {
-  title: 'Organisms/NotificationItem',
-  component: NotificationItem,
+  title: 'Organisms/Notification',
+  component: Notification,
   tags: ['autodocs'],
-  parameters: { layout: 'padded' },
-} satisfies Meta<typeof NotificationItem>;
+  parameters: {
+    layout: 'fullscreen',
+  },
+  // Décorateurs appliqués du plus proche au plus lointain : la Section habille la story,
+  // le cadre téléphone habille la Section.
+  decorators: [
+    (Story) => (
+      <Section>
+        <Story />
+      </Section>
+    ),
+    phoneFrame,
+  ],
+} satisfies Meta<typeof Notification>;
 
-type Story = StoryObj<typeof NotificationItem>;
+type Story = StoryObj<typeof Notification>;
 
 const avatar =
   'https://res.cloudinary.com/dqmegz5dn/image/upload/v1763334248/avatar-kordo_rwvjw4.png';
-const actor = { id: 'u-alex', username: 'alex_m', firstName: 'Alex', lastName: 'Megos', avatarUrl: avatar };
+const actor = {
+  id: 'u-alex',
+  username: 'alex_m',
+  firstName: 'Alex',
+  lastName: 'Megos',
+  avatarUrl: avatar,
+};
 
 const base = (over: Partial<NotificationPublic>): NotificationPublic => ({
   id: 'n-1',
@@ -29,7 +56,9 @@ const base = (over: Partial<NotificationPublic>): NotificationPublic => ({
   ...over,
 });
 
-export const Follow: Story = { args: { notification: base({ kind: 'follow', isFollowing: true }) } };
+export const Follow: Story = {
+  args: { notification: base({ kind: 'follow', isFollowing: true }) },
+};
 
 export const FollowAccept: Story = {
   args: { notification: base({ kind: 'follow_accept', isFollowing: true }) },
@@ -37,7 +66,11 @@ export const FollowAccept: Story = {
 
 export const Meet: Story = {
   args: {
-    notification: base({ kind: 'meet', isFollowing: false, gym: { id: 'arkose-nation', name: 'Arkose Nation' } }),
+    notification: base({
+      kind: 'meet',
+      isFollowing: false,
+      gym: { id: 'arkose-nation', name: 'Arkose Nation' },
+    }),
   },
 };
 
@@ -66,23 +99,23 @@ export const NewBloc: Story = {
   },
 };
 
-// Toutes les variantes empilées
+/** Toutes les variantes empilées, comme dans une section de l'écran Notifications. */
 export const AllVariants: Story = {
   render: () => (
-    <View style={{ gap: 4 }}>
-      <NotificationItem notification={base({ id: 'a', kind: 'follow', isFollowing: true })} />
-      <NotificationItem notification={base({ id: 'b', kind: 'follow_accept', isFollowing: false })} />
-      <NotificationItem
+    <>
+      <Notification notification={base({ id: 'a', kind: 'follow', isFollowing: true })} />
+      <Notification notification={base({ id: 'b', kind: 'follow_accept', isFollowing: false })} />
+      <Notification
         notification={base({ id: 'c', kind: 'meet', gym: { id: 'g', name: 'Arkose Nation' } })}
       />
-      <NotificationItem
+      <Notification
         notification={base({
           id: 'e',
           kind: 'like_post',
           thumbnailUrl: 'https://images.unsplash.com/photo-1522163182402-834f871fd851?w=200&q=80',
         })}
       />
-      <NotificationItem
+      <Notification
         notification={base({
           id: 'f',
           kind: 'new_bloc',
@@ -90,6 +123,6 @@ export const AllVariants: Story = {
           thumbnailUrl: 'https://images.unsplash.com/photo-1540206395-68808572332f?w=200&q=80',
         })}
       />
-    </View>
+    </>
   ),
 };

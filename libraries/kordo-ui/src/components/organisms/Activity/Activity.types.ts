@@ -1,3 +1,4 @@
+import { StyleProp, ViewStyle } from 'react-native';
 import { ActivityPublic, BoulderPublic, UserPublic } from 'core';
 
 export interface ActivityProps {
@@ -9,5 +10,5 @@ export interface ActivityProps {
   onPressBloc?: (bloc: BoulderPublic) => void;
   /** Clic sur l'utilisateur (header / auteur d'un commentaire) */
   onPressUser?: (user: UserPublic) => void;
-  style?: any;
+  style?: StyleProp<ViewStyle>;
 }

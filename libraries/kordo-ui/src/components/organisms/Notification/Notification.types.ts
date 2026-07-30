@@ -1,6 +1,7 @@
+import { StyleProp, ViewStyle } from 'react-native';
 import { NotificationPublic, UserPublic } from 'core';
 
-export interface NotificationItemProps {
+export interface NotificationProps {
   /** Notification à afficher (acteur + contexte déjà joints) */
   notification: NotificationPublic;
   /** Clic sur l'utilisateur (avatar / nom) → ouvrir son profil */
@@ -9,5 +10,5 @@ export interface NotificationItemProps {
   onPressFollow?: (notification: NotificationPublic) => void;
   /** Clic sur le nom de la salle (type meet) */
   onPressGym?: (gymId: string) => void;
-  style?: any;
+  style?: StyleProp<ViewStyle>;
 }

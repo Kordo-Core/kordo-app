@@ -3,7 +3,7 @@ import { ScrollView, useWindowDimensions, View } from 'react-native';
 import Svg, { Circle, Path, SvgUri } from 'react-native-svg';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Header, Icon, NotificationItem, Section, Text, theme } from 'kordo-ui';
+import { Header, Icon, Notification, Section, Text, theme } from 'kordo-ui';
 import * as Styled from './NotificationsScreen.styles';
 import { getNotificationFeed } from 'fake_data';
 import { RootStackParamList } from '../../App';
@@ -105,7 +105,7 @@ export default function NotificationsScreen() {
             </Text>
             {section.items.map((notification) => (
               <React.Fragment key={notification.id}>
-                <NotificationItem
+                <Notification
                   notification={notification}
                   onPressUser={(user) => navigation.navigate('UserProfile', { userId: user.id })}
                   onPressFollow={() => {}}

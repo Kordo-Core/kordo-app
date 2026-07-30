@@ -1,3 +1,4 @@
+import { StyleProp, ViewStyle } from 'react-native';
 import { PublicationPublic, UserPublic } from 'core';
 
 export interface PublicationProps {
@@ -7,5 +8,5 @@ export interface PublicationProps {
   currentUser?: UserPublic;
   /** Clic sur l'utilisateur (header) → ouvrir son profil */
   onPressUser?: (user: UserPublic) => void;
-  style?: any;
+  style?: StyleProp<ViewStyle>;
 }

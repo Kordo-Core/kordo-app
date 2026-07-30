@@ -1,3 +1,4 @@
+import { StyleProp, ViewStyle } from 'react-native';
 import { SizeType } from 'types/theme.types';
 
 export interface SegmentedControlProps {
@@ -9,6 +10,6 @@ export interface SegmentedControlProps {
   onSelect: (index: number) => void;
   size?: Exclude<SizeType, 'sm'>;
   borderRadius?: 'rounded' | 'square';
-  style?: any;
+  style?: StyleProp<ViewStyle>;
   // TODO: add inverted prop to swap styles
 }

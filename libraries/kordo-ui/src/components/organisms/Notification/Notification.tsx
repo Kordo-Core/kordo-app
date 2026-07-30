@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Image, View } from 'react-native';
 import { useTheme } from '@emotion/react';
-import { NotificationItemProps } from './NotificationItem.types';
+import { NotificationProps } from './Notification.types';
 import { UserInfo } from '../../molecules/UserInfo/UserInfo';
 import { Text } from '../../atoms/Text/Text';
 import { Button } from '../../atoms/Button/Button';
@@ -25,8 +25,8 @@ const FOLLOW_SWITCH_DELAY = 100;
 
 // Ligne de notification : avatar + message riche (acteur en gras, temps en gris),
 // avec à droite un bouton Follow/Following (follow, follow_accept, meet) ou une
-// miniature carrée (like_post, like_comment).
-export const NotificationItem: React.FC<NotificationItemProps> = ({
+// miniature carrée (like_post, new_bloc).
+export const Notification: React.FC<NotificationProps> = ({
   notification,
   onPressUser,
   onPressFollow,

@@ -30,8 +30,8 @@ export { CommentsPanel } from './components/organisms/CommentsPanel/CommentsPane
 export type { CommentsPanelProps } from './components/organisms/CommentsPanel/CommentsPanel.types';
 export { TextPost } from './components/organisms/TextPost/TextPost';
 export type { TextPostProps } from './components/organisms/TextPost/TextPost.types';
-export { NotificationItem } from './components/organisms/NotificationItem/NotificationItem';
-export type { NotificationItemProps } from './components/organisms/NotificationItem/NotificationItem.types';
+export { Notification } from './components/organisms/Notification/Notification';
+export type { NotificationProps } from './components/organisms/Notification/Notification.types';
 export { VideoStories } from './components/organisms/VideoStories/VideoStories';
 export type { VideoStoriesProps } from './components/organisms/VideoStories/VideoStories.types';
 export { Dropdown } from './components/organisms/Dropdown/Dropdown';

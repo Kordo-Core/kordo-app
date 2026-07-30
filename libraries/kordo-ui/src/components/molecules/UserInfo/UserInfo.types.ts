@@ -1,3 +1,4 @@
+import { StyleProp, ViewStyle } from 'react-native';
 import { UserPublic } from 'core';
 
 export interface UserInfoProps {
@@ -12,7 +13,7 @@ export interface UserInfoProps {
   layout?: 'row' | 'column';
   /** Adds a colored border around the avatar (e.g. to indicate an active session) */
   highlightedAvatar?: boolean; //TODO Only applicable in `row` layout
-  style?: any;
+  style?: StyleProp<ViewStyle>;
   /** Callback fired when the user's avatar or name is pressed */
   onPressUser: (user: UserPublic) => void;
 }

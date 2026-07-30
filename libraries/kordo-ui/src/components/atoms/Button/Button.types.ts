@@ -1,11 +1,12 @@
-import { AppearanceType, NeutralType, SizeType } from '../../../types/theme.types';
+import { StyleProp, ViewStyle } from 'react-native';
+import { AppearanceType, NeutralType, SizeType, StatusType } from '../../../types/theme.types';
 import { IconProps } from '../Icon/Icon.types';
 
 export interface ButtonProps {
   /** Text displayed inside the button */
   title?: string;
-  /** Color theme of the button */
-  appearance?: AppearanceType | Exclude<NeutralType, 'white'>;
+  /** Color theme of the button — same tokens as `Tag` and `Text` */
+  appearance?: AppearanceType | Exclude<NeutralType, 'white'> | StatusType;
   /** Optional Feather icon displayed alongside the title */
   icon?: IconProps;
   /** Corner shape of the button */
@@ -15,9 +16,9 @@ export interface ButtonProps {
   /** Button size (`md` = 36px height, `lg` = 60px height) */
   size?: Exclude<SizeType, 'sm'>;
   /** Custom styles applied to the wrapper */
-  style?: any;
+  style?: StyleProp<ViewStyle>;
   /** Custom styles applied to the inner ButtonContainer */
-  containerStyle?: any;
+  containerStyle?: StyleProp<ViewStyle>;
   /** Callback fired on press */
   onPress?: () => void;
   /** Removes the border */

@@ -1,3 +1,4 @@
+import { StyleProp, ViewStyle } from 'react-native';
 import { ReactNode } from 'react';
 
 export interface SliderProps {
@@ -17,5 +18,5 @@ export interface SliderProps {
   onChange?: (index: number) => void;
   /** (selectMode) Largeur fixe optionnelle des slots ; par défaut chaque item prend sa largeur naturelle */
   itemWidth?: number;
-  style?: any;
+  style?: StyleProp<ViewStyle>;
 }
