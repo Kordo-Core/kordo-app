@@ -9,5 +9,4 @@ export const useVideoPlayer = () => ({
 });
 
 type Props = { [key: string]: unknown };
-export const VideoView: React.FC<Props> = ({ style }) =>
-  React.createElement('div', { style });
+export const VideoView: React.FC<Props> = ({ style }) => React.createElement('div', { style });

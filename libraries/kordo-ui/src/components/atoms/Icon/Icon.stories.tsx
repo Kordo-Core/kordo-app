@@ -1,6 +1,16 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Icon } from './Icon';
+import { fluentIcons } from '../../../utils/fluent-icons';
 
+/**
+ * Icon rendered from the generated `utils/fluent-icons` map — identical paths on web and native.
+ *
+ * ## Variants
+ * - **name**: either a Fluent name (`HomeRegular`, `CheckmarkFilled`…), a short kebab-case
+ *   alias (`home`, `chevron-right`…) or a house icon (`carabiner`, `terrain`, `play`)
+ * - **size**: `sm` (20), `md` (24), `lg` (32) or any number of pixels
+ * - **color**: an appearance token (`primary`, `error`…) or a raw CSS color
+ */
 export default {
   title: 'Atoms/Icon',
   component: Icon,
@@ -9,49 +19,76 @@ export default {
   argTypes: {
     name: {
       control: 'select',
-      options: [
-        'home', 'search', 'heart', 'star', 'checkmark', 'dismiss', 'add', 'subtract',
-        'arrow-left', 'arrow-right', 'arrow-up', 'arrow-down', 'send', 'edit', 'delete',
-        'eye', 'eye-off', 'lock-closed', 'lock-open', 'alert', 'location', 'calendar',
-        'clock', 'camera', 'image', 'checkmark-circle', 'dismiss-circle', 'warning', 'info',
-        'chevron-left', 'chevron-right', 'chevron-up', 'chevron-down', 'sign-out',
-        'navigation', 'more-horizontal', 'more-vertical', 'person', 'settings',
-        'filter', 'share', 'copy', 'mail', 'chat', 'phone', 'link', 'document', 'folder',
-      ],
-      description: 'Fluent UI icon name',
+      options: Object.keys(fluentIcons),
+      description: 'Icon name — see `utils/fluent-icons` for the full list',
     },
     size: {
-      control: { type: 'number', min: 12, max: 64, step: 4 },
-      table: { defaultValue: { summary: '24' } },
+      control: 'select',
+      options: ['sm', 'md', 'lg', 16, 40, 64],
+      description: 'Size token or an explicit number of pixels',
+      table: { defaultValue: { summary: 'md' } },
     },
     color: {
       control: 'select',
-      options: ['primary', 'secondary', 'black', 'gray', 'white', 'success', 'error', 'warning', 'info'],
+      options: [
+        'primary',
+        'secondary',
+        'black',
+        'gray',
+        'white',
+        'success',
+        'error',
+        'warning',
+        'info',
+      ],
+      description: 'Appearance token, or any raw CSS color',
     },
+    onPress: { action: 'pressed' },
   },
 } satisfies Meta<typeof Icon>;
 
 type Story = StoryObj<typeof Icon>;
 
+const Row = ({ children }: { children: React.ReactNode }) => (
+  <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>{children}</div>
+);
+
 export const Default: Story = {
-  args: { name: 'home', size: 24, color: 'primary' },
+  args: { name: 'home', size: 'md', color: 'primary' },
 };
 
-export const Small: Story = {
-  args: { name: 'star', size: 16, color: 'secondary' },
-};
-
-export const Large: Story = {
-  args: { name: 'heart', size: 40, color: 'primary' },
+/** The three size tokens resolve to 20, 24 and 32 pixels. */
+export const Sizes: Story = {
+  render: () => (
+    <Row>
+      <Icon name="star" size="sm" color="secondary" />
+      <Icon name="star" size="md" color="secondary" />
+      <Icon name="star" size="lg" color="secondary" />
+      <Icon name="star" size={64} color="secondary" />
+    </Row>
+  ),
 };
 
 export const StatusColors: Story = {
   render: () => (
-    <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-      <Icon name="checkmark-circle" size={24} color="success" />
-      <Icon name="dismiss-circle" size={24} color="error" />
-      <Icon name="warning" size={24} color="warning" />
-      <Icon name="info" size={24} color="info" />
-    </div>
+    <Row>
+      <Icon name="checkmark-circle" size="md" color="success" />
+      <Icon name="dismiss-circle" size="md" color="error" />
+      <Icon name="warning" size="md" color="warning" />
+      <Icon name="info" size="md" color="info" />
+    </Row>
+  ),
+};
+
+/** Kordo-specific icons, absent from the Fluent set — climbing and sign-in providers. */
+export const KordoIcons: Story = {
+  render: () => (
+    <Row>
+      <Icon name="carabiner" size="lg" color="primary" />
+      <Icon name="terrain" size="lg" color="primary" />
+      <Icon name="play" size="lg" color="primary" />
+      <Icon name="apple" size="lg" />
+      <Icon name="google" size="lg" />
+    </Row>
   ),
 };

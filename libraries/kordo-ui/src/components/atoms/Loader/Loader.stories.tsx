@@ -43,8 +43,9 @@ export default {
     },
   },
   decorators: [
-    (Story: any) => (
-      <div style={{ width: 200 }}>
+    // La barre occupe toute la largeur donnée, le spinner se centre dedans.
+    (Story) => (
+      <div style={{ width: 200, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         <Story />
       </div>
     ),
@@ -64,26 +65,15 @@ export const Spinner: Story = {
   },
 };
 
-/** Small spinner. */
-export const SpinnerSmall: Story = {
-  args: {
-    type: 'spinner',
-    size: 'sm',
-    appearance: 'secondary',
-    duration: 1000,
-    infinite: true,
-  },
-};
-
-/** Large spinner. */
-export const SpinnerLarge: Story = {
-  args: {
-    type: 'spinner',
-    size: 'lg',
-    appearance: 'primary',
-    duration: 1000,
-    infinite: true,
-  },
+/** The three spinner sizes side by side. */
+export const SpinnerSizes: Story = {
+  render: () => (
+    <div style={{ display: 'flex', gap: 24, alignItems: 'center' }}>
+      <Loader type="spinner" size="sm" appearance="secondary" duration={1000} infinite />
+      <Loader type="spinner" size="md" appearance="primary" duration={1000} infinite />
+      <Loader type="spinner" size="lg" appearance="success" duration={1000} infinite />
+    </div>
+  ),
 };
 
 /** Infinite looping progress bar. */

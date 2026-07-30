@@ -3,17 +3,21 @@ import { useState } from 'react';
 import { Header } from './Header';
 import { Text } from '../../atoms/Text/Text';
 import { Button } from '../../atoms/Button/Button';
+import { Icon } from '../../atoms/Icon/Icon';
+import { UserInfo } from '../../molecules/UserInfo/UserInfo';
+import { phoneScreen } from '../../../__stories__/decorators';
 
 /**
- * Sticky header built on top of `ListRow` with optional scroll-based auto-hide.
+ * Sticky header built on top of `ListRow`, with optional scroll-based auto-hide.
  *
  * ## Slots
- * - **left**: back button, hamburger menu…
- * - **primaryText**: page title
- * - **right**: actions (search, notifications…)
+ * - **left**: back button, menu, current user…
+ * - **children** (centered) or **primaryText**: page title
+ * - **right**: actions (search, notifications, settings…)
  *
  * ## Variants
- * - **smart**: automatically hides on scroll down and reappears on scroll up
+ * - **smart**: hides on scroll down and reappears on scroll up — needs `scrollY`
+ * - **centerChildren**: centers the title whatever the width of the side slots
  */
 export default {
   title: 'Organisms/Header',
@@ -22,83 +26,102 @@ export default {
   parameters: {
     layout: 'fullscreen',
   },
+  decorators: [phoneScreen],
 } satisfies Meta<typeof Header>;
 
 type Story = StoryObj<typeof Header>;
 
+const avatar =
+  'https://res.cloudinary.com/dqmegz5dn/image/upload/v1763334248/avatar-kordo_rwvjw4.png';
+
+const action = (name: string) => (
+  <Button
+    inverted
+    borderless
+    appearance="black"
+    icon={{ name }}
+    borderRadius="square"
+    onPress={() => {}}
+  />
+);
+
 const ScrollContent = () => (
-  <>
+  <div style={{ padding: 16, display: 'flex', flexDirection: 'column', gap: 12 }}>
     {Array.from({ length: 20 }, (_, i) => (
       <div
         key={i}
-        style={{
-          padding: 16,
-          backgroundColor: '#f5f5f5',
-          borderRadius: 8,
-          flexShrink: 0,
-        }}
+        style={{ padding: 16, backgroundColor: '#F5F5F5', borderRadius: 8, flexShrink: 0 }}
       >
         <Text>Scroll content item {i + 1}</Text>
       </div>
     ))}
-  </>
+  </div>
 );
 
-const headerProps = {
-  left: (
-    <Button
-      inverted
-      borderless
-      appearance="black"
-      icon={{ name: 'navigation' }}
-      borderRadius="square"
-      onPress={() => {}}
-    />
-  ),
-  primaryText: (
-    <Text size="xl" bold appearance="primary">
-      Kordo
-    </Text>
-  ),
-  right: (
-    <div style={{ display: 'flex', gap: 4 }}>
-      <Button
-        inverted
-        borderless
-        appearance="black"
-        icon={{ name: 'search' }}
-        borderRadius="square"
-        onPress={() => {}}
-      />
-      <Button
-        inverted
-        borderless
-        appearance="black"
-        icon={{ name: 'alert' }}
-        borderRadius="square"
-        onPress={() => {}}
-      />
+const Screen = ({ header, paddingTop = 0 }: { header: React.ReactNode; paddingTop?: number }) => (
+  <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+    {header}
+    <div style={{ flex: 1, overflow: 'auto', paddingTop }}>
+      <ScrollContent />
     </div>
+  </div>
+);
+
+/** Home header: current user on the left, actions on the right. */
+export const Default: Story = {
+  render: () => (
+    <Screen
+      header={
+        <Header
+          left={
+            <UserInfo
+              user={{ id: 'u-me', username: 'leo', avatarUrl: avatar }}
+              onPressUser={() => {}}
+            />
+          }
+          right={
+            <>
+              {action('alert')}
+              {action('chat')}
+            </>
+          }
+        />
+      }
+    />
   ),
 };
 
-export const Default: Story = {
+/** Detail header: back arrow, centered title, one action. */
+export const WithBackButton: Story = {
   render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', height: 400 }}>
-      <Header {...headerProps} />
-      <div
-        style={{
-          flex: 1,
-          overflow: 'auto',
-          padding: 20,
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 12,
-        }}
-      >
-        <ScrollContent />
-      </div>
-    </div>
+    <Screen
+      header={
+        <Header
+          centerChildren
+          left={<Icon name="ArrowLeftRegular" size="md" onPress={() => {}} />}
+          right={<Icon name="more-vertical" size="md" onPress={() => {}} />}
+        >
+          <Text size="lg" bold>
+            alex_m
+          </Text>
+        </Header>
+      }
+    />
+  ),
+};
+
+/** Title only, no side actions. */
+export const TitleOnly: Story = {
+  render: () => (
+    <Screen
+      header={
+        <Header centerChildren>
+          <Text size="xl" bold appearance="primary">
+            Kordo
+          </Text>
+        </Header>
+      }
+    />
   ),
 };
 
@@ -106,27 +129,25 @@ const SmartHeaderDemo = () => {
   const [scrollY, setScrollY] = useState(0);
 
   return (
-    <div style={{ position: 'relative', height: 400, overflow: 'hidden' }}>
+    <div style={{ position: 'relative', height: '100%', overflow: 'hidden' }}>
+      {/* Le contenu compense la hauteur du header, qui le survole. */}
       <div
-        style={{
-          height: '100%',
-          overflow: 'auto',
-          paddingTop: 60,
-        }}
-        onScroll={(e) => setScrollY(e.currentTarget.scrollTop)}
+        style={{ height: '100%', overflow: 'auto', paddingTop: 60 }}
+        onScroll={(event) => setScrollY(event.currentTarget.scrollTop)}
       >
-        <div
-          style={{
-            padding: 20,
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 12,
-          }}
-        >
-          <ScrollContent />
-        </div>
+        <ScrollContent />
       </div>
-      <Header smart scrollY={scrollY} {...headerProps} />
+      <Header
+        smart
+        scrollY={scrollY}
+        left={<Icon name="navigation" size="md" onPress={() => {}} />}
+        right={action('search')}
+        centerChildren
+      >
+        <Text size="lg" bold appearance="primary">
+          Kordo
+        </Text>
+      </Header>
     </div>
   );
 };

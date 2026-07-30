@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { SegmentedControl } from './SegmentedControl';
 import { useState } from 'react';
+import { SegmentedControlProps } from './SegmentedControl.types';
 
 /**
  * Segmented selector, an alternative to tabs or radio buttons.
@@ -17,6 +18,14 @@ export default {
   parameters: {
     layout: 'centered',
   },
+  decorators: [
+    // Le contrôle est en `flex: 1` : sans parent de largeur définie il se réduit à rien.
+    (Story) => (
+      <div style={{ width: 340, display: 'flex' }}>
+        <Story />
+      </div>
+    ),
+  ],
   argTypes: {
     size: {
       control: 'radio',
@@ -33,7 +42,10 @@ export default {
 
 type Story = StoryObj<typeof SegmentedControl>;
 
-const SegmentedControlWithState = (args: any) => {
+// Le contrôle est piloté par l'extérieur : les stories fournissent la config, l'index vit ici.
+const SegmentedControlWithState = (
+  args: Omit<SegmentedControlProps, 'selectedIndex' | 'onSelect'>,
+) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   return <SegmentedControl {...args} selectedIndex={selectedIndex} onSelect={setSelectedIndex} />;
 };

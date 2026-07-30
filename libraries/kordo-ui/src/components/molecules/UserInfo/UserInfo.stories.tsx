@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { UserInfo } from './UserInfo';
+import { UserPublic } from 'core';
 import { Text } from '../../atoms/Text/Text';
 
 /**
@@ -33,11 +34,12 @@ export default {
 
 type Story = StoryObj<typeof UserInfo>;
 
-const mockUser = {
+const mockUser: UserPublic = {
   id: '1',
   username: 'climbing_fan',
-  avatarUrl: 'https://res.cloudinary.com/dqmegz5dn/image/upload/v1763334248/avatar-kordo_rwvjw4.png',
-} as any;
+  avatarUrl:
+    'https://res.cloudinary.com/dqmegz5dn/image/upload/v1763334248/avatar-kordo_rwvjw4.png',
+};
 
 export const Row: Story = {
   args: {
@@ -71,6 +73,10 @@ export const WithTertiaryText: Story = {
     user: mockUser,
     layout: 'row',
     secondaryText: <Text appearance="gray">Boulder enthusiast</Text>,
-    tertiaryText: <Text appearance="primary" size="sm">42 followers</Text>,
+    tertiaryText: (
+      <Text appearance="primary" size="sm">
+        42 followers
+      </Text>
+    ),
   },
 };

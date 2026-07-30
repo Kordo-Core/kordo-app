@@ -3,14 +3,16 @@ import { useState } from 'react';
 import { Panel } from './Panel';
 import { Button } from '../../atoms/Button/Button';
 import { Text } from '../../atoms/Text/Text';
+import { phoneScreen } from '../../../__stories__/decorators';
 
 /**
- * Side panel that slides in from the right edge of the screen.
+ * Bottom sheet sliding up from the bottom of the screen.
  *
  * ## Behavior
- * - Slides in from the right on open, slides out on close
- * - Clickable overlay to dismiss
- * - Close button (✕) in the header
+ * - Slides up on open, back down on close
+ * - Dark overlay behind, dimming as the sheet is dragged down
+ * - Drag handle: pull up to read overflowing content, pull down to dismiss
+ * - Lifts above the keyboard when a field inside gets focus
  */
 export default {
   title: 'Layouts/Panel',
@@ -19,49 +21,54 @@ export default {
   parameters: {
     layout: 'fullscreen',
   },
+  // Le panneau se place d'après `useWindowDimensions()`, que le décorateur fait pointer sur
+  // le cadre : ses calculs portent donc bien sur l'écran du téléphone.
+  decorators: [phoneScreen],
 } satisfies Meta<typeof Panel>;
 
 type Story = StoryObj<typeof Panel>;
 
+const Trigger = ({ label, onPress }: { label: string; onPress: () => void }) => (
+  <div style={{ padding: 20 }}>
+    <Button title={label} appearance="primary" onPress={onPress} />
+  </div>
+);
+
+/** Short content: the sheet sits against the bottom of the screen. */
 export const Default: Story = {
   render: () => {
     const [isOpen, setIsOpen] = useState(false);
     return (
-      <div style={{ padding: 20 }}>
-        <div style={{ display: 'inline-block' }}>
-          <Button title="Open panel" appearance="primary" onPress={() => setIsOpen(true)} />
-        </div>
+      <>
+        <Trigger label="Open panel" onPress={() => setIsOpen(true)} />
         <Panel title="My panel" isOpen={isOpen} onClose={() => setIsOpen(false)}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-            <Text size="md">Panel content.</Text>
+            <Text>Panel content.</Text>
             <Text size="sm" appearance="gray">
-              Click the overlay or the ✕ to close.
+              Drag the handle down, or tap the overlay, to close.
             </Text>
           </div>
         </Panel>
-      </div>
+      </>
     );
   },
 };
 
+/** Taller than the screen: it opens at 75% and the rest is reached by dragging up. */
 export const LongContent: Story = {
   render: () => {
     const [isOpen, setIsOpen] = useState(false);
     return (
-      <div style={{ padding: 20 }}>
-        <div style={{ display: 'inline-block' }}>
-          <Button title="Open" appearance="primary" onPress={() => setIsOpen(true)} />
-        </div>
+      <>
+        <Trigger label="Open" onPress={() => setIsOpen(true)} />
         <Panel title="Panel with content" isOpen={isOpen} onClose={() => setIsOpen(false)}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-            {Array.from({ length: 12 }, (_, i) => (
-              <Text key={i} size="md">
-                Item {i + 1}
-              </Text>
+            {Array.from({ length: 24 }, (_, i) => (
+              <Text key={i}>Item {i + 1}</Text>
             ))}
           </div>
         </Panel>
-      </div>
+      </>
     );
   },
 };

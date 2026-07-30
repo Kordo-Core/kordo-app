@@ -2,16 +2,6 @@ import type { Preview } from '@storybook/react';
 import { ThemeProvider } from '@emotion/react';
 import { theme } from '../src/theme';
 
-// Web theme with correct font family names
-const webTheme = {
-  ...theme,
-  fonts: {
-    regular: '"Outfit", sans-serif',
-    medium: '"Outfit", sans-serif',
-    bold: '"Outfit", sans-serif',
-  },
-};
-
 const preview: Preview = {
   decorators: [
     (Story) => (
@@ -21,7 +11,9 @@ const preview: Preview = {
             @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;700&display=swap');
           `}
         </style>
-        <ThemeProvider theme={webTheme}>
+        {/* Le thème est utilisé tel quel : les noms de police natifs (Outfit_700Bold) sont
+            traduits en famille + graisse par le mock de style, sinon `bold` n'a aucun effet. */}
+        <ThemeProvider theme={theme}>
           <Story />
         </ThemeProvider>
       </>
@@ -33,9 +25,6 @@ const preview: Preview = {
         color: /(background|color)$/i,
         date: /Date$/i,
       },
-    },
-    docs: {
-      autodocs: 'tag',
     },
   },
 };

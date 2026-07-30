@@ -3,11 +3,25 @@ import React from 'react';
 const chainable = () => {
   const g: Record<string, unknown> = {};
   [
-    'onUpdate', 'onEnd', 'onBegin', 'onFinalize', 'onStart',
-    'simultaneousWithExternalGesture', 'enabled', 'minDistance',
-    'minVelocity', 'maxPointers', 'activeOffsetX', 'activeOffsetY',
-    'failOffsetX', 'failOffsetY', 'runOnJS', 'withTestId',
-  ].forEach((m) => { g[m] = () => g; });
+    'onUpdate',
+    'onEnd',
+    'onBegin',
+    'onFinalize',
+    'onStart',
+    'simultaneousWithExternalGesture',
+    'enabled',
+    'minDistance',
+    'minVelocity',
+    'maxPointers',
+    'activeOffsetX',
+    'activeOffsetY',
+    'failOffsetX',
+    'failOffsetY',
+    'runOnJS',
+    'withTestId',
+  ].forEach((m) => {
+    g[m] = () => g;
+  });
   return g;
 };
 

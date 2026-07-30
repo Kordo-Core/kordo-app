@@ -1,11 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Activity } from './Activity';
 import { ActivityPublic } from 'core';
+import { phoneFrame } from '../../../__stories__/decorators';
 
 /**
- * Carte d'une séance de grimpe (Activity), rendue uniquement à partir d'un `ActivityPublic`.
+ * Climbing session card, rendered solely from an `ActivityPublic`.
  *
- * v1 : header (user/date/salle), titre/description, grille vidéos et compteurs likes/commentaires.
+ * Header (user/date/gym), title and description, video grid, and like/comment counters.
  */
 export default {
   title: 'Organisms/Activity',
@@ -14,6 +15,7 @@ export default {
   parameters: {
     layout: 'fullscreen',
   },
+  decorators: [phoneFrame],
 } satisfies Meta<typeof Activity>;
 
 type Story = StoryObj<typeof Activity>;
@@ -44,10 +46,38 @@ const mockActivity: ActivityPublic = {
   blocks,
   maxGrade: { grade: 21, count: 8 },
   meets: [
-    { id: 'm-1', username: 'tomoa', firstName: 'Tomoa', lastName: 'Narasaki', avatarUrl: avatar, isFollowing: true },
-    { id: 'm-2', username: 'emma_b', firstName: 'Emma', lastName: 'Bernard', avatarUrl: avatar, isFollowing: false },
-    { id: 'm-3', username: 'hugo_p', firstName: 'Hugo', lastName: 'Petit', avatarUrl: avatar, isFollowing: false },
-    { id: 'm-4', username: 'sarah_k', firstName: 'Sarah', lastName: 'Khan', avatarUrl: avatar, isFollowing: true },
+    {
+      id: 'm-1',
+      username: 'tomoa',
+      firstName: 'Tomoa',
+      lastName: 'Narasaki',
+      avatarUrl: avatar,
+      isFollowing: true,
+    },
+    {
+      id: 'm-2',
+      username: 'emma_b',
+      firstName: 'Emma',
+      lastName: 'Bernard',
+      avatarUrl: avatar,
+      isFollowing: false,
+    },
+    {
+      id: 'm-3',
+      username: 'hugo_p',
+      firstName: 'Hugo',
+      lastName: 'Petit',
+      avatarUrl: avatar,
+      isFollowing: false,
+    },
+    {
+      id: 'm-4',
+      username: 'sarah_k',
+      firstName: 'Sarah',
+      lastName: 'Khan',
+      avatarUrl: avatar,
+      isFollowing: true,
+    },
   ],
   videos: Array.from({ length: 12 }, (_, i) => ({
     id: `v-${i + 1}`,
@@ -63,7 +93,13 @@ const mockActivity: ActivityPublic = {
   })),
   comments: Array.from({ length: 24 }, (_, i) => ({
     id: `c-${i}`,
-    user: { id: `u-${i}`, username: `user${i}`, firstName: 'Léo', lastName: 'Martin', avatarUrl: avatar },
+    user: {
+      id: `u-${i}`,
+      username: `user${i}`,
+      firstName: 'Léo',
+      lastName: 'Martin',
+      avatarUrl: avatar,
+    },
     content: 'Bravo, belle séance !',
     createdAt: new Date(Date.now() - (i + 1) * 3 * 3600_000).toISOString(),
   })),

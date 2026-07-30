@@ -3,6 +3,7 @@ import { Slider } from './Slider';
 import { Card } from '../../components/layouts/Card/Card';
 import { Text } from '../../components/atoms/Text/Text';
 import { theme } from '../../theme';
+import { phoneFrame } from '../../__stories__/decorators';
 
 /**
  * Horizontally scrollable carousel for displaying a list of items.
@@ -11,13 +12,14 @@ import { theme } from '../../theme';
  * - **gap**: spacing between items in pixels
  * - **height**: fixed height of the slider container
  */
-const meta: Meta<typeof Slider> = {
+export default {
   title: 'Animations/Slider',
   component: Slider,
   tags: ['autodocs'],
   parameters: {
-    layout: 'padded',
+    layout: 'fullscreen',
   },
+  decorators: [phoneFrame],
   argTypes: {
     gap: {
       control: { type: 'number', min: 0, max: 32 },
@@ -28,9 +30,8 @@ const meta: Meta<typeof Slider> = {
       description: 'Fixed height of the slider container in pixels',
     },
   },
-};
+} satisfies Meta<typeof Slider>;
 
-export default meta;
 type Story = StoryObj<typeof Slider>;
 
 const SliderCard = ({ title, description }: { title: string; description: string }) => (
@@ -53,4 +54,3 @@ export const Default: Story = {
     )),
   },
 };
-

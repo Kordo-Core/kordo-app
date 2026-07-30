@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Suggestion } from './Suggestion';
+import { UserPublic } from 'core';
 
 /**
  * Suggestion card for a user to follow.
@@ -33,14 +34,16 @@ export default {
 
 type Story = StoryObj<typeof Suggestion>;
 
+const avatar =
+  'https://res.cloudinary.com/dqmegz5dn/image/upload/v1763334248/avatar-kordo_rwvjw4.png';
+
+const mockUser: UserPublic = { id: '1', username: 'climbing_fan', avatarUrl: avatar };
+const otherUser: UserPublic = { id: '2', username: 'boulder_master', avatarUrl: avatar };
+
 export const Default: Story = {
   args: {
     isFollowing: false,
-    user: {
-      id: '1',
-      username: 'climbing_fan',
-      avatarUrl: 'https://res.cloudinary.com/dqmegz5dn/image/upload/v1763334248/avatar-kordo_rwvjw4.png',
-    } as any,
+    user: mockUser,
     location: 'Climb Up Paris',
   },
 };
@@ -49,10 +52,6 @@ export const Default: Story = {
 export const WithoutLocation: Story = {
   args: {
     isFollowing: false,
-    user: {
-      id: '2',
-      username: 'boulder_master',
-      avatarUrl: 'https://res.cloudinary.com/dqmegz5dn/image/upload/v1763334248/avatar-kordo_rwvjw4.png',
-    } as any,
+    user: otherUser,
   },
 };

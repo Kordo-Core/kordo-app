@@ -1,12 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Publication } from './Publication';
 import { PublicationPublic } from 'core';
+import { phoneFrame } from '../../../__stories__/decorators';
 
 /**
- * Carte d'une publication (post photo façon Instagram), rendue à partir d'un `PublicationPublic`.
+ * Photo post card (Instagram-like), rendered from a `PublicationPublic`.
  *
- * Header (user/date), carrousel de photos paginé (1..10) avec points, compteurs likes/commentaires
- * et description.
+ * Header (user/date), paginated photo carousel (1..10) with dots, like/comment counters
+ * and description.
  */
 export default {
   title: 'Organisms/Publication',
@@ -15,6 +16,7 @@ export default {
   parameters: {
     layout: 'fullscreen',
   },
+  decorators: [phoneFrame],
 } satisfies Meta<typeof Publication>;
 
 type Story = StoryObj<typeof Publication>;
@@ -32,7 +34,13 @@ const PHOTO_URLS = [
 
 const mockPublication: PublicationPublic = {
   id: 'p-1',
-  user: { id: 'u-emma', username: 'emma_b', firstName: 'Emma', lastName: 'Bernard', avatarUrl: avatar },
+  user: {
+    id: 'u-emma',
+    username: 'emma_b',
+    firstName: 'Emma',
+    lastName: 'Bernard',
+    avatarUrl: avatar,
+  },
   title: 'Premier 7a en flash',
   description: 'Premier 7a en flash 🔥 trop content ! Merci à la team pour les encouragements 💪',
   createdAt: '2025-03-24T20:23:00Z',

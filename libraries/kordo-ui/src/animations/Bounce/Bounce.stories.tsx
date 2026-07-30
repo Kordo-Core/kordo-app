@@ -40,9 +40,6 @@ export const Default: Story = {
   args: {
     scaleTo: 0.95,
     duration: 200,
-    children: (
-      <Button title="Click me" appearance="primary" onPress={() => {}} />
-    ),
+    children: <Button title="Click me" appearance="primary" onPress={() => {}} />,
   },
 };
-

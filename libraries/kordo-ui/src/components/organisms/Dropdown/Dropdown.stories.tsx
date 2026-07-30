@@ -18,11 +18,12 @@ import { Icon } from '../../atoms/Icon/Icon';
 export default {
   title: 'Organisms/Dropdown',
   component: Dropdown,
+  tags: ['autodocs'],
   parameters: {
     layout: 'centered',
   },
   decorators: [
-    (Story: any) => (
+    (Story) => (
       <View style={{ width: 280 }}>
         <Story />
       </View>
@@ -55,7 +56,7 @@ export const Single: Story = {
     return (
       <Dropdown
         items={TRAVEL_ITEMS}
-        placeholder="Sélectionner…"
+        placeholder="Pick an option…"
         value={value}
         onChange={setValue}
       />
@@ -72,7 +73,7 @@ export const WithIcon: Story = {
     return (
       <Dropdown
         items={TRAVEL_ITEMS}
-        placeholder="Sélectionner la salle…"
+        placeholder="Pick a gym…"
         icon={{ name: 'LocationRegular' }}
         value={value}
         onChange={setValue}
@@ -91,7 +92,7 @@ export const Multiple: Story = {
       <Dropdown
         mode="multi"
         items={TRAVEL_ITEMS}
-        placeholder="Sélectionner…"
+        placeholder="Pick an option…"
         value={value}
         onChange={setValue}
       />
@@ -107,10 +108,10 @@ export const WithRightNode: Story = {
     const [value, setValue] = useState<string | null>(null);
     const items: DropdownItem[] = TRAVEL_ITEMS.map((item) => ({
       ...item,
-      right: <Icon name="ChevronRightRegular" size={16} color="#888888" />,
+      right: <Icon name="ChevronRightRegular" size={16} color="gray" />,
     }));
     return (
-      <Dropdown items={items} placeholder="Sélectionner…" value={value} onChange={setValue} />
+      <Dropdown items={items} placeholder="Pick an option…" value={value} onChange={setValue} />
     );
   },
 };
@@ -125,7 +126,7 @@ export const Scrollable: Story = {
       textItem(`item-${i}`, `Option ${i + 1}`),
     );
     return (
-      <Dropdown items={items} placeholder="Sélectionner…" value={value} onChange={setValue} />
+      <Dropdown items={items} placeholder="Pick an option…" value={value} onChange={setValue} />
     );
   },
 };

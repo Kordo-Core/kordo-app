@@ -1,19 +1,21 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Now } from './Now';
 import { NowPublic } from 'core';
+import { phoneFrame } from '../../../__stories__/decorators';
 
 /**
- * Carte d'une publication "Now" : un utilisateur actuellement en séance dans une salle.
+ * "Now" post card: a user currently climbing in a gym.
  *
- * Réutilise `Card`, `UserInfo` (mode `highlightedAvatar` → badge Now) et `Text`.
+ * Built on `Card`, `UserInfo` (`highlightedAvatar` mode → Now badge) and `Text`.
  */
 export default {
   title: 'Organisms/Now',
   component: Now,
   tags: ['autodocs'],
   parameters: {
-    layout: 'centered',
+    layout: 'fullscreen',
   },
+  decorators: [phoneFrame],
   argTypes: {
     onPressUser: { action: 'user pressed' },
   },

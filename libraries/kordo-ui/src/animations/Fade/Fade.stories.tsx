@@ -1,10 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Fade } from './Fade';
+import { Fade, FadeRef } from './Fade';
 import { useRef, useState } from 'react';
 import { Button } from '../../components/atoms/Button/Button';
 import { Card } from '../../components/layouts/Card/Card';
 import { Text } from '../../components/atoms/Text/Text';
 import { theme } from '../../theme';
+import { FadeProps } from './Fade.types';
 
 /**
  * Fade animation with directional translation, imperatively controlled via ref.
@@ -14,7 +15,7 @@ import { theme } from '../../theme';
  * - **duration**: animation duration in ms
  * - **distance**: translation distance in pixels
  */
-const meta: Meta<typeof Fade> = {
+export default {
   title: 'Animations/Fade',
   component: Fade,
   tags: ['autodocs'],
@@ -36,13 +37,12 @@ const meta: Meta<typeof Fade> = {
       description: 'Translation distance in pixels',
     },
   },
-};
+} satisfies Meta<typeof Fade>;
 
-export default meta;
 type Story = StoryObj<typeof Fade>;
 
-const FadeDemo = (args: any) => {
-  const fadeRef = useRef<any>(null);
+const FadeDemo = (args: FadeProps) => {
+  const fadeRef = useRef<FadeRef>(null);
   const [visible, setVisible] = useState(false);
 
   const toggle = () => {
@@ -56,11 +56,11 @@ const FadeDemo = (args: any) => {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 20 }}>
-      <Button
-        title={visible ? 'Hide' : 'Show'}
-        appearance="primary"
-        onPress={toggle}
-      />
+      {/* `Bounce` cale le bouton en `alignSelf: 'flex-start'` : il ignore l'alignement du
+          parent. On le centre via un conteneur intermédiaire, qui se réduit à son contenu. */}
+      <div style={{ display: 'flex' }}>
+        <Button title={visible ? 'Hide' : 'Show'} appearance="primary" onPress={toggle} />
+      </div>
       <Fade ref={fadeRef} {...args}>
         <Card>
           <div style={{ display: 'flex', flexDirection: 'column', gap: theme.spacing.sm }}>

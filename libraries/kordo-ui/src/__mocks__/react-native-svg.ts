@@ -1,18 +1,45 @@
 import React from 'react';
+import { toWebStyle } from './rn-style';
 
-type Props = { children?: React.ReactNode; [key: string]: any };
+// Mappe les primitives react-native-svg sur les éléments SVG du DOM.
+// Le `style` reçu est écrit en syntaxe RN (ex. `transform: [{ rotate }]` pour le spinner du
+// Loader) : il doit être traduit, sinon React le rejette et la rotation ne part jamais.
+type Props = { children?: React.ReactNode; style?: unknown; [key: string]: unknown };
 
-const Svg: React.FC<Props> = ({ children, width, height, viewBox, style, ...rest }) =>
-  React.createElement('svg', { xmlns: 'http://www.w3.org/2000/svg', width, height, viewBox, style, ...rest }, children);
+const svgElement = (element: string, hasChildren = false): React.FC<Props> => {
+  const Component: React.FC<Props> = ({ children, style, ...rest }) =>
+    React.createElement(
+      element,
+      { ...rest, style: toWebStyle(style as never) },
+      hasChildren ? children : undefined,
+    );
+  Component.displayName = `Svg.${element}`;
+  return Component;
+};
+
+const Svg: React.FC<Props> = ({ children, style, width, height, viewBox, ...rest }) =>
+  React.createElement(
+    'svg',
+    {
+      xmlns: 'http://www.w3.org/2000/svg',
+      width,
+      height,
+      viewBox,
+      ...rest,
+      style: toWebStyle(style as never),
+    },
+    children,
+  );
 
 export default Svg;
 export { Svg };
-export const Path: React.FC<Props> = (props) => React.createElement('path', props);
-export const Circle: React.FC<Props> = (props) => React.createElement('circle', props);
-export const Rect: React.FC<Props> = (props) => React.createElement('rect', props);
-export const G: React.FC<Props> = ({ children, ...props }) => React.createElement('g', props, children);
-export const Line: React.FC<Props> = (props) => React.createElement('line', props);
-export const Ellipse: React.FC<Props> = (props) => React.createElement('ellipse', props);
-export const Polyline: React.FC<Props> = (props) => React.createElement('polyline', props);
-export const Polygon: React.FC<Props> = (props) => React.createElement('polygon', props);
-export const Text: React.FC<Props> = ({ children, ...props }) => React.createElement('text', props, children);
+
+export const Path = svgElement('path');
+export const Circle = svgElement('circle');
+export const Rect = svgElement('rect');
+export const Line = svgElement('line');
+export const Ellipse = svgElement('ellipse');
+export const Polyline = svgElement('polyline');
+export const Polygon = svgElement('polygon');
+export const G = svgElement('g', true);
+export const Text = svgElement('text', true);

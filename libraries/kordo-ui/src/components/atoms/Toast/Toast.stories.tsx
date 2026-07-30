@@ -1,96 +1,93 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Toast } from './Toast';
+import { ToastProvider, useToast } from '../../layouts/ToastProvider/ToastProvider';
+import { Button } from '../Button/Button';
+import { Text } from '../Text/Text';
+import { phoneScreen } from '../../../__stories__/decorators';
 
 /**
- * Temporary overlay notification, used via `useToast()`.
+ * Temporary notification stacked at the bottom of the screen.
+ *
+ * A `Toast` is never mounted by hand: it is queued through `useToast().addToast()` and
+ * rendered by the `ToastProvider` that wraps the app. These stories therefore drive the
+ * real provider — what you see is exactly what the app produces.
  *
  * ## Variants
- * - **type**: `success`, `error`, `warning`, `info`
- * - **showLoader**: shows a progress bar countdown
- * - **isClosable**: shows a close button
+ * - **type**: `success`, `error`, `warning`, `info` — drives the color and the icon
+ * - **showLoader**: countdown bar mirroring the remaining duration
+ * - **isClosable**: adds a close button
  */
 export default {
   title: 'Atoms/Toast',
   component: Toast,
   tags: ['autodocs'],
   parameters: {
-    layout: 'centered',
+    layout: 'fullscreen',
   },
-  argTypes: {
-    message: {
-      control: 'text',
-      description: 'Message displayed inside the toast',
-    },
-    type: {
-      control: 'select',
-      options: ['success', 'error', 'info', 'warning'],
-      description: 'Determines the color and icon of the toast',
-    },
-    showLoader: {
-      control: 'boolean',
-      description: 'Shows a progress bar countdown',
-    },
-    duration: {
-      control: { type: 'number', min: 1000, max: 10000 },
-      description: 'Display duration in ms',
-    },
-  },
-  decorators: [
-    (Story: any) => (
-      <div style={{ width: 350 }}>
-        <Story />
-      </div>
-    ),
-  ],
+  // Le conteneur de toasts se positionne en absolu : le cadre téléphone lui sert d'écran,
+  // les toasts se posent donc en bas comme sur mobile.
+  decorators: [phoneScreen],
 } satisfies Meta<typeof Toast>;
 
 type Story = StoryObj<typeof Toast>;
 
-export const Success: Story = {
-  args: {
-    id: '1',
-    message: 'Operation successful!',
-    type: 'success',
-    showLoader: true,
-    isClosable: true,
-    duration: 5000,
-    delete: () => {},
-  },
+type ToastType = 'success' | 'error' | 'warning' | 'info';
+
+const TRIGGERS: { type: ToastType; label: string; message: string; icon: string }[] = [
+  { type: 'success', label: 'Success', message: 'Operation successful!', icon: 'checkmark-circle' },
+  { type: 'error', label: 'Error', message: 'Something went wrong.', icon: 'dismiss-circle' },
+  { type: 'warning', label: 'Warning', message: 'Check your connection.', icon: 'warning' },
+  { type: 'info', label: 'Info', message: 'New update available.', icon: 'info' },
+];
+
+const Triggers = ({ showLoader }: { showLoader: boolean }) => {
+  const { addToast } = useToast();
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 12, padding: 24 }}>
+      <Text size="lg" bold>
+        {showLoader ? 'With countdown bar' : 'Toast notifications'}
+      </Text>
+      <Text appearance="gray">Each button raises the toast matching its own color.</Text>
+
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginTop: 8 }}>
+        {TRIGGERS.map(({ type, label, message, icon }) => (
+          <Button
+            key={type}
+            title={label}
+            // Le bouton porte l'apparence du toast qu'il déclenche.
+            appearance={type}
+            icon={{ name: icon }}
+            onPress={() =>
+              addToast({
+                message,
+                type,
+                icon: { name: icon },
+                showLoader,
+                isClosable: true,
+                duration: showLoader ? 4000 : 3000,
+              })
+            }
+          />
+        ))}
+      </div>
+    </div>
+  );
 };
 
-export const Error: Story = {
-  args: {
-    id: '2',
-    message: 'An error occurred.',
-    type: 'error',
-    showLoader: true,
-    isClosable: true,
-    duration: 5000,
-    delete: () => {},
-  },
+export const Default: Story = {
+  render: () => (
+    <ToastProvider>
+      <Triggers showLoader={false} />
+    </ToastProvider>
+  ),
 };
 
-export const Warning: Story = {
-  args: {
-    id: '3',
-    message: 'Warning: this action cannot be undone.',
-    type: 'warning',
-    showLoader: false,
-    isClosable: true,
-    duration: 5000,
-    delete: () => {},
-  },
-};
-
-export const Info: Story = {
-  args: {
-    id: '4',
-    message: 'New update available.',
-    type: 'info',
-    icon: { name: 'info' },
-    showLoader: true,
-    isClosable: true,
-    duration: 5000,
-    delete: () => {},
-  },
+/** Same four types, with the countdown bar showing the remaining time. */
+export const WithLoader: Story = {
+  render: () => (
+    <ToastProvider>
+      <Triggers showLoader />
+    </ToastProvider>
+  ),
 };

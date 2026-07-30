@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Input } from './Input';
 import { useState } from 'react';
+import { InputProps } from './Input.types';
 
 /**
  * Cross-platform text input with built-in validation and error animations.
@@ -42,8 +43,9 @@ export default {
     },
   },
   decorators: [
-    (Story: any) => (
-      <div style={{ width: 300 }}>
+    // Largeur d'un formulaire mobile, marges de l'écran comprises.
+    (Story) => (
+      <div style={{ width: 342, display: 'flex', flexDirection: 'column' }}>
         <Story />
       </div>
     ),
@@ -52,7 +54,8 @@ export default {
 
 type Story = StoryObj<typeof Input>;
 
-const InputWithState = (args: any) => {
+// L'`Input` est contrôlé : les stories fournissent la config, la valeur vit ici.
+const InputWithState = (args: Omit<InputProps, 'value' | 'onChange'>) => {
   const [value, setValue] = useState('');
   return <Input {...args} value={value} onChange={setValue} />;
 };

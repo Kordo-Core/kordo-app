@@ -1,8 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Shake } from './Shake';
+import { Shake, ShakeRef } from './Shake';
 import { useRef } from 'react';
 import { Button } from '../../components/atoms/Button/Button';
 import { Tag } from '../../components/atoms/Tag/Tag';
+import { ShakeProps } from './Shake.types';
 
 /**
  * Horizontal shake animation, imperatively triggered via ref.
@@ -11,7 +12,7 @@ import { Tag } from '../../components/atoms/Tag/Tag';
  * - **amplitude**: shake intensity in pixels
  * - **duration**: duration of each step in the shake sequence (ms)
  */
-const meta: Meta<typeof Shake> = {
+export default {
   title: 'Animations/Shake',
   component: Shake,
   tags: ['autodocs'],
@@ -28,13 +29,12 @@ const meta: Meta<typeof Shake> = {
       description: 'Duration of each step in ms',
     },
   },
-};
+} satisfies Meta<typeof Shake>;
 
-export default meta;
 type Story = StoryObj<typeof Shake>;
 
-const ShakeDemo = (args: any) => {
-  const shakeRef = useRef<any>(null);
+const ShakeDemo = (args: ShakeProps) => {
+  const shakeRef = useRef<ShakeRef>(null);
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 20 }}>
@@ -43,8 +43,11 @@ const ShakeDemo = (args: any) => {
         appearance="secondary"
         onPress={() => shakeRef.current?.trigger()}
       />
+      {/* Shake s'étire sur toute la largeur (Input en dépend) : on recentre le contenu. */}
       <Shake ref={shakeRef} {...args}>
-        <Tag title="Shake me!" appearance="error" />
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <Tag title="Shake me!" appearance="error" />
+        </div>
       </Shake>
     </div>
   );
