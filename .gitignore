@@ -7,3 +7,7 @@ dist/
 CLAUDE.md
 
 img-ia/
+
+# bases SQLite locales (jamais versionnées)
+*.db
+*.db-journal

@@ -3,12 +3,13 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
+  "packageManager": "pnpm@10.23.0",
   "scripts": {
-    "dev:backend": "pnpm --filter apps/backend dev",
-    "start:mobile": "pnpm --filter apps/frontend start",
+    "start:mobile": "pnpm --filter frontend start",
+    "storybook": "pnpm --filter kordo-ui storybook",
     "build": "pnpm -r build",
-    "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
-    "lint:fix": "eslint . --ext .ts,.tsx,.js,.jsx --fix",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "prepare": "husky",
     "release": "commit-and-tag-version",
     "release:patch": "commit-and-tag-version --release-as patch",
@@ -19,22 +20,10 @@
     "pattern": "^(main|preprod|develop|dev)$|^(feat|fix|refactor|chore|docs|style|perf|test)/[a-z0-9-]+$",
     "errorMsg": "branche invalide. format: <type>/<description-kebab-case>\\nexemples: feat/tracking-export, fix/search-bug"
   },
-  "dependencies": {
-    "@emotion/native": "^11.11.0",
-    "@emotion/react": "^11.14.0",
-    "@expo/vector-icons": "^15.0.3",
-    "@react-native-masked-view/masked-view": "^0.3.2",
-    "react": "19.1.0",
-    "react-native": "0.81.4"
-  },
-  "pnpm": {
-    "overrides": {
-      "@expo/metro-runtime": "6.1.2"
-    }
-  },
   "devDependencies": {
     "@commitlint/cli": "^20.5.3",
     "@commitlint/config-conventional": "^20.5.3",
+    "@eslint/js": "^9.39.1",
     "@types/react": "~19.1.10",
     "@typescript-eslint/eslint-plugin": "^8.44.0",
     "@typescript-eslint/parser": "^8.44.0",
@@ -42,6 +31,7 @@
     "eslint": "^9.36.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",
+    "eslint-plugin-react-hooks": "^7.1.1",
     "husky": "^9.1.7",
     "prettier": "^3.6.2",
     "typescript": "^5.9.2",

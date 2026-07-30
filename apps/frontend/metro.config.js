@@ -1,43 +1,13 @@
 const { getDefaultConfig } = require('expo/metro-config');
-const path = require('path');
 
-const projectRoot = __dirname;
-const workspaceRoot = path.resolve(projectRoot, '../..');
+// Aucune personnalisation n'est nécessaire : `getDefaultConfig` détecte le monorepo pnpm et
+// pose déjà les bons `watchFolders` (racine + frontend + kordo-ui + core) et
+// `nodeModulesPaths` (frontend puis racine), et Metro suit les liens symboliques nativement.
+//
+// Ce fichier forçait auparavant la résolution des paquets « singletons » vers le node_modules
+// du frontend. C'était le contournement d'un problème de dépendances : kordo-ui déclarait des
+// modules natifs en `dependencies` avec des fourchettes divergentes de celles de l'app, d'où
+// deux copies installées. Les peers sont désormais alignés, il n'existe plus qu'une version de
+// chaque module natif, et le contournement n'a plus lieu d'être.
 
-const config = getDefaultConfig(projectRoot);
-
-// Watch the entire monorepo so Metro picks up changes in kordo-ui and core instantly
-config.watchFolders = [workspaceRoot];
-
-// Resolve modules from local node_modules first, then workspace root
-config.resolver.nodeModulesPaths = [
-  path.resolve(projectRoot, 'node_modules'),
-  path.resolve(workspaceRoot, 'node_modules'),
-];
-
-// Follow pnpm symlinks
-config.resolver.unstable_enableSymlinks = true;
-
-// Force singleton RN packages to always resolve from frontend's node_modules,
-// regardless of which workspace package (kordo-ui, etc.) is doing the import.
-// extraNodeModules is a fallback only — resolveRequest intercepts every resolution.
-const SINGLETONS = new Set([
-  'react',
-  'react-native',
-  'react-native-gesture-handler',
-  'react-native-reanimated',
-  'react-native-safe-area-context',
-  '@react-navigation/native',
-]);
-config.resolver.resolveRequest = (context, moduleName, platform) => {
-  if (SINGLETONS.has(moduleName)) {
-    return context.resolveRequest(
-      { ...context, originModulePath: __filename },
-      moduleName,
-      platform,
-    );
-  }
-  return context.resolveRequest(context, moduleName, platform);
-};
-
-module.exports = config;
+module.exports = getDefaultConfig(__dirname);
