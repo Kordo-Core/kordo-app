@@ -69,7 +69,8 @@ export const CommentsPanel: React.FC<CommentsPanelProps> = ({
               <Text size="md">
                 <Text size="md" bold>
                   {name}
-                </Text>{'  '}
+                </Text>
+                {'  '}
                 <Text appearance="gray" size="sm">
                   {formatRelative(comment.createdAt)}
                 </Text>

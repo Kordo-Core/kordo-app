@@ -9,10 +9,17 @@ export function Podium({ podium, scrollY, geometry }: PodiumProps) {
   const { topInset, heroHeight, phase1End } = geometry;
 
   const podiumStyle = useAnimatedStyle(() => ({
-    opacity: interpolate(scrollY.value, [phase1End, heroHeight * 0.95], [1, 0], Extrapolation.CLAMP),
+    opacity: interpolate(
+      scrollY.value,
+      [phase1End, heroHeight * 0.95],
+      [1, 0],
+      Extrapolation.CLAMP,
+    ),
     transform: [
       { translateY: interpolate(scrollY.value, [0, phase1End], [0, -140], Extrapolation.CLAMP) },
-      { scale: interpolate(scrollY.value, [phase1End, heroHeight], [1, 0.85], Extrapolation.CLAMP) },
+      {
+        scale: interpolate(scrollY.value, [phase1End, heroHeight], [1, 0.85], Extrapolation.CLAMP),
+      },
     ],
   }));
 

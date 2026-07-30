@@ -38,4 +38,3 @@ export const filler = {
   justifyContent: 'center' as const,
   alignItems: 'center' as const,
 };
-

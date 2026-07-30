@@ -46,7 +46,12 @@ export const TextPost: React.FC<TextPostProps> = ({
     if (!currentUser) return;
     setComments((prev) => [
       ...prev,
-      { id: `local-${Date.now()}`, user: currentUser, content, createdAt: new Date().toISOString() },
+      {
+        id: `local-${Date.now()}`,
+        user: currentUser,
+        content,
+        createdAt: new Date().toISOString(),
+      },
     ]);
   };
 

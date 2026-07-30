@@ -4,8 +4,8 @@
     "outDir": "dist",
     "declaration": true,
     "declarationMap": true,
-    "noEmit": false,
-   
+    "noEmit": false
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*"],
+  "exclude": ["src/**/*.stories.tsx", "src/__mocks__", "src/__stories__"]
 }

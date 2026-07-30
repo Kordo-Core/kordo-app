@@ -177,7 +177,7 @@ export const COMMENTS: Comment[] = [
     userId: 'u-tomoa',
     postId: 'post-5',
     content:
-      "Belle séance ! Les nouveaux blocs en dévers de ce secteur sont vraiment exigeants pour les avant-bras, faut bien penser à relâcher entre chaque prise sinon on explose à mi-parcours.",
+      'Belle séance ! Les nouveaux blocs en dévers de ce secteur sont vraiment exigeants pour les avant-bras, faut bien penser à relâcher entre chaque prise sinon on explose à mi-parcours.',
     createdAt: '2025-05-20T10:15:00Z',
   },
   {
@@ -347,14 +347,62 @@ export const GYM_MEETS: GymMeet[] = [
     createdAt: '2025-05-15T19:30:00Z',
   },
   // Rencontres d'Adam pendant sa séance à Arkose Nation (alimente le bandeau "meets")
-  { id: 'meet-adam-1', gymId: 'arkose-nation', user1Id: 'u-adam', user2Id: 'u-emma', createdAt: '2025-05-22T18:05:00Z' },
-  { id: 'meet-adam-2', gymId: 'arkose-nation', user1Id: 'u-adam', user2Id: 'u-leo', createdAt: '2025-05-22T18:20:00Z' },
-  { id: 'meet-adam-3', gymId: 'arkose-nation', user1Id: 'u-hugo', user2Id: 'u-adam', createdAt: '2025-05-22T18:40:00Z' },
-  { id: 'meet-adam-4', gymId: 'arkose-nation', user1Id: 'u-adam', user2Id: 'u-chloe', createdAt: '2025-05-22T19:00:00Z' },
-  { id: 'meet-adam-5', gymId: 'arkose-nation', user1Id: 'u-janja', user2Id: 'u-adam', createdAt: '2025-05-22T19:10:00Z' },
-  { id: 'meet-adam-6', gymId: 'arkose-nation', user1Id: 'u-adam', user2Id: 'u-tomoa', createdAt: '2025-05-22T19:20:00Z' },
-  { id: 'meet-adam-7', gymId: 'arkose-nation', user1Id: 'u-adam', user2Id: 'u-shauna', createdAt: '2025-05-22T19:30:00Z' },
-  { id: 'meet-adam-8', gymId: 'arkose-nation', user1Id: 'u-nina', user2Id: 'u-adam', createdAt: '2025-05-22T19:40:00Z' },
+  {
+    id: 'meet-adam-1',
+    gymId: 'arkose-nation',
+    user1Id: 'u-adam',
+    user2Id: 'u-emma',
+    createdAt: '2025-05-22T18:05:00Z',
+  },
+  {
+    id: 'meet-adam-2',
+    gymId: 'arkose-nation',
+    user1Id: 'u-adam',
+    user2Id: 'u-leo',
+    createdAt: '2025-05-22T18:20:00Z',
+  },
+  {
+    id: 'meet-adam-3',
+    gymId: 'arkose-nation',
+    user1Id: 'u-hugo',
+    user2Id: 'u-adam',
+    createdAt: '2025-05-22T18:40:00Z',
+  },
+  {
+    id: 'meet-adam-4',
+    gymId: 'arkose-nation',
+    user1Id: 'u-adam',
+    user2Id: 'u-chloe',
+    createdAt: '2025-05-22T19:00:00Z',
+  },
+  {
+    id: 'meet-adam-5',
+    gymId: 'arkose-nation',
+    user1Id: 'u-janja',
+    user2Id: 'u-adam',
+    createdAt: '2025-05-22T19:10:00Z',
+  },
+  {
+    id: 'meet-adam-6',
+    gymId: 'arkose-nation',
+    user1Id: 'u-adam',
+    user2Id: 'u-tomoa',
+    createdAt: '2025-05-22T19:20:00Z',
+  },
+  {
+    id: 'meet-adam-7',
+    gymId: 'arkose-nation',
+    user1Id: 'u-adam',
+    user2Id: 'u-shauna',
+    createdAt: '2025-05-22T19:30:00Z',
+  },
+  {
+    id: 'meet-adam-8',
+    gymId: 'arkose-nation',
+    user1Id: 'u-nina',
+    user2Id: 'u-adam',
+    createdAt: '2025-05-22T19:40:00Z',
+  },
 ];
 
 // --- Salles favorites & visites ---
@@ -369,8 +417,18 @@ export const GYM_VISITS: GymVisit[] = [
   { id: 'visit-2', userId: CURRENT_USER.id, gymId: 'arkose-pantin', createdAt: '2025-05-20' },
   { id: 'visit-3', userId: CURRENT_USER.id, gymId: 'arkose-montreuil', createdAt: '2025-05-18' },
   // Visites d'Adam : définissent la fenêtre de sa séance à Arkose Nation
-  { id: 'visit-adam-1', userId: 'u-adam', gymId: 'arkose-nation', createdAt: '2025-05-22T16:00:00Z' },
-  { id: 'visit-adam-2', userId: 'u-adam', gymId: 'arkose-nation', createdAt: '2025-05-26T10:00:00Z' },
+  {
+    id: 'visit-adam-1',
+    userId: 'u-adam',
+    gymId: 'arkose-nation',
+    createdAt: '2025-05-22T16:00:00Z',
+  },
+  {
+    id: 'visit-adam-2',
+    userId: 'u-adam',
+    gymId: 'arkose-nation',
+    createdAt: '2025-05-26T10:00:00Z',
+  },
 ];
 
 // --- Helpers ---
@@ -690,7 +748,9 @@ export function getNotificationFeed(): NotificationSection[] {
     .filter((n): n is NotificationPublic => n !== null)
     .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
     .forEach((n) => {
-      const daysDiff = Math.round((startOfToday - startOfDay(new Date(n.createdAt).getTime())) / DAY);
+      const daysDiff = Math.round(
+        (startOfToday - startOfDay(new Date(n.createdAt).getTime())) / DAY,
+      );
       if (daysDiff <= 0) buckets.today.push(n);
       else if (daysDiff === 1) buckets.yesterday.push(n);
       else if (daysDiff < 7) buckets.week.push(n);
@@ -751,9 +811,7 @@ export function getUserProfileStats(userId: string): {
 } {
   const followingCount = FOLLOWS.filter((f) => f.followerId === userId).length;
   const followersCount = FOLLOWS.filter((f) => f.followingId === userId).length;
-  const activitiesCount = POSTS.filter(
-    (p) => p.userId === userId && p.type === 'activity',
-  ).length;
+  const activitiesCount = POSTS.filter((p) => p.userId === userId && p.type === 'activity').length;
   const gymsVisitedCount = new Set(
     GYM_VISITS.filter((v) => v.userId === userId).map((v) => v.gymId),
   ).size;

@@ -64,7 +64,12 @@ export const Activity: React.FC<ActivityProps> = ({
     if (!currentUser) return;
     setComments((prev) => [
       ...prev,
-      { id: `local-${Date.now()}`, user: currentUser, content, createdAt: new Date().toISOString() },
+      {
+        id: `local-${Date.now()}`,
+        user: currentUser,
+        content,
+        createdAt: new Date().toISOString(),
+      },
     ]);
   };
 

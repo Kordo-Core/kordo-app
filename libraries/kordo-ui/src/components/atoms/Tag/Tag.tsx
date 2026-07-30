@@ -12,11 +12,7 @@ export const Tag: React.FC<TagProps> = (props) => {
   return (
     <Styled.Tag appearance={props.appearance}>
       {props.icon && (
-        <Icon
-          name={props.icon.name}
-          size={props.icon.size ?? 'sm'}
-          color={iconColor}
-        />
+        <Icon name={props.icon.name} size={props.icon.size ?? 'sm'} color={iconColor} />
       )}
       <Text size="md" appearance={props.appearance === 'white' ? 'black' : 'white'}>
         {props.title}

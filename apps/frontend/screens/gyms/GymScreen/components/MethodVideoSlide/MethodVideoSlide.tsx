@@ -14,7 +14,12 @@ interface MethodVideoSlideProps {
 
 // Slide d'aperçu d'une vidéo de méthode : première frame (aperçu réel) + bouton play + auteur.
 // Au tap, ouvre la visionneuse type "stories" (tap gauche/droite = vidéo préc./suiv.) via `onPress`.
-export function MethodVideoSlide({ entry, width = 180, height = 260, onPress }: MethodVideoSlideProps) {
+export function MethodVideoSlide({
+  entry,
+  width = 180,
+  height = 260,
+  onPress,
+}: MethodVideoSlideProps) {
   const { media, author } = entry;
   const ref = useRef<VideoView>(null);
   const player = useVideoPlayer(media.url, (p) => {

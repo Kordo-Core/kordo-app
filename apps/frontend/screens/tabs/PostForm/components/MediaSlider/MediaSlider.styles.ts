@@ -1,5 +1,5 @@
 import styled from '@emotion/native';
-import { Dimensions, Pressable } from 'react-native';
+import { Pressable } from 'react-native';
 import { theme } from 'kordo-ui';
 
 export const SIDE_PADDING = theme.spacing.lg;

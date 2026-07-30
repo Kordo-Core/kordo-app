@@ -1,5 +1,5 @@
 import styled from '@emotion/native';
-import { Text, theme } from 'kordo-ui';
+import { theme } from 'kordo-ui';
 import { Image, View } from 'react-native';
 
 export const ImageContainer = styled(View)({

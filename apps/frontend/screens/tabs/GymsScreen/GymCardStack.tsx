@@ -12,7 +12,7 @@ import Animated, {
   makeMutable,
   SharedValue,
 } from 'react-native-reanimated';
-import { Button, Card, Icon, Tag, Text, theme } from 'kordo-ui';
+import { Card, Icon, Tag, Text, theme } from 'kordo-ui';
 import { Bounce } from 'kordo-ui/src/animations/Bounce/Bounce';
 import { Gym } from '../../../fake_data/gyms.fake';
 

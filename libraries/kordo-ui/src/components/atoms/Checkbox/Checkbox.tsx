@@ -14,11 +14,7 @@ export const Checkbox: React.FC<CheckboxProps> = (props) => {
     >
       {props.label != null && (
         <Styled.LabelWrapper>
-          {typeof props.label === 'string' ? (
-            <Text size="md">{props.label}</Text>
-          ) : (
-            props.label
-          )}
+          {typeof props.label === 'string' ? <Text size="md">{props.label}</Text> : props.label}
         </Styled.LabelWrapper>
       )}
       <Styled.Box checked={props.checked}>

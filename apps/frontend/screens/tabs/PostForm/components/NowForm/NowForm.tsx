@@ -6,7 +6,9 @@ import * as Styled from './NowForm.styles';
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <Styled.SectionContainer>
-      <Text bold size="lg">{title}</Text>
+      <Text bold size="lg">
+        {title}
+      </Text>
       {children}
     </Styled.SectionContainer>
   );
@@ -24,7 +26,10 @@ export function NowForm(props: NowFormProps) {
           onChange={props.onGymChange}
         />
       </Section>
-      <InteractionsSection visibility={props.visibility} onVisibilityChange={props.onVisibilityChange} />
+      <InteractionsSection
+        visibility={props.visibility}
+        onVisibilityChange={props.onVisibilityChange}
+      />
     </Styled.Container>
   );
 }

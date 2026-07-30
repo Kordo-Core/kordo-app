@@ -3,7 +3,6 @@ import { ActivityFormProps } from './ActivityForm.types';
 import { InteractionsSection } from '../InteractionsSection/InteractionsSection';
 import { MediaSlider } from '../MediaSlider/MediaSlider';
 import * as Styled from './ActivityForm.styles';
-import { View } from 'react-native';
 
 const DISCIPLINE_ITEMS: DropdownItem[] = [
   { key: 'bloc', text: 'Bloc', left: <Text size="md">Bloc</Text> },

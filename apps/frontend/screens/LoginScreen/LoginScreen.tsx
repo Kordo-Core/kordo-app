@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Button, Text, theme } from 'kordo-ui';
-import { AntDesign, Feather } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons';
 import * as Styled from './LoginScreen.styles';
 import { RootStackParamList } from 'App';
 

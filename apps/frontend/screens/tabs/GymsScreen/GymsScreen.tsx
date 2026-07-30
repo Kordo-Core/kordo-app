@@ -49,7 +49,8 @@ export default function GymsScreen() {
   const toggleLike = (gymId: string) =>
     setLikedGyms((prev) => {
       const next = new Set(prev);
-      next.has(gymId) ? next.delete(gymId) : next.add(gymId);
+      if (next.has(gymId)) next.delete(gymId);
+      else next.add(gymId);
       return next;
     });
 
