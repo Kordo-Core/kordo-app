@@ -5,11 +5,18 @@ import { BlurView } from 'expo-blur';
 import { SegmentedControlProps } from './SegmentedControl.types';
 import { Text } from '../../atoms/Text/Text';
 
-export const SegmentItem = styled.View(() => ({
+const segment = {
   flex: 1,
   alignItems: 'center',
   justifyContent: 'center',
-}));
+} as const;
+
+// Segment décoratif : sert de gabarit à la couche masquée (texte blanc), sans interaction.
+export const SegmentItem = styled.View(() => segment);
+
+// Segment cliquable de la couche de base. Un `Pressable` et non une View avec `onTouchEnd` :
+// un événement tactile ne part jamais d'une souris, le contrôle était donc inerte sur le web.
+export const SegmentButton = styled.Pressable(() => segment);
 
 export const CustomText = styled(Text)<{ size?: SegmentedControlProps['size'] }>((props) => ({
   height: props.size === 'lg' ? 60 : 40,
@@ -33,10 +40,13 @@ export const SegmentedContainer = styled(BlurView)<{ borderRadius: string }>((pr
   overflow: 'hidden',
 }));
 
+// L'indicateur tient la hauteur du conteneur moins son padding : bornes haute et basse plutôt
+// qu'une hauteur en pourcentage, qui vaut 100 % du conteneur padding compris et débordait donc
+// vers le bas — coin arrondi rogné à la clé.
 export const Pointer = styled(Animated.View)<{ borderRadius: string; color?: string }>((props) => ({
   position: 'absolute',
   top: props.theme.spacing.xs,
-  height: '100%',
+  bottom: props.theme.spacing.xs,
   backgroundColor: props.color ?? props.theme.colors.primary.base,
   zIndex: 0,
   borderRadius:
@@ -45,6 +55,8 @@ export const Pointer = styled(Animated.View)<{ borderRadius: string; color?: str
       : props.theme.borderRadius.square,
 }));
 
+// Couche purement visuelle, posée par-dessus la couche de base : `pointerEvents: 'none'` pour
+// qu'elle ne capte pas les clics destinés aux segments qu'elle recouvre.
 export const MaskedContainer = styled(MaskedView)((props) => ({
   flexDirection: 'row',
   position: 'absolute',
@@ -55,11 +67,12 @@ export const MaskedContainer = styled(MaskedView)((props) => ({
   padding: props.theme.spacing.xs,
   gap: props.theme.spacing.xs,
   zIndex: 1,
+  pointerEvents: 'none',
 }));
 
 export const MaskOverlay = styled(Animated.View)((props) => ({
   position: 'absolute',
   top: props.theme.spacing.xs,
-  height: '100%',
+  bottom: props.theme.spacing.xs,
   backgroundColor: 'black',
 }));

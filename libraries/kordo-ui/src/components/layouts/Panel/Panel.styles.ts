@@ -46,9 +46,12 @@ export const Filler = styled.View((props) => ({
   backgroundColor: props.theme.colors.neutral.white,
 }));
 
+// Le titre se lit sur le fond blanc du panneau : en blanc il était invisible. La graisse passe
+// par la famille du thème, la seule façon d'obtenir du gras avec une police personnalisée sur
+// mobile (`fontWeight` n'y a pas d'effet).
 export const Title = styled.Text((props) => ({
   fontSize: props.theme.fontSizes.lg,
-  fontWeight: 'bold',
-  color: props.theme.colors.neutral.white,
+  fontFamily: props.theme.fonts.bold,
+  color: props.theme.colors.neutral.black,
   marginBottom: props.theme.spacing.sm,
 }));

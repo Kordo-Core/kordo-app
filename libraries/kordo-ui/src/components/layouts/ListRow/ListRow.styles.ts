@@ -1,12 +1,12 @@
 import styled from '@emotion/native';
 
-export const Row = styled.View((props) => ({
+export const Row = styled.View({
   flexDirection: 'row',
   alignItems: 'center',
   width: '100%',
   paddingVertical: 8,
   gap: 16,
-}));
+});
 
 export const Left = styled.View(() => ({
   flexDirection: 'row',

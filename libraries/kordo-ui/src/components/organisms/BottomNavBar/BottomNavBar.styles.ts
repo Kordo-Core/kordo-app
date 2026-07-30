@@ -27,15 +27,19 @@ export const Container = styled.View((props) => ({
   elevation: 3,
 }));
 
-export const Tab = styled.TouchableOpacity<{ isAction?: boolean }>((props) => ({
+export const Tab = styled.TouchableOpacity<{ isAction?: boolean }>({
   flex: 1,
   alignItems: 'center',
   justifyContent: 'center',
-}));
+});
 
+// `left: 0` est explicite : sans lui, l'origine d'un enfant absolu diffère entre Yoga (bord
+// de la barre) et le web (début de la zone de contenu, padding compris), et l'indicateur se
+// retrouvait décalé d'un padding sur le web.
 export const highlightedBar = styled(Animated.View)((props) => ({
   position: 'absolute',
   top: 0,
+  left: 0,
   height: 4,
   borderRadius: props.theme.borderRadius.rounded,
   backgroundColor: props.theme.colors.primary.base,

@@ -96,18 +96,8 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = (props) => {
 
       {/* Couche masquée pour afficher le texte en blanc uniquement au-dessus de l'indicateur coloré */}
       <Styled.MaskedContainer maskElement={<Styled.MaskOverlay style={[overlayAnimatedStyle]} />}>
-        {props.segments.map((segment, index) => (
-          <Styled.SegmentItem
-            key={segment.text}
-            onTouchEnd={() => {
-              props.onSelect(index);
-
-              // Effet de rebond visuel sur l'indicateur pour confirmer la sélection à l'utilisateur
-              overlayScale.value = withTiming(0.95, { duration: 100 }, () => {
-                overlayScale.value = withTiming(1, { duration: 100 });
-              });
-            }}
-          >
+        {props.segments.map((segment) => (
+          <Styled.SegmentItem key={segment.text}>
             <Styled.CustomText size={props.size ?? 'lg'} bold appearance="white">
               {segment.text}
             </Styled.CustomText>
@@ -115,10 +105,19 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = (props) => {
         ))}
       </Styled.MaskedContainer>
 
-      {/* Couche de texte noir de base — mesure aussi la largeur de chaque segment pour positionner l'indicateur */}
+      {/* Couche de texte noir de base — elle porte la sélection (la couche masquée au-dessus est
+          rognée par son masque et laisserait des zones mortes) et mesure la largeur des segments */}
       {props.segments.map((segment, index) => (
-        <Styled.SegmentItem
+        <Styled.SegmentButton
           key={segment.text + '-base'}
+          onPress={() => {
+            props.onSelect(index);
+
+            // Effet de rebond visuel sur l'indicateur pour confirmer la sélection à l'utilisateur
+            overlayScale.value = withTiming(0.95, { duration: 100 }, () => {
+              overlayScale.value = withTiming(1, { duration: 100 });
+            });
+          }}
           // Capture la largeur rendue de chaque segment pour positionner l'indicateur
           onLayout={(event: LayoutChangeEvent) => {
             const { width } = event.nativeEvent.layout;
@@ -132,7 +131,7 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = (props) => {
           <Styled.CustomText size={props.size ?? 'lg'} bold appearance="black">
             {segment.text}
           </Styled.CustomText>
-        </Styled.SegmentItem>
+        </Styled.SegmentButton>
       ))}
     </Styled.SegmentedContainer>
   );

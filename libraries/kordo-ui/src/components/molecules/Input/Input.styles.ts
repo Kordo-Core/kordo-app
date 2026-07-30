@@ -17,6 +17,11 @@ export const InputContainer = styled(Animated.View)<{ multiline?: boolean }>((pr
 export const Input = styled.TextInput<{ hasLeftIcon?: boolean }>((props) => ({
   flex: 1,
   paddingLeft: props.hasLeftIcon ? props.theme.spacing.sm : 0,
+  // Un champ de saisie n'hérite pas de la typographie : sans ces trois règles il rend avec
+  // la police du système (natif) ou celle du navigateur (web), et pas avec Outfit.
+  fontFamily: props.theme.fonts.regular,
+  fontSize: props.theme.fontSizes.md,
+  color: props.theme.colors.neutral.black,
 }));
 
 export const ErrorText = styled(Text)({

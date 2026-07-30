@@ -131,13 +131,13 @@ export const Input: React.FC<InputProps> = (props) => {
           )}
         </Styled.InputContainer>
       </Shake>
-      {errorMessage && (
+      {errorMessage ? (
         <Fade ref={fadeRef} direction="down" duration={200} distance={6}>
           <Styled.ErrorText appearance="error" size="sm">
-            {errorMessage || ' '}
+            {errorMessage}
           </Styled.ErrorText>
         </Fade>
-      )}
+      ) : null}
     </View>
   );
 };

@@ -1,5 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Keyboard, LayoutChangeEvent, Platform, Pressable, useWindowDimensions } from 'react-native';
+import {
+  Keyboard,
+  LayoutChangeEvent,
+  Platform,
+  Pressable,
+  useWindowDimensions,
+} from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
