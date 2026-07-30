@@ -7,14 +7,15 @@ import Animated, {
   withTiming,
   interpolateColor,
 } from 'react-native-reanimated';
-import { fluentIcons } from '../../../utils/fluent-icons';
+import { getIcon } from '../../../utils/getIcon';
+import { resolveColor } from '../../../utils/getColors';
 import { resolveIconSize } from '../../../utils/resolveSize';
 import { IconProps } from './Icon.types';
 
 const AnimatedPath = Animated.createAnimatedComponent(Path);
 
 export const Icon: React.FC<IconProps> = (props) => {
-  const fill = props.color ?? '#000000';
+  const fill = resolveColor(props.color, '#000000');
   const from = useSharedValue(fill);
   const to = useSharedValue(fill);
   const progress = useSharedValue(1);
@@ -38,34 +39,33 @@ export const Icon: React.FC<IconProps> = (props) => {
     };
   });
 
-  const icon = (fluentIcons as Record<string, (typeof fluentIcons)[keyof typeof fluentIcons]>)[
-    props.name
-  ];
+  const icon = getIcon(props.name);
   if (!icon) return null;
 
   const size = resolveIconSize(props.size);
 
   const svg = (
     <Svg width={size} height={size} viewBox={icon.viewBox} style={props.style}>
-      {(icon.paths as { d: string; fillRule?: string; clipRule?: string; fill?: string }[]).map(
-        (p, i) =>
-          p.fill ? (
-            <Path
-              key={i}
-              d={p.d}
-              fill={p.fill}
-              fillRule={p.fillRule as any}
-              clipRule={p.clipRule as any}
-            />
-          ) : (
-            <AnimatedPath
-              key={i}
-              d={p.d}
-              animatedProps={animatedProps}
-              fillRule={p.fillRule as any}
-              clipRule={p.clipRule as any}
-            />
-          ),
+      {icon.paths.map((path, index) =>
+        // Un tracé avec `fill` explicite garde sa couleur (icônes multicolores comme `google`) ;
+        // les autres suivent la couleur animée du composant.
+        path.fill ? (
+          <Path
+            key={index}
+            d={path.d}
+            fill={path.fill}
+            fillRule={path.fillRule}
+            clipRule={path.clipRule}
+          />
+        ) : (
+          <AnimatedPath
+            key={index}
+            d={path.d}
+            animatedProps={animatedProps}
+            fillRule={path.fillRule}
+            clipRule={path.clipRule}
+          />
+        ),
       )}
     </Svg>
   );

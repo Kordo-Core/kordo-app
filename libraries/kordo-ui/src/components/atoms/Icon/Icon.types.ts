@@ -1,3 +1,4 @@
+import { StyleProp, ViewStyle } from 'react-native';
 import { SizeType } from 'types/theme.types';
 
 export interface IconProps {
@@ -5,7 +6,7 @@ export interface IconProps {
   size?: SizeType | number;
   color?: string;
   onPress?: () => void;
-  style?: any;
+  style?: StyleProp<ViewStyle>;
 }
 
 export type IconPosition = 'left' | 'right';

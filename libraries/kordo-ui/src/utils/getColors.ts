@@ -29,3 +29,28 @@ export const getColor = (appearance: AppearanceType | NeutralType | StatusType):
       return theme.colors.primary.base;
   }
 };
+
+const APPEARANCE_TOKENS = [
+  'primary',
+  'secondary',
+  'black',
+  'white',
+  'gray',
+  'success',
+  'error',
+  'warning',
+  'info',
+] as const;
+
+type ColorToken = (typeof APPEARANCE_TOKENS)[number];
+
+const isColorToken = (value: string): value is ColorToken =>
+  (APPEARANCE_TOKENS as readonly string[]).includes(value);
+
+// Accepte indifféremment un jeton sémantique ("primary", "gray"…) ou une couleur brute
+// ("#1B4332", "rgba(…)"). Les deux formes coexistent dans le code : les composants passent
+// souvent `theme.colors.x.base`, les stories passent des jetons.
+export const resolveColor = (color: string | undefined, fallback: string): string => {
+  if (!color) return fallback;
+  return isColorToken(color) ? getColor(color) : color;
+};
