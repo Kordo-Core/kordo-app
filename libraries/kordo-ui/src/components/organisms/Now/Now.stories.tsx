@@ -1,7 +1,7 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 import { Now } from './Now';
 import { NowPublic } from 'core';
-import { phoneFrame } from '../../../__stories__/decorators';
+import { phoneFrame } from '../../../../.storybook/decorators';
 
 /**
  * "Now" post card: a user currently climbing in a gym.

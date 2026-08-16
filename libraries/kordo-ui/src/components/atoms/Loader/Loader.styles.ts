@@ -1,7 +1,7 @@
 import styled from '@emotion/native';
 import Animated from 'react-native-reanimated';
 import { LoaderProps } from './Loader.types';
-import Svg, { Circle } from 'react-native-svg';
+import { Circle } from 'react-native-svg';
 import { getColor } from '../../../utils/getColors';
 
 export const ProgressBar = styled.View<{
@@ -23,7 +23,10 @@ export const Bar = styled(Animated.View)<{
   backgroundColor: getColor(props.appearance ?? 'primary'),
 }));
 
-export const AnimatedSvg = Animated.createAnimatedComponent(Svg);
+// La rotation porte sur une vue englobante, non sur le `Svg` : le `setNativeProps` de
+// react-native-svg refusionne son propre `style` dans le style du nœud DOM, et y recopierait
+// l'objet interne que renvoie `useAnimatedStyle`.
+export const SpinnerRotation = Animated.View;
 export const AnimatedCircle = styled(Animated.createAnimatedComponent(Circle))<{
   appearance?: LoaderProps['appearance'];
 }>((props) => ({

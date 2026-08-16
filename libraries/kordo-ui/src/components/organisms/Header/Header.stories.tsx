@@ -1,11 +1,11 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 import { useState } from 'react';
 import { Header } from './Header';
 import { Text } from '../../atoms/Text/Text';
 import { Button } from '../../atoms/Button/Button';
 import { Icon } from '../../atoms/Icon/Icon';
 import { UserInfo } from '../../molecules/UserInfo/UserInfo';
-import { phoneScreen } from '../../../__stories__/decorators';
+import { phoneScreen } from '../../../../.storybook/decorators';
 
 /**
  * Sticky header built on top of `ListRow`, with optional scroll-based auto-hide.

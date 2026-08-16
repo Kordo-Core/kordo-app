@@ -4,13 +4,18 @@
     "module": "ESNext",
     "jsx": "react-jsx",
     "strict": true,
-    "moduleResolution": "node",
+    // `bundler` et non `node` : les paquets récents — dont le framework Storybook — publient
+    // leurs types via une carte `exports`, que la résolution node historique ignore. Les
+    // fichiers de stories étaient donc en erreur dans l'éditeur, sans que le build le signale
+    // puisqu'il les exclut. C'est la résolution qui correspond à la réalité : Vite et Metro
+    // bundlent tous les deux.
+    "moduleResolution": "bundler",
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "baseUrl": "src",
     "noEmit": true
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", ".storybook/**/*"],
   "exclude": ["node_modules", "dist"]
 }

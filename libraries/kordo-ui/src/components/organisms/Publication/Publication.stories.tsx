@@ -1,7 +1,7 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 import { Publication } from './Publication';
 import { PublicationPublic } from 'core';
-import { phoneFrame } from '../../../__stories__/decorators';
+import { phoneFrame } from '../../../../.storybook/decorators';
 
 /**
  * Photo post card (Instagram-like), rendered from a `PublicationPublic`.

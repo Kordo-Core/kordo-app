@@ -1,10 +1,10 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 import { ListRow } from './ListRow';
 import { Section } from '../Section/Section';
 import { Text } from '../../atoms/Text/Text';
 import { Icon } from '../../atoms/Icon/Icon';
 import { Button } from '../../atoms/Button/Button';
-import { phoneFrame } from '../../../__stories__/decorators';
+import { phoneFrame } from '../../../../.storybook/decorators';
 
 /**
  * One line of a list, with a left slot, a central text block and a right slot.
