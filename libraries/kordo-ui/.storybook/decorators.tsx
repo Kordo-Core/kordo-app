@@ -1,37 +1,39 @@
-import type { Decorator } from '@storybook/react';
+import type { Decorator } from '@storybook/react-native-web-vite';
+import { Global } from '@emotion/react';
 import styled from '@emotion/styled';
-import { ViewportProvider } from '../__mocks__/rn-viewport';
-import { Header } from '../components/organisms/Header/Header';
-import { Section } from '../components/layouts/Section/Section';
-import { ListRow } from '../components/layouts/ListRow/ListRow';
-import { Text } from '../components/atoms/Text/Text';
-import { Icon } from '../components/atoms/Icon/Icon';
+import { Header } from '../src/components/organisms/Header/Header';
+import { Section } from '../src/components/layouts/Section/Section';
+import { ListRow } from '../src/components/layouts/ListRow/ListRow';
+import { Text } from '../src/components/atoms/Text/Text';
+import { Icon } from '../src/components/atoms/Icon/Icon';
+import { PhoneFrame, isNestedRender } from './PhoneFrame';
 
-// Dimensions d'un écran de téléphone courant (iPhone 14 / Pixel 7).
-export const PHONE_WIDTH = 390;
-export const PHONE_HEIGHT = 780;
-
-// Taille annoncée aux composants qui interrogent `useWindowDimensions()` : pour eux, l'écran
-// est le cadre, pas la fenêtre du navigateur.
-const SCREEN = { width: PHONE_WIDTH, height: PHONE_HEIGHT };
-
-// Habillage commun à tous les cadres : c'est lui qui garantit que deux stories différentes
-// se lisent à la même échelle.
-// Enveloppe extérieure : un padding, et non une marge sur le cadre, car la marge basse du
-// dernier enfant se fait absorber par le conteneur de Storybook (margin collapsing).
-const Canvas = styled.div({ padding: '24px 0' });
-
-const frame: React.CSSProperties = {
-  width: PHONE_WIDTH,
-  maxWidth: '100%',
-  margin: '0 auto',
-  border: '1px solid #D9D9D9',
-  borderRadius: 12,
+// Les deux décorateurs ci-dessous jouent deux rôles selon le contexte de rendu :
+//
+// - dans la prévisualisation normale, ils ne dessinent que le cadre du téléphone, qui recharge
+//   la story dans une iframe à ses dimensions ;
+// - dans cette iframe, ils rendent la story pour de bon, en occupant tout l'écran.
+//
+// C'est ce dédoublement qui rend le cadre honnête : la story vit dans une fenêtre qui fait
+// réellement la taille d'un téléphone, plutôt que dans une boîte qui en a l'air.
+const Screen = styled.div({
+  height: '100vh',
+  display: 'flex',
+  flexDirection: 'column',
   overflow: 'hidden',
-  position: 'relative',
   backgroundColor: '#FFFFFF',
-  boxShadow: '0 6px 24px rgba(0, 0, 0, 0.12)',
-};
+});
+
+// Dans l'iframe du cadre, l'écran occupe toute la fenêtre : les marges par défaut du document
+// la débordent alors de quelques pixels et y font apparaître une barre de défilement, qui n'a
+// pas lieu d'être sur un téléphone.
+const ScreenReset = () => (
+  <Global
+    styles={{
+      'html, body, #storybook-root': { height: '100%', margin: 0, overflow: 'hidden' },
+    }}
+  />
+);
 
 // Le décor est estompé et non cliquable : il situe le composant sans lui voler l'attention.
 // `flex-shrink: 0` pour que le contenu trop long déborde et soit rogné, plutôt qu'écrasé.
@@ -73,15 +75,17 @@ const FillerSection = ({ title, rows }: { title: string; rows: string[] }) => (
  * Pour les composants qui occupent l'écran ou s'y ancrent (header collant, barre de
  * navigation, conteneur de toasts) — ils sont eux-mêmes le décor.
  */
-export const phoneScreen: Decorator = (Story) => (
-  <Canvas>
-    <div data-phone-frame style={{ ...frame, height: PHONE_HEIGHT }}>
-      <ViewportProvider size={SCREEN}>
+export const phoneScreen: Decorator = (Story, context) =>
+  isNestedRender() ? (
+    <>
+      <ScreenReset />
+      <Screen>
         <Story />
-      </ViewportProvider>
-    </div>
-  </Canvas>
-);
+      </Screen>
+    </>
+  ) : (
+    <PhoneFrame storyId={context.id} />
+  );
 
 /**
  * Écran de téléphone garni : un header et des sections voisines à 50 % d'opacité, avec la
@@ -92,19 +96,13 @@ export const phoneScreen: Decorator = (Story) => (
  * Le header est laissé dans le flux normal (il n'est en absolu qu'en mode `smart`), ce qui
  * évite d'avoir à réserver sa hauteur à la main sous forme de marge.
  */
-export const phoneFrame: Decorator = (Story) => (
-  <Canvas>
-    <div
-      data-phone-frame
-      style={{
-        ...frame,
-        height: PHONE_HEIGHT,
-        backgroundColor: '#F5F5F5',
-        display: 'flex',
-        flexDirection: 'column',
-      }}
-    >
-      <ViewportProvider size={SCREEN}>
+export const phoneFrame: Decorator = (Story, context) =>
+  !isNestedRender() ? (
+    <PhoneFrame storyId={context.id} />
+  ) : (
+    <>
+      <ScreenReset />
+      <Screen style={{ backgroundColor: '#F5F5F5' }}>
         <Dimmed>
           <Header
             centerChildren
@@ -133,7 +131,6 @@ export const phoneFrame: Decorator = (Story) => (
             />
           </Dimmed>
         </ContentArea>
-      </ViewportProvider>
-    </div>
-  </Canvas>
-);
+      </Screen>
+    </>
+  );

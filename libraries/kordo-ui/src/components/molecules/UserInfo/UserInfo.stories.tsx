@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 import { UserInfo } from './UserInfo';
 import { UserPublic } from 'core';
 import { Text } from '../../atoms/Text/Text';

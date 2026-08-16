@@ -1,9 +1,9 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 import { Slider } from './Slider';
 import { Card } from '../../components/layouts/Card/Card';
 import { Text } from '../../components/atoms/Text/Text';
 import { theme } from '../../theme';
-import { phoneFrame } from '../../__stories__/decorators';
+import { phoneFrame } from '../../../.storybook/decorators';
 
 /**
  * Horizontally scrollable carousel for displaying a list of items.

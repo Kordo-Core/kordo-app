@@ -1,10 +1,10 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 import { useState } from 'react';
 import { UserPublic } from 'core';
 import { CommentsPanel } from './CommentsPanel';
 import { CommentItem } from './CommentsPanel.types';
 import { Button } from '../../atoms/Button/Button';
-import { phoneScreen } from '../../../__stories__/decorators';
+import { phoneScreen } from '../../../../.storybook/decorators';
 
 /**
  * Comments panel of a post — a `Panel` holding the comment list and the compose field.

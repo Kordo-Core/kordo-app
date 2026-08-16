@@ -1,8 +1,8 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 import { useState } from 'react';
 import { BottomNavBar } from './BottomNavBar';
 import { NavTab } from './BottomNavBar.types';
-import { phoneScreen } from '../../../__stories__/decorators';
+import { phoneScreen } from '../../../../.storybook/decorators';
 
 /**
  * Bottom navigation bar with an animated indicator following the active tab.

@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 import { Fade, FadeRef } from './Fade';
 import { useRef, useState } from 'react';
 import { Button } from '../../components/atoms/Button/Button';

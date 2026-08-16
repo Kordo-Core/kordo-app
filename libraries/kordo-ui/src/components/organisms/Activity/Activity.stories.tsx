@@ -1,7 +1,7 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 import { Activity } from './Activity';
 import { ActivityPublic } from 'core';
-import { phoneFrame } from '../../../__stories__/decorators';
+import { phoneFrame } from '../../../../.storybook/decorators';
 
 /**
  * Climbing session card, rendered solely from an `ActivityPublic`.

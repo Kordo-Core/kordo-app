@@ -1,9 +1,9 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 import { useState } from 'react';
 import { Panel } from './Panel';
 import { Button } from '../../atoms/Button/Button';
 import { Text } from '../../atoms/Text/Text';
-import { phoneScreen } from '../../../__stories__/decorators';
+import { phoneScreen } from '../../../../.storybook/decorators';
 
 /**
  * Bottom sheet sliding up from the bottom of the screen.

@@ -1,9 +1,9 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 import { Toast } from './Toast';
 import { ToastProvider, useToast } from '../../layouts/ToastProvider/ToastProvider';
 import { Button } from '../Button/Button';
 import { Text } from '../Text/Text';
-import { phoneScreen } from '../../../__stories__/decorators';
+import { phoneScreen } from '../../../../.storybook/decorators';
 
 /**
  * Temporary notification stacked at the bottom of the screen.

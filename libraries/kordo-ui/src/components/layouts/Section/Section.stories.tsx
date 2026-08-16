@@ -1,9 +1,9 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 import { Section } from './Section';
 import { ListRow } from '../ListRow/ListRow';
 import { Text } from '../../atoms/Text/Text';
 import { Icon } from '../../atoms/Icon/Icon';
-import { phoneFrame } from '../../../__stories__/decorators';
+import { phoneFrame } from '../../../../.storybook/decorators';
 
 /**
  * Full-width, edge-to-edge band that groups content vertically to compose a screen.

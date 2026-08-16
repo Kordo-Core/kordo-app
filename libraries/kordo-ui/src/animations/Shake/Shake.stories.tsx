@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 import { Shake, ShakeRef } from './Shake';
 import { useRef } from 'react';
 import { Button } from '../../components/atoms/Button/Button';

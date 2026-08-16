@@ -1,8 +1,8 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 import { useState } from 'react';
 import { VideoStories } from './VideoStories';
 import { Button } from '../../atoms/Button/Button';
-import { phoneScreen } from '../../../__stories__/decorators';
+import { phoneScreen } from '../../../../.storybook/decorators';
 
 /**
  * Full-screen video viewer, Stories-style: swipe between clips, tap past the last one to close.
