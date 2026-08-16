@@ -12,7 +12,7 @@ import { Bar, ProgressBar } from './Loader.styles';
 import { useEffect, useState } from 'react';
 import * as Styled from './Loader.styles';
 import { LoaderProps } from './Loader.types';
-import { Circle } from 'react-native-svg';
+import Svg, { Circle } from 'react-native-svg';
 import { useTheme } from '@emotion/react';
 
 // Composant Loader supportant deux variantes : barre de progression et spinner circulaire
@@ -88,12 +88,10 @@ export const Loader: React.FC<LoaderProps> = (props) => {
       )}
 
       {props.type === 'spinner' && (
-        <>
-          <Styled.AnimatedSvg
-            width={size}
-            height={size}
-            style={{ ...spinnerStyle, ...props.style }}
-          >
+        // La rotation est portée par une vue, et le SVG reste immobile à l'intérieur : le
+        // style animé ne doit jamais atteindre un composant react-native-svg (cf. les styles).
+        <Styled.SpinnerRotation style={[props.style, spinnerStyle]}>
+          <Svg width={size} height={size}>
             <Circle
               cx={size / 2}
               cy={size / 2}
@@ -113,8 +111,8 @@ export const Loader: React.FC<LoaderProps> = (props) => {
               strokeLinecap="round"
               fillOpacity={0}
             />
-          </Styled.AnimatedSvg>
-        </>
+          </Svg>
+        </Styled.SpinnerRotation>
       )}
     </>
   );
