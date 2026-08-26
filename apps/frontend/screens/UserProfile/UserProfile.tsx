@@ -3,7 +3,8 @@ import { Pressable, ScrollView, useWindowDimensions } from 'react-native';
 import { SvgUri } from 'react-native-svg';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Header, Icon, ListRow, Section, Text, theme } from 'kordo-ui';
+import { useTheme } from '@emotion/react';
+import { Header, Icon, ListRow, Section, Text } from 'kordo-ui';
 import * as Styled from './UserProfile.styles';
 import { ProfileSummary } from './components/ProfileSummary/ProfileSummary';
 import { FollowStatus } from './components/ProfileSummary/ProfileSummary.types';
@@ -22,6 +23,7 @@ const NAV_ITEMS: { label: string; icon: string; pivot?: RelationPivot }[] = [
 ];
 
 export default function UserProfile() {
+  const theme = useTheme();
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const { params } = useRoute<RouteProp<RootStackParamList, 'UserProfile'>>();
   const { height } = useWindowDimensions();
@@ -61,7 +63,7 @@ export default function UserProfile() {
         right={
           <Icon name={isOwnProfile ? 'settings' : 'more-vertical'} size="md" onPress={() => {}} />
         }
-        style={{ boxShadow: '0px 1px 3px rgba(0, 0, 0, 0.1)' }}
+        style={{ boxShadow: theme.shadows.md }}
       >
         <Text size="lg" bold>
           {user.username}

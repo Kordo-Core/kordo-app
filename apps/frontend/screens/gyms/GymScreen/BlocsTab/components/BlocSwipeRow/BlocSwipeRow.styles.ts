@@ -1,5 +1,4 @@
 import styled from '@emotion/native';
-import { theme } from 'kordo-ui';
 import { View } from 'react-native';
 import Animated from 'react-native-reanimated';
 
@@ -11,10 +10,10 @@ export const BlocRow = styled(View)({
 });
 
 // Premier plan opaque : glisse horizontalement pour révéler le bandeau d'action
-export const BlocForeground = styled(Animated.View)({
-  backgroundColor: theme.colors.neutral.white,
-  paddingInline: theme.spacing.lg,
-});
+export const BlocForeground = styled(Animated.View)((props) => ({
+  backgroundColor: props.theme.colors.neutral.white,
+  paddingInline: props.theme.spacing.lg,
+}));
 
 // Icônes d'action épinglées aux bords (restent en place quand le bandeau s'étire)
 export const BlocActionIconLeft = styled(View)({

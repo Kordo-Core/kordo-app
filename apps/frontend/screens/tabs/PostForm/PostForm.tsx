@@ -4,7 +4,8 @@ import { SvgUri } from 'react-native-svg';
 import { useNavigation } from '@react-navigation/native';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import * as ImagePicker from 'expo-image-picker';
-import { BoulderBadge, Button, DropdownItem, Header, Icon, Text, theme, useToast } from 'kordo-ui';
+import { useTheme } from '@emotion/react';
+import { BoulderBadge, Button, DropdownItem, Header, Icon, Text, useToast } from 'kordo-ui';
 import { GYMS } from '../../../fake_data/gyms.fake';
 import { getBlocsByGym, getCurrentUserBlocMethod } from '../../../fake_data/climbing.fake';
 import { getUserSessions } from '../../../fake_data/social.fake';
@@ -17,6 +18,7 @@ import { MessageForm } from './components/MessageForm/MessageForm';
 import { NowForm } from './components/NowForm/NowForm';
 
 export default function PostForm() {
+  const theme = useTheme();
   const navigation = useNavigation<BottomTabNavigationProp<MainTabsParamList>>();
   const { height } = useWindowDimensions();
   const { addToast } = useToast();
@@ -173,7 +175,7 @@ export default function PostForm() {
             onPress={publish}
           />
         }
-        style={{ boxShadow: '0px 1px 3px rgba(0, 0, 0, 0.1)' }}
+        style={{ boxShadow: theme.shadows.md }}
       >
         <Text bold size="lg" numberOfLines={1}>
           Ajouter une publication

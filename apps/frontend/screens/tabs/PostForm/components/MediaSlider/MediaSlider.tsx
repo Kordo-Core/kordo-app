@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { Image, Modal, useWindowDimensions } from 'react-native';
-import { Icon, Slider, Text, VideoStories, theme } from 'kordo-ui';
+import { useTheme } from '@emotion/react';
+import { Icon, Slider, Text, VideoStories } from 'kordo-ui';
 import { MediaSliderProps } from './MediaSlider.types';
 import * as Styled from './MediaSlider.styles';
 
 export function MediaSlider({ media, onAdd }: MediaSliderProps) {
+  const theme = useTheme();
   const { width: screenWidth } = useWindowDimensions();
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [videoIndex, setVideoIndex] = useState<number | null>(null);
@@ -27,7 +29,7 @@ export function MediaSlider({ media, onAdd }: MediaSliderProps) {
         <Slider
           height={Styled.TILE_H}
           gap={theme.spacing.sm}
-          style={{ width: screenWidth, marginLeft: -Styled.SIDE_PADDING }}
+          style={{ width: screenWidth, marginLeft: -theme.spacing.lg }}
         >
           {onAdd && (
             <Styled.AddTile onPress={onAdd} $media>

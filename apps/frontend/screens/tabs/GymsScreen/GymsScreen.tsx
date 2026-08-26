@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { View, ScrollView, useWindowDimensions, Dimensions, ImageBackground } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import * as Styled from './GymsScreen.styles';
-import { Button, Card, Icon, Slider, Tag, Text, theme } from 'kordo-ui';
+import { useTheme } from '@emotion/react';
+import { Button, Card, Icon, Slider, Tag, Text } from 'kordo-ui';
 import { GymCardStack } from './GymCardStack';
 import { BlurView } from 'expo-blur';
 import { FAVORITE_GYMS, POPULAR_GYMS, RECENTLY_VISITED } from '../../../fake_data/gyms.fake';
@@ -14,35 +15,41 @@ import { Bounce } from 'kordo-ui/src/animations/Bounce/Bounce';
 const IMAGE_FRACTION = 0.25;
 const CARD_FRACTION = 0.75;
 
-const CATEGORIES = [
-  {
-    label: 'Ranked',
-    icon: 'TrophyRegular',
-    light: theme.colors.primary.lighter,
-    base: theme.colors.primary.base,
-  },
-  {
-    label: 'New',
-    icon: 'StarRegular',
-    light: theme.colors.secondary.lighter,
-    base: theme.colors.secondary.base,
-  },
-  {
-    label: 'Bloc',
-    icon: 'terrain',
-    light: theme.colors.primary.lighter,
-    base: theme.colors.primary.base,
-  },
-  {
-    label: 'Lead',
-    icon: 'carabiner',
-    light: theme.colors.secondary.lighter,
-    base: theme.colors.secondary.base,
-  },
-] as const;
-
 export default function GymsScreen() {
+  const theme = useTheme();
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+
+  // Les couleurs des catégories viennent du thème : la liste se construit dans le composant.
+  const categories = useMemo(
+    () =>
+      [
+        {
+          label: 'Ranked',
+          icon: 'TrophyRegular',
+          light: theme.colors.primary.lighter,
+          base: theme.colors.primary.base,
+        },
+        {
+          label: 'New',
+          icon: 'StarRegular',
+          light: theme.colors.secondary.lighter,
+          base: theme.colors.secondary.base,
+        },
+        {
+          label: 'Bloc',
+          icon: 'terrain',
+          light: theme.colors.primary.lighter,
+          base: theme.colors.primary.base,
+        },
+        {
+          label: 'Lead',
+          icon: 'carabiner',
+          light: theme.colors.secondary.lighter,
+          base: theme.colors.secondary.base,
+        },
+      ] as const,
+    [theme],
+  );
   const [likedGyms, setLikedGyms] = useState<Set<string>>(new Set());
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
@@ -265,7 +272,7 @@ export default function GymsScreen() {
               Catégories
             </Text>
             <View style={{ flexDirection: 'row', gap: theme.spacing.lg }}>
-              {CATEGORIES.map(({ label, icon, light, base }) => {
+              {categories.map(({ label, icon, light, base }) => {
                 const selected = selectedCategory === label;
                 return (
                   <View key={label}>

@@ -12,7 +12,8 @@ import Animated, {
   makeMutable,
   SharedValue,
 } from 'react-native-reanimated';
-import { Card, Icon, Tag, Text, theme } from 'kordo-ui';
+import { useTheme } from '@emotion/react';
+import { Card, Icon, Tag, Text } from 'kordo-ui';
 import { Bounce } from 'kordo-ui/src/animations/Bounce/Bounce';
 import { Gym } from '../../../fake_data/gyms.fake';
 
@@ -73,11 +74,15 @@ function GymCard({
   gesture,
   children,
 }: CardProps) {
+  const theme = useTheme();
+  // Valeur primitive capturée par le worklet, plutôt que l'objet thème entier.
+  const cardRadius = theme.borderRadius.square;
+
   const animStyle = useAnimatedStyle(() => ({
     position: 'absolute',
     width: innerWidth,
     height: cardHeight,
-    borderRadius: theme.borderRadius.square,
+    borderRadius: cardRadius,
     zIndex: zSv.value,
     transform: [
       { translateX: txSv.value + (frontShared.value === index ? dragX.value : 0) },
@@ -122,6 +127,7 @@ interface Props {
 }
 
 export function GymCardStack({ cardWidth, cardHeight = 300, gyms }: Props) {
+  const theme = useTheme();
   const count = gyms.length;
   const innerWidth = cardWidth - PEEK * 2;
   const ranks = useRef(buildRanks(count)).current;

@@ -1,7 +1,8 @@
 import { useRef } from 'react';
 import { Image, Pressable, View } from 'react-native';
 import { useVideoPlayer, VideoView } from 'expo-video';
-import { Icon, Text, theme } from 'kordo-ui';
+import { useTheme } from '@emotion/react';
+import { Icon, Text } from 'kordo-ui';
 import { BlocMediaWithAuthor } from '../../../../../fake_data';
 
 interface MethodVideoSlideProps {
@@ -20,6 +21,7 @@ export function MethodVideoSlide({
   height = 260,
   onPress,
 }: MethodVideoSlideProps) {
+  const theme = useTheme();
   const { media, author } = entry;
   const ref = useRef<VideoView>(null);
   const player = useVideoPlayer(media.url, (p) => {
@@ -77,7 +79,7 @@ export function MethodVideoSlide({
             width: 56,
             height: 56,
             borderRadius: 28,
-            backgroundColor: 'rgba(0,0,0,0.5)',
+            backgroundColor: theme.colors.overlay.dark,
             alignItems: 'center',
             justifyContent: 'center',
             paddingLeft: 4,
@@ -95,7 +97,7 @@ export function MethodVideoSlide({
               flexDirection: 'row',
               alignItems: 'center',
               gap: theme.spacing.xs,
-              backgroundColor: 'rgba(0,0,0,0.45)',
+              backgroundColor: theme.colors.overlay.dark,
               paddingVertical: theme.spacing.xs,
               paddingHorizontal: theme.spacing.sm,
               borderRadius: theme.borderRadius.rounded,

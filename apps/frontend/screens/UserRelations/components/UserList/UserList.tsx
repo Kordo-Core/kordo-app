@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useTheme } from '@emotion/react';
 import { Text } from 'kordo-ui';
 import { UserListProps } from './UserList.types';
 import { UserRow } from '../UserRow/UserRow';
@@ -13,6 +14,7 @@ import { RootStackParamList } from '../../../../App';
 // des données change, la présentation est identique.
 export const UserList: React.FC<UserListProps> = ({ users, query, caption, emptyLabel }) => {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+  const theme = useTheme();
 
   const visibleUsers = useMemo(
     () => users.filter((user) => matchesQuery(query, user.username, user.firstName, user.lastName)),
@@ -31,7 +33,7 @@ export const UserList: React.FC<UserListProps> = ({ users, query, caption, empty
         style={Styled.list}
         data={visibleUsers}
         keyExtractor={(user) => user.id}
-        contentContainerStyle={Styled.listContent}
+        contentContainerStyle={Styled.listContent(theme)}
         keyboardShouldPersistTaps="handled"
         ListEmptyComponent={
           <Styled.Empty>

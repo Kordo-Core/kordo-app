@@ -1,7 +1,8 @@
 import { useCallback, useMemo, useState } from 'react';
 import { ListRenderItem, useWindowDimensions } from 'react-native';
 import { GestureDetector } from 'react-native-gesture-handler';
-import { Text, theme } from 'kordo-ui';
+import { useTheme } from '@emotion/react';
+import { Text } from 'kordo-ui';
 import Animated, {
   Extrapolation,
   interpolate,
@@ -26,6 +27,7 @@ const formatDate = (iso: string) =>
 
 // Onglet Blocs : carte des secteurs en hero + liste de blocs swipables (validation/annulation).
 export function BlocsTab({ gymId, geometry, onBoulderSelected }: BlocsTabProps) {
+  const theme = useTheme();
   const { height, headerHeight, heroHeight, topInset, cardHeight, cardRest, cardDock, shadowGap } =
     geometry;
   const { width: screenWidth } = useWindowDimensions();

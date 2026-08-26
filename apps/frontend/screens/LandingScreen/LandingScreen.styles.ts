@@ -1,6 +1,5 @@
 import styled from '@emotion/native';
 import { Image, View } from 'react-native';
-import { theme } from 'kordo-ui';
 
 export const ImageContainer = styled(View)({
   height: '60%',
@@ -12,27 +11,27 @@ export const Img = styled(Image)({
   justifyContent: 'center',
 });
 
-export const Card = styled(View)({
+export const Card = styled(View)((props) => ({
   flex: 1,
-  backgroundColor: theme.colors.neutral.white,
+  backgroundColor: props.theme.colors.neutral.white,
   borderTopLeftRadius: 30,
   borderTopRightRadius: 30,
   position: 'absolute',
   bottom: 0,
   width: '100%',
   height: '45%',
-  padding: theme.spacing.xxl,
+  padding: props.theme.spacing.xxl,
   paddingBottom: 60,
   justifyContent: 'space-between',
-  boxShadow: '0px -2px 6px rgba(0, 0, 0, 0.05)',
-});
+  boxShadow: props.theme.shadows.up,
+}));
 
-export const Header = styled(View)({
-  gap: theme.spacing.md,
-});
+export const Header = styled(View)((props) => ({
+  gap: props.theme.spacing.md,
+}));
 
-export const Actions = styled(View)({
+export const Actions = styled(View)((props) => ({
   width: '100%',
   flexDirection: 'row',
-  gap: theme.spacing.lg,
-});
+  gap: props.theme.spacing.lg,
+}));

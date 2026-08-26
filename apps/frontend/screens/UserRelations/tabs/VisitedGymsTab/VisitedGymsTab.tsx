@@ -2,7 +2,8 @@ import { useMemo } from 'react';
 import { FlatList, Image, Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Icon, ListRow, Text, theme } from 'kordo-ui';
+import { useTheme } from '@emotion/react';
+import { Icon, ListRow, Text } from 'kordo-ui';
 import * as Styled from '../../UserRelationsScreen.styles';
 import { RelationTabProps } from '../../UserRelationsScreen.types';
 import { matchesQuery } from '../../utils/matchesQuery';
@@ -18,6 +19,7 @@ const formatVisitDate = (iso: string): string =>
 // Onglet "Salles visitées" : une ligne par salle, dédoublonnée, avec la dernière visite
 // et le nombre de sessions. Un tap ouvre la salle.
 export const VisitedGymsTab: React.FC<RelationTabProps> = ({ userId, query }) => {
+  const theme = useTheme();
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
   const visitedGyms = useMemo(() => getVisitedGyms(userId), [userId]);
@@ -31,7 +33,7 @@ export const VisitedGymsTab: React.FC<RelationTabProps> = ({ userId, query }) =>
       style={Styled.list}
       data={visibleGyms}
       keyExtractor={({ gym }) => gym.id}
-      contentContainerStyle={Styled.listContent}
+      contentContainerStyle={Styled.listContent(theme)}
       keyboardShouldPersistTaps="handled"
       ListEmptyComponent={
         <Styled.Empty>

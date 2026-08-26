@@ -1,6 +1,7 @@
 import { useCallback, useMemo, useState } from 'react';
 import { ListRenderItem } from 'react-native';
-import { theme } from 'kordo-ui';
+import { useTheme } from '@emotion/react';
+import {} from 'kordo-ui';
 import Animated, {
   scrollTo,
   useAnimatedRef,
@@ -18,6 +19,7 @@ import { RankingEntry, getGymRanking } from '../../../../fake_data';
 // Onglet Classement : podium en hero + liste de classement, mêmes mécaniques de scroll
 // (ghost scroll qui dock la card puis relaie le scroll à la FlatList interne).
 export function RankingTab({ gymId, geometry }: RankingTabProps) {
+  const theme = useTheme();
   const { height, headerHeight, cardHeight, cardRest, cardDock, shadowGap } = geometry;
 
   const ranking = useMemo(() => getGymRanking(gymId), [gymId]);

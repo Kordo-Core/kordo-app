@@ -9,12 +9,14 @@ import {
 import { SvgUri } from 'react-native-svg';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Activity, Header, Icon, Now, Publication, TextPost, UserInfo, theme } from 'kordo-ui';
+import { useTheme } from '@emotion/react';
+import { Activity, Header, Icon, Now, Publication, TextPost, UserInfo } from 'kordo-ui';
 import * as Styled from './HomeScreen.styles';
 import { CURRENT_USER, getHomeFeed, HomeFeedItem } from 'fake_data';
 import { RootStackParamList } from '../../../App';
 
 export default function HomeScreen() {
+  const theme = useTheme();
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const { height } = useWindowDimensions();
   const homeFeed = useMemo(() => getHomeFeed(), []);
@@ -57,7 +59,7 @@ export default function HomeScreen() {
             <Icon name="ChatRegular" size="lg" onPress={() => {}} />
           </>
         }
-        style={{ boxShadow: '0px 1px 3px rgba(0, 0, 0, 0.1)' }}
+        style={{ boxShadow: theme.shadows.md }}
       />
 
       <FlatList

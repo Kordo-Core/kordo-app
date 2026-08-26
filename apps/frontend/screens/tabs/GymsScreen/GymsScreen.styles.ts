@@ -1,5 +1,4 @@
 import styled from '@emotion/native';
-import { theme } from 'kordo-ui';
 import { Image, View } from 'react-native';
 
 export const ImageContainer = styled(View)({
@@ -14,11 +13,11 @@ export const Img = styled(Image)({
   height: '115%',
 });
 
-export const Card = styled(View)({
-  backgroundColor: theme.colors.neutral.white,
+export const Card = styled(View)((props) => ({
+  backgroundColor: props.theme.colors.neutral.white,
   borderTopLeftRadius: 30,
   borderTopRightRadius: 30,
   width: '100%',
   overflow: 'hidden',
-  boxShadow: '0px -2px 6px rgba(0, 0, 0, 0.05)',
-});
+  boxShadow: props.theme.shadows.up,
+}));

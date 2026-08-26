@@ -1,6 +1,7 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { Button, Input, Text, theme } from 'kordo-ui';
-import { RootStackParamList } from '../App';
+import { useTheme } from '@emotion/react';
+import { Button, Input, Text } from 'kordo-ui';
+import { RootStackParamList } from '../../App';
 import React from 'react';
 import { Keyboard, Platform } from 'react-native';
 import { Feather } from '@expo/vector-icons';
@@ -9,6 +10,7 @@ import * as Styled from './LoginFormScreen.styles';
 type Props = NativeStackScreenProps<RootStackParamList, 'LoginForm'>;
 
 export default function LoginFormScreen({ navigation }: Props) {
+  const theme = useTheme();
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [keyboardVisible, setKeyboardVisible] = React.useState(false);
