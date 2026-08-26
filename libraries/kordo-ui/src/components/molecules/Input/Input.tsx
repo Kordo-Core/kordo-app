@@ -9,7 +9,7 @@ import { Shake, ShakeRef } from '../../../animations/Shake/Shake';
 import { Fade, FadeRef } from '../../../animations/Fade/Fade';
 import { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { Icon } from '../../atoms/Icon/Icon';
-import { StatusType } from 'types/theme.types';
+import { StatusType } from '../../../types/theme.types';
 
 export const Input: React.FC<InputProps> = (props) => {
   // Accès au thème pour les couleurs de bordure et les styles dynamiques

@@ -1,10 +1,9 @@
 import styled from '@emotion/native';
-import { theme } from 'kordo-ui';
 import { View } from 'react-native';
 
-export const Container = styled.View(() => ({
+export const Container = styled.View((props) => ({
   flex: 1,
-  backgroundColor: theme.colors.primary.lightest,
+  backgroundColor: props.theme.colors.primary.lightest,
 }));
 
 // Image de fond (topo) en plein écran, derrière tout le contenu — identique à Home / Notifications

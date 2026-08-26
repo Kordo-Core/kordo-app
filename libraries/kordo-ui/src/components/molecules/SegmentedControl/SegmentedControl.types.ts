@@ -1,5 +1,5 @@
 import { StyleProp, ViewStyle } from 'react-native';
-import { SizeType } from 'types/theme.types';
+import { SizeType } from '../../../types/theme.types';
 
 export interface SegmentedControlProps {
   /** Array of segment labels */

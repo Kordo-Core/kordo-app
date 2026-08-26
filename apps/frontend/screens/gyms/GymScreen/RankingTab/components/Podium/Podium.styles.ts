@@ -1,5 +1,4 @@
 import styled from '@emotion/native';
-import { theme } from 'kordo-ui';
 import { View } from 'react-native';
 import Animated from 'react-native-reanimated';
 
@@ -11,17 +10,17 @@ export const PodiumContainer = styled(Animated.View)(() => ({
   zIndex: 2,
 }));
 
-export const Podium = styled(View)(() => ({
+export const Podium = styled(View)((props) => ({
   width: '100%',
   height: '100%',
   flexDirection: 'row',
-  gap: theme.spacing.md,
-  paddingInline: theme.spacing.lg,
+  gap: props.theme.spacing.md,
+  paddingInline: props.theme.spacing.lg,
 }));
 
-export const PodiumColumn = styled(View)(() => ({
+export const PodiumColumn = styled(View)((props) => ({
   flex: 1,
   justifyContent: 'flex-end',
   alignItems: 'center',
-  gap: theme.spacing.md,
+  gap: props.theme.spacing.md,
 }));

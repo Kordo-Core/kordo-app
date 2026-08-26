@@ -1,5 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { Button, Text, theme } from 'kordo-ui';
+import { useTheme } from '@emotion/react';
+import { Button, Text } from 'kordo-ui';
 import { Feather } from '@expo/vector-icons';
 import * as Styled from './LoginScreen.styles';
 import { RootStackParamList } from 'App';
@@ -7,6 +8,7 @@ import { RootStackParamList } from 'App';
 type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
 
 export default function LoginScreen({ navigation }: Props) {
+  const theme = useTheme();
   return (
     <Styled.Container>
       <Styled.BackButton onPress={() => navigation.goBack()}>
@@ -38,7 +40,7 @@ export default function LoginScreen({ navigation }: Props) {
           borderRadius="rounded"
           inverted
           borderless
-          containerStyle={{ backgroundColor: '#F2F2F7' }}
+          containerStyle={{ backgroundColor: theme.colors.neutral.gray.lightest }}
           icon={{ name: 'google', size: 24, color: 'red' }}
           fullWidth
         />
@@ -49,7 +51,7 @@ export default function LoginScreen({ navigation }: Props) {
           borderRadius="rounded"
           inverted
           borderless
-          containerStyle={{ backgroundColor: '#F2F2F7' }}
+          containerStyle={{ backgroundColor: theme.colors.neutral.gray.lightest }}
           icon={{ name: 'apple', size: 24, color: theme.colors.neutral.black }}
           fullWidth
         />

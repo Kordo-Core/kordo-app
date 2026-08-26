@@ -63,7 +63,7 @@ export const TextPost: React.FC<TextPostProps> = ({
           backgroundColor: theme.colors.neutral.white,
           padding: theme.spacing.md,
           gap: theme.spacing.md,
-          boxShadow: '0px 2px 2px rgba(0, 0, 0, 0.05)',
+          boxShadow: theme.shadows.sm,
         },
         style,
       ]}

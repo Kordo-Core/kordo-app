@@ -6,6 +6,7 @@ import {
   useWindowDimensions,
   View,
 } from 'react-native';
+import { useTheme } from '@emotion/react';
 import { SvgUri } from 'react-native-svg';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import {
@@ -19,7 +20,6 @@ import {
   Tag,
   Text,
   VideoStories,
-  theme,
 } from 'kordo-ui';
 import * as Styled from './GymScreen.styles';
 import { RankingTab } from './RankingTab/RankingTab';
@@ -29,18 +29,23 @@ import { RootStackParamList } from '../../../App';
 import { BlocDetail, GYMS, getMediaByBloc, getBlocDetailById } from '../../../fake_data';
 import { MethodVideoSlide } from './components/MethodVideoSlide/MethodVideoSlide';
 
-const SEGMENTS = [
-  { text: 'Classement', color: theme.colors.secondary.base },
-  { text: 'Les blocs', color: theme.colors.secondary.base },
-];
-
 const HERO_OVERLAP = 6; // chevauchement hero / card
 const SHADOW_GAP = 6; // marge sous le header une fois la card dockée
 
 // Orchestrateur de l'écran salle : header, sélecteur d'onglet, fond, et géométrie partagée
 // de la mécanique "card qui se docke" passée à l'onglet actif (Classement / Blocs).
 export default function GymScreen() {
+  const theme = useTheme();
   const navigation = useNavigation();
+
+  // Dépend du thème : construit dans le composant plutôt qu'au chargement du module.
+  const segments = useMemo(
+    () => [
+      { text: 'Classement', color: theme.colors.secondary.base },
+      { text: 'Les blocs', color: theme.colors.secondary.base },
+    ],
+    [theme],
+  );
   const { params } = useRoute<RouteProp<RootStackParamList, 'Gym'>>();
   const gym = GYMS.find((g) => g.id === params.gymId);
   const [activeTab, setActiveTab] = useState(0);
@@ -238,7 +243,7 @@ export default function GymScreen() {
         onLayout={(e: LayoutChangeEvent) => setSegmentedHeight(e.nativeEvent.layout.height)}
         style={{ top: headerHeight }}
       >
-        <SegmentedControl segments={SEGMENTS} selectedIndex={activeTab} onSelect={setActiveTab} />
+        <SegmentedControl segments={segments} selectedIndex={activeTab} onSelect={setActiveTab} />
       </Styled.SegmentedWrapper>
 
       {/* Header figé tout en haut */}

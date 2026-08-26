@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useTheme } from '@emotion/react';
 import { Activity, Text } from 'kordo-ui';
 import * as Styled from '../../UserRelationsScreen.styles';
 import { RelationTabProps } from '../../UserRelationsScreen.types';
@@ -14,6 +15,7 @@ import { RootStackParamList } from '../../../../App';
 // de la séance et le nom de la salle.
 export const ActivitiesTab: React.FC<RelationTabProps> = ({ userId, query }) => {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+  const theme = useTheme();
 
   const activities = useMemo(() => getUserActivities(userId), [userId]);
   const visibleActivities = useMemo(
@@ -26,7 +28,7 @@ export const ActivitiesTab: React.FC<RelationTabProps> = ({ userId, query }) => 
       style={Styled.list}
       data={visibleActivities}
       keyExtractor={(activity) => activity.id}
-      contentContainerStyle={Styled.cardsContent}
+      contentContainerStyle={Styled.cardsContent(theme)}
       keyboardShouldPersistTaps="handled"
       ListEmptyComponent={
         <Styled.Empty>

@@ -16,6 +16,7 @@ import Animated, {
   Extrapolation,
 } from 'react-native-reanimated';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+import { useTheme } from '@emotion/react';
 import { PanelProps } from './Panel.types';
 import * as Styled from './Panel.styles';
 
@@ -30,6 +31,7 @@ const OPEN_RATIO = 0.75;
 
 // Composant panneau coulissant (bottom sheet) : le bloc entier (handle + contenu) glisse pour révéler le contenu qui dépasse
 export const Panel: React.FC<PanelProps> = ({ title, children, isOpen = false, onClose }) => {
+  const theme = useTheme();
   // Hauteur de la fenêtre, base de tous les calculs de position
   const { height } = useWindowDimensions();
   // Contrôle le montage/démontage pour éviter de rendre un panneau invisible
@@ -182,7 +184,7 @@ export const Panel: React.FC<PanelProps> = ({ title, children, isOpen = false, o
             left: 0,
             right: 0,
             bottom: 0,
-            backgroundColor: 'rgba(0,0,0,0.5)',
+            backgroundColor: theme.colors.overlay.dark,
           },
           overlayAnimatedStyle,
         ]}

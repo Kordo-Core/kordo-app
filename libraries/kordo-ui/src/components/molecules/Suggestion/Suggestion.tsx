@@ -52,12 +52,10 @@ export const Suggestion: React.FC<SuggestionProps> = (props) => {
           </Styled.UserInfo>
         </Styled.Content>
 
-        {/* `Bounce` s'aligne à gauche par défaut : on recentre dans la carte. */}
         <Button
           title="Follow"
           appearance="secondary"
           borderRadius="square"
-          style={{ alignSelf: 'center' }}
           onPress={props.onPressFollow}
         />
       </Styled.Container>

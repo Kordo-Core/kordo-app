@@ -1,7 +1,8 @@
 import { useMemo, useState } from 'react';
 import { LayoutChangeEvent, View } from 'react-native';
 import Svg, { Path, Text as SvgText } from 'react-native-svg';
-import { theme } from 'kordo-ui';
+import { useTheme } from '@emotion/react';
+import {} from 'kordo-ui';
 import { SECTOR_MAP_VIEWBOX } from '../../../../../../fake_data';
 import { GymMapProps } from './GymMap.types';
 
@@ -23,6 +24,7 @@ function centroid(path: string): { x: number; y: number } {
 }
 
 export function GymMap({ sectors, selectedSectorId, onSelectSector }: GymMapProps) {
+  const theme = useTheme();
   const centers = useMemo(() => sectors.map((s) => centroid(s.path)), [sectors]);
   const [width, setWidth] = useState(0);
   const onLayout = (e: LayoutChangeEvent) => setWidth(e.nativeEvent.layout.width);

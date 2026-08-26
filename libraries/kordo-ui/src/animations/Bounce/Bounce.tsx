@@ -40,7 +40,12 @@ export const Bounce: React.FC<BounceProps> = (props) => {
       onPressOut={handlePressOut}
       onPress={handlePress}
       disabled={disabled}
-      style={[{ alignSelf: 'flex-start' }, props.style]}
+      // Un `alignSelf` est nécessaire : sans lui la Pressable s'étire sur l'axe secondaire
+      // (pleine largeur en colonne, pleine hauteur en ligne) et le contenu s'étire avec elle.
+      // `center` est le seul choix qui convienne dans les deux sens : en ligne le contenu reste
+      // centré verticalement, en colonne il garde sa largeur propre. Un parent qui veut un autre
+      // alignement le passe dans `style`, qui est fusionné après.
+      style={[{ alignSelf: 'center' }, props.style]}
     >
       <Animated.View style={animatedStyle}>{children}</Animated.View>
     </Pressable>

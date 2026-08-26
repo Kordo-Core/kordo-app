@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { theme } from 'kordo-ui';
+import { useTheme } from '@emotion/react';
 import { Gesture } from 'react-native-gesture-handler';
 import { runOnJS, useSharedValue, withTiming, SharedValue } from 'react-native-reanimated';
 import { BlocRow, RowStatus } from '../../utils/BlocRow.types';
@@ -28,6 +28,9 @@ export function useBlocSwipe({
   screenWidth,
   onSelect,
 }: UseBlocSwipeParams): UseBlocSwipeReturn {
+  const { spacing } = useTheme();
+  // paddingTop du contentContainer de la FlatList
+  const contentPaddingTop = spacing.lg;
   const { shadowGap, cardRest, cardDock, headerHeight } = geometry;
 
   const [statuses, setStatuses] = useState<Record<string, RowStatus>>({});
@@ -69,7 +72,7 @@ export function useBlocSwipe({
   blocsDataRef.current = blocsData;
 
   const recomputeOffsets = useCallback(() => {
-    let acc = theme.spacing.lg; // paddingTop du contentContainer
+    let acc = contentPaddingTop;
     const offsets: Record<number, RowLayout> = {};
     const data = blocsDataRef.current;
     for (let i = 0; i < data.length; i++) {
@@ -79,7 +82,7 @@ export function useBlocSwipe({
       acc += h;
     }
     rowLayouts.value = offsets;
-  }, [rowLayouts]);
+  }, [rowLayouts, contentPaddingTop]);
 
   const onRowLayout = useCallback(
     (key: string, height: number) => {

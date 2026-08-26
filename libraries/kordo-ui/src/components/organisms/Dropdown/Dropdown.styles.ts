@@ -38,7 +38,7 @@ export const ListContainer = styled.View((props) => ({
   borderWidth: 1,
   borderColor: props.theme.colors.neutral.gray.light,
   overflow: 'hidden',
-  shadowColor: '#000000',
+  shadowColor: props.theme.colors.neutral.black,
   shadowOffset: { width: 0, height: 4 },
   shadowOpacity: 0.15,
   shadowRadius: 12,

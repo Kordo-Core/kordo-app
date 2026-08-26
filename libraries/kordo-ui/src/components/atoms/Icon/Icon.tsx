@@ -7,6 +7,7 @@ import Animated, {
   withTiming,
   interpolateColor,
 } from 'react-native-reanimated';
+import { useTheme } from '@emotion/react';
 import { getIcon } from '../../../utils/getIcon';
 import { resolveColor } from '../../../utils/getColors';
 import { resolveIconSize } from '../../../utils/resolveSize';
@@ -15,7 +16,8 @@ import { IconProps } from './Icon.types';
 const AnimatedPath = Animated.createAnimatedComponent(Path);
 
 export const Icon: React.FC<IconProps> = (props) => {
-  const fill = resolveColor(props.color, '#000000');
+  const theme = useTheme();
+  const fill = resolveColor(theme, props.color, theme.colors.neutral.black);
   const from = useSharedValue(fill);
   const to = useSharedValue(fill);
   const progress = useSharedValue(1);

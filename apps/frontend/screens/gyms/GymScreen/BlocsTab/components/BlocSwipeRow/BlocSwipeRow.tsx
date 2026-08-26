@@ -1,5 +1,6 @@
 import { memo, useEffect } from 'react';
-import { BoulderBadge, Icon, ListRow, Text, theme } from 'kordo-ui';
+import { useTheme } from '@emotion/react';
+import { BoulderBadge, Icon, ListRow, Text } from 'kordo-ui';
 import { StyleSheet } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 import * as Styled from './BlocSwipeRow.styles';
@@ -15,6 +16,7 @@ const RASTERIZE = { renderToHardwareTextureAndroid: true, shouldRasterizeIOS: tr
 // memo : la ligne ne dépend que de son id/detail/status (les shared values sont stables),
 // donc elle ne re-rend pas quand BlocsTab se re-rend (scroll carte, mesures…).
 export const BlocSwipeRow = memo(function BlocSwipeRow(props: BlocSwipeRowProps) {
+  const theme = useTheme();
   // Offset PROPRE de la ligne (initialisé depuis l'état persistant pour survivre à la
   // virtualisation). Pendant le drag elle suit `activeDragX` ; sinon elle suit son offset,
   // qui anime indépendamment → une animation en cours n'est pas annulée par un autre swipe.

@@ -9,7 +9,8 @@ import Animated, {
   runOnJS,
   SharedValue,
 } from 'react-native-reanimated';
-import { Card, Icon, Tag, Text, theme } from 'kordo-ui';
+import { useTheme } from '@emotion/react';
+import { Card, Icon, Tag, Text } from 'kordo-ui';
 import { Gym } from '../../../fake_data/gyms.fake';
 import BlurView from 'expo-blur/build/BlurView';
 import { Bounce } from 'kordo-ui/src/animations/Bounce/Bounce';
@@ -95,6 +96,9 @@ function CardItem({
   isFront,
   gym,
 }: CardItemProps) {
+  const theme = useTheme();
+  // Le worklet tourne sur le thread UI : il capture une valeur primitive, pas l'objet thème.
+  const cardRadius = theme.borderRadius.square;
   // Style de la carte : position/échelle/opacité dérivées en continu du rang relatif `r`.
   // Recalculé sur le thread UI à chaque frame pendant le geste (worklet Reanimated).
   const animStyle = useAnimatedStyle(() => {
@@ -122,7 +126,7 @@ function CardItem({
       alignSelf: 'center',
       width,
       height,
-      borderRadius: theme.borderRadius.square,
+      borderRadius: cardRadius,
       zIndex,
       opacity,
       transform: [{ translateY }, { scale }],
@@ -246,6 +250,7 @@ interface Props {
 }
 
 export function AllGymCardStack({ gyms, cardWidth, cardHeight }: Props) {
+  const theme = useTheme();
   const count = gyms.length;
   const width = cardWidth ?? Dimensions.get('window').width - theme.spacing.lg * 2;
   // Décalage de base pour laisser la place aux cartes à venir qui remontent au-dessus de la carte de devant

@@ -34,7 +34,7 @@ export const Button: React.FC<ButtonProps> = (props) => {
             size={props.icon.size ?? 'md'}
             color={
               props.inverted
-                ? (props.icon.color ?? getColor(props.appearance ?? 'primary'))
+                ? (props.icon.color ?? getColor(theme, props.appearance ?? 'primary'))
                 : (props.icon.color ?? theme.colors.neutral.white)
             }
           />

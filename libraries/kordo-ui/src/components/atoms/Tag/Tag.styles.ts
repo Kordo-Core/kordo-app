@@ -10,5 +10,5 @@ export const Tag = styled.View<{ appearance: TagProps['appearance'] }>((props) =
   alignItems: 'center',
   gap: props.theme.spacing.xs,
   borderRadius: props.theme.borderRadius.rounded,
-  backgroundColor: getColor(props.appearance ?? 'primary'),
+  backgroundColor: getColor(props.theme, props.appearance ?? 'primary'),
 }));

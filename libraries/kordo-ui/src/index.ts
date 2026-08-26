@@ -40,3 +40,4 @@ export { Dropdown } from './components/organisms/Dropdown/Dropdown';
 export type { DropdownProps, DropdownItem } from './components/organisms/Dropdown/Dropdown.types';
 export { Panel } from './components/layouts/Panel/Panel';
 export { theme } from './theme';
+export type { KordoTheme } from './theme';

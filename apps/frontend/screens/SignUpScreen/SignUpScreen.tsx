@@ -1,7 +1,7 @@
 import { View } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Button, Text } from 'kordo-ui';
-import { RootStackParamList } from '../App';
+import { RootStackParamList } from '../../App';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'SignUp'>;
 

@@ -58,7 +58,7 @@ export const Header: React.FC<HeaderProps & { scrollY?: number }> = (props) => {
       {props.smart && <Styled.CustomSafeAreaView style={{ height: insets.top }} />}
       <Styled.Header
         style={[
-          { paddingTop: insets.top },
+          { paddingTop: insets.top + 4, paddingBottom: 4 },
           smartStyle,
           props.smart ? animatedStyle : undefined,
           props.style,

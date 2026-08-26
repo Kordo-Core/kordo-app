@@ -4,6 +4,7 @@ import { Icon } from '../../atoms/Icon/Icon';
 import React from 'react';
 import { LayoutChangeEvent } from 'react-native';
 import { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
+import { useTheme } from '@emotion/react';
 import { getColor } from '../../../utils/getColors';
 
 // Padding horizontal de la barre, à retirer de sa largeur pour obtenir la zone des onglets.
@@ -12,6 +13,7 @@ const PADDING_HORIZONTAL = 16;
 const BAR_RATIO = 0.6;
 
 export function BottomNavBar(props: BottomNavBarProps) {
+  const theme = useTheme();
   const initialActive = props.activeIndex ?? props.tabs.findIndex((t) => t.isAction);
   const [activeTab, setActiveTab] = React.useState<number>(initialActive);
   // Largeur mesurée de la barre. Elle vaut 92 % de l'écran : la déduire des dimensions de la
@@ -65,7 +67,7 @@ export function BottomNavBar(props: BottomNavBarProps) {
       <Styled.highlightedBar style={animatedBarStyle} />
       {props.tabs.map((tab, index) => {
         const isActive = index === activeTab;
-        const color = isActive ? getColor('primary') : getColor('black');
+        const color = isActive ? getColor(theme, 'primary') : getColor(theme, 'black');
         const TabIcon = tab.icon;
         return (
           <Styled.Tab

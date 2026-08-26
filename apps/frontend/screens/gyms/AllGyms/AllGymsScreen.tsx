@@ -1,6 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import * as Styled from './AllGymsScreen.styles';
-import { Header, Icon, Slider, Text, theme } from 'kordo-ui';
+import { useTheme } from '@emotion/react';
+import { Header, Icon, Slider, Text } from 'kordo-ui';
 import { useWindowDimensions, View } from 'react-native';
 import { SvgUri } from 'react-native-svg';
 import React from 'react';
@@ -11,6 +12,7 @@ import { GYMS } from '../../../fake_data/gyms.fake';
 const FILTERS = Array.from(new Set(GYMS.map((g) => g.shortName)));
 
 export default function AllGymsScreen() {
+  const theme = useTheme();
   const navigation = useNavigation();
   const { height, width } = useWindowDimensions();
   const [selectedIndex, setSelectedIndex] = React.useState(0);

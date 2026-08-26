@@ -1,10 +1,9 @@
 import styled from '@emotion/native';
-import { theme } from 'kordo-ui';
 import Animated from 'react-native-reanimated';
 
-export const PodiumBar = styled(Animated.View)(() => ({
+export const PodiumBar = styled(Animated.View)((props) => ({
   width: '100%',
-  backgroundColor: theme.colors.secondary.light,
+  backgroundColor: props.theme.colors.secondary.light,
   borderTopLeftRadius: 20,
   borderTopRightRadius: 20,
   display: 'flex',

@@ -80,7 +80,7 @@ export default function UserRelationsScreen() {
         </Text>
       </Header>
 
-      <Styled.PivotsBar style={{ boxShadow: '0px 1px 3px rgba(0, 0, 0, 0.1)' }}>
+      <Styled.PivotsBar>
         <Pivots
           pivots={PIVOT_LABELS}
           selectedPivot={getPivotLabel(pivot)}

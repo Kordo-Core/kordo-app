@@ -41,7 +41,6 @@ export const UserRow: React.FC<UserRowProps> = ({ user, onPressUser }) => {
           appearance="secondary"
           inverted={following}
           title={following ? 'Following' : 'Follow'}
-          style={Styled.followButton}
           onPress={() => setTimeout(() => setFollowing((prev) => !prev), FOLLOW_SWITCH_DELAY)}
         />
       )}

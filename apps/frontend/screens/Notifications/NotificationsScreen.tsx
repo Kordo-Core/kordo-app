@@ -3,13 +3,16 @@ import { ScrollView, useWindowDimensions, View } from 'react-native';
 import Svg, { Circle, Path, SvgUri } from 'react-native-svg';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Header, Icon, Notification, Section, Text, theme } from 'kordo-ui';
+import { useTheme } from '@emotion/react';
+import { Header, Icon, Notification, Section, Text } from 'kordo-ui';
 import * as Styled from './NotificationsScreen.styles';
 import { getNotificationFeed } from 'fake_data';
 import { RootStackParamList } from '../../App';
 
 // Bandeau de fin : signale que toutes les notifications non lues ont été vues.
 function CaughtUpBanner() {
+  const theme = useTheme();
+
   return (
     <View
       style={{
@@ -49,6 +52,7 @@ function CaughtUpBanner() {
 }
 
 export default function NotificationsScreen() {
+  const theme = useTheme();
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const { height } = useWindowDimensions();
   const sections = useMemo(() => getNotificationFeed(), []);
@@ -76,7 +80,7 @@ export default function NotificationsScreen() {
       <Header
         left={<Icon name="ArrowLeftRegular" size="md" onPress={() => navigation.goBack()} />}
         centerChildren
-        style={{ boxShadow: '0px 1px 3px rgba(0, 0, 0, 0.1)' }}
+        style={{ boxShadow: theme.shadows.md }}
       >
         <Text size="lg" bold>
           Notifications

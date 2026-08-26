@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
+import { useTheme } from '@emotion/react';
 import { getIcon } from '../../../utils/getIcon';
 import { resolveColor } from '../../../utils/getColors';
 import { resolveIconSize } from '../../../utils/resolveSize';
@@ -9,12 +10,13 @@ import { IconProps } from './Icon.types';
 // les alias kebab-case (`home`, `chevron-right`) et les icônes maison (`carabiner`,
 // `terrain`, `play`) n'existent pas dans `@fluentui/react-icons` et ne s'afficheraient pas.
 export const Icon: React.FC<IconProps> = ({ name, size, color, onPress, style }) => {
+  const theme = useTheme();
   const icon = getIcon(name);
 
   if (!icon) return null;
 
   const resolvedSize = resolveIconSize(size);
-  const fill = resolveColor(color, 'currentColor');
+  const fill = resolveColor(theme, color, 'currentColor');
 
   return (
     <svg

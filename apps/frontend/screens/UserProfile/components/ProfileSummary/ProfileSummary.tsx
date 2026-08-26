@@ -1,3 +1,4 @@
+import { useTheme } from '@emotion/react';
 import { Text, Button } from 'kordo-ui';
 import * as Styled from './ProfileSummary.styles';
 import { ProfileSummaryProps } from './ProfileSummary.types';
@@ -13,6 +14,7 @@ export const ProfileSummary: React.FC<ProfileSummaryProps> = ({
   onPressMessage,
   onPressStat,
 }) => {
+  const theme = useTheme();
   const cells: { label: string; value: number; pivot: RelationPivot }[] = [
     { label: 'Abonnement', value: stats.followingCount, pivot: 'following' },
     { label: 'Abonnées', value: stats.followersCount, pivot: 'followers' },
@@ -50,7 +52,7 @@ export const ProfileSummary: React.FC<ProfileSummaryProps> = ({
                 appearance="secondary"
                 inverted
                 style={Styled.buttonFlex}
-                containerStyle={[Styled.buttonFill, Styled.followingTint]}
+                containerStyle={[Styled.buttonFill, Styled.followingTint(theme)]}
                 onPress={onToggleFollow}
               />
               <Button
@@ -70,7 +72,7 @@ export const ProfileSummary: React.FC<ProfileSummaryProps> = ({
               inverted
               disabled
               fullWidth
-              containerStyle={Styled.followingTint}
+              containerStyle={Styled.followingTint(theme)}
             />
           )}
         </Styled.ActionsRow>

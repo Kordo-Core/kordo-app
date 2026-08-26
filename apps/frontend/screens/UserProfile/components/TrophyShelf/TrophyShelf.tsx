@@ -1,4 +1,5 @@
-import { Text, Icon, theme } from 'kordo-ui';
+import { useTheme } from '@emotion/react';
+import { Text, Icon } from 'kordo-ui';
 import * as Styled from './TrophyShelf.styles';
 import { TrophyShelfProps } from './TrophyShelf.types';
 
@@ -6,6 +7,7 @@ const TROPHY_SLOT_COUNT = 4;
 
 // Affiche les emplacements de trophées (visuel uniquement, aucune donnée réelle pour l'instant).
 export const TrophyShelf: React.FC<TrophyShelfProps> = ({ title }) => {
+  const theme = useTheme();
   return (
     <Styled.Container>
       <Text bold>{title}</Text>

@@ -1,8 +1,10 @@
-import { Icon, ListRow, Text, UserInfo, theme } from 'kordo-ui';
+import { useTheme } from '@emotion/react';
+import { Icon, ListRow, Text, UserInfo } from 'kordo-ui';
 import { RankingRowProps } from './RankingRow.types';
 
 // Une ligne de classement : rang, utilisateur + points, tendance (hausse / baisse)
 export function RankingRow({ entry }: RankingRowProps) {
+  const theme = useTheme();
   return (
     <ListRow
       left={
