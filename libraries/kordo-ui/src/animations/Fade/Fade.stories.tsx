@@ -56,11 +56,7 @@ const FadeDemo = (args: FadeProps) => {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 20 }}>
-      {/* `Bounce` cale le bouton en `alignSelf: 'flex-start'` : il ignore l'alignement du
-          parent. On le centre via un conteneur intermédiaire, qui se réduit à son contenu. */}
-      <div style={{ display: 'flex' }}>
-        <Button title={visible ? 'Hide' : 'Show'} appearance="primary" onPress={toggle} />
-      </div>
+      <Button title={visible ? 'Hide' : 'Show'} appearance="primary" onPress={toggle} />
       <Fade ref={fadeRef} {...args}>
         <Card>
           <div style={{ display: 'flex', flexDirection: 'column', gap: theme.spacing.sm }}>
