@@ -19,6 +19,8 @@ import AllGymsScreen from './screens/gyms/AllGyms/AllGymsScreen';
 import GymScreen from './screens/gyms/GymScreen/GymScreen';
 import NotificationsScreen from './screens/Notifications/NotificationsScreen';
 import UserProfile from './screens/UserProfile/UserProfile';
+import UserRelationsScreen from './screens/UserRelations/UserRelationsScreen';
+import { RelationPivot } from './screens/UserRelations/UserRelationsScreen.types';
 
 export type RootStackParamList = {
   Landing: undefined;
@@ -30,6 +32,7 @@ export type RootStackParamList = {
   Gym: { gymId: string; blocId?: string };
   Notifications: undefined;
   UserProfile: { userId: string };
+  UserRelations: { userId: string; pivot: RelationPivot };
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -58,6 +61,7 @@ export default function App() {
                 <Stack.Screen name="Gym" component={GymScreen} />
                 <Stack.Screen name="Notifications" component={NotificationsScreen} />
                 <Stack.Screen name="UserProfile" component={UserProfile} />
+                <Stack.Screen name="UserRelations" component={UserRelationsScreen} />
               </Stack.Navigator>
             </NavigationContainer>
           </ToastProvider>

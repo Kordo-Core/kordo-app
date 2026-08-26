@@ -1,4 +1,5 @@
 import { User } from '../../../../fake_data/db.types';
+import { RelationPivot } from '../../../UserRelations/UserRelationsScreen.types';
 
 export type FollowStatus = 'following' | 'pending' | 'none';
 
@@ -15,5 +16,7 @@ export interface ProfileSummaryProps {
   isOwnProfile: boolean;
   followStatus: FollowStatus;
   onToggleFollow: () => void;
+  /** Tap sur un compteur : ouvre la liste correspondante sur le bon onglet */
+  onPressStat: (pivot: RelationPivot) => void;
   onPressMessage: () => void;
 }

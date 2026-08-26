@@ -1,5 +1,5 @@
 import { Fragment, useState } from 'react';
-import { ScrollView, useWindowDimensions } from 'react-native';
+import { Pressable, ScrollView, useWindowDimensions } from 'react-native';
 import { SvgUri } from 'react-native-svg';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -10,10 +10,12 @@ import { FollowStatus } from './components/ProfileSummary/ProfileSummary.types';
 import { TrophyShelf } from './components/TrophyShelf/TrophyShelf';
 import { CURRENT_USER, getFollowStatus, getUserById, getUserProfileStats } from 'fake_data';
 import { RootStackParamList } from '../../App';
+import { RelationPivot } from '../UserRelations/UserRelationsScreen.types';
 
-const NAV_ITEMS: { label: string; icon: string }[] = [
-  { label: 'Activités', icon: 'list' },
-  { label: 'Salle visités', icon: 'location' },
+// `pivot` renseigné = la ligne ouvre l'écran des listes du profil sur cet onglet.
+const NAV_ITEMS: { label: string; icon: string; pivot?: RelationPivot }[] = [
+  { label: 'Activités', icon: 'list', pivot: 'activities' },
+  { label: 'Salle visités', icon: 'location', pivot: 'gyms' },
   { label: 'Bloc validés', icon: 'checkmark-circle' },
   { label: 'Bêtas', icon: 'play' },
   { label: 'Statistiques', icon: 'grid' },
@@ -37,6 +39,9 @@ export default function UserProfile() {
 
   const handleToggleFollow = () =>
     setFollowStatus((current) => (current === 'following' ? 'none' : 'following'));
+
+  const openRelations = (pivot: RelationPivot) =>
+    navigation.navigate('UserRelations', { userId: params.userId, pivot });
 
   return (
     <Styled.Container>
@@ -79,6 +84,7 @@ export default function UserProfile() {
             followStatus={followStatus}
             onToggleFollow={handleToggleFollow}
             onPressMessage={() => {}}
+            onPressStat={openRelations}
           />
         </Section>
 
@@ -87,13 +93,15 @@ export default function UserProfile() {
         </Section>
 
         <Section>
-          {NAV_ITEMS.map((item) => (
-            <Fragment key={item.label}>
-              <ListRow
-                left={<Icon name={item.icon} />}
-                primaryText={<Text>{item.label}</Text>}
-                right={<Icon name="chevron-right" color={theme.colors.neutral.gray.base} />}
-              />
+          {NAV_ITEMS.map(({ label, icon, pivot }) => (
+            <Fragment key={label}>
+              <Pressable disabled={!pivot} onPress={pivot ? () => openRelations(pivot) : undefined}>
+                <ListRow
+                  left={<Icon name={icon} />}
+                  primaryText={<Text>{label}</Text>}
+                  right={<Icon name="chevron-right" color={theme.colors.neutral.gray.base} />}
+                />
+              </Pressable>
             </Fragment>
           ))}
         </Section>

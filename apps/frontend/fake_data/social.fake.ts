@@ -30,7 +30,7 @@ import {
   UserPublic,
 } from 'core';
 import { CURRENT_USER, USERS } from './users.fake';
-import { GYMS } from './gyms.fake';
+import { GYMS, Gym } from './gyms.fake';
 import { BLOCS, BLOC_MEDIA, TOPS } from './climbing.fake';
 
 // --- Posts (table "post" + sous-types par type) ---
@@ -827,4 +827,75 @@ export function getFollowStatus(userId: string): 'following' | 'pending' | 'none
   if (isFollowedByCurrentUser(userId)) return 'following';
   if (PENDING_FOLLOW_REQUESTS.includes(userId)) return 'pending';
   return 'none';
+}
+
+// --- Listes du profil (page UserRelations) ---
+
+// Un `User` de la base fake vu comme `UserPublic`, avec le statut de suivi de l'utilisateur
+// courant : c'est lui qui pilote l'état initial du bouton Follow des listes.
+const toUserPublic = (user: User): UserPublic => ({
+  id: user.id,
+  username: user.username,
+  firstName: user.firstName,
+  lastName: user.lastName,
+  bio: user.bio,
+  isSetter: user.isSetter,
+  avatarUrl: user.avatarUrl,
+  isFollowing: isFollowedByCurrentUser(user.id),
+});
+
+const usersFromFollows = (follows: Follow[], pick: (follow: Follow) => string): UserPublic[] =>
+  follows
+    .map((f) => USERS.find((u) => u.id === pick(f)))
+    .filter((u): u is User => !!u)
+    .map(toUserPublic);
+
+/** Abonnés de `userId` (ceux qui le suivent), plus récents d'abord. */
+export const getFollowers = (userId: string): UserPublic[] =>
+  usersFromFollows(
+    FOLLOWS.filter((f) => f.followingId === userId).sort((a, b) =>
+      b.createdAt.localeCompare(a.createdAt),
+    ),
+    (f) => f.followerId,
+  );
+
+/** Abonnements de `userId` (ceux qu'il suit), plus récents d'abord. */
+export const getFollowing = (userId: string): UserPublic[] =>
+  usersFromFollows(
+    FOLLOWS.filter((f) => f.followerId === userId).sort((a, b) =>
+      b.createdAt.localeCompare(a.createdAt),
+    ),
+    (f) => f.followingId,
+  );
+
+/** Activités publiées par `userId`, plus récentes d'abord. */
+export const getUserActivities = (userId: string): ActivityPublic[] =>
+  getActivityFeed()
+    .filter((a) => a.user.id === userId)
+    .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+
+export interface VisitedGym {
+  gym: Gym;
+  /** Date ISO de la visite la plus récente */
+  lastVisitAt: string;
+  /** Nombre total de visites de l'utilisateur dans cette salle */
+  visitCount: number;
+}
+
+/** Salles visitées par `userId`, dédoublonnées, visite la plus récente en premier. */
+export function getVisitedGyms(userId: string): VisitedGym[] {
+  const visits = GYM_VISITS.filter((v) => v.userId === userId);
+
+  return GYMS.map((gym): VisitedGym | null => {
+    const gymVisits = visits.filter((v) => v.gymId === gym.id);
+    if (!gymVisits.length) return null;
+
+    const lastVisitAt = gymVisits
+      .map((v) => v.createdAt)
+      .sort((a, b) => b.localeCompare(a))[0] as string;
+
+    return { gym, lastVisitAt, visitCount: gymVisits.length };
+  })
+    .filter((v): v is VisitedGym => !!v)
+    .sort((a, b) => b.lastVisitAt.localeCompare(a.lastVisitAt));
 }

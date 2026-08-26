@@ -30,7 +30,8 @@ export const StatsGrid = styled.View(() => ({
   columnGap: theme.spacing.sm,
 }));
 
-export const StatCell = styled.View(() => ({
+// Chaque cellule est pressable : elle ouvre la liste correspondante (abonnés, activités…).
+export const StatCell = styled.Pressable(() => ({
   flexBasis: '40%',
   flexGrow: 1,
   gap: 2,
