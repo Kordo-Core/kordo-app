@@ -22,6 +22,6 @@ export const Text = styled.Text<Omit<TextProps, 'children'>>((props) => {
       : props.bold
         ? props.theme.fonts.medium
         : props.theme.fonts.regular,
-    color: getColor(props.appearance ?? 'black'),
+    color: getColor(props.theme, props.appearance ?? 'black'),
   };
 });

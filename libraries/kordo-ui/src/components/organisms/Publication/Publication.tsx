@@ -91,7 +91,7 @@ export const Publication: React.FC<PublicationProps> = ({
           backgroundColor: theme.colors.neutral.white,
           padding: theme.spacing.md,
           gap: theme.spacing.md,
-          boxShadow: '0px 2px 2px rgba(0, 0, 0, 0.05)',
+          boxShadow: theme.shadows.sm,
         },
         style,
       ]}
@@ -173,7 +173,7 @@ export const Publication: React.FC<PublicationProps> = ({
                     height: 6,
                     borderRadius: 3,
                     backgroundColor:
-                      i === index ? theme.colors.secondary.base : 'rgba(255,255,255,0.5)',
+                      i === index ? theme.colors.secondary.base : theme.colors.overlay.light,
                   }}
                 />
               ))}

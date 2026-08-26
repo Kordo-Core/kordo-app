@@ -165,7 +165,7 @@ export const Activity: React.FC<ActivityProps> = ({
             width: 36,
             height: 36,
             borderRadius: 18,
-            backgroundColor: 'rgba(0,0,0,0.45)',
+            backgroundColor: theme.colors.overlay.dark,
             alignItems: 'center',
             justifyContent: 'center',
             paddingLeft: 2,
@@ -204,7 +204,7 @@ export const Activity: React.FC<ActivityProps> = ({
           backgroundColor: theme.colors.neutral.white,
           padding: theme.spacing.md,
           gap: theme.spacing.md,
-          boxShadow: '0px 2px 2px rgba(0, 0, 0, 0.05)',
+          boxShadow: theme.shadows.sm,
         },
         style,
       ]}

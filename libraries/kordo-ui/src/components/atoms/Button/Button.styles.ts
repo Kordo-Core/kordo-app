@@ -3,7 +3,7 @@ import { ButtonProps } from './Button.types';
 import { getColor } from '../../../utils/getColors';
 
 export const ButtonContainer = styled.View<Omit<ButtonProps, 'onPress' | 'style'>>((props) => {
-  const color = getColor(props.appearance!);
+  const color = getColor(props.theme, props.appearance!);
   const isDisabled = props.disabled;
 
   return {

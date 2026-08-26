@@ -9,7 +9,7 @@ export const ProgressBar = styled.View<{
 }>((props) => ({
   height: 4,
   width: '100%',
-  borderRadius: props.theme.borderRadius.md,
+  borderRadius: props.theme.borderRadius.square,
   backgroundColor: props.theme.colors[props.appearance ?? 'primary'].lighter,
 }));
 
@@ -19,8 +19,8 @@ export const Bar = styled(Animated.View)<{
 }>((props) => ({
   height: 4,
   width: props.infinite ? '20%' : '100%',
-  borderRadius: props.theme.borderRadius.md,
-  backgroundColor: getColor(props.appearance ?? 'primary'),
+  borderRadius: props.theme.borderRadius.square,
+  backgroundColor: getColor(props.theme, props.appearance ?? 'primary'),
 }));
 
 // La rotation porte sur une vue englobante, non sur le `Svg` : le `setNativeProps` de
@@ -30,5 +30,5 @@ export const SpinnerRotation = Animated.View;
 export const AnimatedCircle = styled(Animated.createAnimatedComponent(Circle))<{
   appearance?: LoaderProps['appearance'];
 }>((props) => ({
-  backgroundColor: getColor(props.appearance ?? 'primary'),
+  backgroundColor: getColor(props.theme, props.appearance ?? 'primary'),
 }));
