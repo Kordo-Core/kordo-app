@@ -10,6 +10,8 @@ export { Checkbox } from './components/atoms/Checkbox/Checkbox';
 export type { CheckboxProps } from './components/atoms/Checkbox/Checkbox.types';
 export { SegmentedControl } from './components/molecules/SegmentedControl/SegmentedControl';
 export { Suggestion } from './components/molecules/Suggestion/Suggestion';
+export { Pivots } from './components/molecules/Pivots/Pivots';
+export type { PivotsProps } from './components/molecules/Pivots/Pivots.types';
 export { Card } from './components/layouts/Card/Card';
 export { Section } from './components/layouts/Section/Section';
 export type { SectionProps } from './components/layouts/Section/Section.types';
