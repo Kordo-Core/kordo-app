@@ -61,7 +61,11 @@ export default function UserProfile() {
         left={<Icon name="ArrowLeftRegular" size="md" onPress={() => navigation.goBack()} />}
         centerChildren
         right={
-          <Icon name={isOwnProfile ? 'settings' : 'more-vertical'} size="md" onPress={() => {}} />
+          <Icon
+            name={isOwnProfile ? 'settings' : 'more-vertical'}
+            size="lg"
+            onPress={isOwnProfile ? () => navigation.navigate('Settings') : () => {}}
+          />
         }
         style={{ boxShadow: theme.shadows.md }}
       >

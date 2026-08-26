@@ -438,6 +438,7 @@ export default function GymsScreen() {
             <Button
               appearance="primary"
               title="Voir tout"
+              style={{ alignSelf: 'flex-start' }}
               onPress={() => {
                 navigation.navigate('AllGyms');
               }}
