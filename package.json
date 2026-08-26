@@ -17,8 +17,8 @@
     "release:major": "commit-and-tag-version --release-as major"
   },
   "validate-branch-name": {
-    "pattern": "^(main|preprod|develop|dev)$|^(feat|fix|refactor|chore|docs|style|perf|test)/[a-z0-9-]+$",
-    "errorMsg": "branche invalide. format: <type>/<description-kebab-case>\\nexemples: feat/tracking-export, fix/search-bug"
+    "pattern": "^(main|preprod|develop|dev)$|^(feature|fix|refactor|chore|docs|style|perf|test)/[a-z0-9-]+$",
+    "errorMsg": "branche invalide. format: <type>/<description-kebab-case>\\nexemples: feature/tracking-export, fix/search-bug"
   },
   "devDependencies": {
     "@commitlint/cli": "^20.5.3",

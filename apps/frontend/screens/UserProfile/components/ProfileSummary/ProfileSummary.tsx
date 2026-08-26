@@ -1,6 +1,7 @@
 import { Text, Button } from 'kordo-ui';
 import * as Styled from './ProfileSummary.styles';
 import { ProfileSummaryProps } from './ProfileSummary.types';
+import { RelationPivot } from '../../../UserRelations/UserRelationsScreen.types';
 
 // Bloc d'en-tête du profil : avatar, compteurs, et actions de suivi pour les autres utilisateurs.
 export const ProfileSummary: React.FC<ProfileSummaryProps> = ({
@@ -10,12 +11,13 @@ export const ProfileSummary: React.FC<ProfileSummaryProps> = ({
   followStatus,
   onToggleFollow,
   onPressMessage,
+  onPressStat,
 }) => {
-  const cells = [
-    { label: 'Abonnement', value: stats.followingCount },
-    { label: 'Abonnées', value: stats.followersCount },
-    { label: 'Activités', value: stats.activitiesCount },
-    { label: 'Salle visités', value: stats.gymsVisitedCount },
+  const cells: { label: string; value: number; pivot: RelationPivot }[] = [
+    { label: 'Abonnement', value: stats.followingCount, pivot: 'following' },
+    { label: 'Abonnées', value: stats.followersCount, pivot: 'followers' },
+    { label: 'Activités', value: stats.activitiesCount, pivot: 'activities' },
+    { label: 'Salle visités', value: stats.gymsVisitedCount, pivot: 'gyms' },
   ];
 
   return (
@@ -24,7 +26,7 @@ export const ProfileSummary: React.FC<ProfileSummaryProps> = ({
         <Styled.Avatar source={{ uri: user.avatarUrl }} />
         <Styled.StatsGrid>
           {cells.map((cell) => (
-            <Styled.StatCell key={cell.label}>
+            <Styled.StatCell key={cell.label} onPress={() => onPressStat(cell.pivot)}>
               <Text size="sm" appearance="gray">
                 {cell.label}
               </Text>
