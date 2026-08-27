@@ -15,6 +15,7 @@ export const Left = styled.View(() => ({
 
 export const Right = styled.View(() => ({
   flexDirection: 'row',
+  alignItems: 'center',
   gap: 4,
   marginLeft: 'auto',
 }));
