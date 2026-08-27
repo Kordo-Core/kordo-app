@@ -899,3 +899,75 @@ export function getVisitedGyms(userId: string): VisitedGym[] {
     .filter((v): v is VisitedGym => !!v)
     .sort((a, b) => b.lastVisitAt.localeCompare(a.lastVisitAt));
 }
+
+// --- Paramètres ---
+
+/** Publications aimées par l'utilisateur courant, plus récentes d'abord (écran « J'aimes »). */
+export function getLikedPosts(): HomeFeedItem[] {
+  const likedIds = LIKES.filter((l) => l.userId === CURRENT_USER.id).map((l) => l.postId);
+
+  const items: HomeFeedItem[] = [
+    ...getActivityFeed().map((data): HomeFeedItem => ({ kind: 'activity', data })),
+    ...getPublicationFeed().map((data): HomeFeedItem => ({ kind: 'publication', data })),
+    ...getTextFeed().map((data): HomeFeedItem => ({ kind: 'text', data })),
+  ];
+
+  return items
+    .filter((item) => likedIds.includes(item.data.id))
+    .sort((a, b) => b.data.createdAt.localeCompare(a.data.createdAt));
+}
+
+/** Un commentaire écrit par l'utilisateur, avec le rappel de la publication commentée. */
+export interface CommentHistoryEntry {
+  id: string;
+  content: string;
+  createdAt: string;
+  /** Publication commentée : son auteur et le début de son contenu */
+  post: { id: string; author: UserPublic; excerpt: string };
+}
+
+/** Commentaires écrits par l'utilisateur courant, plus récents d'abord. */
+export function getMyComments(): CommentHistoryEntry[] {
+  return COMMENTS.filter((c) => c.userId === CURRENT_USER.id)
+    .map((comment): CommentHistoryEntry | null => {
+      const post = POSTS.find((p) => p.id === comment.postId);
+      const author = post && USERS.find((u) => u.id === post.userId);
+      if (!post || !author) return null;
+
+      // Le rappel affiche le titre de la séance ou le texte du post selon son type.
+      const excerpt =
+        ACTIVITY_POSTS.find((a) => a.id === post.id)?.title ??
+        PUBLICATION_POSTS.find((p) => p.id === post.id)?.description ??
+        TEXT_POSTS.find((t) => t.id === post.id)?.content ??
+        '';
+
+      return {
+        id: comment.id,
+        content: comment.content,
+        createdAt: comment.createdAt,
+        post: { id: post.id, author: toUserPublic(author), excerpt },
+      };
+    })
+    .filter((e): e is CommentHistoryEntry => !!e)
+    .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+}
+
+// Amis proches (mock) : les trois premiers abonnements de l'utilisateur courant.
+const CLOSE_FRIEND_IDS = ['u-adam', 'u-janja', 'u-emma'];
+
+/** Amis proches actuels. */
+export const getCloseFriends = (): UserPublic[] =>
+  USERS.filter((u) => CLOSE_FRIEND_IDS.includes(u.id)).map(toUserPublic);
+
+/** Utilisateurs proposés à l'ajout : tout le monde sauf soi et les amis proches. */
+export const getCloseFriendSuggestions = (): UserPublic[] =>
+  USERS.filter((u) => u.id !== CURRENT_USER.id && !CLOSE_FRIEND_IDS.includes(u.id)).map(
+    toUserPublic,
+  );
+
+// Comptes bloqués (mock)
+const BLOCKED_IDS = ['u-tomoa', 'u-sarah'];
+
+/** Comptes bloqués par l'utilisateur courant. */
+export const getBlockedUsers = (): UserPublic[] =>
+  USERS.filter((u) => BLOCKED_IDS.includes(u.id)).map(toUserPublic);

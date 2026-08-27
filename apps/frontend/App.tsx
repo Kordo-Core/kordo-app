@@ -20,6 +20,16 @@ import GymScreen from './screens/gyms/GymScreen/GymScreen';
 import NotificationsScreen from './screens/Notifications/NotificationsScreen';
 import UserProfile from './screens/UserProfile/UserProfile';
 import UserRelationsScreen from './screens/UserRelations/UserRelationsScreen';
+import SettingsScreen from './screens/Settings/SettingsScreen';
+import NotificationsSettingsScreen from './screens/Settings/NotificationsSettingsScreen';
+import LikedPostsScreen from './screens/Settings/LikedPostsScreen';
+import MyCommentsScreen from './screens/Settings/MyCommentsScreen';
+import MentionsScreen from './screens/Settings/MentionsScreen';
+import AccountPrivacyScreen from './screens/Settings/AccountPrivacyScreen';
+import CloseFriendsScreen from './screens/Settings/CloseFriendsScreen';
+import BlockedAccountsScreen from './screens/Settings/BlockedAccountsScreen';
+import AppearanceScreen from './screens/Settings/AppearanceScreen';
+import LanguageScreen from './screens/Settings/LanguageScreen';
 import { RelationPivot } from './screens/UserRelations/UserRelationsScreen.types';
 
 export type RootStackParamList = {
@@ -33,6 +43,16 @@ export type RootStackParamList = {
   Notifications: undefined;
   UserProfile: { userId: string };
   UserRelations: { userId: string; pivot: RelationPivot };
+  Settings: undefined;
+  NotificationsSettings: undefined;
+  LikedPosts: undefined;
+  MyComments: undefined;
+  Mentions: undefined;
+  AccountPrivacy: undefined;
+  CloseFriends: undefined;
+  BlockedAccounts: undefined;
+  Appearance: undefined;
+  Language: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -62,6 +82,19 @@ export default function App() {
                 <Stack.Screen name="Notifications" component={NotificationsScreen} />
                 <Stack.Screen name="UserProfile" component={UserProfile} />
                 <Stack.Screen name="UserRelations" component={UserRelationsScreen} />
+                <Stack.Screen name="Settings" component={SettingsScreen} />
+                <Stack.Screen
+                  name="NotificationsSettings"
+                  component={NotificationsSettingsScreen}
+                />
+                <Stack.Screen name="LikedPosts" component={LikedPostsScreen} />
+                <Stack.Screen name="MyComments" component={MyCommentsScreen} />
+                <Stack.Screen name="Mentions" component={MentionsScreen} />
+                <Stack.Screen name="AccountPrivacy" component={AccountPrivacyScreen} />
+                <Stack.Screen name="CloseFriends" component={CloseFriendsScreen} />
+                <Stack.Screen name="BlockedAccounts" component={BlockedAccountsScreen} />
+                <Stack.Screen name="Appearance" component={AppearanceScreen} />
+                <Stack.Screen name="Language" component={LanguageScreen} />
               </Stack.Navigator>
             </NavigationContainer>
           </ToastProvider>
