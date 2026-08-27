@@ -1,11 +1,11 @@
 import { useMemo, useState } from 'react';
 import { ScrollView, View, useWindowDimensions } from 'react-native';
-import { SvgUri } from 'react-native-svg';
 import { useNavigation } from '@react-navigation/native';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import * as ImagePicker from 'expo-image-picker';
 import { useTheme } from '@emotion/react';
 import { BoulderBadge, Button, DropdownItem, Header, Icon, Text, useToast } from 'kordo-ui';
+import { ScreenLayout } from '../../../components/ScreenLayout/ScreenLayout';
 import { GYMS } from '../../../fake_data/gyms.fake';
 import { getBlocsByGym, getCurrentUserBlocMethod } from '../../../fake_data/climbing.fake';
 import { getUserSessions } from '../../../fake_data/social.fake';
@@ -19,8 +19,8 @@ import { NowForm } from './components/NowForm/NowForm';
 
 export default function PostForm() {
   const theme = useTheme();
-  const navigation = useNavigation<BottomTabNavigationProp<MainTabsParamList>>();
   const { height } = useWindowDimensions();
+  const navigation = useNavigation<BottomTabNavigationProp<MainTabsParamList>>();
   const { addToast } = useToast();
 
   const [type, setType] = useState<PostType>('activity');
@@ -140,30 +140,7 @@ export default function PostForm() {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: theme.colors.primary.lightest }}>
-      <View
-        pointerEvents="none"
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          opacity: 0.5,
-          alignItems: 'center',
-          justifyContent: 'center',
-          overflow: 'hidden',
-        }}
-      >
-        <SvgUri
-          width={height}
-          height={height}
-          uri="https://res.cloudinary.com/dqmegz5dn/image/upload/v1781135028/topo-primary-dark_wdsvmf.svg"
-          preserveAspectRatio="xMidYMid meet"
-          style={{ transform: [{ rotate: '90deg' }] }}
-        />
-      </View>
-
+    <ScreenLayout>
       <Header
         left={<Icon name="DismissRegular" size="md" onPress={() => navigation.navigate('Home')} />}
         right={
@@ -272,6 +249,6 @@ export default function PostForm() {
           )}
         </View>
       </ScrollView>
-    </View>
+    </ScreenLayout>
   );
 }

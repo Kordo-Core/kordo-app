@@ -6,7 +6,7 @@ import { useTheme } from '@emotion/react';
 import { Icon, ListRow, Text } from 'kordo-ui';
 import * as Styled from '../../UserRelationsScreen.styles';
 import { RelationTabProps } from '../../UserRelationsScreen.types';
-import { matchesQuery } from '../../utils/matchesQuery';
+import { matchesQuery } from '../../../../utils/matchesQuery';
 import { getVisitedGyms } from 'fake_data';
 import { RootStackParamList } from '../../../../App';
 

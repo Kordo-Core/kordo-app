@@ -6,7 +6,7 @@ export const Container = styled.View((props) => ({
   backgroundColor: props.theme.colors.primary.lightest,
 }));
 
-// Image de fond (topo) en plein écran, derrière tout le contenu — identique à Home / Gym
+// Image de fond (topo) en plein écran, derrière tout le contenu.
 export const Background = styled(View)(() => ({
   position: 'absolute',
   top: 0,

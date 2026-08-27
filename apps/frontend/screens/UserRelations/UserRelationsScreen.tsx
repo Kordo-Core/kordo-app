@@ -1,9 +1,8 @@
 import { useState } from 'react';
-import { useWindowDimensions } from 'react-native';
-import { SvgUri } from 'react-native-svg';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Header, Icon, Pivots, Text } from 'kordo-ui';
+import { ScreenLayout } from '../../components/ScreenLayout/ScreenLayout';
 import * as Styled from './UserRelationsScreen.styles';
 import {
   RELATION_PIVOTS,
@@ -12,7 +11,7 @@ import {
   getPivotLabel,
   getPivotPlaceholder,
 } from './UserRelationsScreen.types';
-import { SearchToolbar } from './components/SearchToolbar/SearchToolbar';
+import { SearchToolbar } from '../../components/SearchToolbar/SearchToolbar';
 import { FollowersTab } from './tabs/FollowersTab/FollowersTab';
 import { FollowingTab } from './tabs/FollowingTab/FollowingTab';
 import { ActivitiesTab } from './tabs/ActivitiesTab/ActivitiesTab';
@@ -28,7 +27,6 @@ const PIVOT_LABELS = RELATION_PIVOTS.map((p) => p.label);
 export default function UserRelationsScreen() {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const { params } = useRoute<RouteProp<RootStackParamList, 'UserRelations'>>();
-  const { height } = useWindowDimensions();
 
   const user = getUserById(params.userId);
   // `Pivots` garde son propre état interne, initialisé par `selectedPivot` : on ne le pilote
@@ -60,17 +58,7 @@ export default function UserRelationsScreen() {
   };
 
   return (
-    <Styled.Container>
-      <Styled.Background pointerEvents="none">
-        <SvgUri
-          width={height}
-          height={height}
-          uri="https://res.cloudinary.com/dqmegz5dn/image/upload/v1781135028/topo-primary-dark_wdsvmf.svg"
-          preserveAspectRatio="xMidYMid meet"
-          style={{ transform: [{ rotate: '90deg' }] }}
-        />
-      </Styled.Background>
-
+    <ScreenLayout>
       <Header
         left={<Icon name="ArrowLeftRegular" size="md" onPress={() => navigation.goBack()} />}
         centerChildren
@@ -92,6 +80,6 @@ export default function UserRelationsScreen() {
         <SearchToolbar value={query} onChange={setQuery} placeholder={getPivotPlaceholder(pivot)} />
         {renderTab()}
       </Styled.Content>
-    </Styled.Container>
+    </ScreenLayout>
   );
 }
