@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useTheme } from '@emotion/react';
-import { Header, Icon, RadioGroup, Section, Text } from 'kordo-ui';
+import { Header, Icon, ListRow, Radio, Section, Text } from 'kordo-ui';
 import * as Styled from './AppearanceScreen.styles';
 import { ScreenLayout } from '../../components/ScreenLayout/ScreenLayout';
 
@@ -21,11 +21,6 @@ export default function AppearanceScreen() {
   const navigation = useNavigation();
   const theme = useTheme();
   const [selected, setSelected] = useState<ThemeName>('light');
-
-  const options = THEMES.map((entry) => ({
-    ...entry,
-    left: <Styled.Preview />,
-  }));
 
   return (
     <ScreenLayout>
@@ -48,14 +43,17 @@ export default function AppearanceScreen() {
         }}
         keyboardShouldPersistTaps="handled"
       >
-        <Section style={{ gap: theme.spacing.xl }}>
-          <RadioGroup
-            options={options}
-            value={selected}
-            onChange={setSelected}
-            gap={theme.spacing.xl}
-          />
-        </Section>
+        {THEMES.map(({ value, label }) => (
+          <Section gap="xl">
+            <ListRow
+              key={value}
+              onPress={() => setSelected(value)}
+              left={<Styled.Preview />}
+              primaryText={<Text>{label}</Text>}
+              right={<Radio selected={selected === value} onSelect={() => setSelected(value)} />}
+            />
+          </Section>
+        ))}
       </ScrollView>
     </ScreenLayout>
   );

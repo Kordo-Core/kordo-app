@@ -1,12 +1,18 @@
 import styled from '@emotion/native';
 
-export const Row = styled.View({
+// Gabarit partagé par les deux variantes de ligne, cliquable ou non.
+const row = {
   flexDirection: 'row',
   alignItems: 'center',
   width: '100%',
   paddingVertical: 8,
   gap: 16,
-});
+} as const;
+
+export const Row = styled.View(row);
+
+// Même gabarit, mais la ligne entière déclenche l'action du parent.
+export const PressableRow = styled.Pressable(row);
 
 export const Left = styled.View(() => ({
   flexDirection: 'row',

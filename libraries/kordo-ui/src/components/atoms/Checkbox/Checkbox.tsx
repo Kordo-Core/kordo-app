@@ -1,27 +1,32 @@
+import { Pressable } from 'react-native';
 import { useTheme } from '@emotion/react';
 import * as Styled from './Checkbox.styles';
 import { CheckboxProps } from './Checkbox.types';
 import { Icon } from '../Icon/Icon';
-import { Text } from '../Text/Text';
+import { getColor } from '../../../utils/getColors';
 
-// Case à cocher contrôlée, avec libellé optionnel à gauche
-export const Checkbox: React.FC<CheckboxProps> = (props) => {
+// Case à cocher, et rien d'autre : le libellé et la mise en page de la ligne appartiennent
+// au parent, en général un `ListRow`.
+export const Checkbox: React.FC<CheckboxProps> = ({
+  checked,
+  onChange,
+  appearance = 'secondary',
+  disabled,
+  style,
+}) => {
   const theme = useTheme();
+
   return (
-    <Styled.Container
-      disabled={props.disabled}
-      onPress={() => !props.disabled && props.onChange(!props.checked)}
+    <Pressable
+      accessibilityRole="checkbox"
+      accessibilityState={{ checked, disabled }}
+      disabled={disabled}
+      onPress={() => onChange(!checked)}
+      style={style}
     >
-      {props.label != null && (
-        <Styled.LabelWrapper>
-          {typeof props.label === 'string' ? <Text size="md">{props.label}</Text> : props.label}
-        </Styled.LabelWrapper>
-      )}
-      <Styled.Box checked={props.checked}>
-        {props.checked && (
-          <Icon name="CheckmarkFilled" size={14} color={theme.colors.neutral.white} />
-        )}
+      <Styled.Box checked={checked} color={getColor(theme, appearance)} disabled={disabled}>
+        {checked && <Icon name="CheckmarkFilled" size={14} color={theme.colors.neutral.white} />}
       </Styled.Box>
-    </Styled.Container>
+    </Pressable>
   );
 };

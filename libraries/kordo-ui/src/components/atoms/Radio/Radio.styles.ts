@@ -1,25 +1,26 @@
 import styled from '@emotion/native';
 
 const DOT_SIZE = 18;
-
-// Ligne cliquable : textes à gauche, pastille à droite, comme sur les écrans de réglages.
-export const Container = styled.Pressable<{ disabled?: boolean }>((props) => ({
-  flexDirection: 'row',
-  alignItems: 'center',
-  gap: props.theme.spacing.md,
-  opacity: props.disabled ? 0.5 : 1,
-}));
-
-// Les textes occupent l'espace restant pour pousser la pastille au bord droit.
-export const Labels = styled.View((props) => ({
-  flex: 1,
-  gap: props.theme.spacing.xs,
-}));
+const INNER_SIZE = 8;
 
 // Pastille pleine quand sélectionnée, grise sinon — pas de bordure, comme la maquette.
-export const Dot = styled.View<{ selected: boolean; color: string }>((props) => ({
-  width: DOT_SIZE,
-  height: DOT_SIZE,
+// Elle centre son contenu pour porter le point blanc de l'état sélectionné.
+export const Dot = styled.View<{ selected: boolean; color: string; disabled?: boolean }>(
+  (props) => ({
+    width: DOT_SIZE,
+    height: DOT_SIZE,
+    borderRadius: props.theme.borderRadius.rounded,
+    backgroundColor: props.selected ? props.color : props.theme.colors.neutral.gray.light,
+    opacity: props.disabled ? 0.5 : 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  }),
+);
+
+// Point blanc au centre, rendu seulement quand l'option est sélectionnée.
+export const Inner = styled.View((props) => ({
+  width: INNER_SIZE,
+  height: INNER_SIZE,
   borderRadius: props.theme.borderRadius.rounded,
-  backgroundColor: props.selected ? props.color : props.theme.colors.neutral.gray.light,
+  backgroundColor: props.theme.colors.neutral.white,
 }));

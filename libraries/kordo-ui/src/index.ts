@@ -11,11 +11,6 @@ export { Toggle } from './components/atoms/Toggle/Toggle';
 export type { ToggleProps } from './components/atoms/Toggle/Toggle.types';
 export { Radio } from './components/atoms/Radio/Radio';
 export type { RadioProps } from './components/atoms/Radio/Radio.types';
-export { RadioGroup } from './components/molecules/RadioGroup/RadioGroup';
-export type {
-  RadioGroupProps,
-  RadioOption,
-} from './components/molecules/RadioGroup/RadioGroup.types';
 export { Dialog } from './components/layouts/Dialog/Dialog';
 export type { DialogProps } from './components/layouts/Dialog/Dialog.types';
 export type { CheckboxProps } from './components/atoms/Checkbox/Checkbox.types';

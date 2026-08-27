@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useTheme } from '@emotion/react';
-import { Header, Icon, RadioGroup, Section, Text } from 'kordo-ui';
+import { Header, Icon, ListRow, Radio, Section, Text } from 'kordo-ui';
 import { ScreenLayout } from '../../components/ScreenLayout/ScreenLayout';
 
 type MentionAudience = 'everyone' | 'following' | 'nobody';
@@ -40,11 +40,18 @@ export default function MentionsScreen() {
         }}
         keyboardShouldPersistTaps="handled"
       >
-        <Section style={{ gap: theme.spacing.lg }}>
-          <Text size="sm" appearance="gray">
+        <Section gap="lg">
+          <Text size="md" appearance="gray">
             Qui peut @mentionner votre nom
           </Text>
-          <RadioGroup options={OPTIONS} value={audience} onChange={setAudience} />
+          {OPTIONS.map(({ value, label }) => (
+            <ListRow
+              key={value}
+              onPress={() => setAudience(value)}
+              primaryText={<Text>{label}</Text>}
+              right={<Radio selected={audience === value} onSelect={() => setAudience(value)} />}
+            />
+          ))}
 
           <Text size="sm" appearance="gray" style={{ marginTop: theme.spacing.sm }}>
             Choisissez qui peut vous mentionner dans des commentaires, des publications ou des
