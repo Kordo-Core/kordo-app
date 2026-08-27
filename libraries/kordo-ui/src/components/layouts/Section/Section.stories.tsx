@@ -12,6 +12,9 @@ import { phoneFrame } from '../../../../.storybook/decorators';
  * width, has no border radius and only a light shadow. Screens are built by stacking
  * several of them, separated by the background showing through — which is why these
  * stories sit on the app background rather than on white, where the shadow is invisible.
+ *
+ * Padding is fixed; the space between children is set with `gap`, as a spacing token. Rows of
+ * settings usually want `lg`, denser text blocks the default `sm`.
  */
 export default {
   title: 'Layouts/Section',
@@ -19,6 +22,9 @@ export default {
   tags: ['autodocs'],
   parameters: {
     layout: 'fullscreen',
+  },
+  argTypes: {
+    gap: { control: 'select', options: ['xs', 'sm', 'md', 'lg', 'xl', 'xxl'] },
   },
   decorators: [phoneFrame],
 } satisfies Meta<typeof Section>;
@@ -74,6 +80,30 @@ export const Single: Story = {
         Section title
       </Text>
       <Text appearance="gray">Section content stacked with a gap.</Text>
+    </Section>
+  ),
+};
+
+/** `gap` spaces the children apart — the settings screens stack their rows at `lg`. */
+export const Gap: Story = {
+  args: { gap: 'lg' },
+  render: (args) => (
+    <Section {...args}>
+      <ListRow
+        left={<Icon name="person" color="primary" />}
+        primaryText={<Text>Account</Text>}
+        right={<Icon name="chevron-right" size="sm" color="gray" />}
+      />
+      <ListRow
+        left={<Icon name="alert" color="primary" />}
+        primaryText={<Text>Notifications</Text>}
+        right={<Icon name="chevron-right" size="sm" color="gray" />}
+      />
+      <ListRow
+        left={<Icon name="lock-closed" color="primary" />}
+        primaryText={<Text>Privacy</Text>}
+        right={<Icon name="chevron-right" size="sm" color="gray" />}
+      />
     </Section>
   ),
 };
