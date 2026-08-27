@@ -77,7 +77,13 @@ export default function UserRelationsScreen() {
       </Styled.PivotsBar>
 
       <Styled.Content>
-        <SearchToolbar value={query} onChange={setQuery} placeholder={getPivotPlaceholder(pivot)} />
+        <Styled.ToolbarBar>
+          <SearchToolbar
+            value={query}
+            onChange={setQuery}
+            placeholder={getPivotPlaceholder(pivot)}
+          />
+        </Styled.ToolbarBar>
         {renderTab()}
       </Styled.Content>
     </ScreenLayout>

@@ -16,6 +16,14 @@ export const Content = styled.View((props) => ({
   backgroundColor: props.theme.colors.neutral.white,
 }));
 
+// Espacement de la barre de recherche, fixée au-dessus de la liste. Il vit ici et pas dans
+// `SearchToolbar` pour caler la barre sur `listContent` : même retrait horizontal, donc même
+// alignement que les lignes qu'elle filtre. Pas de padding sur `Content`, l'onglet Activités
+// affiche ses cartes bord à bord.
+export const ToolbarBar = styled.View((props) => ({
+  padding: props.theme.spacing.md,
+}));
+
 // Intitulé au-dessus d'une liste : "Tous les abonnements (56)".
 export const Caption = styled.View((props) => ({
   paddingHorizontal: props.theme.spacing.md,

@@ -53,15 +53,6 @@ export default function LanguageScreen() {
         </Text>
       </Header>
 
-      {/* Langue courante et recherche : fixes sous le header, hors de la zone défilante. */}
-      <Section>
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <Text style={{ flex: 1 }}>{selected}</Text>
-          <Icon name="checkmark" size="sm" color={theme.colors.secondary.base} />
-        </View>
-      </Section>
-      <SearchToolbar value={query} onChange={setQuery} placeholder="Rechercher..." />
-
       <ScrollView
         style={{ flex: 1 }}
         contentContainerStyle={{
@@ -71,9 +62,23 @@ export default function LanguageScreen() {
         }}
         keyboardShouldPersistTaps="handled"
       >
-        <Section style={{ gap: theme.spacing.lg }}>
+        {/* Langue courante et recherche : fixes sous le header, hors de la zone défilante. */}
+        <Section>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Text style={{ flex: 1 }}>{selected}</Text>
+            <Icon name="CheckmarkFilled" size="sm" color={theme.colors.secondary.base} />
+          </View>
+        </Section>
+
+        <Section>
+          <SearchToolbar value={query} onChange={setQuery} placeholder="Rechercher..." />
+
           {visible.map((language) => (
-            <Pressable key={language} onPress={() => setSelected(language)}>
+            <Pressable
+              key={language}
+              onPress={() => setSelected(language)}
+              style={{ width: '100%', paddingBlock: theme.spacing.sm }}
+            >
               <Text>{language}</Text>
             </Pressable>
           ))}

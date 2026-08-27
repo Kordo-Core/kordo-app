@@ -50,8 +50,6 @@ export default function CloseFriendsScreen() {
         </Text>
       </Header>
 
-      <SearchToolbar value={query} onChange={setQuery} placeholder="Rechercher..." />
-
       <ScrollView
         style={{ flex: 1 }}
         contentContainerStyle={{
@@ -61,12 +59,19 @@ export default function CloseFriendsScreen() {
         }}
         keyboardShouldPersistTaps="handled"
       >
-        <Section style={{ gap: theme.spacing.lg }}>{filter(friends).map(renderUser)}</Section>
+        <Section gap="lg">
+          <SearchToolbar value={query} onChange={setQuery} placeholder="Rechercher..." />
+          {filter(friends).map(renderUser)}
+        </Section>
 
-        <Text size="sm" appearance="gray" style={{ paddingHorizontal: theme.spacing.md }}>
-          Ajoutés
-        </Text>
-        <Section style={{ gap: theme.spacing.lg }}>{filter(suggestions).map(renderUser)}</Section>
+        {filter(suggestions).map(renderUser).length > 0 && (
+          <Section gap="lg">
+            <Text size="md" appearance="gray" style={{ paddingHorizontal: theme.spacing.md }}>
+              Ajoutés
+            </Text>
+            {filter(suggestions).map(renderUser)}
+          </Section>
+        )}
       </ScrollView>
     </ScreenLayout>
   );

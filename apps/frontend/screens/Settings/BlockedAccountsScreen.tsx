@@ -29,8 +29,6 @@ export default function BlockedAccountsScreen() {
         </Text>
       </Header>
 
-      <SearchToolbar value={query} onChange={setQuery} placeholder="Rechercher..." />
-
       <ScrollView
         style={{ flex: 1 }}
         contentContainerStyle={{
@@ -40,7 +38,9 @@ export default function BlockedAccountsScreen() {
         }}
         keyboardShouldPersistTaps="handled"
       >
-        <Section style={{ gap: theme.spacing.lg }}>
+        <Section gap="lg">
+          <SearchToolbar value={query} onChange={setQuery} placeholder="Rechercher..." />
+
           {visible.map((user) => (
             <View key={user.id} style={{ flexDirection: 'row', alignItems: 'center' }}>
               <View style={{ flex: 1 }}>

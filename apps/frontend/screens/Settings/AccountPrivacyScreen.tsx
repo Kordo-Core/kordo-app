@@ -32,7 +32,7 @@ export default function AccountPrivacyScreen() {
         }}
         keyboardShouldPersistTaps="handled"
       >
-        <Section style={{ gap: theme.spacing.lg }}>
+        <Section gap="lg">
           <ListRow
             primaryText={<Text appearance="black">Compte privé</Text>}
             right={<Toggle value={isPrivate} onChange={setIsPrivate} />}

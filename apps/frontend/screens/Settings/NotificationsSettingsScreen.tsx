@@ -85,7 +85,7 @@ export default function NotificationsSettingsScreen() {
         }}
         keyboardShouldPersistTaps="handled"
       >
-        <Section style={{ gap: theme.spacing.lg }}>
+        <Section gap="lg">
           <ListRow
             primaryText={
               <Text appearance="black" bold>
@@ -102,8 +102,8 @@ export default function NotificationsSettingsScreen() {
         </Section>
 
         {GROUPS.map((group) => (
-          <Section key={group.title} style={{ gap: theme.spacing.lg }}>
-            <Text size="sm" appearance="gray">
+          <Section key={group.title} gap="lg">
+            <Text size="md" appearance="gray">
               {group.title}
             </Text>
             {group.items.map((item) => (
