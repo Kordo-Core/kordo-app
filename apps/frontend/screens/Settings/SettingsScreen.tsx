@@ -26,6 +26,16 @@ export default function SettingsScreen() {
   // Chevron de fin de ligne, repris par chaque ligne qui mène à un autre écran.
   const chevron = <Icon name="chevron-right" size="sm" color={theme.colors.neutral.gray.base} />;
 
+  const closeDialog = () => setPendingAction(null);
+
+  // Boutons communs aux deux dialogues de confirmation.
+  const confirmActions = (confirmLabel: string) => (
+    <View style={{ flexDirection: 'row', gap: theme.spacing.sm, justifyContent: 'flex-end' }}>
+      <Button title="Annuler" appearance="gray" inverted size="md" onPress={closeDialog} />
+      <Button title={confirmLabel} appearance="error" size="md" onPress={closeDialog} />
+    </View>
+  );
+
   return (
     <ScreenLayout>
       <Header
@@ -47,8 +57,8 @@ export default function SettingsScreen() {
         }}
         keyboardShouldPersistTaps="handled"
       >
-        <Section style={{ gap: theme.spacing.lg }}>
-          <Text size="sm" appearance="gray">
+        <Section gap="lg">
+          <Text size="md" appearance="gray">
             Votre utilisation
           </Text>
 
@@ -77,8 +87,8 @@ export default function SettingsScreen() {
           </Pressable>
         </Section>
 
-        <Section style={{ gap: theme.spacing.lg }}>
-          <Text size="sm" appearance="gray">
+        <Section gap="lg">
+          <Text size="md" appearance="gray">
             Interactions
           </Text>
 
@@ -107,8 +117,8 @@ export default function SettingsScreen() {
           </Pressable>
         </Section>
 
-        <Section style={{ gap: theme.spacing.lg }}>
-          <Text size="sm" appearance="gray">
+        <Section gap="lg">
+          <Text size="md" appearance="gray">
             Visualisation de mon contenu
           </Text>
 
@@ -158,8 +168,8 @@ export default function SettingsScreen() {
           </Pressable>
         </Section>
 
-        <Section style={{ gap: theme.spacing.lg }}>
-          <Text size="sm" appearance="gray">
+        <Section gap="lg">
+          <Text size="md" appearance="gray">
             Affichage
           </Text>
 
@@ -194,8 +204,8 @@ export default function SettingsScreen() {
           </Pressable>
         </Section>
 
-        <Section style={{ gap: theme.spacing.lg }}>
-          <Text size="sm" appearance="gray">
+        <Section gap="lg">
+          <Text size="md" appearance="gray">
             Plus d&apos;infos et connexion
           </Text>
 
@@ -228,32 +238,24 @@ export default function SettingsScreen() {
 
       {/* Hors du ScrollView : le voile du dialogue se positionne sur son parent, il doit
           couvrir l'écran et non le contenu défilant. */}
+      {/* Un dialogue par action : leur contenu ne doit pas dépendre de `pendingAction`, qui
+          repasse à `null` alors que le dialogue est encore monté pour son animation de sortie. */}
+      <Dialog isOpen={pendingAction === 'logout'} onClose={closeDialog} title="Se déconnecter ?">
+        <Text appearance="gray">
+          Vous devrez saisir vos identifiants pour retrouver votre compte.
+        </Text>
+        {confirmActions('Se déconnecter')}
+      </Dialog>
+
       <Dialog
-        isOpen={pendingAction !== null}
-        onClose={() => setPendingAction(null)}
-        title={pendingAction === 'delete' ? 'Supprimer le compte ?' : 'Se déconnecter ?'}
+        isOpen={pendingAction === 'delete'}
+        onClose={closeDialog}
+        title="Supprimer le compte ?"
       >
         <Text appearance="gray">
-          {pendingAction === 'delete'
-            ? 'Cette action est définitive : vos activités, blocs validés et abonnements seront perdus.'
-            : 'Vous devrez saisir vos identifiants pour retrouver votre compte.'}
+          Cette action est définitive : vos activités, blocs validés et abonnements seront perdus.
         </Text>
-
-        <View style={{ flexDirection: 'row', gap: theme.spacing.sm, justifyContent: 'flex-end' }}>
-          <Button
-            title="Annuler"
-            appearance="gray"
-            inverted
-            size="md"
-            onPress={() => setPendingAction(null)}
-          />
-          <Button
-            title={pendingAction === 'delete' ? 'Supprimer' : 'Se déconnecter'}
-            appearance="error"
-            size="md"
-            onPress={() => setPendingAction(null)}
-          />
-        </View>
+        {confirmActions('Supprimer')}
       </Dialog>
     </ScreenLayout>
   );
