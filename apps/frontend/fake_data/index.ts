@@ -4,3 +4,4 @@ export * from './gyms.fake';
 export * from './users.fake';
 export * from './climbing.fake';
 export * from './social.fake';
+export * from './messages.fake';

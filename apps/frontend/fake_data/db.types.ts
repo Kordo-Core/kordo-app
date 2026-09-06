@@ -3,6 +3,10 @@
 
 export type PostType = 'activity' | 'publication' | 'text' | 'now';
 export type MediaType = 'image' | 'video';
+export type MessageType = 'text' | 'image' | 'video';
+// Une conversation reste "pending" tant que le destinataire du premier message n'a pas accepté :
+// l'initiateur ne peut alors plus rien envoyer.
+export type ConversationStatus = 'accepted' | 'pending';
 export type NotificationType =
   | 'follow' // a commencé à vous suivre
   | 'follow_accept' // a accepté votre demande de suivi
@@ -199,11 +203,24 @@ export interface Follow {
   createdAt: string;
 }
 
+// Fil entre deux utilisateurs. La table existe pour porter le statut d'acceptation, que la
+// paire d'utilisateurs seule ne suffit pas à décrire.
+export interface Conversation {
+  id: string;
+  userAId: string;
+  userBId: string;
+  status: ConversationStatus;
+  requestedBy: string; // auteur du premier message, celui qui attend l'acceptation
+  createdAt: string;
+}
+
 export interface Message {
   id: string;
+  conversationId: string;
   senderId: string;
   receiverId: string;
-  content: string;
+  type: MessageType;
+  content: string; // le texte, ou l'URL du média pour les types image et video
   createdAt: string;
   isRead: boolean;
 }

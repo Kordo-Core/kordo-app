@@ -37,8 +37,12 @@ export default function HomeScreen() {
               size="lg"
               onPress={() => navigation.navigate('Notifications')}
             />
-            {/* Bulle de message (tout à droite) : vers la page Messages (à créer) */}
-            <Icon name="ChatRegular" size="lg" onPress={() => {}} />
+            {/* Bulle de message (tout à droite) : liste des conversations */}
+            <Icon
+              name="ChatRegular"
+              size="lg"
+              onPress={() => navigation.navigate('Conversations')}
+            />
           </>
         }
         style={{ boxShadow: theme.shadows.md }}

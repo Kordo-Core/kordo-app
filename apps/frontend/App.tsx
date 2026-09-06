@@ -30,6 +30,9 @@ import CloseFriendsScreen from './screens/Settings/CloseFriendsScreen';
 import BlockedAccountsScreen from './screens/Settings/BlockedAccountsScreen';
 import AppearanceScreen from './screens/Settings/AppearanceScreen';
 import LanguageScreen from './screens/Settings/LanguageScreen';
+import ConversationsScreen from './screens/Messages/ConversationsScreen';
+import ChatScreen from './screens/Messages/ChatScreen';
+import NewConversationScreen from './screens/Messages/NewConversationScreen';
 import { RelationPivot } from './screens/UserRelations/UserRelationsScreen.types';
 
 export type RootStackParamList = {
@@ -53,6 +56,9 @@ export type RootStackParamList = {
   BlockedAccounts: undefined;
   Appearance: undefined;
   Language: undefined;
+  Conversations: undefined;
+  Chat: { conversationId: string };
+  NewConversation: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -95,6 +101,9 @@ export default function App() {
                 <Stack.Screen name="BlockedAccounts" component={BlockedAccountsScreen} />
                 <Stack.Screen name="Appearance" component={AppearanceScreen} />
                 <Stack.Screen name="Language" component={LanguageScreen} />
+                <Stack.Screen name="Conversations" component={ConversationsScreen} />
+                <Stack.Screen name="Chat" component={ChatScreen} />
+                <Stack.Screen name="NewConversation" component={NewConversationScreen} />
               </Stack.Navigator>
             </NavigationContainer>
           </ToastProvider>
