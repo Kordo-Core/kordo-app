@@ -79,8 +79,8 @@ export default function NotificationsScreen() {
       <ScrollView
         style={{ flex: 1 }}
         contentContainerStyle={{
-          gap: theme.spacing.sm,
-          paddingTop: theme.spacing.sm,
+          gap: theme.spacing.xs,
+          paddingTop: theme.spacing.xs,
           paddingBottom: theme.spacing.sm,
         }}
       >
