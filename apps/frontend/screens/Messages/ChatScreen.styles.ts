@@ -1,8 +1,9 @@
 import styled from '@emotion/native';
 import { KordoTheme } from 'kordo-ui';
 
-// Entête : avatar et nom côte à côte, la présence sous le nom.
-export const HeaderIdentity = styled.View((props) => ({
+// Entête : avatar et nom côte à côte, la présence sous le nom. Cliquable, comme partout
+// ailleurs où un nom d'utilisateur est affiché : elle mène au profil du contact.
+export const HeaderIdentity = styled.Pressable((props) => ({
   flexDirection: 'row',
   alignItems: 'center',
   gap: props.theme.spacing.sm,

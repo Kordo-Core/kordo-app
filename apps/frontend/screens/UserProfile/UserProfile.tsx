@@ -8,7 +8,13 @@ import { ScreenLayout } from '../../components/ScreenLayout/ScreenLayout';
 import { ProfileSummary } from './components/ProfileSummary/ProfileSummary';
 import { FollowStatus } from './components/ProfileSummary/ProfileSummary.types';
 import { TrophyShelf } from './components/TrophyShelf/TrophyShelf';
-import { CURRENT_USER, getFollowStatus, getUserById, getUserProfileStats } from 'fake_data';
+import {
+  CURRENT_USER,
+  findConversationWith,
+  getFollowStatus,
+  getUserById,
+  getUserProfileStats,
+} from 'fake_data';
 import { RootStackParamList } from '../../App';
 import { RelationPivot } from '../UserRelations/UserRelationsScreen.types';
 
@@ -42,6 +48,17 @@ export default function UserProfile() {
 
   const openRelations = (pivot: RelationPivot) =>
     navigation.navigate('UserRelations', { userId: params.userId, pivot });
+
+  // Faute de backend, un fil inexistant ne peut pas être créé : on ouvre celui qui existe, sinon
+  // on présente le choix du destinataire — même règle que l'écran « Nouveau message ».
+  const openConversation = () => {
+    const existing = findConversationWith(params.userId);
+    if (existing) {
+      navigation.navigate('Chat', { conversationId: existing.id });
+      return;
+    }
+    navigation.navigate('NewConversation');
+  };
 
   return (
     <ScreenLayout>
@@ -77,7 +94,7 @@ export default function UserProfile() {
             isOwnProfile={isOwnProfile}
             followStatus={followStatus}
             onToggleFollow={handleToggleFollow}
-            onPressMessage={() => {}}
+            onPressMessage={openConversation}
             onPressStat={openRelations}
           />
         </Section>

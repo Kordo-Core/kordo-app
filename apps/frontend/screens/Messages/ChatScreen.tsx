@@ -121,7 +121,10 @@ export default function ChatScreen() {
         }
         style={{ boxShadow: theme.shadows.md }}
       >
-        <Styled.HeaderIdentity>
+        <Styled.HeaderIdentity
+          onPress={() => navigation.navigate('UserProfile', { userId: contact.id })}
+          accessibilityRole="button"
+        >
           <Styled.HeaderAvatar source={{ uri: contact.avatarUrl }} />
           <View>
             <Text size="lg" bold>

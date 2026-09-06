@@ -67,6 +67,7 @@ export default function HomeScreen() {
               return (
                 <Now
                   now={item.data}
+                  onPressUser={(user) => navigation.navigate('UserProfile', { userId: user.id })}
                   onPressGym={(gym) => navigation.navigate('Gym', { gymId: gym.id })}
                 />
               );
