@@ -65,8 +65,8 @@ export default function UserProfile() {
       <ScrollView
         style={{ flex: 1 }}
         contentContainerStyle={{
-          gap: theme.spacing.sm,
-          paddingBlock: theme.spacing.sm,
+          gap: theme.spacing.xs,
+          paddingBlock: theme.spacing.xs,
           paddingBottom: theme.spacing.xxl,
         }}
       >

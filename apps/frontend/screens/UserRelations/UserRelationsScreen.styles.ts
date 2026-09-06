@@ -12,7 +12,7 @@ export const PivotsBar = styled.View((props) => ({
 // est courte. Le scroll est géré par chaque onglet.
 export const Content = styled.View((props) => ({
   flex: 1,
-  marginTop: props.theme.spacing.sm,
+  marginTop: props.theme.spacing.xs,
   backgroundColor: props.theme.colors.neutral.white,
 }));
 
