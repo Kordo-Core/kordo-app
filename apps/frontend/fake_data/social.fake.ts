@@ -8,7 +8,6 @@ import {
   GymMeet,
   GymVisit,
   Like,
-  Message,
   NowPost,
   Notification,
   Post,
@@ -210,34 +209,6 @@ export const FOLLOWS: Follow[] = [
 // L'utilisateur courant suit-il `userId` ?
 export const isFollowedByCurrentUser = (userId: string): boolean =>
   FOLLOWS.some((f) => f.followerId === CURRENT_USER.id && f.followingId === userId);
-
-// --- Messages ---
-export const MESSAGES: Message[] = [
-  {
-    id: 'msg-1',
-    senderId: 'u-emma',
-    receiverId: CURRENT_USER.id,
-    content: 'Salut ! On grimpe ce soir à Nation ?',
-    createdAt: '2025-05-22T16:00:00Z',
-    isRead: true,
-  },
-  {
-    id: 'msg-2',
-    senderId: CURRENT_USER.id,
-    receiverId: 'u-emma',
-    content: 'Carrément, 19h ça te va ?',
-    createdAt: '2025-05-22T16:05:00Z',
-    isRead: true,
-  },
-  {
-    id: 'msg-3',
-    senderId: 'u-emma',
-    receiverId: CURRENT_USER.id,
-    content: 'Parfait, à toute 🙌',
-    createdAt: '2025-05-22T16:06:00Z',
-    isRead: false,
-  },
-];
 
 // --- Notifications ---
 // Dates relatives à "maintenant" pour alimenter les sections par période (démo).
@@ -793,13 +764,6 @@ export function getHomeFeed(): HomeFeedItem[] {
   return items.sort((a, b) => b.data.createdAt.localeCompare(a.data.createdAt));
 }
 
-export const getConversationWith = (otherUserId: string): Message[] =>
-  MESSAGES.filter(
-    (m) =>
-      (m.senderId === CURRENT_USER.id && m.receiverId === otherUserId) ||
-      (m.senderId === otherUserId && m.receiverId === CURRENT_USER.id),
-  ).sort((a, b) => a.createdAt.localeCompare(b.createdAt));
-
 // --- Profil utilisateur (page UserProfile) ---
 
 /** Compteurs affichés en tête du profil utilisateur. */
@@ -833,7 +797,7 @@ export function getFollowStatus(userId: string): 'following' | 'pending' | 'none
 
 // Un `User` de la base fake vu comme `UserPublic`, avec le statut de suivi de l'utilisateur
 // courant : c'est lui qui pilote l'état initial du bouton Follow des listes.
-const toUserPublic = (user: User): UserPublic => ({
+export const toUserPublic = (user: User): UserPublic => ({
   id: user.id,
   username: user.username,
   firstName: user.firstName,

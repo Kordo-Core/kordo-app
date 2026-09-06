@@ -49,8 +49,8 @@ export default function MyCommentsScreen() {
       <ScrollView
         style={{ flex: 1 }}
         contentContainerStyle={{
-          gap: theme.spacing.sm,
-          paddingBlock: theme.spacing.sm,
+          gap: theme.spacing.xs,
+          paddingBlock: theme.spacing.xs,
           paddingBottom: theme.spacing.xxl,
         }}
         keyboardShouldPersistTaps="handled"
@@ -78,7 +78,11 @@ export default function MyCommentsScreen() {
               <Styled.Reply>
                 <Styled.Avatar source={{ uri: CURRENT_USER.avatarUrl }} />
                 <Text size="sm" style={{ flex: 1 }}>
-                  <Text size="sm" bold>
+                  <Text
+                    size="sm"
+                    bold
+                    onPress={() => navigation.push('UserProfile', { userId: CURRENT_USER.id })}
+                  >
                     {CURRENT_USER.username}
                   </Text>
                   {' - '}

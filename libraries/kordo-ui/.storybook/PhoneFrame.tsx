@@ -1,4 +1,6 @@
 import React from 'react';
+import type { Args } from 'storybook/internal/types';
+import { buildArgsParam } from 'storybook/internal/router';
 
 // Écran de téléphone dessiné autour d'une story.
 //
@@ -24,7 +26,8 @@ const NESTED_FLAG = 'phoneFrameNested';
 export const isNestedRender = (): boolean =>
   typeof window !== 'undefined' && new URLSearchParams(window.location.search).has(NESTED_FLAG);
 
-const chrome: React.CSSProperties = {
+/** Habillage du téléphone : mêmes dimensions et même bordure, avec ou sans iframe à l'intérieur. */
+export const chrome: React.CSSProperties = {
   width: PHONE_WIDTH,
   height: PHONE_HEIGHT,
   margin: '24px auto',
@@ -35,13 +38,32 @@ const chrome: React.CSSProperties = {
   boxShadow: '0 6px 24px rgba(0, 0, 0, 0.12)',
 };
 
-export const PhoneFrame: React.FC<{ storyId: string }> = ({ storyId }) => (
-  <div style={chrome}>
-    <iframe
-      // Chemin relatif : la story est rechargée par le même serveur Storybook, marqueur en plus.
-      src={`iframe.html?id=${encodeURIComponent(storyId)}&viewMode=story&${NESTED_FLAG}=1`}
-      title="Écran de téléphone"
-      style={{ width: '100%', height: '100%', border: 0, display: 'block' }}
-    />
-  </div>
-);
+interface PhoneFrameProps {
+  storyId: string;
+  /** Args par défaut de la story, pour n'envoyer que ce que les contrôles ont changé. */
+  initialArgs?: Args;
+  /** Args courants, tels que les contrôles les ont laissés. */
+  args?: Args;
+}
+
+// Les contrôles vivent dans le manager, qui ne dialogue qu'avec cette page-ci ; l'iframe
+// imbriquée, elle, n'est reliée à aucun canal et resterait donc figée sur les args par défaut.
+// Ils lui sont passés par l'URL, sous la forme que la prévisualisation sait relire d'elle-même
+// (`args=clé:valeur;…`) — d'où `buildArgsParam`, qui n'y met que le delta.
+export const PhoneFrame: React.FC<PhoneFrameProps> = ({ storyId, initialArgs, args }) => {
+  const argsParam = args ? buildArgsParam(initialArgs, args) : '';
+
+  return (
+    <div style={chrome}>
+      <iframe
+        // Chemin relatif : la story est rechargée par le même serveur Storybook, marqueur en plus.
+        src={
+          `iframe.html?id=${encodeURIComponent(storyId)}&viewMode=story&${NESTED_FLAG}=1` +
+          (argsParam ? `&args=${argsParam}` : '')
+        }
+        title="Écran de téléphone"
+        style={{ width: '100%', height: '100%', border: 0, display: 'block' }}
+      />
+    </div>
+  );
+};

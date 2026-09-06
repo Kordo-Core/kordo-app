@@ -14,6 +14,8 @@ export type { RadioProps } from './components/atoms/Radio/Radio.types';
 export { Dialog } from './components/layouts/Dialog/Dialog';
 export type { DialogProps } from './components/layouts/Dialog/Dialog.types';
 export type { CheckboxProps } from './components/atoms/Checkbox/Checkbox.types';
+export { Message } from './components/molecules/Message/Message';
+export type { MessageProps } from './components/molecules/Message/Message.types';
 export { SegmentedControl } from './components/molecules/SegmentedControl/SegmentedControl';
 export { Suggestion } from './components/molecules/Suggestion/Suggestion';
 export { Pivots } from './components/molecules/Pivots/Pivots';

@@ -5,3 +5,4 @@ export * from './types/Activity';
 export * from './types/Publication';
 export * from './types/TextPost';
 export * from './types/Notification';
+export * from './types/Message';

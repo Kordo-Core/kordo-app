@@ -1,16 +1,18 @@
 import { useMemo, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTheme } from '@emotion/react';
 import { Button, Header, Icon, Section, Text, UserInfo } from 'kordo-ui';
 import { ScreenLayout } from '../../components/ScreenLayout/ScreenLayout';
 import { SearchToolbar } from '../../components/SearchToolbar/SearchToolbar';
 import { matchesQuery } from '../../utils/matchesQuery';
 import { getBlockedUsers } from 'fake_data';
+import { RootStackParamList } from '../../App';
 
 // Comptes bloqués : une ligne par compte, avec le bouton de déblocage à droite.
 export default function BlockedAccountsScreen() {
-  const navigation = useNavigation();
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const theme = useTheme();
   const [query, setQuery] = useState('');
 
@@ -32,8 +34,8 @@ export default function BlockedAccountsScreen() {
       <ScrollView
         style={{ flex: 1 }}
         contentContainerStyle={{
-          gap: theme.spacing.sm,
-          paddingBlock: theme.spacing.sm,
+          gap: theme.spacing.xs,
+          paddingBlock: theme.spacing.xs,
           paddingBottom: theme.spacing.xxl,
         }}
         keyboardShouldPersistTaps="handled"
@@ -44,7 +46,11 @@ export default function BlockedAccountsScreen() {
           {visible.map((user) => (
             <View key={user.id} style={{ flexDirection: 'row', alignItems: 'center' }}>
               <View style={{ flex: 1 }}>
-                <UserInfo user={user} layout="row" onPressUser={() => {}} />
+                <UserInfo
+                  user={user}
+                  layout="row"
+                  onPressUser={() => navigation.push('UserProfile', { userId: user.id })}
+                />
               </View>
               <Button
                 title="Débloquer"

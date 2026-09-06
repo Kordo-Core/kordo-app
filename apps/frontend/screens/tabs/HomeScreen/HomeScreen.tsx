@@ -37,8 +37,12 @@ export default function HomeScreen() {
               size="lg"
               onPress={() => navigation.navigate('Notifications')}
             />
-            {/* Bulle de message (tout à droite) : vers la page Messages (à créer) */}
-            <Icon name="ChatRegular" size="lg" onPress={() => {}} />
+            {/* Bulle de message (tout à droite) : liste des conversations */}
+            <Icon
+              name="ChatRegular"
+              size="lg"
+              onPress={() => navigation.navigate('Conversations')}
+            />
           </>
         }
         style={{ boxShadow: theme.shadows.md }}
@@ -63,6 +67,7 @@ export default function HomeScreen() {
               return (
                 <Now
                   now={item.data}
+                  onPressUser={(user) => navigation.navigate('UserProfile', { userId: user.id })}
                   onPressGym={(gym) => navigation.navigate('Gym', { gymId: gym.id })}
                 />
               );

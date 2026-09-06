@@ -28,7 +28,11 @@ export const Right = styled.View(() => ({
 
 export const TextWrapper = styled.View(() => ({
   //TODO alignItems: 'center',
-  pointerEvents: 'none',
+  // `box-none` et non `none` : le conteneur lui-même ne capte jamais le toucher — une ligne
+  // cliquable reçoit donc bien le clic posé sur son texte — mais ses enfants gardent le leur.
+  // Avec `none`, tout contenu interactif passé en `primaryText` (un UserInfo, un lien vers un
+  // profil) était muet, sans que rien ne le signale.
+  pointerEvents: 'box-none',
   // Borne la zone de texte à l'espace disponible entre Left et Right → le texte long
   // revient à la ligne au lieu de déborder sur la droite.
   flex: 1,

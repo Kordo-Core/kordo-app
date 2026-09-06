@@ -15,6 +15,9 @@ export function RankingRow({ entry }: RankingRowProps) {
       primaryText={
         <UserInfo
           user={entry.user}
+          // Inerte volontairement : la CardFrame qui contient la liste est en
+          // `pointerEvents="none"`, aucun clic ne parvient jusqu'ici. L'ouverture du profil
+          // est portee par le tap pose sur le ghost scroll, dans RankingTab.
           onPressUser={() => {}}
           tertiaryText={
             <Text appearance="primary" bold>

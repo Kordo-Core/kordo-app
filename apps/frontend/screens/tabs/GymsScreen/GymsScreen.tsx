@@ -171,6 +171,8 @@ export default function GymsScreen() {
                 {FAVORITE_GYMS.map((gym) => (
                   <Card
                     key={gym.id}
+                    isPressable
+                    onPress={() => navigation.navigate('Gym', { gymId: gym.id })}
                     style={{
                       width: sliderCardWidth,
                       height: 320,
@@ -307,6 +309,8 @@ export default function GymsScreen() {
                 {POPULAR_GYMS.slice(0, 4).map((gym) => (
                   <Card
                     key={gym.id}
+                    isPressable
+                    onPress={() => navigation.navigate('Gym', { gymId: gym.id })}
                     style={{
                       width: sliderCardWidth,
                       height: 320,
