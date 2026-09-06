@@ -13,9 +13,12 @@ import Animated, {
   SharedValue,
 } from 'react-native-reanimated';
 import { useTheme } from '@emotion/react';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Card, Icon, Tag, Text } from 'kordo-ui';
 import { Bounce } from 'kordo-ui/src/animations/Bounce/Bounce';
 import { Gym } from '../../../fake_data/gyms.fake';
+import { RootStackParamList } from '../../../App';
 
 const AnimatedCard = Animated.createAnimatedComponent(Card);
 
@@ -128,6 +131,7 @@ interface Props {
 
 export function GymCardStack({ cardWidth, cardHeight = 300, gyms }: Props) {
   const theme = useTheme();
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const count = gyms.length;
   const innerWidth = cardWidth - PEEK * 2;
   const ranks = useRef(buildRanks(count)).current;
@@ -230,7 +234,7 @@ export function GymCardStack({ cardWidth, cardHeight = 300, gyms }: Props) {
                   <Text appearance="white">{gyms[i].address}</Text>
                 </View>
               </View>
-              <Bounce>
+              <Bounce onPress={() => navigation.navigate('Gym', { gymId: gyms[i].id })}>
                 <BlurView
                   intensity={60}
                   tint="default"

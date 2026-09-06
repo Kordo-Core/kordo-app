@@ -10,8 +10,11 @@ import Animated, {
   SharedValue,
 } from 'react-native-reanimated';
 import { useTheme } from '@emotion/react';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Card, Icon, Tag, Text } from 'kordo-ui';
 import { Gym } from '../../../fake_data/gyms.fake';
+import { RootStackParamList } from '../../../App';
 import BlurView from 'expo-blur/build/BlurView';
 import { Bounce } from 'kordo-ui/src/animations/Bounce/Bounce';
 
@@ -97,6 +100,7 @@ function CardItem({
   gym,
 }: CardItemProps) {
   const theme = useTheme();
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   // Le worklet tourne sur le thread UI : il capture une valeur primitive, pas l'objet thème.
   const cardRadius = theme.borderRadius.square;
   // Style de la carte : position/échelle/opacité dérivées en continu du rang relatif `r`.
@@ -192,7 +196,7 @@ function CardItem({
             </Text>
           </View>
 
-          <Bounce>
+          <Bounce onPress={() => navigation.navigate('Gym', { gymId: gym.id })}>
             <BlurView
               intensity={60}
               tint="default"
