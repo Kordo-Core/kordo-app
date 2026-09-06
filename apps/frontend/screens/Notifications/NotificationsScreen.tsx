@@ -1,11 +1,11 @@
 import React, { useMemo } from 'react';
-import { ScrollView, useWindowDimensions, View } from 'react-native';
-import Svg, { Circle, Path, SvgUri } from 'react-native-svg';
+import { ScrollView, View } from 'react-native';
+import Svg, { Circle, Path } from 'react-native-svg';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTheme } from '@emotion/react';
 import { Header, Icon, Notification, Section, Text } from 'kordo-ui';
-import * as Styled from './NotificationsScreen.styles';
+import { ScreenLayout } from '../../components/ScreenLayout/ScreenLayout';
 import { getNotificationFeed } from 'fake_data';
 import { RootStackParamList } from '../../App';
 
@@ -54,7 +54,6 @@ function CaughtUpBanner() {
 export default function NotificationsScreen() {
   const theme = useTheme();
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
-  const { height } = useWindowDimensions();
   const sections = useMemo(() => getNotificationFeed(), []);
 
   // Bascule lu/non-lu : on insère le bandeau juste après la dernière notification non lue
@@ -66,17 +65,7 @@ export default function NotificationsScreen() {
   }, [sections]);
 
   return (
-    <Styled.Container>
-      <Styled.Background pointerEvents="none">
-        <SvgUri
-          width={height}
-          height={height}
-          uri="https://res.cloudinary.com/dqmegz5dn/image/upload/v1781135028/topo-primary-dark_wdsvmf.svg"
-          preserveAspectRatio="xMidYMid meet"
-          style={{ transform: [{ rotate: '90deg' }] }}
-        />
-      </Styled.Background>
-
+    <ScreenLayout>
       <Header
         left={<Icon name="ArrowLeftRegular" size="md" onPress={() => navigation.goBack()} />}
         centerChildren
@@ -121,6 +110,6 @@ export default function NotificationsScreen() {
           </Section>
         ))}
       </ScrollView>
-    </Styled.Container>
+    </ScreenLayout>
   );
 }

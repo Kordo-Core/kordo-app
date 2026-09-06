@@ -1,11 +1,10 @@
 import { Fragment, useState } from 'react';
-import { Pressable, ScrollView, useWindowDimensions } from 'react-native';
-import { SvgUri } from 'react-native-svg';
+import { Pressable, ScrollView } from 'react-native';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTheme } from '@emotion/react';
 import { Header, Icon, ListRow, Section, Text } from 'kordo-ui';
-import * as Styled from './UserProfile.styles';
+import { ScreenLayout } from '../../components/ScreenLayout/ScreenLayout';
 import { ProfileSummary } from './components/ProfileSummary/ProfileSummary';
 import { FollowStatus } from './components/ProfileSummary/ProfileSummary.types';
 import { TrophyShelf } from './components/TrophyShelf/TrophyShelf';
@@ -26,7 +25,6 @@ export default function UserProfile() {
   const theme = useTheme();
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const { params } = useRoute<RouteProp<RootStackParamList, 'UserProfile'>>();
-  const { height } = useWindowDimensions();
 
   const user = getUserById(params.userId);
   const isOwnProfile = params.userId === CURRENT_USER.id;
@@ -46,17 +44,7 @@ export default function UserProfile() {
     navigation.navigate('UserRelations', { userId: params.userId, pivot });
 
   return (
-    <Styled.Container>
-      <Styled.Background pointerEvents="none">
-        <SvgUri
-          width={height}
-          height={height}
-          uri="https://res.cloudinary.com/dqmegz5dn/image/upload/v1781135028/topo-primary-dark_wdsvmf.svg"
-          preserveAspectRatio="xMidYMid meet"
-          style={{ transform: [{ rotate: '90deg' }] }}
-        />
-      </Styled.Background>
-
+    <ScreenLayout>
       <Header
         left={<Icon name="ArrowLeftRegular" size="md" onPress={() => navigation.goBack()} />}
         centerChildren
@@ -116,6 +104,6 @@ export default function UserProfile() {
           <TrophyShelf title={isOwnProfile ? 'Mes Trophées' : 'Collection de trophées'} />
         </Section>
       </ScrollView>
-    </Styled.Container>
+    </ScreenLayout>
   );
 }

@@ -1,25 +1,5 @@
 import styled from '@emotion/native';
 import { KordoTheme } from 'kordo-ui';
-import { View } from 'react-native';
-
-export const Container = styled.View((props) => ({
-  flex: 1,
-  backgroundColor: props.theme.colors.primary.lightest,
-}));
-
-// Image de fond (topo) en plein écran, derrière tout le contenu — identique au profil.
-export const Background = styled(View)(() => ({
-  position: 'absolute',
-  top: 0,
-  left: 0,
-  right: 0,
-  bottom: 0,
-  zIndex: 0,
-  opacity: 0.5,
-  alignItems: 'center',
-  justifyContent: 'center',
-  overflow: 'hidden',
-}));
 
 // Barre de pivots collée sous le header, sur fond plein pour rester lisible sur le topo.
 export const PivotsBar = styled.View((props) => ({
@@ -34,6 +14,14 @@ export const Content = styled.View((props) => ({
   flex: 1,
   marginTop: props.theme.spacing.sm,
   backgroundColor: props.theme.colors.neutral.white,
+}));
+
+// Espacement de la barre de recherche, fixée au-dessus de la liste. Il vit ici et pas dans
+// `SearchToolbar` pour caler la barre sur `listContent` : même retrait horizontal, donc même
+// alignement que les lignes qu'elle filtre. Pas de padding sur `Content`, l'onglet Activités
+// affiche ses cartes bord à bord.
+export const ToolbarBar = styled.View((props) => ({
+  padding: props.theme.spacing.md,
 }));
 
 // Intitulé au-dessus d'une liste : "Tous les abonnements (56)".

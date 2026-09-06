@@ -1,24 +1,16 @@
 import { useMemo, useState } from 'react';
-import {
-  FlatList,
-  LayoutChangeEvent,
-  NativeScrollEvent,
-  NativeSyntheticEvent,
-  useWindowDimensions,
-} from 'react-native';
-import { SvgUri } from 'react-native-svg';
+import { FlatList, LayoutChangeEvent, NativeScrollEvent, NativeSyntheticEvent } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTheme } from '@emotion/react';
 import { Activity, Header, Icon, Now, Publication, TextPost, UserInfo } from 'kordo-ui';
-import * as Styled from './HomeScreen.styles';
+import { ScreenLayout } from '../../../components/ScreenLayout/ScreenLayout';
 import { CURRENT_USER, getHomeFeed, HomeFeedItem } from 'fake_data';
 import { RootStackParamList } from '../../../App';
 
 export default function HomeScreen() {
   const theme = useTheme();
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
-  const { height } = useWindowDimensions();
   const homeFeed = useMemo(() => getHomeFeed(), []);
 
   // Position de scroll passée au header "smart" + hauteur du header pour décaler le contenu
@@ -26,17 +18,7 @@ export default function HomeScreen() {
   const [headerHeight, setHeaderHeight] = useState(0);
 
   return (
-    <Styled.Container>
-      <Styled.Background pointerEvents="none">
-        <SvgUri
-          width={height}
-          height={height}
-          uri="https://res.cloudinary.com/dqmegz5dn/image/upload/v1781135028/topo-primary-dark_wdsvmf.svg"
-          preserveAspectRatio="xMidYMid meet"
-          style={{ transform: [{ rotate: '90deg' }] }}
-        />
-      </Styled.Background>
-
+    <ScreenLayout>
       <Header
         smart
         scrollY={scrollY}
@@ -114,6 +96,6 @@ export default function HomeScreen() {
           }
         }}
       />
-    </Styled.Container>
+    </ScreenLayout>
   );
 }

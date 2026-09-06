@@ -1,4 +1,4 @@
-import { Checkbox, Dropdown, DropdownItem, Text } from 'kordo-ui';
+import { Checkbox, Dropdown, DropdownItem, ListRow, Text } from 'kordo-ui';
 import { InteractionsSectionProps } from './InteractionsSection.types';
 import * as Styled from './InteractionsSection.styles';
 
@@ -24,34 +24,32 @@ export function InteractionsSection(props: InteractionsSectionProps) {
       />
 
       {props.onMeetsChange && (
-        <Checkbox
-          label={
-            <>
-              <Text>Ajoutez les personnes rencontrées</Text>
-              <Text size="sm" appearance="gray">
-                Visualiser les personnes rencontrées lors de votre séance à l'aide de la
-                fonctionnalité Meet
-              </Text>
-            </>
+        <ListRow
+          onPress={() => props.onMeetsChange?.(!props.includeMeets)}
+          primaryText={<Text>Ajoutez les personnes rencontrées</Text>}
+          secondaryText={
+            <Text size="sm" appearance="gray">
+              Visualiser les personnes rencontrées lors de votre séance à l'aide de la
+              fonctionnalité Meet
+            </Text>
           }
-          checked={!!props.includeMeets}
-          onChange={props.onMeetsChange}
+          right={<Checkbox checked={!!props.includeMeets} onChange={props.onMeetsChange} />}
         />
       )}
 
       {props.onLikesChange && (
-        <Checkbox
-          label="Activer les j'aimes"
-          checked={!!props.likesEnabled}
-          onChange={props.onLikesChange}
+        <ListRow
+          onPress={() => props.onLikesChange?.(!props.likesEnabled)}
+          primaryText={<Text>Activer les j&apos;aimes</Text>}
+          right={<Checkbox checked={!!props.likesEnabled} onChange={props.onLikesChange} />}
         />
       )}
 
       {props.onCommentsChange && (
-        <Checkbox
-          label="Activer les commentaires"
-          checked={!!props.commentsEnabled}
-          onChange={props.onCommentsChange}
+        <ListRow
+          onPress={() => props.onCommentsChange?.(!props.commentsEnabled)}
+          primaryText={<Text>Activer les commentaires</Text>}
+          right={<Checkbox checked={!!props.commentsEnabled} onChange={props.onCommentsChange} />}
         />
       )}
     </Styled.Container>

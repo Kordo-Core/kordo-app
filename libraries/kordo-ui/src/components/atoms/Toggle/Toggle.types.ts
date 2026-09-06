@@ -1,14 +1,14 @@
 import { StyleProp, ViewStyle } from 'react-native';
 import { AppearanceType, StatusType } from '../../../types/theme.types';
 
-export interface CheckboxProps {
-  /** État coché (contrôlé par le parent) */
-  checked: boolean;
+export interface ToggleProps {
+  /** État activé (contrôlé par le parent) */
+  value: boolean;
   /** Notifie le parent du nouvel état au clic */
-  onChange: (checked: boolean) => void;
-  /** Couleur de la case cochée */
+  onChange: (value: boolean) => void;
+  /** Couleur de la piste à l'état activé */
   appearance?: AppearanceType | StatusType;
-  /** Grise la case et ignore les clics */
+  /** Grise l'interrupteur et ignore les clics */
   disabled?: boolean;
   style?: StyleProp<ViewStyle>;
 }

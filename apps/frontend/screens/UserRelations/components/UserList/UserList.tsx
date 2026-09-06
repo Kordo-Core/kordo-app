@@ -6,7 +6,7 @@ import { useTheme } from '@emotion/react';
 import { Text } from 'kordo-ui';
 import { UserListProps } from './UserList.types';
 import { UserRow } from '../UserRow/UserRow';
-import { matchesQuery } from '../../utils/matchesQuery';
+import { matchesQuery } from '../../../../utils/matchesQuery';
 import * as Styled from '../../UserRelationsScreen.styles';
 import { RootStackParamList } from '../../../../App';
 

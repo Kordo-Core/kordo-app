@@ -7,7 +7,6 @@ import {
   View,
 } from 'react-native';
 import { useTheme } from '@emotion/react';
-import { SvgUri } from 'react-native-svg';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import {
   BoulderBadge,
@@ -21,6 +20,7 @@ import {
   Text,
   VideoStories,
 } from 'kordo-ui';
+import { ScreenLayout } from '../../../components/ScreenLayout/ScreenLayout';
 import * as Styled from './GymScreen.styles';
 import { RankingTab } from './RankingTab/RankingTab';
 import { BlocsTab } from './BlocsTab/BlocsTab';
@@ -102,17 +102,7 @@ export default function GymScreen() {
   }, [height, headerHeight, segmentedHeight]);
 
   return (
-    <Styled.Container>
-      <Styled.Background pointerEvents="none">
-        <SvgUri
-          width={height}
-          height={height}
-          uri="https://res.cloudinary.com/dqmegz5dn/image/upload/v1781135028/topo-primary-dark_wdsvmf.svg"
-          preserveAspectRatio="xMidYMid meet"
-          style={{ transform: [{ rotate: '90deg' }] }}
-        />
-      </Styled.Background>
-
+    <ScreenLayout>
       {activeTab === 0 ? (
         <RankingTab gymId={params.gymId} geometry={geometry} />
       ) : (
@@ -264,6 +254,6 @@ export default function GymScreen() {
           {gym?.name}
         </Text>
       </Header>
-    </Styled.Container>
+    </ScreenLayout>
   );
 }
