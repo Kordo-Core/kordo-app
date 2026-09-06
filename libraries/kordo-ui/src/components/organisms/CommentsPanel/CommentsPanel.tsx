@@ -58,6 +58,16 @@ export const CommentsPanel: React.FC<CommentsPanelProps> = ({
     const name =
       [comment.user.firstName, comment.user.lastName].filter(Boolean).join(' ') ||
       comment.user.username;
+
+    // Ferme le panneau avant de remonter le clic : la navigation est gérée côté frontend, et
+    // sans cette fermeture l'écran ouvert s'empilerait *derrière* le Modal resté visible.
+    const openUser = onPressUser
+      ? () => {
+          onClose();
+          onPressUser(comment.user);
+        }
+      : undefined;
+
     return (
       <ListRow
         key={comment.id}
@@ -67,7 +77,9 @@ export const CommentsPanel: React.FC<CommentsPanelProps> = ({
             layout="row"
             primaryText={
               <Text size="md">
-                <Text size="md" bold>
+                {/* Le clic est posé sur le nom seul : la date qui le suit appartient au même
+                    bloc de texte, et l'ouvrir aussi serait une cible trompeuse. */}
+                <Text size="md" bold onPress={openUser}>
                   {name}
                 </Text>
                 {'  '}
@@ -81,7 +93,8 @@ export const CommentsPanel: React.FC<CommentsPanelProps> = ({
                 {comment.content}
               </Text>
             }
-            onPressUser={() => onPressUser?.(comment.user)}
+            // Reste utile pour l'avatar, qu'UserInfo enveloppe dans une Pressable à part.
+            onPressUser={() => openUser?.()}
           />
         }
       />
