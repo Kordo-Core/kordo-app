@@ -3,7 +3,8 @@ import { ScrollView, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTheme } from '@emotion/react';
-import { Header, Icon, Section, Text, UserInfo } from 'kordo-ui';
+import { IconButton, Section, Text, UserInfo } from 'kordo-ui';
+import { ScreenHeader } from '../../components/ScreenHeader/ScreenHeader';
 import { ScreenLayout } from '../../components/ScreenLayout/ScreenLayout';
 import { SearchToolbar } from '../../components/SearchToolbar/SearchToolbar';
 import { matchesQuery } from '../../utils/matchesQuery';
@@ -42,41 +43,33 @@ export default function ConversationsScreen() {
 
   return (
     <ScreenLayout>
-      <Header
-        left={<Icon name="ArrowLeftRegular" size="md" onPress={() => navigation.goBack()} />}
-        centerChildren
+      <ScreenHeader
+        title="Messages"
+        onBack={() => navigation.goBack()}
         right={
-          <Icon
-            name="EditRegular"
-            size="md"
+          <IconButton
+            icon="EditRegular"
+            variant="action"
+            accessibilityLabel="Nouveau message"
             onPress={() => navigation.navigate('NewConversation')}
           />
         }
-        style={{ boxShadow: theme.shadows.md }}
       >
-        <Text size="lg" bold>
-          Conversations
-        </Text>
-      </Header>
+        <SearchToolbar value={query} onChange={setQuery} placeholder="Rechercher un grimpeur..." />
+      </ScreenHeader>
 
       <ScrollView
         style={{ flex: 1 }}
         contentContainerStyle={{
-          gap: theme.spacing.xs,
-          paddingBlock: theme.spacing.xs,
+          gap: theme.spacing.md,
+          paddingTop: theme.spacing.sm,
           paddingBottom: theme.spacing.xxl,
         }}
         keyboardShouldPersistTaps="handled"
       >
-        <Section gap="lg">
-          <SearchToolbar value={query} onChange={setQuery} placeholder="Rechercher..." />
-        </Section>
-
         {sections.map((section) => (
           <Section key={section.key} gap="md">
-            <Text size="md" bold appearance="gray">
-              {section.title}
-            </Text>
+            <Text variant="eyebrow">{section.title}</Text>
 
             {section.items.map((conversation) => (
               <Styled.Row
@@ -89,14 +82,25 @@ export default function ConversationsScreen() {
                     user={conversation.contact}
                     layout="row"
                     secondaryText={
-                      <Text size="sm" appearance="gray" numberOfLines={1}>
+                      <Text
+                        size="sm"
+                        bold={conversation.unreadCount > 0}
+                        appearance={conversation.unreadCount > 0 ? 'black' : 'gray'}
+                        numberOfLines={1}
+                      >
                         {messagePreview(conversation.lastMessage, CURRENT_USER.id)}
                       </Text>
                     }
                     onPressUser={() => openConversation(conversation.id)}
                   />
                 </View>
-                {conversation.unreadCount > 0 && <Styled.UnreadDot />}
+                {conversation.unreadCount > 0 && (
+                  <Styled.UnreadBadge>
+                    <Text size={11} extraBold style={{ color: '#13201B' }}>
+                      {conversation.unreadCount}
+                    </Text>
+                  </Styled.UnreadBadge>
+                )}
               </Styled.Row>
             ))}
           </Section>

@@ -1,10 +1,9 @@
 import React, { useMemo } from 'react';
 import { ScrollView, View } from 'react-native';
-import Svg, { Circle, Path } from 'react-native-svg';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTheme } from '@emotion/react';
-import { Header, Icon, Notification, Section, Text } from 'kordo-ui';
+import { Icon, Notification, Section, Text } from 'kordo-ui';
 import { ScreenHeader } from '../../components/ScreenHeader/ScreenHeader';
 import { ScreenLayout } from '../../components/ScreenLayout/ScreenLayout';
 import { getNotificationFeed } from 'fake_data';
@@ -23,29 +22,22 @@ function CaughtUpBanner() {
         paddingVertical: theme.spacing.sm,
       }}
     >
-      {/* Cercle + coche dessinés (trait fin contrôlé via strokeWidth, contrairement à l'icône Fluent pleine) */}
-      <Svg width={theme.avatarSizes.md} height={theme.avatarSizes.md} viewBox="0 0 24 24">
-        <Circle
-          cx={12}
-          cy={12}
-          r={10.5}
-          stroke={theme.colors.neutral.black}
-          strokeWidth={1}
-          fill="none"
-        />
-        <Path
-          d="M7.5 12.3 L10.6 15.4 L16.5 8.8"
-          stroke={theme.colors.neutral.black}
-          strokeWidth={1}
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          fill="none"
-        />
-      </Svg>
+      <View
+        style={{
+          width: 40,
+          height: 40,
+          borderRadius: 14,
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: theme.colors.soft,
+        }}
+      >
+        <Icon name="CheckmarkRegular" size={20} color={theme.colors.softText} />
+      </View>
       <View style={{ flex: 1 }}>
-        <Text bold>Vous êtes à jour</Text>
-        <Text size="md" appearance="primary">
-          Les prochaines notifications ont déjà été vues
+        <Text bold>Tu es à jour</Text>
+        <Text size="sm" appearance="gray">
+          Les notifications suivantes ont déjà été vues
         </Text>
       </View>
     </View>
@@ -72,9 +64,9 @@ export default function NotificationsScreen() {
       <ScrollView
         style={{ flex: 1 }}
         contentContainerStyle={{
-          gap: theme.spacing.xs,
+          gap: theme.spacing.md,
           paddingTop: theme.spacing.xs,
-          paddingBottom: theme.spacing.sm,
+          paddingBottom: theme.spacing.xxl,
         }}
       >
         {/* Aucune non-lue : le bandeau "à jour" est affiché en tête */}
@@ -86,9 +78,7 @@ export default function NotificationsScreen() {
 
         {sections.map((section) => (
           <Section key={section.key}>
-            <Text size="md" bold>
-              {section.title}
-            </Text>
+            <Text variant="eyebrow">{section.title}</Text>
             {section.items.map((notification) => (
               <React.Fragment key={notification.id}>
                 <Notification

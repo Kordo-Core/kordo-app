@@ -7,12 +7,15 @@ export const Row = styled.Pressable((props) => ({
   gap: props.theme.spacing.sm,
 }));
 
-// Pastille de non-lu, à droite de la ligne — seul repère visuel dans la maquette.
-export const UnreadDot = styled.View((props) => ({
-  width: 10,
-  height: 10,
+// Compteur de non-lus, à droite de la ligne (pastille orange, design D)
+export const UnreadBadge = styled.View((props) => ({
+  minWidth: 22,
+  height: 22,
+  paddingHorizontal: 6,
   borderRadius: props.theme.borderRadius.rounded,
-  backgroundColor: props.theme.colors.secondary.base,
+  alignItems: 'center',
+  justifyContent: 'center',
+  backgroundColor: props.theme.colors.primary.base,
 }));
 
 // État vide, calqué sur celui des onglets de relations.

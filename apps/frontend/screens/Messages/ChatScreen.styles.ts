@@ -10,9 +10,9 @@ export const HeaderIdentity = styled.Pressable((props) => ({
 }));
 
 export const HeaderAvatar = styled.Image((props) => ({
-  width: props.theme.avatarSizes.sm,
-  height: props.theme.avatarSizes.sm,
-  borderRadius: props.theme.borderRadius.rounded,
+  width: 42,
+  height: 42,
+  borderRadius: 14,
 }));
 
 export const Presence = styled.View((props) => ({
@@ -26,16 +26,14 @@ export const PresenceDot = styled.View<{ online: boolean }>((props) => ({
   width: 8,
   height: 8,
   borderRadius: props.theme.borderRadius.rounded,
-  backgroundColor: props.online
-    ? props.theme.colors.secondary.base
-    : props.theme.colors.neutral.gray.base,
+  backgroundColor: props.online ? '#3BB273' : props.theme.colors.textMuted,
 }));
 
 // Contenu de la liste de messages : l'espace vertical sépare les bulles.
 export const messagesContent = (theme: KordoTheme) => ({
   flexGrow: 1,
-  padding: theme.spacing.md,
-  gap: theme.spacing.md,
+  padding: theme.spacing.md + 2,
+  gap: theme.spacing.sm + 2,
 });
 
 // Miniature d'un média, dans une bulle qui a retiré son rembourrage.
@@ -59,9 +57,10 @@ export const PlayBadge = styled.View((props) => ({
 // Barre du bas quand la conversation n'est pas encore acceptée : elle remplace la saisie.
 export const RequestBar = styled.View((props) => ({
   gap: props.theme.spacing.md,
-  padding: props.theme.spacing.md,
-  backgroundColor: props.theme.colors.neutral.white,
-  boxShadow: props.theme.shadows.up,
+  margin: props.theme.spacing.md,
+  padding: props.theme.spacing.lg,
+  borderRadius: props.theme.borderRadius.card,
+  backgroundColor: props.theme.colors.soft,
 }));
 
 export const RequestActions = styled.View((props) => ({

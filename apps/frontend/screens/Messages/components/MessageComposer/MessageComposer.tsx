@@ -18,18 +18,18 @@ export const MessageComposer: React.FC<MessageComposerProps> = ({
   return (
     <Styled.Bar>
       <Styled.CameraButton onPress={onPressCamera} accessibilityLabel="Prendre une photo">
-        <Icon name="camera" size="md" color={theme.colors.neutral.white} />
+        <Icon name="camera" size="md" color="#13201B" />
       </Styled.CameraButton>
 
       <Styled.InputWrapper>
         <Input
           value={value}
           onChange={onChange}
-          placeholder="Envoyer un message..."
+          placeholder="Écris un message…"
           rightIcon={
             hasText
               ? { name: 'send', color: theme.colors.secondary.base, onPress: onSend }
-              : { name: 'image', color: theme.colors.neutral.gray.base, onPress: onPressGallery }
+              : { name: 'image', color: theme.colors.textMuted, onPress: onPressGallery }
           }
         />
       </Styled.InputWrapper>

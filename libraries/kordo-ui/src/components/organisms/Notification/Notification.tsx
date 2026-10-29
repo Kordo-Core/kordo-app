@@ -76,7 +76,7 @@ export const Notification: React.FC<NotificationProps> = ({
 
   const time = (
     <Text size="sm" appearance="gray">
-      {formatRelative(notification.createdAt)}
+      · {formatRelative(notification.createdAt)}
     </Text>
   );
 
@@ -126,7 +126,7 @@ export const Notification: React.FC<NotificationProps> = ({
           borderRadius="square"
           appearance="secondary"
           inverted={following}
-          title={following ? 'Following' : 'Follow'}
+          title={following ? 'Abonné' : 'Suivre'}
           onPress={() => {
             onPressFollow?.(notification);
             // Switch à mi-animation pour ne pas casser le rebond du bouton
@@ -140,7 +140,7 @@ export const Notification: React.FC<NotificationProps> = ({
           style={{
             width: THUMB_SIZE,
             height: THUMB_SIZE,
-            borderRadius: theme.borderRadius.square,
+            borderRadius: 12,
             overflow: 'hidden',
             backgroundColor: theme.colors.surfaceAlt,
           }}

@@ -5,7 +5,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTheme } from '@emotion/react';
 import * as ImagePicker from 'expo-image-picker';
 import { MessagePublic, MessageKind } from 'core';
-import { Button, Header, Icon, Message, Text } from 'kordo-ui';
+import { Button, Header, Icon, IconButton, Message, Text } from 'kordo-ui';
 import { ScreenHeader } from '../../components/ScreenHeader/ScreenHeader';
 import { ScreenLayout } from '../../components/ScreenLayout/ScreenLayout';
 import { MessageComposer } from './components/MessageComposer/MessageComposer';
@@ -107,12 +107,18 @@ export default function ChatScreen() {
   return (
     <ScreenLayout>
       <Header
-        left={<Icon name="ArrowLeftRegular" size="md" onPress={() => navigation.goBack()} />}
+        left={
+          <IconButton
+            icon="ArrowLeftRegular"
+            accessibilityLabel="Retour"
+            onPress={() => navigation.goBack()}
+          />
+        }
         right={
           // L'appel n'est pas géré : le bouton est là, il ne fait rien.
-          <Icon name="phone" size="md" onPress={() => {}} />
+          <IconButton icon="phone" variant="soft" accessibilityLabel="Appeler" onPress={() => {}} />
         }
-        style={{ boxShadow: theme.shadows.md }}
+        style={{ borderBottomWidth: 1, borderBottomColor: theme.colors.border }}
       >
         <Styled.HeaderIdentity
           onPress={() => navigation.navigate('UserProfile', { userId: contact.id })}
@@ -120,12 +126,12 @@ export default function ChatScreen() {
         >
           <Styled.HeaderAvatar source={{ uri: contact.avatarUrl }} />
           <View>
-            <Text size="lg" bold>
+            <Text size="md" extraBold>
               {contact.firstName} {contact.lastName}
             </Text>
             <Styled.Presence>
               <Styled.PresenceDot online={conversation.isContactOnline} />
-              <Text size="sm" appearance="gray">
+              <Text size="xs" bold appearance={conversation.isContactOnline ? 'secondary' : 'gray'}>
                 {conversation.isContactOnline ? 'en ligne' : 'hors ligne'}
               </Text>
             </Styled.Presence>
