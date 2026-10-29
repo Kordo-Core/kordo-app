@@ -132,7 +132,7 @@ export const CommentsPanel: React.FC<CommentsPanelProps> = ({
                   width: theme.avatarSizes.sm,
                   height: theme.avatarSizes.sm,
                   borderRadius: theme.borderRadius.rounded,
-                  backgroundColor: theme.colors.neutral.gray.light,
+                  backgroundColor: theme.colors.surfaceAlt,
                   marginTop: 4 + (42 - theme.avatarSizes.sm) / 2,
                 }}
               />

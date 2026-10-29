@@ -1,15 +1,10 @@
-import { ThemeProvider } from '@emotion/react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { theme, ToastProvider } from 'kordo-ui';
+import { KordoThemeProvider, ToastProvider } from 'kordo-ui';
+import { kordoFonts } from 'kordo-ui/src/fonts';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import {
-  useFonts,
-  Outfit_400Regular,
-  Outfit_500Medium,
-  Outfit_700Bold,
-} from '@expo-google-fonts/outfit';
+import { useFonts } from 'expo-font';
 import LandingScreen from './screens/LandingScreen/LandingScreen';
 import LoginScreen from './screens/LoginScreen/LoginScreen';
 import LoginFormScreen from './screens/LoginFormScreen/LoginFormScreen';
@@ -64,14 +59,16 @@ export type RootStackParamList = {
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function App() {
-  const [fontsLoaded] = useFonts({ Outfit_400Regular, Outfit_500Medium, Outfit_700Bold });
+  // Polices du design D (Plus Jakarta Sans + Bricolage Grotesque), embarquées par kordo-ui
+  const [fontsLoaded] = useFonts(kordoFonts);
 
   if (!fontsLoaded) return null;
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
-        <ThemeProvider theme={theme}>
+        {/* Thème clair par défaut ; l'écran Apparence bascule en sombre via useThemeMode() */}
+        <KordoThemeProvider initialMode="light">
           <ToastProvider>
             <NavigationContainer>
               <Stack.Navigator
@@ -107,7 +104,7 @@ export default function App() {
               </Stack.Navigator>
             </NavigationContainer>
           </ToastProvider>
-        </ThemeProvider>
+        </KordoThemeProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>
   );

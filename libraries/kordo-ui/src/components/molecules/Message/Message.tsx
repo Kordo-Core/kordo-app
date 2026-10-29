@@ -12,7 +12,11 @@ export const Message: React.FC<MessageProps> = ({ direction, content, time, chil
   return (
     <Styled.Row direction={direction}>
       <Container direction={direction} style={style}>
-        {children ?? <Text appearance="black">{content}</Text>}
+        {children ?? (
+          <Text appearance={direction === 'out' ? 'white' : 'black'} style={{ lineHeight: 21 }}>
+            {content}
+          </Text>
+        )}
       </Container>
 
       {!!time && (

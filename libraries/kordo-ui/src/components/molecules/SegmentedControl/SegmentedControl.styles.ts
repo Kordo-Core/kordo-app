@@ -18,15 +18,15 @@ export const SegmentItem = styled.View(() => segment);
 export const SegmentButton = styled.Pressable(() => segment);
 
 export const CustomText = styled(Text)<{ size?: SegmentedControlProps['size'] }>((props) => ({
-  height: props.size === 'lg' ? 60 : 40,
-  lineHeight: props.size === 'lg' ? 60 : 40,
-  fontSize: props.size ? props.theme.fontSizes[props.size] : props.theme.fontSizes.md,
+  height: props.size === 'lg' ? 44 : 38,
+  lineHeight: props.size === 'lg' ? 44 : 38,
+  fontSize: props.size === 'lg' ? props.theme.fontSizes.md : props.theme.fontSizes.sm,
   textAlign: 'center',
 }));
 
 export const SegmentedContainer = styled(BlurView)<{ borderRadius: string }>((props) => ({
   flexDirection: 'row',
-  backgroundColor: 'transparent',
+  backgroundColor: 'rgba(255, 255, 255, 0.14)',
   padding: props.theme.spacing.xs,
   borderRadius:
     props.borderRadius === 'rounded'
@@ -53,7 +53,7 @@ export const Pointer = styled(Animated.View)<{ borderRadius: string; color?: str
   position: 'absolute',
   top: props.theme.spacing.xs,
   bottom: props.theme.spacing.xs,
-  backgroundColor: props.color ?? props.theme.colors.primary.base,
+  backgroundColor: props.color ?? props.theme.colors.surface,
   zIndex: 1,
   pointerEvents: 'none',
   overflow: 'hidden',
@@ -63,7 +63,7 @@ export const Pointer = styled(Animated.View)<{ borderRadius: string; color?: str
       : props.theme.borderRadius.square,
 }));
 
-// Rangée de libellés blancs, copie exacte de la couche de base, décalée en sens inverse du
+// Rangée de libellés foncés, copie exacte de la couche de base, décalée en sens inverse du
 // déplacement de l'indicateur : elle reste ainsi immobile à l'écran pendant que l'indicateur
 // glisse, et seule la portion qu'il recouvre reste visible.
 export const RevealRow = styled(Animated.View)<{ width: number }>((props) => ({

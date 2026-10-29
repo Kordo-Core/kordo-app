@@ -14,11 +14,12 @@ export const getColor = (theme: KordoTheme, appearance: ColorToken): string => {
     case 'secondary':
       return theme.colors.secondary.base;
     case 'black':
-      return theme.colors.neutral.black;
+      // « black » désigne le texte principal : foncé en thème clair, clair en thème sombre.
+      return theme.colors.text;
     case 'white':
       return theme.colors.neutral.white;
     case 'gray':
-      return theme.colors.neutral.gray.base;
+      return theme.colors.textMuted;
     case 'success':
       return theme.colors.success.base;
     case 'error':
@@ -57,4 +58,20 @@ export const resolveColor = (
 ): string => {
   if (!color) return fallback;
   return isColorToken(color) ? getColor(theme, color) : color;
+};
+
+// Couleur du texte et des icônes posés sur un fond de l'apparence donnée. L'orange (primary,
+// warning) est trop clair pour du blanc : on y pose l'encre foncée, comme sur la maquette.
+export const getOnColor = (theme: KordoTheme, appearance: ColorToken): string => {
+  switch (appearance) {
+    case 'primary':
+    case 'warning':
+      return '#13201B';
+    case 'white':
+      return '#13201B';
+    case 'black':
+      return theme.colors.background;
+    default:
+      return theme.colors.neutral.white;
+  }
 };

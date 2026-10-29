@@ -19,7 +19,8 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = (props) => {
   const [innerWidth, setInnerWidth] = useState(0);
   // Accès au thème pour les couleurs par défaut de l'indicateur
   const theme = useTheme();
-  const defaultColor = theme.colors.primary.base;
+  // Design D : indicateur clair (surface) qui glisse sur un fond translucide.
+  const defaultColor = theme.colors.surface;
   // Padding du conteneur et écart entre segments : c'est la même valeur, et elle sert aussi
   // d'origine à l'indicateur. Elle était jusqu'ici recopiée en dur à quatre endroits.
   const SPACING = theme.spacing.xs;
@@ -103,7 +104,7 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = (props) => {
         setInnerWidth(event.nativeEvent.layout.width - SPACING * 2)
       }
     >
-      {/* Couche de base : texte noir, sélection et mesure de la largeur des segments */}
+      {/* Couche de base : libellés blancs sur le fond translucide, sélection et mesure */}
       {props.segments.map((segment, index) => (
         <Styled.SegmentButton
           key={segment.text + '-base'}
@@ -125,19 +126,19 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = (props) => {
             });
           }}
         >
-          <Styled.CustomText size={props.size ?? 'lg'} bold appearance="black">
+          <Styled.CustomText size={props.size ?? 'lg'} extraBold appearance="white">
             {segment.text}
           </Styled.CustomText>
         </Styled.SegmentButton>
       ))}
 
-      {/* Indicateur coloré glissant, posé par-dessus la couche noire : il porte la copie
-          blanche des libellés et n'en laisse voir que ce qu'il recouvre. */}
+      {/* Indicateur clair glissant, posé par-dessus la couche de base : il porte la copie
+          foncée des libellés et n'en laisse voir que ce qu'il recouvre. */}
       <Styled.Pointer borderRadius={props.borderRadius ?? 'rounded'} style={overlayAnimatedStyle}>
         <Styled.RevealRow width={innerWidth} style={revealAnimatedStyle}>
           {props.segments.map((segment) => (
             <Styled.SegmentItem key={segment.text}>
-              <Styled.CustomText size={props.size ?? 'lg'} bold appearance="white">
+              <Styled.CustomText size={props.size ?? 'lg'} extraBold appearance="black">
                 {segment.text}
               </Styled.CustomText>
             </Styled.SegmentItem>

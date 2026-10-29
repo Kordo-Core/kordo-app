@@ -24,15 +24,16 @@ export const ToastContainer = styled.View<{ type: ToastProps['type'] }>((props) 
 
   return {
     overflow: 'hidden',
-    borderLeftWidth: 6,
+    borderLeftWidth: 5,
     borderColor: typeColors[props.type].border,
-    backgroundColor: typeColors[props.type].background,
-    borderRadius: props.theme.borderRadius.square,
+    backgroundColor: props.theme.colors.surface,
+    boxShadow: props.theme.shadows.lg,
+    borderRadius: props.theme.borderRadius.square + 2,
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
     width: '100%',
-    height: 60,
+    minHeight: 56,
   };
 });
 

@@ -22,7 +22,7 @@ export const UserInfo: React.FC<UserInfoProps> = (props) => {
           <Styled.UserData layout={props.layout}>
             <Styled.CustomText
               size="lg"
-              bold
+              extraBold
               onPress={() => props.onPressUser(props.user)}
               layout={props.layout}
             >
@@ -47,8 +47,8 @@ export const UserInfo: React.FC<UserInfoProps> = (props) => {
               {/* Badge "Now" affiché sur l'avatar quand l'utilisateur est actuellement actif */}
               {props.highlightedAvatar && (
                 <Styled.Now>
-                  <Text size="xs" appearance="white" bold>
-                    Now
+                  <Text size={9} appearance="white" extraBold style={{ letterSpacing: 0.4 }}>
+                    NOW
                   </Text>
                 </Styled.Now>
               )}
@@ -56,7 +56,7 @@ export const UserInfo: React.FC<UserInfoProps> = (props) => {
           </Pressable>
 
           <Styled.UserData layout={props.layout}>
-            <Text size="lg" bold onPress={() => props.onPressUser(props.user)}>
+            <Text size="md" bold onPress={() => props.onPressUser(props.user)}>
               {props.primaryText || props.user.username}
             </Text>
             {props.secondaryText}

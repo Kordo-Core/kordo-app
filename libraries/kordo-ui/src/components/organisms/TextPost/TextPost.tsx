@@ -59,11 +59,15 @@ export const TextPost: React.FC<TextPostProps> = ({
     <View
       style={[
         {
-          width: '100%',
-          backgroundColor: theme.colors.neutral.white,
-          padding: theme.spacing.md,
+          // Design D : carte arrondie posée sur le fond, avec une marge latérale
+          alignSelf: 'stretch',
+          marginHorizontal: theme.spacing.md + 2,
+          backgroundColor: theme.colors.surface,
+          borderRadius: theme.borderRadius.lg,
+          overflow: 'hidden',
+          padding: theme.spacing.md + 2,
           gap: theme.spacing.md,
-          boxShadow: theme.shadows.sm,
+          boxShadow: theme.shadows.md,
         },
         style,
       ]}
@@ -89,14 +93,22 @@ export const TextPost: React.FC<TextPostProps> = ({
           {textPost.likesEnabled && (
             <Pressable
               onPress={() => setLiked((prev) => !prev)}
-              style={{ flexDirection: 'row', alignItems: 'center', gap: theme.spacing.xs }}
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                gap: theme.spacing.xs + 2,
+                height: 38,
+                paddingHorizontal: theme.spacing.md,
+                borderRadius: 12,
+                backgroundColor: liked ? theme.colors.error.lighter : theme.colors.surfaceAlt,
+              }}
             >
               <Icon
                 name={liked ? 'HeartFilled' : 'HeartRegular'}
                 size="md"
-                color={liked ? theme.colors.error.base : theme.colors.neutral.gray.base}
+                color={liked ? theme.colors.error.base : theme.colors.text}
               />
-              <Text appearance="gray" size="sm">
+              <Text bold size="sm" appearance={liked ? 'error' : 'black'}>
                 {likeCount}
               </Text>
             </Pressable>
@@ -104,10 +116,17 @@ export const TextPost: React.FC<TextPostProps> = ({
           {textPost.commentsEnabled && (
             <Pressable
               onPress={() => setCommentsOpen(true)}
-              style={{ flexDirection: 'row', alignItems: 'center', gap: theme.spacing.xs }}
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                gap: theme.spacing.xs + 2,
+                height: 38,
+                paddingHorizontal: theme.spacing.md,
+                borderRadius: 12,
+              }}
             >
-              <Icon name="ChatRegular" size="md" color={theme.colors.neutral.gray.base} />
-              <Text appearance="gray" size="sm">
+              <Icon name="ChatRegular" size="md" color={theme.colors.text} />
+              <Text bold size="sm">
                 {comments.length}
               </Text>
             </Pressable>

@@ -3,42 +3,48 @@ import * as Styled from './BottomNavBar.styles';
 import { Icon } from '../../atoms/Icon/Icon';
 import React from 'react';
 import { LayoutChangeEvent } from 'react-native';
-import { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
+import { useSharedValue, useAnimatedStyle, withTiming, withSpring } from 'react-native-reanimated';
 import { useTheme } from '@emotion/react';
-import { getColor } from '../../../utils/getColors';
 
 // Padding horizontal de la barre, à retirer de sa largeur pour obtenir la zone des onglets.
-const PADDING_HORIZONTAL = 16;
-// Part de la largeur d'un onglet occupée par l'indicateur.
-const BAR_RATIO = 0.6;
+const PADDING_HORIZONTAL = 8;
 
 export function BottomNavBar(props: BottomNavBarProps) {
   const theme = useTheme();
   const initialActive = props.activeIndex ?? props.tabs.findIndex((t) => t.isAction);
   const [activeTab, setActiveTab] = React.useState<number>(initialActive);
-  // Largeur mesurée de la barre. Elle vaut 92 % de l'écran : la déduire des dimensions de la
-  // fenêtre donnait un indicateur hors d'échelle dès que la fenêtre n'était pas un téléphone.
+  // Largeur mesurée de la barre : la déduire des dimensions de la fenêtre donnait un
+  // indicateur hors d'échelle dès que la fenêtre n'était pas un téléphone.
   const [width, setWidth] = React.useState(0);
-
   const tabWidth = width > 0 ? (width - PADDING_HORIZONTAL * 2) / props.tabs.length : 0;
-  const barWidth = tabWidth * BAR_RATIO;
-  // Position du bord gauche de l'indicateur pour un onglet donné, centré dans celui-ci.
-  const barLeft = (index: number) =>
-    PADDING_HORIZONTAL + index * tabWidth + (tabWidth - barWidth) / 2;
+
+  // Position du bord gauche du carré vert pour un onglet donné, centré dans celui-ci.
+  const pillLeft = (index: number) =>
+    PADDING_HORIZONTAL + index * tabWidth + (tabWidth - Styled.PILL_SIZE) / 2;
 
   const animatedX = useSharedValue(0);
-
-  const animatedBarStyle = useAnimatedStyle(() => ({
+  // Le carré disparaît quand l'onglet actif est l'onglet mis en avant (« + »)
+  const pillOpacity = useSharedValue(props.tabs[initialActive]?.accent ? 0 : 1);
+  const animatedPillStyle = useAnimatedStyle(() => ({
     transform: [{ translateX: animatedX.value }],
-    width: barWidth,
+    opacity: pillOpacity.value,
   }));
+
+  const moveTo = (index: number, animate: boolean) => {
+    const accent = !!props.tabs[index]?.accent;
+    pillOpacity.value = animate ? withTiming(accent ? 0 : 1, { duration: 200 }) : accent ? 0 : 1;
+    if (accent) return;
+    animatedX.value = animate
+      ? withSpring(pillLeft(index), { damping: 16, stiffness: 180 })
+      : pillLeft(index);
+  };
 
   // Recale l'indicateur sans animation à la mesure de la barre (montage, rotation, resize).
   // Ne dépend volontairement que de `tabWidth` : réagir à `activeTab` ferait sauter
   // l'indicateur d'un onglet à l'autre sans animation, en doublon de `handleTabPress`.
   React.useEffect(() => {
     if (tabWidth === 0) return;
-    animatedX.value = barLeft(activeTab);
+    moveTo(activeTab, false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tabWidth]);
 
@@ -49,13 +55,13 @@ export function BottomNavBar(props: BottomNavBarProps) {
     if (props.activeIndex === undefined || props.activeIndex === activeTab) return;
     setActiveTab(props.activeIndex);
     if (tabWidth === 0) return;
-    animatedX.value = withTiming(barLeft(props.activeIndex), { duration: 300 });
+    moveTo(props.activeIndex, true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.activeIndex]);
 
   const handleTabPress = (index: number) => {
     setActiveTab(index);
-    animatedX.value = withTiming(barLeft(index), { duration: 300 });
+    moveTo(index, true);
     props.onTabPress?.(index, props.tabs[index].key);
   };
 
@@ -64,23 +70,31 @@ export function BottomNavBar(props: BottomNavBarProps) {
       style={props.style}
       onLayout={(event: LayoutChangeEvent) => setWidth(event.nativeEvent.layout.width)}
     >
-      <Styled.highlightedBar style={animatedBarStyle} />
+      <Styled.highlightedBar style={animatedPillStyle} />
       {props.tabs.map((tab, index) => {
         const isActive = index === activeTab;
-        const color = isActive ? getColor(theme, 'primary') : getColor(theme, 'black');
+        const color = tab.accent
+          ? '#13201B'
+          : isActive
+            ? theme.colors.neutral.white
+            : theme.colors.navBarIcon;
         const TabIcon = tab.icon;
+        const icon =
+          typeof TabIcon === 'string' ? (
+            <Icon name={TabIcon} size={24} color={color} />
+          ) : (
+            <TabIcon size={24} color={color} />
+          );
+
         return (
           <Styled.Tab
             key={tab.key}
-            isAction={isActive}
             onPress={() => handleTabPress(index)}
-            activeOpacity={1}
+            activeOpacity={0.7}
+            accessibilityRole="tab"
+            accessibilityState={{ selected: isActive }}
           >
-            {typeof TabIcon === 'string' ? (
-              <Icon name={TabIcon} size={32} color={color} />
-            ) : (
-              <TabIcon size={32} color={color} />
-            )}
+            {tab.accent ? <Styled.AccentPill>{icon}</Styled.AccentPill> : icon}
           </Styled.Tab>
         );
       })}

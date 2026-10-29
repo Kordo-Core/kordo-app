@@ -29,7 +29,7 @@ export const Toggle: React.FC<ToggleProps> = ({
   );
 
   // Couleurs lues hors du worklet : il ne capture que des chaînes, pas l'objet thème.
-  const trackOff = theme.colors.neutral.gray.light;
+  const trackOff = theme.colors.track;
   const trackOn = getColor(theme, appearance);
   const travel = Styled.TRACK_WIDTH - Styled.KNOB_SIZE - Styled.KNOB_MARGIN * 2;
 

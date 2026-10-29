@@ -10,27 +10,27 @@ export const Container = styled.View({
 });
 
 export const Sheet = styled.View((props) => ({
-  borderTopLeftRadius: 30,
-  borderTopRightRadius: 30,
+  borderTopLeftRadius: 32,
+  borderTopRightRadius: 32,
   overflow: 'hidden',
-  backgroundColor: props.theme.colors.neutral.white,
+  backgroundColor: props.theme.colors.surface,
 }));
 
 export const HandleArea = styled.View((props) => ({
-  backgroundColor: props.theme.colors.neutral.white,
+  backgroundColor: props.theme.colors.surface,
   alignItems: 'center',
   paddingVertical: props.theme.spacing.sm,
 }));
 
 export const Handle = styled.View((props) => ({
-  width: 80,
-  height: 4,
-  backgroundColor: props.theme.colors.neutral.gray.light,
+  width: 40,
+  height: 5,
+  backgroundColor: props.theme.colors.surfaceAlt,
   borderRadius: props.theme.borderRadius.rounded,
 }));
 
 export const Content = styled.View((props) => ({
-  backgroundColor: props.theme.colors.neutral.white,
+  backgroundColor: props.theme.colors.surface,
   padding: props.theme.spacing.md,
   minHeight: 200,
 }));
@@ -43,15 +43,17 @@ export const Filler = styled.View((props) => ({
   left: 0,
   right: 0,
   height: 1000,
-  backgroundColor: props.theme.colors.neutral.white,
+  backgroundColor: props.theme.colors.surface,
 }));
 
-// Le titre se lit sur le fond blanc du panneau : en blanc il était invisible. La graisse passe
+// Titre display du panneau (design D), lisible sur la surface du panneau. La graisse passe
 // par la famille du thème, la seule façon d'obtenir du gras avec une police personnalisée sur
 // mobile (`fontWeight` n'y a pas d'effet).
 export const Title = styled.Text((props) => ({
-  fontSize: props.theme.fontSizes.lg,
-  fontFamily: props.theme.fonts.bold,
-  color: props.theme.colors.neutral.black,
+  fontSize: props.theme.displaySizes.sm,
+  fontFamily: props.theme.fonts.display,
+  textTransform: 'uppercase',
+  letterSpacing: -0.6,
+  color: props.theme.colors.text,
   marginBottom: props.theme.spacing.sm,
 }));

@@ -87,11 +87,15 @@ export const Publication: React.FC<PublicationProps> = ({
     <View
       style={[
         {
-          width: '100%',
-          backgroundColor: theme.colors.neutral.white,
-          padding: theme.spacing.md,
+          // Design D : carte arrondie posée sur le fond, avec une marge latérale
+          alignSelf: 'stretch',
+          marginHorizontal: theme.spacing.md + 2,
+          backgroundColor: theme.colors.surface,
+          borderRadius: theme.borderRadius.lg,
+          overflow: 'hidden',
+          padding: theme.spacing.md + 2,
           gap: theme.spacing.md,
-          boxShadow: theme.shadows.sm,
+          boxShadow: theme.shadows.md,
         },
         style,
       ]}
@@ -109,7 +113,7 @@ export const Publication: React.FC<PublicationProps> = ({
       />
 
       {!!publication.title && (
-        <Text size="lg" bold>
+        <Text variant="display" size="sm">
           {publication.title}
         </Text>
       )}
@@ -119,11 +123,13 @@ export const Publication: React.FC<PublicationProps> = ({
         <View
           onLayout={(e: LayoutChangeEvent) => setWidth(e.nativeEvent.layout.width)}
           style={{
-            // Plein-bord : annule le padding horizontal de la carte pour occuper 100% de la largeur
-            marginHorizontal: -theme.spacing.lg,
+            // Presque plein-bord : la photo déborde légèrement du padding de la carte et garde
+            // ses propres coins arrondis (design D)
+            marginHorizontal: -theme.spacing.sm + 2,
             height: photoHeight,
+            borderRadius: theme.borderRadius.card,
             overflow: 'hidden',
-            backgroundColor: theme.colors.neutral.gray.light,
+            backgroundColor: theme.colors.surfaceAlt,
           }}
         >
           {width > 0 &&
@@ -169,11 +175,11 @@ export const Publication: React.FC<PublicationProps> = ({
                 <View
                   key={photo.id}
                   style={{
-                    width: 6,
+                    width: i === index ? 18 : 6,
                     height: 6,
                     borderRadius: 3,
                     backgroundColor:
-                      i === index ? theme.colors.secondary.base : theme.colors.overlay.light,
+                      i === index ? theme.colors.neutral.white : theme.colors.overlay.light,
                   }}
                 />
               ))}
@@ -188,14 +194,22 @@ export const Publication: React.FC<PublicationProps> = ({
           {publication.likesEnabled && (
             <Pressable
               onPress={() => setLiked((prev) => !prev)}
-              style={{ flexDirection: 'row', alignItems: 'center', gap: theme.spacing.xs }}
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                gap: theme.spacing.xs + 2,
+                height: 38,
+                paddingHorizontal: theme.spacing.md,
+                borderRadius: 12,
+                backgroundColor: liked ? theme.colors.error.lighter : theme.colors.surfaceAlt,
+              }}
             >
               <Icon
                 name={liked ? 'HeartFilled' : 'HeartRegular'}
                 size="md"
-                color={liked ? theme.colors.error.base : theme.colors.neutral.gray.base}
+                color={liked ? theme.colors.error.base : theme.colors.text}
               />
-              <Text appearance="gray" size="sm">
+              <Text bold size="sm" appearance={liked ? 'error' : 'black'}>
                 {likeCount}
               </Text>
             </Pressable>
@@ -203,10 +217,17 @@ export const Publication: React.FC<PublicationProps> = ({
           {publication.commentsEnabled && (
             <Pressable
               onPress={() => setCommentsOpen(true)}
-              style={{ flexDirection: 'row', alignItems: 'center', gap: theme.spacing.xs }}
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                gap: theme.spacing.xs + 2,
+                height: 38,
+                paddingHorizontal: theme.spacing.md,
+                borderRadius: 12,
+              }}
             >
-              <Icon name="ChatRegular" size="md" color={theme.colors.neutral.gray.base} />
-              <Text appearance="gray" size="sm">
+              <Icon name="ChatRegular" size="md" color={theme.colors.text} />
+              <Text bold size="sm">
                 {comments.length}
               </Text>
             </Pressable>

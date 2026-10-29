@@ -44,11 +44,13 @@ export const Now: React.FC<NowProps> = ({ now, onPressUser, onPressGym }) => {
   return (
     <View
       style={{
-        width: '100%',
-        paddingHorizontal: theme.spacing.md,
-        backgroundColor: theme.colors.neutral.white,
+        alignSelf: 'stretch',
+        marginHorizontal: theme.spacing.md + 2,
+        paddingHorizontal: theme.spacing.lg,
+        backgroundColor: theme.colors.surface,
+        borderRadius: theme.borderRadius.card,
         paddingVertical: theme.spacing.md,
-        boxShadow: theme.shadows.sm,
+        boxShadow: theme.shadows.md,
       }}
     >
       <UserInfo

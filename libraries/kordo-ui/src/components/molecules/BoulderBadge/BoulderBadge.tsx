@@ -26,7 +26,7 @@ export const BoulderBadge: React.FC<BoulderBadgeProps> = (props) => {
   // Le grade numérique est découpé en tranches de 5, chaque tranche correspondant à un niveau de difficulté avec sa couleur
   const grade = props.grade;
   let activeCount = 0;
-  let activeColor = theme.colors.neutral.gray.light;
+  let activeColor = theme.colors.border;
 
   if (grade <= 5) {
     activeCount = grade;
@@ -65,7 +65,7 @@ export const BoulderBadge: React.FC<BoulderBadgeProps> = (props) => {
           cx={center}
           cy={center}
           r={radius}
-          stroke={theme.colors.neutral.gray.light}
+          stroke={theme.colors.border}
           strokeWidth={strokeWidth}
           strokeDashoffset={baseOffset}
           strokeDasharray={`${dashLength}, ${spaceLength}`}
@@ -98,7 +98,7 @@ export const BoulderBadge: React.FC<BoulderBadgeProps> = (props) => {
           width: avatarSize,
           height: avatarSize,
           borderRadius: avatarSize / 2,
-          backgroundColor: theme.colors.neutral.gray.light,
+          backgroundColor: theme.colors.border,
         }}
       />
     </Styled.AvatarWrapper>

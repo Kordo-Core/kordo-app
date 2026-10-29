@@ -142,7 +142,7 @@ export const Notification: React.FC<NotificationProps> = ({
             height: THUMB_SIZE,
             borderRadius: theme.borderRadius.square,
             overflow: 'hidden',
-            backgroundColor: theme.colors.neutral.gray.light,
+            backgroundColor: theme.colors.surfaceAlt,
           }}
         >
           {!!notification.thumbnailUrl && (

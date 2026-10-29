@@ -26,13 +26,13 @@ export const Input: React.FC<InputProps> = (props) => {
   // Référence vers l'animation Fade pour afficher/masquer le message d'erreur avec un fondu
   const fadeRef = React.useRef<FadeRef>(null);
   // Valeur partagée Reanimated pour animer la couleur de bordure du champ selon l'état de validation
-  const borderColor = useSharedValue(theme.colors.neutral.gray.base);
+  const borderColor = useSharedValue(theme.colors.border);
 
   // Style animé appliqué au conteneur du champ pour refléter visuellement l'état courant (erreur ou normal)
   const animatedBorderStyle = useAnimatedStyle(() => ({
     borderColor: borderColor.value,
-    borderWidth: 1,
-    borderRadius: 8,
+    borderWidth: 1.5,
+    borderRadius: theme.borderRadius.square,
   }));
 
   // Valide la valeur saisie selon le type d'input (email, password, number) et renvoie l'état + message d'erreur éventuel
@@ -72,7 +72,7 @@ export const Input: React.FC<InputProps> = (props) => {
   return (
     <View>
       {(props.label || props.required) && (
-        <Text appearance="gray" size="md">
+        <Text variant="eyebrow" size={11} style={{ marginBottom: theme.spacing.xs + 2 }}>
           {props.label}
           {props.required ? ' *' : ''}
         </Text>
@@ -101,10 +101,10 @@ export const Input: React.FC<InputProps> = (props) => {
             textContentType={textContentType}
             secureTextEntry={props.type === 'password'}
             autoFocus={props.autoFocus}
-            // Au focus : masquer le message d'erreur et remettre la bordure à sa couleur neutre
+            // Au focus : masquer le message d'erreur et passer la bordure au vert d'action
             onFocus={() => {
               fadeRef.current?.trigger('out');
-              borderColor.value = withTiming(theme.colors.neutral.gray.base, { duration: 250 });
+              borderColor.value = withTiming(theme.colors.secondary.base, { duration: 250 });
             }}
             // Au blur : valider la saisie, et si erreur déclencher le shake + afficher le message + bordure rouge
             onBlur={() => {
@@ -116,7 +116,7 @@ export const Input: React.FC<InputProps> = (props) => {
                 fadeRef.current?.trigger('in');
                 borderColor.value = withTiming(theme.colors.error.base, { duration: 250 });
               } else {
-                borderColor.value = withTiming(theme.colors.neutral.gray.base, { duration: 250 });
+                borderColor.value = withTiming(theme.colors.border, { duration: 250 });
               }
             }}
           />

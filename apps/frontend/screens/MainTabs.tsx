@@ -21,7 +21,8 @@ export type MainTabsParamList = {
 const TABS: NavTab[] = [
   { key: 'Home', icon: 'HomeRegular', isAction: true },
   { key: 'Search', icon: 'search' },
-  { key: 'Add', icon: 'AddSquareFilled' },
+  // « + » : carré orange permanent (design D)
+  { key: 'Add', icon: 'AddFilled', accent: true },
   { key: 'Gyms', icon: ClimbingShoesIcon },
   { key: 'Stats', icon: ProgressIcon },
 ];

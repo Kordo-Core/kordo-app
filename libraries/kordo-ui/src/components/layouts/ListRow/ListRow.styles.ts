@@ -5,8 +5,8 @@ const row = {
   flexDirection: 'row',
   alignItems: 'center',
   width: '100%',
-  paddingVertical: 8,
-  gap: 16,
+  paddingVertical: 10,
+  gap: 12,
 } as const;
 
 export const Row = styled.View(row);

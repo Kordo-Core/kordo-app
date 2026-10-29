@@ -81,7 +81,7 @@ export const Dropdown: React.FC<DropdownProps> = (props) => {
         <Icon
           name={open ? 'ChevronUpRegular' : 'ChevronDownRegular'}
           size={20}
-          color={theme.colors.neutral.gray.base}
+          color={theme.colors.textMuted}
         />
       </Styled.Trigger>
 

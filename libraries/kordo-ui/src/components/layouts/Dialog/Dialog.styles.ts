@@ -24,11 +24,11 @@ export const Overlay = styled(Animated.View)((props) => ({
 
 // Largeur bornée : la boîte suit la largeur de l'écran sans jamais s'étaler sur une tablette.
 export const Box = styled(Animated.View)((props) => ({
-  width: '85%',
+  width: '88%',
   maxWidth: 400,
   gap: props.theme.spacing.md,
-  padding: props.theme.spacing.xl,
-  borderRadius: props.theme.borderRadius.square,
-  backgroundColor: props.theme.colors.neutral.white,
+  padding: props.theme.spacing.xl + 2,
+  borderRadius: props.theme.borderRadius.lg,
+  backgroundColor: props.theme.colors.surface,
   boxShadow: props.theme.shadows.lg,
 }));

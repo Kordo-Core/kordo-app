@@ -21,6 +21,6 @@ export const Line = styled(Animated.View)((props) => ({
   position: 'absolute',
   bottom: -12,
   height: 3,
-  backgroundColor: props.theme.colors.primary.base,
+  backgroundColor: props.theme.colors.secondary.base,
   borderRadius: props.theme.borderRadius.rounded,
 }));

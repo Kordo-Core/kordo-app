@@ -18,7 +18,7 @@ export const Suggestion: React.FC<SuggestionProps> = (props) => {
         <Styled.ButtonWrapper>
           <Icon
             name="dismiss"
-            color={theme.colors.neutral.gray.base}
+            color={theme.colors.textMuted}
             size={theme.iconSizes.md}
             onPress={props.onPressClose}
           />
@@ -34,14 +34,14 @@ export const Suggestion: React.FC<SuggestionProps> = (props) => {
           </Pressable>
 
           <Styled.UserInfo>
-            <Text size="lg" bold onPress={() => props.onPressUser(props.user)}>
+            <Text size="sm" extraBold onPress={() => props.onPressUser(props.user)}>
               {props.user.username}
             </Text>
             {!!props.location && (
-              <Text appearance="gray">
-                {'met at '}
+              <Text appearance="gray" size="xs">
+                {'croisé·e à '}
                 <Text
-                  appearance="primary"
+                  appearance="secondary"
                   bold
                   onPress={() => props.onPressLocation(props.location!)}
                 >
@@ -53,9 +53,10 @@ export const Suggestion: React.FC<SuggestionProps> = (props) => {
         </Styled.Content>
 
         <Button
-          title="Follow"
+          title="Suivre"
           appearance="secondary"
           borderRadius="square"
+          fullWidth
           onPress={props.onPressFollow}
         />
       </Styled.Container>

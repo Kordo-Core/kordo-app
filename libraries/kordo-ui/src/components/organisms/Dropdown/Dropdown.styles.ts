@@ -3,16 +3,16 @@ import { Text } from '../../atoms/Text/Text';
 
 // Trigger fermé : aligné visuellement sur l'Input (bordure, radius, hauteur, padding)
 export const Trigger = styled.Pressable<{ disabled?: boolean }>((props) => ({
-  borderWidth: 1,
-  borderColor: props.theme.colors.neutral.gray.light,
-  backgroundColor: props.theme.colors.neutral.white,
-  paddingInline: props.theme.spacing.md,
+  borderWidth: 1.5,
+  borderColor: props.theme.colors.border,
+  backgroundColor: props.theme.colors.surface,
+  paddingInline: props.theme.spacing.lg,
   borderRadius: props.theme.borderRadius.square,
   flexDirection: 'row',
   alignItems: 'center',
   gap: props.theme.spacing.sm,
   width: '100%',
-  height: 42,
+  height: 52,
   opacity: props.disabled ? 0.5 : 1,
 }));
 
@@ -33,10 +33,10 @@ export const Backdrop = styled.Pressable({
 // Conteneur flottant des options, positionné en absolu au-dessus/en dessous du trigger
 export const ListContainer = styled.View((props) => ({
   position: 'absolute',
-  backgroundColor: props.theme.colors.neutral.white,
+  backgroundColor: props.theme.colors.surface,
   borderRadius: props.theme.borderRadius.square,
   borderWidth: 1,
-  borderColor: props.theme.colors.neutral.gray.light,
+  borderColor: props.theme.colors.border,
   overflow: 'hidden',
   shadowColor: props.theme.colors.neutral.black,
   shadowOffset: { width: 0, height: 4 },
@@ -52,9 +52,7 @@ export const ItemRow = styled.Pressable<{ selected?: boolean }>((props) => ({
   gap: props.theme.spacing.sm,
   paddingVertical: props.theme.spacing.md,
   paddingHorizontal: props.theme.spacing.md,
-  backgroundColor: props.selected
-    ? props.theme.colors.secondary.lightest
-    : props.theme.colors.neutral.white,
+  backgroundColor: props.selected ? props.theme.colors.soft : props.theme.colors.surface,
 }));
 
 // Zone gauche extensible de l'option

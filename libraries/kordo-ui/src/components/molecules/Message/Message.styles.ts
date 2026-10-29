@@ -13,7 +13,7 @@ const RADIUS = 20;
 
 // Un coin reste vif, et c'est lui qui désigne l'émetteur : en bas à gauche pour un message
 // reçu, en haut à droite pour un message envoyé.
-const TAIL_RADIUS = 2;
+const TAIL_RADIUS = 6;
 
 // Aligne la bulle et son horodatage sur le même bord, celui qui dépend de l'émetteur.
 export const Row = styled.View<Direction>((props) => ({
@@ -27,12 +27,11 @@ export const Bubble = styled.View<Direction>((props) => ({
   padding: props.theme.spacing.md,
   borderRadius: RADIUS,
   ...(props.direction === 'out'
-    ? { borderTopRightRadius: TAIL_RADIUS }
+    ? { borderBottomRightRadius: TAIL_RADIUS }
     : { borderBottomLeftRadius: TAIL_RADIUS }),
+  paddingHorizontal: props.theme.spacing.lg,
   backgroundColor:
-    props.direction === 'out'
-      ? props.theme.colors.secondary.lighter
-      : props.theme.colors.neutral.gray.lightest,
+    props.direction === 'out' ? props.theme.colors.secondary.base : props.theme.colors.surface,
 }));
 
 // Une bulle de média se passe du rembourrage : l'image occupe toute la bulle.

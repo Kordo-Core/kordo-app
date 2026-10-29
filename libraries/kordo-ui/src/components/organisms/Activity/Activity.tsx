@@ -112,7 +112,7 @@ export const Activity: React.FC<ActivityProps> = ({
       <ListRow
         left={<BoulderBadge avatarUrl={b.blocUrl} grade={b.grade} />}
         primaryText={
-          <Text size="lg" bold appearance={b.isValidated ? 'success' : undefined}>
+          <Text size="md" bold appearance={b.isValidated ? 'success' : undefined}>
             {b.name}
           </Text>
         }
@@ -128,8 +128,8 @@ export const Activity: React.FC<ActivityProps> = ({
           b.isValidated ? (
             <Icon name="CheckmarkCircleFilled" size="md" color={theme.colors.success.base} />
           ) : (
-            <Text size="lg" bold appearance="gray">
-              {b.points}pts
+            <Text size="sm" extraBold appearance="gray">
+              {b.points} pts
             </Text>
           )
         }
@@ -146,7 +146,7 @@ export const Activity: React.FC<ActivityProps> = ({
         style={{
           flex: 1,
           height,
-          borderRadius: theme.borderRadius.square,
+          borderRadius: 18,
           overflow: 'hidden',
           backgroundColor: theme.colors.secondary.lighter,
           alignItems: 'center',
@@ -184,13 +184,13 @@ export const Activity: React.FC<ActivityProps> = ({
       style={{
         flex: 1,
         height,
-        borderRadius: theme.borderRadius.square,
-        backgroundColor: theme.colors.secondary.light,
+        borderRadius: 18,
+        backgroundColor: theme.colors.secondary.base,
         alignItems: 'center',
         justifyContent: 'center',
       }}
     >
-      <Text bold size="xl" style={{ color: theme.colors.neutral.white }}>
+      <Text variant="display" size="sm" style={{ color: theme.colors.neutral.white }}>
         +{count}
       </Text>
     </Pressable>
@@ -200,11 +200,15 @@ export const Activity: React.FC<ActivityProps> = ({
     <View
       style={[
         {
-          width: '100%',
-          backgroundColor: theme.colors.neutral.white,
-          padding: theme.spacing.md,
+          // Design D : carte arrondie posée sur le fond, avec une marge latérale
+          alignSelf: 'stretch',
+          marginHorizontal: theme.spacing.md + 2,
+          backgroundColor: theme.colors.surface,
+          borderRadius: theme.borderRadius.lg,
+          overflow: 'hidden',
+          padding: theme.spacing.md + 2,
           gap: theme.spacing.md,
-          boxShadow: theme.shadows.sm,
+          boxShadow: theme.shadows.md,
         },
         style,
       ]}
@@ -227,7 +231,7 @@ export const Activity: React.FC<ActivityProps> = ({
       />
 
       {!!activity.title && (
-        <Text size="lg" bold>
+        <Text variant="display" size="sm">
           {activity.title}
         </Text>
       )}
@@ -238,10 +242,10 @@ export const Activity: React.FC<ActivityProps> = ({
           style={{ gap: 2 }}
           onPress={() => setBlocPanel({ title: 'Blocs réalisés', blocs: activity.blocks })}
         >
-          <Text appearance="gray" size="md">
-            bloc réalisé
+          <Text variant="eyebrow" size={11}>
+            Blocs réalisés
           </Text>
-          <Text bold size="lg">
+          <Text variant="display" size="md">
             {activity.blocks.length}
           </Text>
         </Pressable>
@@ -251,18 +255,18 @@ export const Activity: React.FC<ActivityProps> = ({
             setBlocPanel({ title: `Blocs ${palier.min}–${palier.max}`, blocs: palierBlocs })
           }
         >
-          <Text appearance="gray" size="md">
-            bloc max
+          <Text variant="eyebrow" size={11}>
+            Bloc max
           </Text>
-          <View style={{ flexDirection: 'row', alignItems: 'center', gap: theme.spacing.xs }}>
-            <Text bold size="lg">
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: theme.spacing.sm }}>
+            <Text variant="display" size="md">
               {palierBlocs.length}
             </Text>
             <View
               style={{
-                width: 12,
-                height: 12,
-                borderRadius: 6,
+                width: 14,
+                height: 14,
+                borderRadius: 7,
                 backgroundColor: maxGradeColor,
               }}
             />
@@ -278,9 +282,9 @@ export const Activity: React.FC<ActivityProps> = ({
             flexDirection: 'row',
             alignItems: 'center',
             gap: theme.spacing.sm,
-            backgroundColor: theme.colors.primary.lighter,
-            borderRadius: theme.borderRadius.square,
-            padding: theme.spacing.sm,
+            backgroundColor: theme.colors.soft,
+            borderRadius: theme.borderRadius.square + 2,
+            padding: theme.spacing.sm + 2,
           }}
         >
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -293,9 +297,9 @@ export const Activity: React.FC<ActivityProps> = ({
                   height: theme.avatarSizes.sm,
                   borderRadius: theme.borderRadius.rounded,
                   borderWidth: 2,
-                  borderColor: theme.colors.primary.lighter,
+                  borderColor: theme.colors.soft,
                   marginLeft: i === 0 ? 0 : -10,
-                  backgroundColor: theme.colors.neutral.gray.light,
+                  backgroundColor: theme.colors.surfaceAlt,
                 }}
               />
             ))}
@@ -305,7 +309,7 @@ export const Activity: React.FC<ActivityProps> = ({
               </Text>
             )}
           </View>
-          <Text bold style={{ flex: 1, textAlign: 'center' }}>
+          <Text bold appearance="secondary" style={{ flex: 1, textAlign: 'center' }}>
             Ils étaient aussi présents !
           </Text>
         </Pressable>
@@ -332,14 +336,22 @@ export const Activity: React.FC<ActivityProps> = ({
           {activity.likesEnabled && (
             <Pressable
               onPress={() => setLiked((prev) => !prev)}
-              style={{ flexDirection: 'row', alignItems: 'center', gap: theme.spacing.xs }}
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                gap: theme.spacing.xs + 2,
+                height: 38,
+                paddingHorizontal: theme.spacing.md,
+                borderRadius: 12,
+                backgroundColor: liked ? theme.colors.error.lighter : theme.colors.surfaceAlt,
+              }}
             >
               <Icon
                 name={liked ? 'HeartFilled' : 'HeartRegular'}
                 size="md"
-                color={liked ? theme.colors.error.base : theme.colors.neutral.gray.base}
+                color={liked ? theme.colors.error.base : theme.colors.text}
               />
-              <Text appearance="gray" size="sm">
+              <Text bold size="sm" appearance={liked ? 'error' : 'black'}>
                 {likeCount}
               </Text>
             </Pressable>
@@ -347,10 +359,17 @@ export const Activity: React.FC<ActivityProps> = ({
           {activity.commentsEnabled && (
             <Pressable
               onPress={() => setCommentsOpen(true)}
-              style={{ flexDirection: 'row', alignItems: 'center', gap: theme.spacing.xs }}
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                gap: theme.spacing.xs + 2,
+                height: 38,
+                paddingHorizontal: theme.spacing.md,
+                borderRadius: 12,
+              }}
             >
-              <Icon name="ChatRegular" size="md" color={theme.colors.neutral.gray.base} />
-              <Text appearance="gray" size="sm">
+              <Icon name="ChatRegular" size="md" color={theme.colors.text} />
+              <Text bold size="sm">
                 {comments.length}
               </Text>
             </Pressable>
@@ -391,7 +410,7 @@ export const Activity: React.FC<ActivityProps> = ({
                     borderRadius="square"
                     appearance="secondary"
                     inverted={following[u.id]}
-                    title={following[u.id] ? 'Following' : 'Follow'}
+                    title={following[u.id] ? 'Abonné' : 'Suivre'}
                     onPress={() => toggleFollow(u.id)}
                   />
                 }

@@ -25,7 +25,7 @@ export const Radio: React.FC<RadioProps> = ({
       style={style}
     >
       <Styled.Dot selected={selected} color={getColor(theme, appearance)} disabled={disabled}>
-        {selected && <Styled.Inner />}
+        {selected && <Styled.Inner color={getColor(theme, appearance)} />}
       </Styled.Dot>
     </Pressable>
   );
