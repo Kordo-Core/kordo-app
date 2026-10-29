@@ -1,43 +1,34 @@
 import styled from '@emotion/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { KeyboardAvoidingView, TouchableOpacity, View } from 'react-native';
+import { KeyboardAvoidingView, View } from 'react-native';
 
 export const Container = styled(SafeAreaView)((props) => ({
   flex: 1,
-  backgroundColor: props.theme.colors.primary.lightest,
+  backgroundColor: props.theme.colors.background,
 }));
 
-export const BackButton = styled(TouchableOpacity)((props) => ({
-  padding: props.theme.spacing.lg,
-  alignSelf: 'flex-start',
+export const TopRow = styled(View)((props) => ({
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  paddingHorizontal: props.theme.spacing.xl,
+  paddingTop: props.theme.spacing.sm,
+  paddingBottom: props.theme.spacing.lg,
 }));
 
 export const KeyboardView = styled(KeyboardAvoidingView)({
   flex: 1,
 });
 
-export const TopSection = styled(View)((props) => ({
-  paddingHorizontal: props.theme.spacing.xxl,
-  gap: props.theme.spacing.lg,
-}));
-
-export const Illustration = styled(View)((props) => ({
+export const OptionsRow = styled(View)({
   flexDirection: 'row',
   alignItems: 'center',
-  justifyContent: 'center',
-  width: 80,
-  height: 80,
-  borderRadius: 40,
-  backgroundColor: props.theme.colors.primary.lighter,
-  marginBottom: props.theme.spacing.sm,
-  alignSelf: 'center',
-}));
-
-export const Spacer = styled(View)({
-  flex: 1,
+  justifyContent: 'space-between',
 });
 
-export const BottomSection = styled(View)((props) => ({
-  paddingHorizontal: props.theme.spacing.xxl,
-  paddingBottom: props.theme.spacing.xxl,
+// Bouton principal ancré en bas ; il colle au clavier quand celui-ci est ouvert.
+export const BottomSection = styled(View)<{ keyboardVisible: boolean }>((props) => ({
+  paddingHorizontal: props.theme.spacing.xl,
+  paddingTop: props.theme.spacing.md,
+  paddingBottom: props.keyboardVisible ? props.theme.spacing.md : props.theme.spacing.xxl,
 }));

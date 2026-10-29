@@ -1,7 +1,8 @@
+import { View } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useTheme } from '@emotion/react';
-import { Button, Text } from 'kordo-ui';
-import { Feather } from '@expo/vector-icons';
+import { Button, IconButton, Logo, Text } from 'kordo-ui';
+import Animated, { FadeInDown } from 'react-native-reanimated';
 import * as Styled from './LoginScreen.styles';
 import { RootStackParamList } from 'App';
 
@@ -11,74 +12,78 @@ export default function LoginScreen({ navigation }: Props) {
   const theme = useTheme();
   return (
     <Styled.Container>
-      <Styled.BackButton onPress={() => navigation.goBack()}>
-        <Feather name="arrow-left" size={24} color={theme.colors.neutral.black} />
-      </Styled.BackButton>
+      <Styled.TopRow>
+        <IconButton
+          icon="ArrowLeftRegular"
+          accessibilityLabel="Retour"
+          onPress={() => navigation.goBack()}
+        />
+        <Button
+          title="Créer un compte"
+          size="md"
+          appearance="black"
+          inverted
+          borderless
+          onPress={() => navigation.navigate('SignUp')}
+        />
+      </Styled.TopRow>
 
       <Styled.CenterSection>
-        <Styled.Illustration>
-          <Text size={40} appearance="primary" extraBold>
-            K
+        <Animated.View entering={FadeInDown.springify().damping(14)}>
+          <Logo size={64} />
+        </Animated.View>
+        <Animated.View entering={FadeInDown.delay(80).duration(450)} style={{ gap: 10 }}>
+          <Text variant="display" size="lg">
+            Content de{'\n'}te revoir
           </Text>
-          <Text size={40} appearance="secondary" extraBold>
-            o
+          <Text appearance="gray" style={{ lineHeight: 22 }}>
+            Connecte-toi pour retrouver tes séances, tes blocs et ta cordée.
           </Text>
-        </Styled.Illustration>
-
-        <Text size={32} bold style={{ textAlign: 'center' }}>
-          Bienvenue !
-        </Text>
-        <Text size="lg" appearance="gray" style={{ textAlign: 'center', lineHeight: 26 }}>
-          Connectez-vous pour accéder{'\n'}à votre compte Kordo
-        </Text>
+        </Animated.View>
       </Styled.CenterSection>
 
-      <Styled.BottomSection>
-        <Styled.SocialButton
-          title="Continuer avec Google"
-          size="lg"
-          borderRadius="rounded"
-          inverted
-          borderless
-          containerStyle={{ backgroundColor: theme.colors.neutral.gray.lightest }}
-          icon={{ name: 'google', size: 24, color: 'red' }}
-          fullWidth
-        />
+      <Animated.View entering={FadeInDown.delay(160).duration(450)}>
+        <Styled.BottomSection>
+          <Button
+            title="Continuer avec Google"
+            size="lg"
+            appearance="black"
+            inverted
+            icon={{ name: 'google', size: 22, color: '#EA4335' }}
+            fullWidth
+          />
+          <Button
+            title="Continuer avec Apple"
+            size="lg"
+            appearance="black"
+            inverted
+            icon={{ name: 'apple', size: 22, color: theme.colors.text }}
+            fullWidth
+          />
+          <Button
+            title="Continuer avec mon e-mail"
+            size="lg"
+            appearance="secondary"
+            icon={{ name: 'MailRegular', size: 22 }}
+            onPress={() => navigation.navigate('LoginForm')}
+            fullWidth
+          />
+        </Styled.BottomSection>
+      </Animated.View>
 
-        <Styled.SocialButton
-          title="Continuer avec Apple"
-          size="lg"
-          borderRadius="rounded"
-          inverted
-          borderless
-          containerStyle={{ backgroundColor: theme.colors.neutral.gray.lightest }}
-          icon={{ name: 'apple', size: 24, color: theme.colors.neutral.black }}
-          fullWidth
-        />
-
-        <Button
-          title="Continuer avec mon Email"
-          size="lg"
-          borderRadius="rounded"
-          inverted
-          appearance="gray"
-          icon={{ name: 'mail', size: 24 }}
-          onPress={() => navigation.navigate('LoginForm')}
-          fullWidth
-        />
-      </Styled.BottomSection>
-
-      <Text size="md" appearance="gray" style={{ textAlign: 'center', lineHeight: 20 }}>
-        En continuant, j'accepte les{' '}
-        <Text size="md" style={{ textDecorationLine: 'underline' }}>
-          CGU
+      <View style={{ paddingHorizontal: 28 }}>
+        <Text size="xs" appearance="gray" style={{ textAlign: 'center', lineHeight: 18 }}>
+          En continuant, j’accepte les{' '}
+          <Text size="xs" bold style={{ textDecorationLine: 'underline' }}>
+            CGU
+          </Text>{' '}
+          et la{' '}
+          <Text size="xs" bold style={{ textDecorationLine: 'underline' }}>
+            politique de confidentialité
+          </Text>
+          .
         </Text>
-        et la{' '}
-        <Text size="md" style={{ textDecorationLine: 'underline' }}>
-          politique de confidentialité
-        </Text>
-        .
-      </Text>
+      </View>
     </Styled.Container>
   );
 }
