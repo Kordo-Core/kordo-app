@@ -24,8 +24,8 @@ export const UserList: React.FC<UserListProps> = ({ users, query, caption, empty
   return (
     <>
       <Styled.Caption>
-        <Text appearance="gray">
-          {caption} ({visibleUsers.length})
+        <Text variant="eyebrow">
+          {caption} · {visibleUsers.length}
         </Text>
       </Styled.Caption>
 

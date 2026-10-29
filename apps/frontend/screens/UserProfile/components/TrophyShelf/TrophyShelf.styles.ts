@@ -1,33 +1,32 @@
 import styled from '@emotion/native';
 
-// Emplacement de trophée (cercle gris, visuel uniquement).
-const TROPHY_SIZE = 80;
+const TROPHY_SIZE = 60;
 
 export const Container = styled.View((props) => ({
-  gap: props.theme.spacing.sm,
+  gap: props.theme.spacing.md,
 }));
 
-export const Slots = styled.View((props) => ({
+export const Slots = styled.View(() => ({
   flexDirection: 'row',
   justifyContent: 'space-between',
-  paddingVertical: props.theme.spacing.xs,
 }));
 
-export const Slot = styled.View((props) => ({
+export const Slot = styled.View<{ earned: boolean }>((props) => ({
   width: TROPHY_SIZE,
   height: TROPHY_SIZE,
-  borderRadius: props.theme.borderRadius.rounded,
-  backgroundColor: props.theme.colors.neutral.gray.light,
-}));
-
-export const Separator = styled.View((props) => ({
-  height: 1,
-  backgroundColor: props.theme.colors.neutral.gray.light,
+  borderRadius: 18,
+  alignItems: 'center',
+  justifyContent: 'center',
+  backgroundColor: props.earned
+    ? props.theme.colors.primary.lightest
+    : props.theme.colors.surfaceAlt,
 }));
 
 export const Footer = styled.View((props) => ({
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'space-between',
-  paddingTop: props.theme.spacing.xs,
+  paddingTop: props.theme.spacing.md,
+  borderTopWidth: 1,
+  borderTopColor: props.theme.colors.border,
 }));

@@ -1,14 +1,16 @@
 import { useState } from 'react';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Header, Icon, Pivots, Text } from 'kordo-ui';
+import { ScrollView } from 'react-native';
+import { useTheme } from '@emotion/react';
+import { Text } from 'kordo-ui';
+import { Bounce } from 'kordo-ui/src/animations/Bounce/Bounce';
 import { ScreenHeader } from '../../components/ScreenHeader/ScreenHeader';
 import { ScreenLayout } from '../../components/ScreenLayout/ScreenLayout';
 import * as Styled from './UserRelationsScreen.styles';
 import {
   RELATION_PIVOTS,
   RelationPivot,
-  getPivotKey,
   getPivotLabel,
   getPivotPlaceholder,
 } from './UserRelationsScreen.types';
@@ -17,15 +19,14 @@ import { FollowersTab } from './tabs/FollowersTab/FollowersTab';
 import { FollowingTab } from './tabs/FollowingTab/FollowingTab';
 import { ActivitiesTab } from './tabs/ActivitiesTab/ActivitiesTab';
 import { VisitedGymsTab } from './tabs/VisitedGymsTab/VisitedGymsTab';
-import { getUserById } from 'fake_data';
+import { getUserById, getUserProfileStats } from 'fake_data';
 import { RootStackParamList } from '../../App';
-
-const PIVOT_LABELS = RELATION_PIVOTS.map((p) => p.label);
 
 // Écran des listes d'un profil (le sien ou celui d'un autre) : abonnés, abonnements,
 // activités et salles visitées. L'onglet ouvert à l'arrivée vient du paramètre de route,
 // ce qui permet à chaque compteur du profil de pointer directement sur sa liste.
 export default function UserRelationsScreen() {
+  const theme = useTheme();
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const { params } = useRoute<RouteProp<RootStackParamList, 'UserRelations'>>();
 
@@ -37,11 +38,18 @@ export default function UserRelationsScreen() {
   // onglet à l'autre. La saisie est remise à zéro en changeant de pivot, un terme n'ayant
   // pas de sens d'une liste à l'autre.
   const [query, setQuery] = useState('');
+  const stats = getUserProfileStats(params.userId);
+  const counts: Record<RelationPivot, number> = {
+    followers: stats.followersCount,
+    following: stats.followingCount,
+    activities: stats.activitiesCount,
+    gyms: stats.gymsVisitedCount,
+  };
 
   if (!user) return null;
 
-  const handlePivotChange = (label: string) => {
-    setPivot(getPivotKey(label));
+  const handlePivotChange = (key: RelationPivot) => {
+    setPivot(key);
     setQuery('');
   };
 
@@ -60,14 +68,45 @@ export default function UserRelationsScreen() {
 
   return (
     <ScreenLayout>
-      <ScreenHeader title={user.username} onBack={() => navigation.goBack()} />
+      <ScreenHeader
+        title={getPivotLabel(pivot)}
+        eyebrow={`@${user.username}`}
+        onBack={() => navigation.goBack()}
+      />
 
+      {/* Onglets en pastilles (design D) : l'onglet actif passe en encre pleine */}
       <Styled.PivotsBar>
-        <Pivots
-          pivots={PIVOT_LABELS}
-          selectedPivot={getPivotLabel(pivot)}
-          onPivotChange={handlePivotChange}
-        />
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{ paddingHorizontal: theme.spacing.md + 2, gap: 6 }}
+        >
+          {RELATION_PIVOTS.map((p) => {
+            const active = p.key === pivot;
+            return (
+              <Bounce key={p.key} onPress={() => handlePivotChange(p.key)}>
+                <Styled.PivotChip active={active} accessibilityRole="tab">
+                  <Text
+                    size="sm"
+                    extraBold
+                    style={{ color: active ? theme.colors.background : theme.colors.text }}
+                  >
+                    {p.label}
+                  </Text>
+                  <Styled.PivotCount active={active}>
+                    <Text
+                      size={11}
+                      extraBold
+                      style={{ color: active ? theme.colors.background : theme.colors.text }}
+                    >
+                      {counts[p.key]}
+                    </Text>
+                  </Styled.PivotCount>
+                </Styled.PivotChip>
+              </Bounce>
+            );
+          })}
+        </ScrollView>
       </Styled.PivotsBar>
 
       <Styled.Content>

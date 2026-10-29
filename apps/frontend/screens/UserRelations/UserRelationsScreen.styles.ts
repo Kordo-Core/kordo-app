@@ -1,32 +1,47 @@
 import styled from '@emotion/native';
 import { KordoTheme } from 'kordo-ui';
 
-// Barre de pivots collée sous le header, sur fond plein pour rester lisible sur le topo.
+// Rangée d'onglets en pastilles, sous l'en-tête
 export const PivotsBar = styled.View((props) => ({
-  backgroundColor: props.theme.colors.neutral.white,
-  boxShadow: props.theme.shadows.md,
-  paddingBlock: props.theme.spacing.md,
+  paddingBottom: props.theme.spacing.sm,
 }));
 
-// Zone d'onglet : surface blanche qui occupe toute la hauteur restante, même quand la liste
-// est courte. Le scroll est géré par chaque onglet.
-export const Content = styled.View((props) => ({
+export const PivotChip = styled.View<{ active: boolean }>((props) => ({
+  height: 40,
+  paddingHorizontal: props.theme.spacing.md + 2,
+  borderRadius: props.theme.borderRadius.square,
+  flexDirection: 'row',
+  alignItems: 'center',
+  gap: 6,
+  backgroundColor: props.active ? props.theme.colors.text : props.theme.colors.surface,
+  boxShadow: props.active ? undefined : props.theme.shadows.sm,
+}));
+
+export const PivotCount = styled.View<{ active: boolean }>((props) => ({
+  height: 20,
+  minWidth: 20,
+  paddingHorizontal: 6,
+  borderRadius: 7,
+  alignItems: 'center',
+  justifyContent: 'center',
+  backgroundColor: props.active ? 'rgba(127, 127, 127, 0.3)' : props.theme.colors.surfaceAlt,
+}));
+
+// Zone d'onglet : occupe toute la hauteur restante. Le scroll est géré par chaque onglet.
+export const Content = styled.View(() => ({
   flex: 1,
-  marginTop: props.theme.spacing.xs,
-  backgroundColor: props.theme.colors.neutral.white,
 }));
 
-// Espacement de la barre de recherche, fixée au-dessus de la liste. Il vit ici et pas dans
-// `SearchToolbar` pour caler la barre sur `listContent` : même retrait horizontal, donc même
-// alignement que les lignes qu'elle filtre. Pas de padding sur `Content`, l'onglet Activités
-// affiche ses cartes bord à bord.
+// Espacement de la barre de recherche, calé sur le retrait des lignes de la liste.
 export const ToolbarBar = styled.View((props) => ({
-  padding: props.theme.spacing.md,
+  paddingHorizontal: props.theme.spacing.md + 2,
+  paddingTop: props.theme.spacing.xs,
+  paddingBottom: props.theme.spacing.md,
 }));
 
-// Intitulé au-dessus d'une liste : "Tous les abonnements (56)".
+// Intitulé au-dessus d'une liste : "Tous les abonnés (56)".
 export const Caption = styled.View((props) => ({
-  paddingHorizontal: props.theme.spacing.md,
+  paddingHorizontal: props.theme.spacing.lg + 2,
   paddingBottom: props.theme.spacing.sm,
 }));
 
@@ -36,21 +51,19 @@ export const Empty = styled.View((props) => ({
   alignItems: 'center',
 }));
 
-// Contenu des listes "plates" (utilisateurs, salles). `flexGrow` fait remplir la hauteur
-// restante à la surface blanche même avec deux lignes, plutôt que de la laisser s'arrêter
-// au dernier élément.
+// Contenu des listes de cartes (utilisateurs, salles)
 export const listContent = (theme: KordoTheme) => ({
   flexGrow: 1,
-  paddingHorizontal: theme.spacing.md,
+  paddingHorizontal: theme.spacing.md + 2,
   paddingBottom: theme.spacing.xxl,
   gap: theme.spacing.sm,
 });
 
-// Contenu de la liste d'activités : cartes autonomes, séparées d'un fin liseré de fond.
+// Contenu de la liste d'activités : les cartes portent déjà leur marge latérale.
 export const cardsContent = (theme: KordoTheme) => ({
   flexGrow: 1,
   paddingBottom: theme.spacing.xxl,
-  gap: theme.spacing.xs,
+  gap: theme.spacing.md,
 });
 
 // La liste elle-même prend la hauteur restante sous la barre de recherche.

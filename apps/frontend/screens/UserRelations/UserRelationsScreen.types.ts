@@ -9,8 +9,8 @@ export const RELATION_PIVOTS: {
   label: string;
   searchPlaceholder: string;
 }[] = [
-  { key: 'followers', label: 'Followers', searchPlaceholder: 'Rechercher un abonné...' },
-  { key: 'following', label: 'Suivi(e)s', searchPlaceholder: 'Rechercher un abonnement...' },
+  { key: 'followers', label: 'Abonnés', searchPlaceholder: 'Rechercher un abonné...' },
+  { key: 'following', label: 'Abonnements', searchPlaceholder: 'Rechercher un abonnement...' },
   { key: 'activities', label: 'Activités', searchPlaceholder: 'Rechercher une séance...' },
   { key: 'gyms', label: 'Salles visitées', searchPlaceholder: 'Rechercher une salle...' },
 ];

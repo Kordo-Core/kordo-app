@@ -43,7 +43,15 @@ export const VisitedGymsTab: React.FC<RelationTabProps> = ({ userId, query }) =>
         </Styled.Empty>
       }
       renderItem={({ item }) => (
-        <Pressable onPress={() => navigation.navigate('Gym', { gymId: item.gym.id })}>
+        <Pressable
+          onPress={() => navigation.navigate('Gym', { gymId: item.gym.id })}
+          style={{
+            paddingHorizontal: theme.spacing.md,
+            borderRadius: 20,
+            backgroundColor: theme.colors.surface,
+            boxShadow: theme.shadows.sm,
+          }}
+        >
           <ListRow
             left={
               <Image
@@ -51,7 +59,7 @@ export const VisitedGymsTab: React.FC<RelationTabProps> = ({ userId, query }) =>
                 style={{
                   width: THUMB_SIZE,
                   height: THUMB_SIZE,
-                  borderRadius: theme.borderRadius.square,
+                  borderRadius: 14,
                 }}
               />
             }
@@ -62,7 +70,7 @@ export const VisitedGymsTab: React.FC<RelationTabProps> = ({ userId, query }) =>
                 {item.visitCount > 1 ? 'sessions' : 'session'}
               </Text>
             }
-            right={<Icon name="chevron-right" color={theme.colors.neutral.gray.base} />}
+            right={<Icon name="chevron-right" color={theme.colors.textMuted} />}
           />
         </Pressable>
       )}

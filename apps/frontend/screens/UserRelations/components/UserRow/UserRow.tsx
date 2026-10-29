@@ -40,7 +40,8 @@ export const UserRow: React.FC<UserRowProps> = ({ user, onPressUser }) => {
           borderRadius="square"
           appearance="secondary"
           inverted={following}
-          title={following ? 'Following' : 'Follow'}
+          icon={following ? { name: 'CheckmarkRegular', size: 16 } : undefined}
+          title={following ? 'Suivi' : 'Suivre'}
           onPress={() => setTimeout(() => setFollowing((prev) => !prev), FOLLOW_SWITCH_DELAY)}
         />
       )}

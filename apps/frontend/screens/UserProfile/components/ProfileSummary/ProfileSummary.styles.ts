@@ -1,39 +1,35 @@
 import styled from '@emotion/native';
 import { KordoTheme } from 'kordo-ui';
 
-// Avatar de profil : plus grand que les tokens d'avatar (usage dédié à l'en-tête de profil).
-const AVATAR_SIZE = 84;
+const AVATAR_SIZE = 96;
 
 export const Container = styled.View((props) => ({
-  gap: props.theme.spacing.lg,
+  gap: props.theme.spacing.md + 2,
 }));
 
-export const TopRow = styled.View((props) => ({
-  flexDirection: 'row',
-  alignItems: 'center',
-  gap: props.theme.spacing.xl,
-}));
-
+// Avatar carré arrondi, bordé de la couleur de fond pour se détacher de la couverture
 export const Avatar = styled.Image((props) => ({
   width: AVATAR_SIZE,
   height: AVATAR_SIZE,
-  borderRadius: props.theme.borderRadius.rounded,
-  backgroundColor: props.theme.colors.neutral.gray.light,
+  borderRadius: 30,
+  borderWidth: 5,
+  borderColor: props.theme.colors.background,
+  backgroundColor: props.theme.colors.surfaceAlt,
 }));
 
-// Grille de stats 2 colonnes × 2 lignes à droite de l'avatar.
-export const StatsGrid = styled.View((props) => ({
-  flex: 1,
+// Compteurs alignés dans une carte ; chacun ouvre la liste correspondante
+export const StatsCard = styled.View((props) => ({
   flexDirection: 'row',
-  flexWrap: 'wrap',
-  rowGap: props.theme.spacing.md,
-  columnGap: props.theme.spacing.sm,
+  paddingVertical: props.theme.spacing.md + 2,
+  paddingHorizontal: props.theme.spacing.xs,
+  borderRadius: props.theme.borderRadius.card,
+  backgroundColor: props.theme.colors.surface,
+  boxShadow: props.theme.shadows.sm,
 }));
 
-// Chaque cellule est pressable : elle ouvre la liste correspondante (abonnés, activités…).
 export const StatCell = styled.Pressable(() => ({
-  flexBasis: '40%',
-  flexGrow: 1,
+  flex: 1,
+  alignItems: 'center',
   gap: 2,
 }));
 
@@ -42,12 +38,10 @@ export const ActionsRow = styled.View((props) => ({
   gap: props.theme.spacing.sm,
 }));
 
-// Styles passés en `style`/`containerStyle` aux Button (regroupés ici pour éviter les styles inline).
 export const buttonFlex = { flex: 1 } as const;
-export const buttonFill = { width: '100%' as const };
-// Objet de style et non composant stylé : il est passé en `containerStyle` à un Button.
-// Le thème arrive donc en argument, comme `props.theme` pour un styled.
+
+// Objet de style passé en `containerStyle` à un Button : le thème arrive en argument.
 export const followingTint = (theme: KordoTheme) => ({
-  backgroundColor: theme.colors.secondary.lighter,
+  backgroundColor: theme.colors.soft,
   borderColor: theme.colors.secondary.base,
 });
