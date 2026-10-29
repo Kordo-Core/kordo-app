@@ -189,7 +189,7 @@ export default function GymsScreen() {
                       width: sliderCardWidth,
                       height: 320,
                       borderRadius: theme.borderRadius.card,
-                      backgroundColor: theme.colors.neutral.gray.base,
+                      backgroundColor: theme.colors.surfaceAlt,
                       justifyContent: 'space-between',
                     }}
                   >
@@ -340,7 +340,7 @@ export default function GymsScreen() {
                       width: sliderCardWidth,
                       height: 320,
                       borderRadius: theme.borderRadius.card,
-                      backgroundColor: theme.colors.neutral.gray.base,
+                      backgroundColor: theme.colors.surfaceAlt,
                       justifyContent: 'space-between',
                     }}
                   >
@@ -430,10 +430,10 @@ export default function GymsScreen() {
                 <View style={{ height: cardSize * 1.15, position: 'relative' }}>
                   {(
                     [
-                      { rotate: '-14deg', color: theme.colors.neutral.gray.light, z: 1 },
-                      { rotate: '+9deg', color: theme.colors.neutral.gray.base, z: 2 },
-                      { rotate: '-3deg', color: theme.colors.neutral.white, z: 4 },
-                      { rotate: '+19deg', color: '#C8C8C8', z: 3 },
+                      { rotate: '-14deg', color: theme.colors.soft, z: 1 },
+                      { rotate: '+9deg', color: theme.colors.secondary.light, z: 2 },
+                      { rotate: '-3deg', color: theme.colors.surface, z: 4 },
+                      { rotate: '+19deg', color: theme.colors.primary.light, z: 3 },
                     ] as const
                   ).map((card, i) => (
                     <Card

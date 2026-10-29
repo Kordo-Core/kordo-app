@@ -149,7 +149,7 @@ function CardItem({
       style={[
         animStyle,
         {
-          backgroundColor: theme.colors.neutral.gray.light,
+          backgroundColor: theme.colors.surfaceAlt,
           // Seule la carte de devant capte les touches (pointerEvents via style, supporté en RN 0.81)
           pointerEvents: isFront ? 'auto' : 'none',
         },
