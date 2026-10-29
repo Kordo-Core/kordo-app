@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import { Pressable, ScrollView, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useTheme } from '@emotion/react';
-import { Header, Icon, Section, Text } from 'kordo-ui';
+import { Icon, Section, Text } from 'kordo-ui';
 import { ScreenHeader } from '../../components/ScreenHeader/ScreenHeader';
 import { ScreenLayout } from '../../components/ScreenLayout/ScreenLayout';
 import { SearchToolbar } from '../../components/SearchToolbar/SearchToolbar';
@@ -58,7 +58,12 @@ export default function LanguageScreen() {
         {/* Langue courante et recherche : fixes sous le header, hors de la zone défilante. */}
         <Section>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Text style={{ flex: 1 }}>{selected}</Text>
+            <View style={{ flex: 1 }}>
+              <Text variant="eyebrow">Langue actuelle</Text>
+              <Text size="lg" bold>
+                {selected}
+              </Text>
+            </View>
             <Icon name="CheckmarkFilled" size="sm" color={theme.colors.secondary.base} />
           </View>
         </Section>
@@ -70,9 +75,21 @@ export default function LanguageScreen() {
             <Pressable
               key={language}
               onPress={() => setSelected(language)}
-              style={{ width: '100%', paddingBlock: theme.spacing.sm }}
+              style={{
+                width: '100%',
+                paddingBlock: theme.spacing.md,
+                borderTopWidth: 1,
+                borderTopColor: theme.colors.border,
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}
             >
-              <Text>{language}</Text>
+              <Text bold={language === selected} style={{ flex: 1 }}>
+                {language}
+              </Text>
+              {language === selected && (
+                <Icon name="CheckmarkFilled" size="sm" color={theme.colors.secondary.base} />
+              )}
             </Pressable>
           ))}
         </Section>

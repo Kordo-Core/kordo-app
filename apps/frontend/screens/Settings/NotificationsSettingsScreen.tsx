@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useTheme } from '@emotion/react';
-import { Header, Icon, ListRow, Section, Text, Toggle } from 'kordo-ui';
+import { Icon, ListRow, Section, Text, Toggle } from 'kordo-ui';
 import { ScreenHeader } from '../../components/ScreenHeader/ScreenHeader';
 import { ScreenLayout } from '../../components/ScreenLayout/ScreenLayout';
 
@@ -96,9 +96,7 @@ export default function NotificationsSettingsScreen() {
 
         {GROUPS.map((group) => (
           <Section key={group.title} gap="lg">
-            <Text size="md" appearance="gray">
-              {group.title}
-            </Text>
+            <Text variant="eyebrow">{group.title}</Text>
             {group.items.map((item) => (
               <ListRow
                 key={item.key}

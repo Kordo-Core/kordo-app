@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTheme } from '@emotion/react';
 import { UserPublic } from 'core';
-import { Header, Icon, Section, Text, UserInfo } from 'kordo-ui';
+import { Icon, Section, Text, UserInfo } from 'kordo-ui';
 import { ScreenHeader } from '../../components/ScreenHeader/ScreenHeader';
 import { ScreenLayout } from '../../components/ScreenLayout/ScreenLayout';
 import { SearchToolbar } from '../../components/SearchToolbar/SearchToolbar';

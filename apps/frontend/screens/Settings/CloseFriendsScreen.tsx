@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useTheme } from '@emotion/react';
-import { Checkbox, Header, Icon, Section, Text, UserInfo } from 'kordo-ui';
+import { Checkbox, Icon, Section, Text, UserInfo } from 'kordo-ui';
 import { UserPublic } from 'core';
 import { ScreenHeader } from '../../components/ScreenHeader/ScreenHeader';
 import { ScreenLayout } from '../../components/ScreenLayout/ScreenLayout';
@@ -63,9 +63,7 @@ export default function CloseFriendsScreen() {
 
         {filter(suggestions).map(renderUser).length > 0 && (
           <Section gap="lg">
-            <Text size="md" appearance="gray" style={{ paddingHorizontal: theme.spacing.md }}>
-              Ajoutés
-            </Text>
+            <Text variant="eyebrow">Suggestions</Text>
             {filter(suggestions).map(renderUser)}
           </Section>
         )}

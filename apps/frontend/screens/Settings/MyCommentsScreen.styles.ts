@@ -8,8 +8,8 @@ export const Content = styled.View((props) => ({
 export const Avatar = styled.Image((props) => ({
   width: props.theme.avatarSizes.md,
   height: props.theme.avatarSizes.md,
-  borderRadius: props.theme.borderRadius.rounded,
-  backgroundColor: props.theme.colors.neutral.gray.light,
+  borderRadius: props.theme.borderRadius.square,
+  backgroundColor: props.theme.colors.surfaceAlt,
 }));
 
 export const PostContent = styled.View((props) => ({
@@ -23,5 +23,8 @@ export const Reply = styled.View((props) => ({
   flexDirection: 'row',
   alignItems: 'center',
   gap: props.theme.spacing.md,
-  paddingLeft: props.theme.spacing.lg,
+  marginLeft: props.theme.spacing.lg,
+  paddingLeft: props.theme.spacing.md,
+  borderLeftWidth: 2,
+  borderLeftColor: props.theme.colors.secondary.base,
 }));

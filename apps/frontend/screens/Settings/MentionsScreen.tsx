@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useTheme } from '@emotion/react';
-import { Header, Icon, ListRow, Radio, Section, Text } from 'kordo-ui';
+import { Icon, ListRow, Radio, Section, Text } from 'kordo-ui';
 import { ScreenHeader } from '../../components/ScreenHeader/ScreenHeader';
 import { ScreenLayout } from '../../components/ScreenLayout/ScreenLayout';
 
@@ -34,9 +34,7 @@ export default function MentionsScreen() {
         keyboardShouldPersistTaps="handled"
       >
         <Section gap="lg">
-          <Text size="md" appearance="gray">
-            Qui peut @mentionner votre nom
-          </Text>
+          <Text variant="eyebrow">Qui peut @mentionner votre nom</Text>
           {OPTIONS.map(({ value, label }) => (
             <ListRow
               key={value}

@@ -3,7 +3,7 @@ import { FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTheme } from '@emotion/react';
-import { Activity, Header, Icon, Publication, Text, TextPost } from 'kordo-ui';
+import { Activity, Icon, Publication, Text, TextPost } from 'kordo-ui';
 import { ScreenHeader } from '../../components/ScreenHeader/ScreenHeader';
 import { ScreenLayout } from '../../components/ScreenLayout/ScreenLayout';
 import { CURRENT_USER, getLikedPosts, HomeFeedItem } from 'fake_data';

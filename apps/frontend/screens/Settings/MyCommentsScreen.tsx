@@ -3,7 +3,7 @@ import { ScrollView, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTheme } from '@emotion/react';
-import { Header, Icon, Section, Text } from 'kordo-ui';
+import { Icon, Section, Text } from 'kordo-ui';
 import * as Styled from './MyCommentsScreen.styles';
 import { ScreenHeader } from '../../components/ScreenHeader/ScreenHeader';
 import { ScreenLayout } from '../../components/ScreenLayout/ScreenLayout';
