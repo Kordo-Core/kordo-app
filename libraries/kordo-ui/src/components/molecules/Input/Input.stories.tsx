@@ -1,13 +1,14 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 import { Input } from './Input';
 import { useState } from 'react';
+import { InputProps } from './Input.types';
 
 /**
  * Cross-platform text input with built-in validation and error animations.
  *
  * ## Variants
  * - **type**: `email`, `password`, `number` (validated on blur)
- * - **icon**: Feather icon positioned at `left` or `right`
+ * - **leftIcon / rightIcon**: Feather icons, can be used independently or together
  * - **required**: marks the field as required with a `*` indicator
  */
 export default {
@@ -29,25 +30,22 @@ export default {
     type: {
       control: 'select',
       options: ['email', 'password', 'number'],
-      description: 'Field type — determines keyboard (native), validation rules, and masking (password)',
+      description:
+        'Field type — determines keyboard (native), validation rules, and masking (password)',
     },
     required: {
       control: 'boolean',
       description: 'Marks the field as required — shows `*` and validates on blur',
     },
-    iconPosition: {
-      control: 'radio',
-      options: ['left', 'right'],
-      description: 'Position of the icon inside the field',
-    },
-    onChangeText: {
+    onChange: {
       action: 'changed',
       description: 'Callback fired on every value change',
     },
   },
   decorators: [
-    (Story: any) => (
-      <div style={{ width: 300 }}>
+    // Largeur d'un formulaire mobile, marges de l'écran comprises.
+    (Story) => (
+      <div style={{ width: 342, display: 'flex', flexDirection: 'column' }}>
         <Story />
       </div>
     ),
@@ -56,9 +54,10 @@ export default {
 
 type Story = StoryObj<typeof Input>;
 
-const InputWithState = (args: any) => {
+// L'`Input` est contrôlé : les stories fournissent la config, la valeur vit ici.
+const InputWithState = (args: Omit<InputProps, 'value' | 'onChange'>) => {
   const [value, setValue] = useState('');
-  return <Input {...args} value={value} onChangeText={setValue} />;
+  return <Input {...args} value={value} onChange={setValue} />;
 };
 
 /**
@@ -94,8 +93,20 @@ export const WithIcon: Story = {
   args: {
     label: 'Search',
     placeholder: 'Search...',
-    icon: { name: 'search' },
-    iconPosition: 'left',
+    leftIcon: { name: 'search' },
+  },
+};
+
+/**
+ * Field with icons on both sides.
+ */
+export const WithBothIcons: Story = {
+  render: (args) => <InputWithState {...args} />,
+  args: {
+    label: 'Search',
+    placeholder: 'Search...',
+    leftIcon: { name: 'search' },
+    rightIcon: { name: 'x' },
   },
 };
 

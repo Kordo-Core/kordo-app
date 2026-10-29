@@ -2,3 +2,12 @@ packages:
   - 'apps/*'
   - 'libraries/*'
   - 'core'
+
+# Les peers ne sont jamais installés d'office : c'est l'app qui les fournit, et chaque paquet
+# du monorepo déclare en devDependencies ce dont il a besoin pour compiler seul.
+#
+# Sans ça, pnpm matérialisait les peers de kordo-ui dans son propre node_modules — d'où deux
+# copies de react-native-gesture-handler et de react-native-safe-area-context — et remontait
+# jusqu'à expo-router (peer optionnel d'@expo/cli), qui tirait expo-linking et expo-constants
+# en version SDK 55 dans un projet SDK 54.
+autoInstallPeers: false

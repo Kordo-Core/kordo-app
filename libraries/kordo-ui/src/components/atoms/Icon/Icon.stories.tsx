@@ -1,111 +1,94 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 import { Icon } from './Icon';
+import { fluentIcons } from '../../../utils/fluent-icons';
 
 /**
- * Cross-platform icon component based on Feather Icons (kebab-case names).
+ * Icon rendered from the generated `utils/fluent-icons` map — identical paths on web and native.
  *
  * ## Variants
- * - **name**: icon name in kebab-case (`arrow-left`, `check-circle`…)
- * - **size**: size in pixels (default 24)
- * - **color**: `primary`, `secondary`, `black`, `gray`, `white`, `success`, `error`, `warning`, `info`
+ * - **name**: either a Fluent name (`HomeRegular`, `CheckmarkFilled`…), a short kebab-case
+ *   alias (`home`, `chevron-right`…) or a house icon (`carabiner`, `terrain`, `play`)
+ * - **size**: `sm` (20), `md` (24), `lg` (32) or any number of pixels
+ * - **color**: an appearance token (`primary`, `error`…) or a raw CSS color
  */
 export default {
   title: 'Atoms/Icon',
   component: Icon,
   tags: ['autodocs'],
-  parameters: {
-    layout: 'centered',
-  },
+  parameters: { layout: 'centered' },
   argTypes: {
     name: {
       control: 'select',
-      options: [
-        'home', 'user', 'settings', 'search', 'heart', 'star', 'check', 'x',
-        'plus', 'minus', 'arrow-left', 'arrow-right', 'arrow-up', 'arrow-down',
-        'send', 'edit', 'trash', 'eye', 'eye-off', 'lock', 'unlock',
-        'bell', 'map-pin', 'calendar', 'clock', 'camera', 'image',
-        'check-circle', 'x-circle', 'alert-triangle', 'alert-circle', 'info',
-        'chevron-left', 'chevron-right', 'chevron-up', 'chevron-down',
-        'log-out', 'log-in', 'menu', 'more-horizontal', 'more-vertical',
-      ],
-      description:
-        'Feather icon name in **kebab-case**. All icons from [feathericons.com](https://feathericons.com/) are supported.',
+      options: Object.keys(fluentIcons),
+      description: 'Icon name — see `utils/fluent-icons` for the full list',
     },
     size: {
-      control: { type: 'number', min: 12, max: 64, step: 4 },
-      description: 'Icon size in pixels.',
-      table: {
-        defaultValue: { summary: '24' },
-      },
+      control: 'select',
+      options: ['sm', 'md', 'lg', 16, 40, 64],
+      description: 'Size token or an explicit number of pixels',
+      table: { defaultValue: { summary: 'md' } },
     },
     color: {
       control: 'select',
-      options: ['primary', 'secondary', 'black', 'gray', 'white', 'success', 'error', 'warning', 'info'],
-      description:
-        'Theme color resolved via `getColor()`. Supports **appearance** colors (`primary`, `secondary`), **neutral** colors (`black`, `gray`, `white`) and **status** colors (`success`, `error`, `warning`, `info`).',
+      options: [
+        'primary',
+        'secondary',
+        'black',
+        'gray',
+        'white',
+        'success',
+        'error',
+        'warning',
+        'info',
+      ],
+      description: 'Appearance token, or any raw CSS color',
     },
-    onPress: {
-      action: 'pressed',
-      description:
-        'Callback fired on click (web) or tap (native). Automatically adds `cursor: pointer` on web when defined.',
-    },
-    style: {
-      control: false,
-      description: 'Custom styles applied directly to the icon element.',
-    },
+    onPress: { action: 'pressed' },
   },
 } satisfies Meta<typeof Icon>;
 
 type Story = StoryObj<typeof Icon>;
 
-/**
- * Default icon — standard size (24px), primary color.
- */
+const Row = ({ children }: { children: React.ReactNode }) => (
+  <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>{children}</div>
+);
+
 export const Default: Story = {
-  args: {
-    name: 'home',
-    size: 24,
-    color: 'primary',
-  },
+  args: { name: 'home', size: 'md', color: 'primary' },
 };
 
-/**
- * Small icon (16px).
- * Suited for labels, badges, or high-density information contexts.
- */
-export const Small: Story = {
-  args: {
-    name: 'star',
-    size: 16,
-    color: 'secondary',
-  },
+/** The three size tokens resolve to 20, 24 and 32 pixels. */
+export const Sizes: Story = {
+  render: () => (
+    <Row>
+      <Icon name="star" size="sm" color="secondary" />
+      <Icon name="star" size="md" color="secondary" />
+      <Icon name="star" size="lg" color="secondary" />
+      <Icon name="star" size={64} color="secondary" />
+    </Row>
+  ),
 };
 
-/**
- * Large icon (40px).
- * Suited for empty states, illustrations, or prominent visual calls to action.
- */
-export const Large: Story = {
-  args: {
-    name: 'heart',
-    size: 40,
-    color: 'primary',
-  },
-};
-
-/**
- * Status colors: `success`, `error`, `warning`, `info`.
- *
- * These colors are resolved from the theme via `getColor()`.
- * Use them to provide contextual feedback to the user.
- */
 export const StatusColors: Story = {
   render: () => (
-    <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-      <Icon name="check-circle" size={24} color="success" />
-      <Icon name="x-circle" size={24} color="error" />
-      <Icon name="alert-triangle" size={24} color="warning" />
-      <Icon name="info" size={24} color="info" />
-    </div>
+    <Row>
+      <Icon name="checkmark-circle" size="md" color="success" />
+      <Icon name="dismiss-circle" size="md" color="error" />
+      <Icon name="warning" size="md" color="warning" />
+      <Icon name="info" size="md" color="info" />
+    </Row>
+  ),
+};
+
+/** Kordo-specific icons, absent from the Fluent set — climbing and sign-in providers. */
+export const KordoIcons: Story = {
+  render: () => (
+    <Row>
+      <Icon name="carabiner" size="lg" color="primary" />
+      <Icon name="terrain" size="lg" color="primary" />
+      <Icon name="play" size="lg" color="primary" />
+      <Icon name="apple" size="lg" />
+      <Icon name="google" size="lg" />
+    </Row>
   ),
 };

@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 import { Bounce } from './Bounce';
 import { Button } from '../../components/atoms/Button/Button';
 
@@ -40,9 +40,6 @@ export const Default: Story = {
   args: {
     scaleTo: 0.95,
     duration: 200,
-    children: (
-      <Button title="Click me" appearance="primary" onPress={() => {}} />
-    ),
+    children: <Button title="Click me" appearance="primary" onPress={() => {}} />,
   },
 };
-

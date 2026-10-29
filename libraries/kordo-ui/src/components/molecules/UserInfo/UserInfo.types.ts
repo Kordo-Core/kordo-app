@@ -1,7 +1,10 @@
+import { StyleProp, ViewStyle } from 'react-native';
 import { UserPublic } from 'core';
 
 export interface UserInfoProps {
   user: UserPublic;
+  // The username is always required and rendered in a specific style, so we don't allow overriding it via props
+  primaryText?: React.ReactNode;
   /** Content rendered below the username (e.g. location, subtitle) */
   secondaryText?: React.ReactNode;
   /** Content rendered below secondaryText (e.g. follower count) */
@@ -9,8 +12,8 @@ export interface UserInfoProps {
   /** `row` = avatar and text side by side; `column` = stacked vertically */
   layout?: 'row' | 'column';
   /** Adds a colored border around the avatar (e.g. to indicate an active session) */
-  highlightedAvatar?: boolean;
-  style?: any;
+  highlightedAvatar?: boolean; //TODO Only applicable in `row` layout
+  style?: StyleProp<ViewStyle>;
   /** Callback fired when the user's avatar or name is pressed */
   onPressUser: (user: UserPublic) => void;
 }

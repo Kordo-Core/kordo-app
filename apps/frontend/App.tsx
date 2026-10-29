@@ -1,130 +1,114 @@
-import { StatusBar } from 'expo-status-bar';
-import { Pressable, ScrollView, View } from 'react-native';
 import { ThemeProvider } from '@emotion/react';
-import styled from '@emotion/native';
-import { useState } from 'react';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { theme, ToastProvider } from 'kordo-ui';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import {
+  useFonts,
+  Outfit_400Regular,
+  Outfit_500Medium,
+  Outfit_700Bold,
+} from '@expo-google-fonts/outfit';
+import LandingScreen from './screens/LandingScreen/LandingScreen';
+import LoginScreen from './screens/LoginScreen/LoginScreen';
+import LoginFormScreen from './screens/LoginFormScreen/LoginFormScreen';
+import SignUpScreen from './screens/SignUpScreen/SignUpScreen';
+import MainTabs from './screens/MainTabs';
+import AllGymsScreen from './screens/gyms/AllGyms/AllGymsScreen';
+import GymScreen from './screens/gyms/GymScreen/GymScreen';
+import NotificationsScreen from './screens/Notifications/NotificationsScreen';
+import UserProfile from './screens/UserProfile/UserProfile';
+import UserRelationsScreen from './screens/UserRelations/UserRelationsScreen';
+import SettingsScreen from './screens/Settings/SettingsScreen';
+import NotificationsSettingsScreen from './screens/Settings/NotificationsSettingsScreen';
+import LikedPostsScreen from './screens/Settings/LikedPostsScreen';
+import MyCommentsScreen from './screens/Settings/MyCommentsScreen';
+import MentionsScreen from './screens/Settings/MentionsScreen';
+import AccountPrivacyScreen from './screens/Settings/AccountPrivacyScreen';
+import CloseFriendsScreen from './screens/Settings/CloseFriendsScreen';
+import BlockedAccountsScreen from './screens/Settings/BlockedAccountsScreen';
+import AppearanceScreen from './screens/Settings/AppearanceScreen';
+import LanguageScreen from './screens/Settings/LanguageScreen';
+import ConversationsScreen from './screens/Messages/ConversationsScreen';
+import ChatScreen from './screens/Messages/ChatScreen';
+import NewConversationScreen from './screens/Messages/NewConversationScreen';
+import { RelationPivot } from './screens/UserRelations/UserRelationsScreen.types';
 
-import { Button, theme, ToastProvider, useToast, ListRow, Text, Header } from 'kordo-ui';
+export type RootStackParamList = {
+  Landing: undefined;
+  Login: undefined;
+  LoginForm: undefined;
+  SignUp: undefined;
+  MainTabs: undefined;
+  AllGyms: undefined;
+  Gym: { gymId: string; blocId?: string };
+  Notifications: undefined;
+  UserProfile: { userId: string };
+  UserRelations: { userId: string; pivot: RelationPivot };
+  Settings: undefined;
+  NotificationsSettings: undefined;
+  LikedPosts: undefined;
+  MyComments: undefined;
+  Mentions: undefined;
+  AccountPrivacy: undefined;
+  CloseFriends: undefined;
+  BlockedAccounts: undefined;
+  Appearance: undefined;
+  Language: undefined;
+  Conversations: undefined;
+  Chat: { conversationId: string };
+  NewConversation: undefined;
+};
 
-/* --- CustomImage utilisant le theme correctement --- */
-const CustomImage = styled.Image(() => ({
-  width: theme.avatarSizes?.md,
-  height: theme.avatarSizes?.md,
-  borderRadius: theme.borderRadius?.rounded,
-}));
-
-const HeaderCustomImage = styled.Image(() => ({
-  width: theme.avatarSizes?.md + 8,
-  height: theme.avatarSizes?.md + 8,
-  borderRadius: theme.borderRadius?.rounded,
-}));
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function App() {
-  return (
-    <ThemeProvider theme={theme}>
-      <ToastProvider>
-        {/* SafeAreaView englobe tout pour gérer le notch et la couleur du status bar */}
-        <SafeAreaView style={{ backgroundColor: 'white', zIndex: 10000 }} />
-        <HomeScreen />
-      </ToastProvider>
-    </ThemeProvider>
-  );
-}
+  const [fontsLoaded] = useFonts({ Outfit_400Regular, Outfit_500Medium, Outfit_700Bold });
 
-/* --- HomeScreen avec ScrollView --- */
-function HomeScreen() {
-  const { addToast } = useToast();
-  const [scroll, setScroll] = useState(0);
+  if (!fontsLoaded) return null;
 
   return (
-    <View style={{ flex: 1, position: 'relative' }}>
-      {/* Header indépendant et animé */}
-      <Header
-        smart
-        scrollY={scroll}
-        left={
-          <Pressable onPress={() => console.log('avatar pressed')}>
-            <HeaderCustomImage
-              source={{
-                uri: 'https://res.cloudinary.com/dqmegz5dn/image/upload/v1763334248/avatar-kordo_rwvjw4.png',
-              }}
-            />
-          </Pressable>
-        }
-        primaryText={
-          <Text size="lg" bold>
-            Jacinto Valentino
-          </Text>
-        }
-        right={
-          <>
-            <Button
-              inverted
-              borderless
-              appearance="black"
-              icon={{ name: 'activity' }}
-              borderRadius="square"
-              onPress={() => console.log('action 1')}
-            />
-            <Button
-              inverted
-              borderless
-              appearance="black"
-              icon={{ name: 'activity' }}
-              borderRadius="square"
-              onPress={() => console.log('action 2')}
-            />
-          </>
-        }
-      />
-
-      {/* Contenu scrollable */}
-      <ScrollView
-        contentContainerStyle={{ paddingTop: 82 }} // hauteur du header
-        onScroll={(e) => setScroll(e.nativeEvent.contentOffset.y)}
-        scrollEventThrottle={16}
-      >
-        {Array.from({ length: 50 }).map((_, i) => (
-          <ListRow
-            key={i}
-            left={
-              <Pressable onPress={() => console.log('avatar pressed')}>
-                <CustomImage
-                  source={{
-                    uri: 'https://res.cloudinary.com/dqmegz5dn/image/upload/v1763334248/avatar-kordo_rwvjw4.png',
-                  }}
-                />
-              </Pressable>
-            }
-            primaryText={
-              <Text size="md" bold>
-                Jacinto Valentino #{i + 1}
-              </Text>
-            }
-            secondaryText={
-              <Text appearance="gray">
-                par{' '}
-                <Text appearance="primary" bold onPress={() => console.log('Gunki pressed')}>
-                  Gunki
-                </Text>
-              </Text>
-            }
-            right={
-              <Text
-                appearance="gray"
-                bold
-                size="lg"
-                onPress={() => console.log(`${i * 100}pts pressed`)}
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaProvider>
+        <ThemeProvider theme={theme}>
+          <ToastProvider>
+            <NavigationContainer>
+              <Stack.Navigator
+                screenOptions={{ headerShown: false, animation: 'none' }}
+                // initialRouteName="MainTabs"
               >
-                {i * 100}pts
-              </Text>
-            }
-          />
-        ))}
-      </ScrollView>
-
-      <StatusBar style="auto" />
-    </View>
+                <Stack.Screen name="Landing" component={LandingScreen} />
+                <Stack.Screen name="Login" component={LoginScreen} />
+                <Stack.Screen name="LoginForm" component={LoginFormScreen} />
+                <Stack.Screen name="SignUp" component={SignUpScreen} />
+                <Stack.Screen name="MainTabs" component={MainTabs} />
+                <Stack.Screen name="AllGyms" component={AllGymsScreen} />
+                <Stack.Screen name="Gym" component={GymScreen} />
+                <Stack.Screen name="Notifications" component={NotificationsScreen} />
+                <Stack.Screen name="UserProfile" component={UserProfile} />
+                <Stack.Screen name="UserRelations" component={UserRelationsScreen} />
+                <Stack.Screen name="Settings" component={SettingsScreen} />
+                <Stack.Screen
+                  name="NotificationsSettings"
+                  component={NotificationsSettingsScreen}
+                />
+                <Stack.Screen name="LikedPosts" component={LikedPostsScreen} />
+                <Stack.Screen name="MyComments" component={MyCommentsScreen} />
+                <Stack.Screen name="Mentions" component={MentionsScreen} />
+                <Stack.Screen name="AccountPrivacy" component={AccountPrivacyScreen} />
+                <Stack.Screen name="CloseFriends" component={CloseFriendsScreen} />
+                <Stack.Screen name="BlockedAccounts" component={BlockedAccountsScreen} />
+                <Stack.Screen name="Appearance" component={AppearanceScreen} />
+                <Stack.Screen name="Language" component={LanguageScreen} />
+                <Stack.Screen name="Conversations" component={ConversationsScreen} />
+                <Stack.Screen name="Chat" component={ChatScreen} />
+                <Stack.Screen name="NewConversation" component={NewConversationScreen} />
+              </Stack.Navigator>
+            </NavigationContainer>
+          </ToastProvider>
+        </ThemeProvider>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
   );
 }

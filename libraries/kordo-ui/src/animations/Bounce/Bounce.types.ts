@@ -1,3 +1,4 @@
+import { StyleProp, ViewStyle } from 'react-native';
 export interface BounceProps {
   children: React.ReactNode;
   /** Target scale when pressed (0.8 = strong, 1 = no effect) */
@@ -7,7 +8,7 @@ export interface BounceProps {
   /** Callback fired on press */
   onPress?: () => void;
   /** Custom styles applied to the wrapper */
-  style?: any;
+  style?: StyleProp<ViewStyle>;
   /** Disables interaction and animation */
   disabled?: boolean;
 }

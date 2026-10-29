@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<title>Kordo — Dossier de Présentation</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+
+  :root {
+    --green: #3f8f6b;
+    --green-dark: #2f6e52;
+    --green-soft: #eaf3ee;
+    --orange: #e0902f;
+    --orange-soft: #fbf2e3;
+    --dark: #2b2b2b;
+    --text: #232323;
+    --muted: #6b6b6b;
+    --line: #e2e2de;
+    --row-alt: #f7f8f6;
+    --purple: #7e57a8;
+    --blue: #3f78b5;
+    --red: #d0603b;
+  }
+
+  * { box-sizing: border-box; }
+
+  @page {
+    size: A4;
+    margin: 18mm 16mm 16mm 16mm;
+  }
+
+  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+  body {
+    font-family: 'Outfit', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    font-size: 10.5pt;
+    line-height: 1.5;
+    margin: 0;
+    padding: 0;
+  }
+
+  p { margin: 0 0 9px; }
+  strong { font-weight: 600; }
+
+  /* ---------- COVER ---------- */
+  .cover {
+    height: 261mm;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    page-break-after: always;
+  }
+  .cover .brand {
+    font-size: 64pt;
+    font-weight: 800;
+    letter-spacing: -1px;
+    color: var(--dark);
+    line-height: 1;
+  }
+  .cover .tagline {
+    font-size: 14pt;
+    color: var(--muted);
+    margin-top: 8px;
+    font-weight: 400;
+  }
+  .cover .rule {
+    width: 220px;
+    height: 4px;
+    margin: 26px 0;
+    background: linear-gradient(90deg, var(--orange) 0 50%, var(--green) 50% 100%);
+    border-radius: 2px;
+  }
+  .cover .doc-type {
+    font-size: 26pt;
+    font-weight: 700;
+    color: var(--green-dark);
+    margin-top: 4px;
+  }
+  .cover .subtitle {
+    font-size: 11pt;
+    color: var(--muted);
+    margin-top: 10px;
+    letter-spacing: .3px;
+  }
+  .cover .meta {
+    margin-top: 70px;
+    font-size: 10pt;
+    color: var(--muted);
+  }
+
+  /* ---------- TOC ---------- */
+  .toc { page-break-after: always; }
+  .toc h2 {
+    font-size: 20pt;
+    color: var(--green-dark);
+    margin: 0 0 18px;
+  }
+  .toc .part {
+    font-size: 11pt;
+    font-weight: 700;
+    color: var(--orange);
+    text-transform: uppercase;
+    letter-spacing: .6px;
+    margin: 18px 0 8px;
+  }
+  .toc ol { margin: 0; padding: 0; list-style: none; }
+  .toc li {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    border-bottom: 1px dotted var(--line);
+    font-size: 11pt;
+  }
+  .toc li .num { color: var(--green); font-weight: 700; width: 26px; }
+  .toc li .label { flex: 1; }
+
+  /* ---------- CHAPTERS ---------- */
+  .chapter { page-break-before: always; }
+  .chapter-head { margin-bottom: 18px; }
+  .chapter-head .part-label {
+    font-size: 9.5pt;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--orange);
+  }
+  .chapter-head h1 {
+    font-size: 24pt;
+    font-weight: 700;
+    color: var(--dark);
+    margin: 4px 0 0;
+    line-height: 1.1;
+  }
+  .chapter-head .lead {
+    color: var(--muted);
+    font-size: 10.5pt;
+    margin-top: 8px;
+    max-width: 92%;
+  }
+  .chapter-head .head-rule {
+    height: 3px;
+    width: 100%;
+    background: linear-gradient(90deg, var(--green) 0 64px, var(--orange) 64px 110px, var(--line) 110px 100%);
+    margin-top: 14px;
+    border-radius: 2px;
+  }
+
+  .banner {
+    background: var(--green);
+    color: #fff;
+    font-weight: 600;
+    font-size: 12pt;
+    padding: 9px 14px;
+    border-radius: 5px;
+    margin: 22px 0 12px;
+  }
+  .banner.orange { background: var(--orange); }
+  .banner.dark { background: var(--dark); }
+
+  h3.sub { font-size: 11.5pt; color: var(--green-dark); margin: 18px 0 8px; }
+
+  /* ---------- TABLES ---------- */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 6px 0 14px;
+    font-size: 9.5pt;
+  }
+  thead { display: table-header-group; }
+  tr { break-inside: avoid; page-break-inside: avoid; }
+  th {
+    background: var(--dark);
+    color: #fff;
+    text-align: left;
+    padding: 8px 10px;
+    font-weight: 600;
+    vertical-align: top;
+  }
+  td {
+    padding: 7px 10px;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+  tbody tr:nth-child(even) td { background: var(--row-alt); }
+  table.green th { background: var(--green); }
+  table.orange th { background: var(--orange); }
+
+  td.nowrap, th.nowrap { white-space: nowrap; }
+  td.center, th.center { text-align: center; }
+
+  .epic-row td {
+    background: var(--green-soft) !important;
+    color: var(--green-dark);
+    font-weight: 700;
+    font-size: 9.5pt;
+    border-bottom: 1px solid var(--line);
+  }
+  .epic-row.blue td { background: #e8f0f8 !important; color: var(--blue); }
+  .epic-row.orange td { background: var(--orange-soft) !important; color: #b9711a; }
+  .epic-row.purple td { background: #f1eaf7 !important; color: var(--purple); }
+
+  .prio-crit { color: #c0392b; font-weight: 700; }
+  .prio-haute { color: #d3791a; font-weight: 700; }
+  .prio-moy { color: #2f6e52; font-weight: 700; }
+  .prio-faible { color: var(--muted); font-weight: 600; }
+
+  /* ---------- INFO BOXES ---------- */
+  .kv {
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    overflow: hidden;
+    margin: 8px 0 14px;
+  }
+  .kv .row { display: flex; border-bottom: 1px solid var(--line); }
+  .kv .row:last-child { border-bottom: none; }
+  .kv .k {
+    width: 32%;
+    background: var(--green-soft);
+    color: var(--green-dark);
+    font-weight: 600;
+    padding: 9px 12px;
+  }
+  .kv .v { flex: 1; padding: 9px 12px; }
+
+  .cols { display: flex; gap: 14px; margin: 8px 0 14px; }
+  .col {
+    flex: 1;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 12px 14px;
+    break-inside: avoid;
+  }
+  .col h4 { margin: 0 0 8px; font-size: 11pt; color: var(--green-dark); }
+  .col.blue h4 { color: var(--blue); }
+  .col.orange h4 { color: #b9711a; }
+  .col.purple h4 { color: var(--purple); }
+  .col ul { margin: 0; padding-left: 16px; }
+  .col li { margin: 4px 0; }
+
+  ul.clean { margin: 6px 0 14px; padding-left: 18px; }
+  ul.clean li { margin: 5px 0; }
+
+  .inout { display: flex; gap: 0; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+  .inout .side { flex: 1; }
+  .inout .side h4 { margin: 0; padding: 9px 12px; color: #fff; font-size: 10.5pt; }
+  .inout .in h4 { background: var(--green); }
+  .inout .out h4 { background: #8a8a8a; }
+  .inout ul { margin: 0; padding: 10px 12px 12px 28px; }
+  .inout .in li { margin: 5px 0; }
+  .inout .out li { margin: 5px 0; color: var(--muted); }
+  .inout .in { border-right: 1px solid var(--line); }
+
+  .note {
+    background: var(--orange-soft);
+    border-left: 3px solid var(--orange);
+    padding: 10px 14px;
+    border-radius: 0 5px 5px 0;
+    font-size: 9.5pt;
+    color: #5a4321;
+    margin: 14px 0;
+  }
+  .note.green { background: var(--green-soft); border-left-color: var(--green); color: var(--green-dark); }
+
+  /* ---------- STORY MAP ---------- */
+  .smap { width: 100%; border-collapse: separate; border-spacing: 4px; font-size: 8.4pt; }
+  .smap th {
+    color: #fff; text-align: center; padding: 7px 4px; border-radius: 4px; font-size: 8.6pt;
+  }
+  .smap .act td {
+    text-align: center; font-style: italic; color: #444; padding: 6px 4px;
+    background: #f0f0ec; border-radius: 4px; font-size: 8pt;
+  }
+  .smap td.cell {
+    text-align: center; padding: 7px 4px; border-radius: 4px; background: var(--green-soft);
+    color: #234; height: 30px;
+  }
+  .smap td.post { background: #efefef; color: #999; font-style: italic; }
+  .smap td.empty { background: transparent; }
+  .smap-line {
+    height: 4px; background: var(--orange); border-radius: 2px; margin: 6px 0 4px;
+  }
+
+  /* ---------- USER STORY CARD ---------- */
+  .us {
+    border: 1px solid var(--line); border-radius: 8px; padding: 16px 18px; margin: 16px 0;
+    break-inside: avoid;
+  }
+  .us .us-head { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+  .us .us-id {
+    background: var(--orange); color: #fff; font-weight: 700; border-radius: 6px;
+    padding: 6px 10px; font-size: 11pt; min-width: 52px; text-align: center;
+  }
+  .us .us-title { font-size: 13pt; font-weight: 700; color: var(--dark); flex: 1; }
+  .us .us-sprint { background: var(--green); color: #fff; padding: 4px 10px; border-radius: 4px; font-size: 9pt; }
+  .us .lbl { font-size: 9pt; font-weight: 700; color: var(--green); text-transform: uppercase; letter-spacing: .5px; margin: 12px 0 4px; }
+  .us .persona { color: var(--green-dark); font-style: italic; font-weight: 500; }
+  .us .story-quote {
+    border: 1px solid var(--orange); border-radius: 8px; padding: 10px 14px; color: #444;
+    font-style: italic; background: #fffdf9;
+  }
+  .us ol.ac { margin: 4px 0 0; padding-left: 20px; }
+  .us ol.ac li { margin: 5px 0; }
+
+  .timeline { display: flex; gap: 10px; margin: 8px 0 16px; }
+  .tl {
+    flex: 1; border: 1px solid var(--line); border-top: 4px solid var(--green);
+    border-radius: 6px; padding: 10px 12px; break-inside: avoid;
+  }
+  .tl.s1 { border-top-color: #9aa0a6; }
+  .tl.s2 { border-top-color: var(--green); }
+  .tl.s3 { border-top-color: var(--blue); }
+  .tl.s4 { border-top-color: var(--orange); }
+  .tl h4 { margin: 0 0 2px; font-size: 10pt; }
+  .tl .when { color: var(--muted); font-size: 8.6pt; font-style: italic; margin-bottom: 6px; }
+  .tl ul { margin: 0; padding-left: 15px; font-size: 9pt; }
+  .tl li { margin: 3px 0; }
+
+  .muted-foot { color: var(--muted); font-size: 8.8pt; font-style: italic; margin-top: 8px; }
+  .avoid { break-inside: avoid; page-break-inside: avoid; }
+</style>
+</head>
+<body>
+
+<!-- ============================ COVER ============================ -->
+<section class="cover">
+  <div class="brand">Kordo</div>
+  <div class="tagline">Réseau social d'escalade indoor</div>
+  <div class="rule"></div>
+  <div class="doc-type">Dossier de Présentation</div>
+  <div class="subtitle">Pitch · Étude de marché · Business Plan · MVP · Backlog · Roadmap</div>
+  <div class="meta">Projet de Fin d'Études · 2025–2026</div>
+</section>
+
+<!-- ============================ SOMMAIRE ============================ -->
+<section class="toc">
+  <h2>Sommaire</h2>
+
+  <div class="part">Partie I — Présentation &amp; Vision</div>
+  <ol>
+    <li><span class="num">1</span><span class="label">Pitch — Le concept Kordo</span></li>
+  </ol>
+
+  <div class="part">Partie II — Stratégie Business</div>
+  <ol>
+    <li><span class="num">2</span><span class="label">Étude de marché</span></li>
+    <li><span class="num">3</span><span class="label">Business Model</span></li>
+    <li><span class="num">4</span><span class="label">Business Plan</span></li>
+  </ol>
+
+  <div class="part">Partie III — Conception Produit</div>
+  <ol>
+    <li><span class="num">5</span><span class="label">Définition du MVP</span></li>
+    <li><span class="num">6</span><span class="label">User Stories</span></li>
+    <li><span class="num">7</span><span class="label">Story Mapping</span></li>
+    <li><span class="num">8</span><span class="label">Backlog priorisé</span></li>
+    <li><span class="num">9</span><span class="label">Roadmap produit</span></li>
+  </ol>
+
+  <div class="part">Partie IV — Organisation</div>
+  <ol>
+    <li><span class="num">10</span><span class="label">Équipe idéale</span></li>
+  </ol>
+</section>
+
+<!-- ============================ 1. PITCH ============================ -->
+<section class="chapter">
+  <div class="chapter-head">
+    <div class="part-label">Partie I — Présentation &amp; Vision</div>
+    <h1>1. Pitch — Le concept Kordo</h1>
+    <p class="lead">Kordo est une application mobile qui réunit, pour la première fois en un seul produit, le suivi de performance, le réseau social et l'exploration des salles d'escalade indoor.</p>
+    <div class="head-rule"></div>
+  </div>
+
+  <div class="banner">Le problème</div>
+  <p>Aujourd'hui, un grimpeur jongle entre <strong>quatre outils disparates</strong> : Instagram pour partager ses sessions, une feuille de calcul pour suivre sa progression, une messagerie pour trouver un partenaire, et le tableau de la salle pour repérer les blocs. Rien ne parle d'escalade indoor de bout en bout.</p>
+
+  <div class="banner">La proposition de valeur</div>
+  <p>Chaque acteur du marché ne couvre qu'<strong>une partie</strong> du besoin : Arkose+ gère la salle, Strava le social sportif, Instagram le partage, 8a.nu le carnet de voies. <strong>Aucun ne réunit tout pour l'escalade indoor.</strong> C'est exactement la zone que Kordo occupe.</p>
+
+  <div class="cols">
+    <div class="col">
+      <h4>Concept général</h4>
+      <ul>
+        <li>Suivi des séances d'escalade</li>
+        <li>Partage social avec d'autres grimpeurs</li>
+        <li>Découverte des salles et des blocs</li>
+        <li>Rencontres en réel (Meet)</li>
+      </ul>
+    </div>
+    <div class="col blue">
+      <h4>Fonctionnalités principales</h4>
+      <ul>
+        <li>Authentification (email + Google / Apple)</li>
+        <li>Fil d'actualité social</li>
+        <li>4 types de publication (Post, Message, Activité, Now)</li>
+        <li>Profils utilisateurs détaillés</li>
+        <li>Messagerie privée</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="banner orange">Indoor — le cœur de l'app</div>
+  <div class="cols">
+    <div class="col orange">
+      <h4>Salles &amp; blocs</h4>
+      <ul>
+        <li>Annuaire de salles partenaires (Arkose, Climb Up…)</li>
+        <li>Filtres : favoris, populaires, récemment visitées</li>
+        <li>Liste des blocs avec filtres avancés</li>
+        <li>Validation des blocs par l'utilisateur</li>
+        <li>Vidéos de méthode publiables sur la fiche d'un bloc</li>
+        <li>Classements par salle et par période</li>
+      </ul>
+    </div>
+    <div class="col">
+      <h4>Les 4 types de publication</h4>
+      <ul>
+        <li><strong>Post</strong> — photo et contenu libre, façon Instagram</li>
+        <li><strong>Message</strong> — texte court, façon tweet</li>
+        <li><strong>Activité</strong> — une séance : salle, blocs validés, vidéos de méthode et grimpeurs croisés, façon Strava</li>
+        <li><strong>Now</strong> — « Valentino grimpe actuellement à Nation »</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="banner">Vision long terme</div>
+  <div class="cols">
+    <div class="col purple">
+      <h4>Statistiques &amp; progression</h4>
+      <ul>
+        <li>Graphiques de progression</li>
+        <li>Calendrier d'activité</li>
+        <li>Analyse des blocs par niveau</li>
+        <li>Suivi du temps et des performances</li>
+      </ul>
+    </div>
+    <div class="col">
+      <h4>Gamification</h4>
+      <ul>
+        <li>Badges et trophées</li>
+        <li>Classements</li>
+        <li>Objectifs à débloquer</li>
+      </ul>
+    </div>
+    <div class="col blue">
+      <h4>Meet &amp; paramètres</h4>
+      <ul>
+        <li>Détection des grimpeurs présents</li>
+        <li>Connexion avec les personnes croisées</li>
+        <li>Confidentialité, notifications, thèmes, langues</li>
+      </ul>
+    </div>
+  </div>
+  <p class="muted-foot">Les sections « Statistiques », « Gamification » et « Meet » décrivent la vision produit complète ; leur périmètre exact pour le premier lancement est défini au chapitre 5 (MVP).</p>
+</section>
+
+<!-- ============================ 2. ÉTUDE DE MARCHÉ ============================ -->
+<section class="chapter">
+  <div class="chapter-head">
+    <div class="part-label">Partie II — Stratégie Business</div>
+    <h1>2. Étude de marché</h1>
+    <p class="lead">L'escalade indoor connaît une croissance exceptionnelle, portée par les Jeux Olympiques de Paris 2024. Kordo se positionne sur une fenêtre d'opportunité encore ouverte.</p>
+    <div class="head-rule"></div>
+  </div>
+
+  <div class="banner">1. Le secteur — escalade indoor</div>
+  <table class="green">
+    <thead><tr><th>Indicateur</th><th>France</th><th>Europe</th><th>Tendance</th></tr></thead>
+    <tbody>
+      <tr><td>Pratiquants</td><td>1,2 million</td><td>8+ millions</td><td>+12 %/an</td></tr>
+      <tr><td>Salles indoor</td><td>600+</td><td>3 500+</td><td>+15 %/an</td></tr>
+      <tr><td>Âge médian</td><td>28 ans</td><td>26 ans</td><td>Gen Z ↑</td></tr>
+      <tr><td>Boost JO Paris 2024</td><td>+25 % inscriptions</td><td>+18 % affiliations</td><td>Durable</td></tr>
+    </tbody>
+  </table>
+
+  <h3 class="sub">Marché adressable (TAM / SAM / SOM) — en nombre de grimpeurs</h3>
+  <table>
+    <thead><tr><th>Niveau</th><th>Périmètre</th><th class="nowrap">Estimation</th></tr></thead>
+    <tbody>
+      <tr><td class="nowrap"><strong>TAM</strong></td><td>Grimpeurs dans le monde, toutes pratiques confondues</td><td class="nowrap">≈ 44,5 millions de personnes</td></tr>
+      <tr><td class="nowrap"><strong>SAM</strong></td><td>Grimpeurs indoor en Europe équipés d'un smartphone</td><td class="nowrap">≈ 8 millions de personnes</td></tr>
+      <tr><td class="nowrap"><strong>SOM</strong></td><td>France + Benelux, an 1–3, pénétration réaliste ~5 %</td><td class="nowrap">≈ 75 000 personnes</td></tr>
+    </tbody>
+  </table>
+  <div class="note green">Le TAM mesure l'univers mondial des grimpeurs ; le SAM le restreint aux grimpeurs indoor européens accessibles via mobile ; le SOM représente la cible réaliste capturée sur les trois premières années.</div>
+
+  <div class="banner">2. Segmentation du marché</div>
+  <table>
+    <thead><tr><th>Segment</th><th>Profil</th><th>Besoin principal</th><th class="nowrap">Taille (FR)</th></tr></thead>
+    <tbody>
+      <tr><td>Grimpeurs amateurs</td><td>18–35 ans, 1–2 séances/sem, motivés par le social</td><td>Trouver des partenaires, suivre sa progression</td><td class="nowrap">650 000</td></tr>
+      <tr><td>Grimpeurs confirmés</td><td>Entraînement structuré, grade 6b+, objectifs compétitifs</td><td>Stats détaillées, historique, classements</td><td class="nowrap">400 000</td></tr>
+      <tr><td>Compétiteurs</td><td>Licenciés FFME, séances dirigées, agenda coupes</td><td>Résultats, comparaison pairs, coaching</td><td class="nowrap">25 000</td></tr>
+      <tr><td>Salles (B2B)</td><td>Arkose, Climb Up, Block'Out, indépendantes</td><td>Analytics clients, fidélisation, gestion blocs</td><td class="nowrap">600+ salles</td></tr>
+      <tr><td>Ouvreurs / Setters</td><td>Pros ou bénévoles, gèrent le catalogue de blocs</td><td>Gestion des voies, retours grimpeurs, visibilité</td><td class="nowrap">3 000–5 000</td></tr>
+    </tbody>
+  </table>
+
+  <div class="banner">3. Analyse concurrentielle</div>
+  <p>Arkose+ couvre <strong>la salle</strong>, Strava <strong>le social sportif</strong>, Instagram <strong>le partage</strong>, 8a.nu <strong>le carnet de blocs</strong>. Chacun excelle sur une brique — mais <strong>aucun ne réunit gestion de salle indoor, suivi de progression et couche sociale</strong> dans un seul produit. C'est la zone blanche que Kordo occupe.</p>
+  <table>
+    <thead><tr><th>Acteur</th><th>Cible</th><th>Forces</th><th>Ce qui lui manque</th><th>Différence vs Kordo</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>Arkose+</strong></td><td>Clients de la chaîne Arkose</td>
+        <td>App de salle : réservation, horaires, infos pratiques</td>
+        <td>Mono-enseigne, pas de social ouvert, pas de tracking multi-salles</td>
+        <td>Kordo est multi-salles, social natif et tracking universel</td>
+      </tr>
+      <tr>
+        <td><strong>Strava</strong></td><td>Sportifs (running, vélo)</td>
+        <td>Feed social puissant, segments, gamification, communauté massive</td>
+        <td>Pas d'escalade indoor, ni blocs, ni grades, ni salles</td>
+        <td>Kordo verticalise l'escalade indoor (blocs, grades, salles)</td>
+      </tr>
+      <tr>
+        <td><strong>Instagram</strong></td><td>Grand public</td>
+        <td>Audience massive, partage photo/vidéo, reels</td>
+        <td>Aucune donnée grimpe structurée, pas de classement ni de blocs</td>
+        <td>Kordo structure la donnée escalade</td>
+      </tr>
+      <tr>
+        <td><strong>8a.nu</strong></td><td>Grimpeurs (voies / outdoor)</td>
+        <td>Carnet de voies, base de données, classement mondial</td>
+        <td>Orienté outdoor/voies, UX datée, indoor &amp; social faibles</td>
+        <td>Kordo est indoor-first : salles partenaires, vidéos de méthode, social moderne</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="banner">4. Analyse SWOT</div>
+  <div class="cols">
+    <div class="col"><h4>Forces</h4><ul>
+      <li>Premier réseau social dédié escalade indoor</li>
+      <li>Approche B2B2C : revenus salles + grimpeurs</li>
+      <li>Stack moderne (React Native, Expo, Supabase)</li>
+      <li>Design system Kordo-UI cross-platform</li>
+      <li>Vidéos de méthode sur les blocs — unique</li>
+    </ul></div>
+    <div class="col orange"><h4>Faiblesses</h4><ul>
+      <li>Phase PFE : équipe réduite, 0 traction commerciale</li>
+      <li>Pas de financement initial</li>
+      <li>Dépendance à l'adoption B2B (salles)</li>
+      <li>Notoriété nulle au démarrage</li>
+      <li>Fonctionnalités partielles au MVP</li>
+    </ul></div>
+  </div>
+  <div class="cols">
+    <div class="col blue"><h4>Opportunités</h4><ul>
+      <li>Marché en croissance +12 %/an</li>
+      <li>Boost durable post-JO Paris 2024</li>
+      <li>Gen Z grimpeurs très tech-native</li>
+      <li>Peu de concurrents sur l'indoor social</li>
+      <li>Modèle SaaS B2B scalable (600+ salles en France)</li>
+    </ul></div>
+    <div class="col purple"><h4>Menaces</h4><ul>
+      <li>Strava ou une enseigne (Arkose) pourrait combler la brique manquante</li>
+      <li>Instagram / TikTok captent l'attention</li>
+      <li>Coût d'acquisition B2B (cycles longs)</li>
+      <li>RGPD sur les données sportives</li>
+      <li>Risque de copie sans effet de réseau rapide</li>
+    </ul></div>
+  </div>
+
+  <div class="banner">5. Cinq forces de Porter</div>
+  <table>
+    <thead><tr><th>Force</th><th class="nowrap center">Intensité</th><th>Analyse Kordo</th></tr></thead>
+    <tbody>
+      <tr><td>Rivalité entre concurrents</td><td class="center">Modérée</td><td>Strava, 8a.nu, Arkose+ présents mais aucun n'est indoor social complet</td></tr>
+      <tr><td>Menace de nouveaux entrants</td><td class="center">Modérée</td><td>Barrière technique faible, mais l'effet de réseau crée un fossé économique</td></tr>
+      <tr><td>Pouvoir des clients B2B</td><td class="center">Faible</td><td>Les salles ont peu d'alternatives SaaS spécialisées escalade</td></tr>
+      <tr><td>Pouvoir des fournisseurs</td><td class="center">Faible</td><td>Infrastructure cloud standard (Supabase, AWS) compétitive</td></tr>
+      <tr><td>Produits de substitution</td><td class="center">Forte</td><td>Instagram, tableurs, apps propriétaires d'enseignes (Arkose+)</td></tr>
+    </tbody>
+  </table>
+
+  <div class="banner">6. Synthèse &amp; positionnement</div>
+  <p>Le marché de l'escalade indoor est à un point d'inflexion. La croissance organique, amplifiée par l'effet JO 2024, ouvre une fenêtre de <strong>18 à 36 mois</strong> avant que les acteurs établis n'investissent massivement. Kordo se positionne comme la <strong>plateforme verticale complète</strong> : social natif, tracking individuel et gestion B2B des salles.</p>
+  <table>
+    <tbody>
+      <tr><td class="nowrap"><strong>Cœur de valeur</strong></td><td>Réseau social escalade indoor + tracking + gestion de salle en un seul produit</td></tr>
+      <tr><td class="nowrap"><strong>Public prioritaire</strong></td><td>Grimpeurs 18–35 ans en salle + salles indépendantes et chaînes</td></tr>
+      <tr><td class="nowrap"><strong>Modèle</strong></td><td>B2B2C : SaaS salle + freemium grimpeur + premium individuel</td></tr>
+      <tr><td class="nowrap"><strong>Différenciation</strong></td><td>Seule app indoor social native — vs Arkose+ (mono-enseigne), Strava (pas d'escalade), Instagram (générique), 8a.nu (outdoor/voies)</td></tr>
+      <tr><td class="nowrap"><strong>Avantage défensif</strong></td><td>Effet de réseau : plus de grimpeurs → plus de salles → plus de données → meilleur produit</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ============================ 3. BUSINESS MODEL ============================ -->
+<section class="chapter">
+  <div class="chapter-head">
+    <div class="part-label">Partie II — Stratégie Business</div>
+    <h1>3. Business Model</h1>
+    <p class="lead">Kordo repose sur un modèle hybride B2B2C combinant plusieurs sources de revenus complémentaires, alignées sur l'usage réel de la plateforme.</p>
+    <div class="head-rule"></div>
+  </div>
+
+  <div class="banner">Sources de revenus</div>
+  <table>
+    <thead><tr><th>Source</th><th>Cible</th><th>Mécanisme</th><th class="nowrap">Estimation</th></tr></thead>
+    <tbody>
+      <tr><td>Setup Fee (onboarding)</td><td>Salles B2B</td><td>Frais unique d'intégration, configuration des blocs, formation</td><td class="nowrap">500 – 2 000 €/salle</td></tr>
+      <tr><td>SaaS récurrent</td><td>Salles B2B</td><td>Abonnement mensuel selon le nombre d'utilisateurs actifs de la salle</td><td class="nowrap">1 – 3 €/user/mois</td></tr>
+      <tr><td>Premium B2C</td><td>Grimpeurs</td><td>Abonnement individuel : stats avancées, badges exclusifs, insights</td><td class="nowrap">4,99 €/mois</td></tr>
+      <tr><td>Freemium B2C</td><td>Grimpeurs</td><td>Accès gratuit : feed, profil, blocs — acquisition &amp; rétention</td><td class="nowrap">0 € — masse critique</td></tr>
+      <tr><td>Data B2B (futur)</td><td>Salles / marques</td><td>Rapports agrégés anonymisés sur les tendances de grimpe</td><td class="nowrap">An 3+</td></tr>
+    </tbody>
+  </table>
+
+  <div class="banner">Détail des piliers</div>
+  <h3 class="sub">1. Frais d'installation (Setup Fee)</h3>
+  <p>Chaque salle paie un montant unique pour intégrer Kordo : ajout de la salle dans la base, configuration des blocs, mise en place des ouvreurs et préparation du système de check-in dématérialisé.</p>
+  <h3 class="sub">2. Revenus récurrents basés sur l'usage</h3>
+  <p>Les salles paient selon l'activité réelle mesurée via le check-in. Un utilisateur est considéré actif lorsqu'il entre dans une salle et valide son entrée. La facturation s'appuie sur le nombre d'utilisateurs actifs par mois et par salle.</p>
+  <h3 class="sub">3. Compte Premium (B2C)</h3>
+  <p>Les grimpeurs peuvent souscrire un compte premium ouvrant l'accès à des fonctionnalités avancées : statistiques détaillées, badges exclusifs et éléments de personnalisation.</p>
+  <h3 class="sub">4. Logique de tracking</h3>
+  <p>La carte dématérialisée trace chaque entrée en salle, garantissant une mesure précise et fiable de l'activité réelle — socle de la facturation B2B.</p>
+
+  <div class="note">Le check-in dématérialisé et le compte Premium structurent le modèle économique à terme. Ils ne font pas partie du périmètre du premier lancement (voir chapitre 5 — MVP), qui valide d'abord l'usage et la rétention avant la monétisation.</div>
+</section>
+
+<!-- ============================ 4. BUSINESS PLAN ============================ -->
+<section class="chapter">
+  <div class="chapter-head">
+    <div class="part-label">Partie II — Stratégie Business</div>
+    <h1>4. Business Plan</h1>
+    <p class="lead">De la vision au déploiement commercial : mission, proposition de valeur, stratégie go-to-market et projections financières.</p>
+    <div class="head-rule"></div>
+  </div>
+
+  <div class="banner">1. Vision &amp; mission</div>
+  <div class="kv">
+    <div class="row"><div class="k">Vision</div><div class="v">Devenir la référence mondiale des grimpeurs indoor : l'app qu'on ouvre avant de décoller du sol et après avoir posé les mains sur le dernier hold.</div></div>
+    <div class="row"><div class="k">Mission</div><div class="v">Connecter chaque grimpeur à sa salle, à ses partenaires et à sa progression — en transformant chaque session en données exploitables et en moments partagés.</div></div>
+    <div class="row"><div class="k">Problème résolu</div><div class="v">Les grimpeurs utilisent 3–4 outils disparates (Instagram, tableur, messagerie, tableau en salle). Kordo unifie tout.</div></div>
+    <div class="row"><div class="k">Proposition unique</div><div class="v">La seule plateforme indoor-native combinant réseau social vertical, tracking structuré, vidéos de méthode et analytics B2B.</div></div>
+  </div>
+
+  <div class="banner">2. Proposition de valeur</div>
+  <div class="cols">
+    <div class="col"><h4>Pour les grimpeurs</h4><ul>
+      <li>Suivi de progression (blocs validés, grades)</li>
+      <li>Feed social pour partager ses sessions</li>
+      <li>Vidéos de méthode sur les blocs</li>
+      <li>Trouver des partenaires de grimpe</li>
+      <li>Messagerie intégrée</li>
+    </ul></div>
+    <div class="col blue"><h4>Pour les salles</h4><ul>
+      <li>Check-in numérique des clients</li>
+      <li>Analytics : fréquentation, grades populaires</li>
+      <li>Gestion du catalogue de blocs</li>
+      <li>Fidélisation via une app branded</li>
+      <li>Revenus SaaS prévisibles</li>
+    </ul></div>
+    <div class="col orange"><h4>Différenciateurs</h4><ul>
+      <li>Indoor-first (vs 8a.nu outdoor)</li>
+      <li>Multi-salles (vs Arkose+ mono-enseigne)</li>
+      <li>Verticalisé escalade (vs Strava / Instagram)</li>
+      <li>Vidéos de méthode sur les blocs</li>
+      <li>Cross-platform iOS + Android</li>
+    </ul></div>
+  </div>
+
+  <div class="banner">3. Marché cible</div>
+  <table>
+    <thead><tr><th>Segment</th><th class="nowrap">Volume</th><th>Profil</th><th>Besoin</th></tr></thead>
+    <tbody>
+      <tr><td>Grimpeurs France</td><td class="nowrap">1,2 M</td><td>18–35 ans, smartphone, 2–4 séances/sem</td><td>Suivi progression, social, motivation</td></tr>
+      <tr><td>Grimpeurs Europe</td><td class="nowrap">8 M</td><td>Même profil — DE, BE, ES, UK en tête</td><td>App indoor universelle</td></tr>
+      <tr><td>Salles indépendantes</td><td class="nowrap">350 (FR)</td><td>Gérants cherchant à fidéliser, sans outils</td><td>SaaS gestion blocs + check-in + analytics</td></tr>
+      <tr><td>Chaînes nationales</td><td class="nowrap">250 (FR)</td><td>Arkose, Climb Up, Block'Out</td><td>Intégration API, white-label, reporting</td></tr>
+      <tr><td>Ouvreurs / Setters</td><td class="nowrap">5 000 (FR)</td><td>Pros et bénévoles, renouvellent les blocs</td><td>Outil de gestion catalogue, retours grimpeurs</td></tr>
+    </tbody>
+  </table>
+
+  <div class="banner">4. Stratégie Go-to-Market</div>
+  <div class="timeline">
+    <div class="tl s1"><h4>Phase 1 — Pilote</h4><div class="when">T3 2026</div><ul>
+      <li>3 salles partenaires recrutées</li>
+      <li>MVP déployé</li>
+      <li>Feedback terrain, itérations</li>
+      <li>Objectif : 500 utilisateurs actifs</li>
+    </ul></div>
+    <div class="tl s2"><h4>Phase 2 — Lancement</h4><div class="when">T4 2026</div><ul>
+      <li>Publication App Store + Play Store</li>
+      <li>Campagne influenceurs escalade</li>
+      <li>PR presse spécialisée</li>
+      <li>Objectif : 3 000 téléchargements</li>
+    </ul></div>
+    <div class="tl s3"><h4>Phase 3 — Croissance</h4><div class="when">2027</div><ul>
+      <li>20 salles partenaires</li>
+      <li>5 000 utilisateurs actifs/mois</li>
+      <li>Premium B2C lancé</li>
+      <li>Équipe : +1 dev, +1 growth</li>
+    </ul></div>
+    <div class="tl s4"><h4>Phase 4 — Expansion</h4><div class="when">2028</div><ul>
+      <li>BE, CH, ES, DE</li>
+      <li>50+ salles, 20 000 utilisateurs</li>
+      <li>Levée Série A (1–2 M€)</li>
+      <li>Compétition &amp; outdoor</li>
+    </ul></div>
+  </div>
+
+  <div class="banner">5. Projections financières</div>
+  <table>
+    <thead><tr><th>Indicateur</th><th class="nowrap">Année 1 (2026)</th><th class="nowrap">Année 2 (2027)</th><th class="nowrap">Année 3 (2028)</th></tr></thead>
+    <tbody>
+      <tr><td>Salles partenaires (B2B)</td><td>3</td><td>20</td><td>50</td></tr>
+      <tr><td>Utilisateurs actifs mensuels</td><td>500</td><td>5 000</td><td>20 000</td></tr>
+      <tr><td>Utilisateurs Premium B2C</td><td>0 (lancement)</td><td>200</td><td>1 500</td></tr>
+      <tr><td>Revenus Setup Fees B2B</td><td class="nowrap">~ 3 000 €</td><td class="nowrap">~ 20 000 €</td><td class="nowrap">~ 35 000 €</td></tr>
+      <tr><td>Revenus SaaS B2B (récurrent)</td><td class="nowrap">~ 500 €/mois</td><td class="nowrap">~ 5 000 €/mois</td><td class="nowrap">~ 15 000 €/mois</td></tr>
+      <tr><td>Revenus Premium B2C</td><td class="nowrap">0 €</td><td class="nowrap">~ 1 000 €/mois</td><td class="nowrap">~ 7 500 €/mois</td></tr>
+      <tr><td><strong>Revenu annuel total</strong></td><td class="nowrap"><strong>~ 9 000 €</strong></td><td class="nowrap"><strong>~ 84 000 €</strong></td><td class="nowrap"><strong>~ 300 000 €</strong></td></tr>
+      <tr><td>Statut financier</td><td>Amorçage</td><td>Seuil de rentabilité</td><td>Croissance rentable</td></tr>
+    </tbody>
+  </table>
+  <p class="muted-foot">Projections conservatrices basées sur une pénétration progressive du marché français, sans financement externe en année 1. Estimations indicatives, dépendantes de la vitesse d'adoption B2B et du taux de conversion freemium → premium.</p>
+</section>
+
+<!-- ============================ 5. MVP ============================ -->
+<section class="chapter">
+  <div class="chapter-head">
+    <div class="part-label">Partie III — Conception Produit</div>
+    <h1>5. Définition du MVP</h1>
+    <p class="lead">Le Minimum Viable Product valide les hypothèses clés du réseau social de bloc indoor auprès d'une première communauté réelle, en livrant le minimum fonctionnel permettant d'obtenir des retours terrain mesurables.</p>
+    <div class="head-rule"></div>
+  </div>
+
+  <div class="banner">1. Objectif du MVP</div>
+  <div class="kv">
+    <div class="row"><div class="k">Périmètre de validation</div><div class="v">3 salles de bloc partenaires intégrées avec leur catalogue complet.</div></div>
+    <div class="row"><div class="k">Communauté cible</div><div class="v">100+ grimpeurs inscrits et actifs sur les 3 premières semaines.</div></div>
+    <div class="row"><div class="k">Plateforme</div><div class="v">Application mobile React Native (iOS + Android) déployée sur les stores.</div></div>
+    <div class="row"><div class="k">Indicateur clé</div><div class="v">Taux de rétention J7 &gt; 40 % — principal signal de product-market fit.</div></div>
+  </div>
+
+  <div class="banner">2. Périmètre — In / Out</div>
+  <div class="inout avoid">
+    <div class="side in">
+      <h4>✓ Dans le MVP</h4>
+      <ul>
+        <li>Authentification email/mot de passe</li>
+        <li>OAuth Google &amp; Apple</li>
+        <li>Profil public + modification profil &amp; avatar</li>
+        <li>Fil d'actualité des abonnés</li>
+        <li>4 publications : Post, Message, Activité, Now (manuel)</li>
+        <li>Like &amp; commentaire</li>
+        <li>Follow / unfollow (abonnés &amp; abonnements)</li>
+        <li>Notifications (centre + push)</li>
+        <li>Messagerie privée 1:1 (sans appel)</li>
+        <li>Salles : liste + filtres (favoris, populaires, récentes)</li>
+        <li>Blocs : catalogue, filtre grade, validation utilisateur</li>
+        <li>Classement grimpeurs par salle &amp; période</li>
+        <li>Vidéos de méthode sur la fiche d'un bloc</li>
+        <li>Paramètres de base</li>
+      </ul>
+    </div>
+    <div class="side out">
+      <h4>✗ Hors MVP</h4>
+      <ul>
+        <li>Check-in dématérialisé (carte Kordo)</li>
+        <li>Now automatique déclenché par le check-in</li>
+        <li>Détection des grimpeurs présents (Meet, géoloc)</li>
+        <li>Résumé hebdomadaire</li>
+        <li>Graphiques de progression</li>
+        <li>Système de badges &amp; trophées</li>
+        <li>Compte Premium B2C</li>
+        <li>Appels dans la messagerie</li>
+        <li>Création d'événements IRL</li>
+        <li>Thèmes / mode sombre</li>
+        <li>Dashboard gérant de salle (B2B)</li>
+        <li>Internationalisation (multilingue)</li>
+      </ul>
+    </div>
+  </div>
+  <div class="note">Le <strong>Now</strong> est publiable <strong>manuellement</strong> dès le MVP. Son déclenchement <strong>automatique</strong> au check-in en salle (carte dématérialisée) arrivera en post-MVP, en même temps que le système de check-in.</div>
+
+  <div class="banner">3. Critères de succès</div>
+  <table>
+    <thead><tr><th>KPI</th><th class="nowrap">Cible</th><th>Mesure</th></tr></thead>
+    <tbody>
+      <tr><td>Salles partenaires actives</td><td class="nowrap">3 salles</td><td>Vérification manuelle</td></tr>
+      <tr><td>Utilisateurs inscrits</td><td class="nowrap">100+</td><td>Analytics</td></tr>
+      <tr><td>Taux de rétention J7</td><td class="nowrap">&gt; 40 %</td><td>Analytics</td></tr>
+      <tr><td>Blocs consultés / session</td><td class="nowrap">&gt; 5</td><td>Analytics</td></tr>
+      <tr><td>Publications / utilisateur actif</td><td class="nowrap">&gt; 1/semaine</td><td>Analytics</td></tr>
+      <tr><td>Note stores</td><td class="nowrap">&gt; 4/5</td><td>App Store / Play Console</td></tr>
+    </tbody>
+  </table>
+
+  <div class="banner">4. Prérequis techniques</div>
+  <ul class="clean">
+    <li><strong>Supabase Auth configuré</strong> — email/password + OAuth (Google, Apple) en production.</li>
+    <li><strong>API REST fonctionnelle</strong> — Gym, Boulder, Video, Post (Post/Message/Activity/Now), User, Follow, Like, Comment, Notification, Message.</li>
+    <li><strong>Comptes développeurs stores</strong> — Apple Developer Program + Google Play Console actifs.</li>
+    <li><strong>3 salles pilotes intégrées</strong> — données salles et catalogues de blocs (grade, ouvreur, photo) importés avant le lancement.</li>
+  </ul>
+  <p class="muted-foot">À l'issue des sprints MVP, une session de recueil de feedback avec les grimpeurs pilotes priorise les évolutions post-MVP (check-in, stats, badges, Premium) selon les usages réels observés.</p>
+</section>
+
+<!-- ============================ 6. USER STORIES ============================ -->
+<section class="chapter">
+  <div class="chapter-head">
+    <div class="part-label">Partie III — Conception Produit</div>
+    <h1>6. User Stories</h1>
+    <p class="lead">Les stories cœur du MVP, formatées avec persona, récit utilisateur et critères d'acceptation.</p>
+    <div class="head-rule"></div>
+  </div>
+
+  <div class="us">
+    <div class="us-head"><div class="us-id">US-01</div><div class="us-title">Authentification &amp; Onboarding</div><div class="us-sprint">Sprint 3</div></div>
+    <div class="lbl">Persona</div>
+    <div class="persona">Lucas — nouveau grimpeur, première utilisation de l'app</div>
+    <div class="lbl">User Story</div>
+    <div class="story-quote">En tant que <strong>nouveau grimpeur</strong>, je veux <strong>créer un compte et me connecter à Kordo</strong> afin d'accéder à la communauté et de commencer à suivre mes sessions.</div>
+    <div class="lbl">Critères d'acceptation</div>
+    <ol class="ac">
+      <li>L'écran de bienvenue affiche une image de fond escalade, le titre « Hey, Welcome to Kordo » et le toggle Sign up / Sign in.</li>
+      <li>Le formulaire Sign up comporte Username, Email, Password ; un message d'erreur s'affiche si un champ est invalide.</li>
+      <li>Le formulaire Sign in comporte Email et Password, avec un lien « forget password ? » fonctionnel.</li>
+      <li>L'authentification Google et Apple est disponible sur les deux formulaires.</li>
+      <li>Après connexion réussie, l'utilisateur est redirigé vers le Home feed.</li>
+      <li>Un token de session est persisté localement (connexion maintenue après fermeture).</li>
+    </ol>
+    <table style="margin-top:12px">
+      <thead><tr><th>Priorité</th><th class="center nowrap">Points</th><th>Composants kordo-ui</th></tr></thead>
+      <tbody><tr><td class="prio-crit">Critique</td><td class="center">8</td><td>Button · Input · Text · Header</td></tr></tbody>
+    </table>
+  </div>
+
+  <div class="us">
+    <div class="us-head"><div class="us-id">US-02</div><div class="us-title">Exploration Indoor — Salles &amp; Blocs</div><div class="us-sprint">Sprint 5</div></div>
+    <div class="lbl">Persona</div>
+    <div class="persona">Sofía — grimpeuse confirmée, cherche des blocs à travailler</div>
+    <div class="lbl">User Story</div>
+    <div class="story-quote">En tant que <strong>grimpeuse régulière</strong>, je veux <strong>consulter les blocs d'une salle, leurs vidéos de méthode et le classement</strong> afin de préparer ma session et me situer dans la communauté.</div>
+    <div class="lbl">Critères d'acceptation</div>
+    <ol class="ac">
+      <li>La page Indoor liste les salles partenaires, filtrables par favoris, populaires et récemment visitées.</li>
+      <li>La page détail d'une salle affiche deux onglets : « Les Blocs » et « Classement » (SegmentedControl).</li>
+      <li>Chaque bloc affiche son grade (BoulderBadge coloré), son nom et son ouvreur.</li>
+      <li>Un filtre par grade permet de n'afficher que les blocs correspondants.</li>
+      <li>L'utilisateur peut marquer un bloc comme validé.</li>
+      <li>La fiche d'un bloc affiche les vidéos de méthode publiées par la communauté.</li>
+      <li>L'onglet Classement affiche le top grimpeurs, filtrable par période (Semaine / Mois / All-time).</li>
+    </ol>
+    <table style="margin-top:12px">
+      <thead><tr><th>Priorité</th><th class="center nowrap">Points</th><th>Composants kordo-ui</th></tr></thead>
+      <tbody><tr><td class="prio-crit">Critique</td><td class="center">13</td><td>BoulderBadge · SegmentedControl · ListRow · Card · Header</td></tr></tbody>
+    </table>
+  </div>
+
+  <div class="us">
+    <div class="us-head"><div class="us-id">US-03</div><div class="us-title">Fil Social &amp; Publications</div><div class="us-sprint">Sprint 4</div></div>
+    <div class="lbl">Persona</div>
+    <div class="persona">Lucas — grimpeur actif, veut partager sa session avec sa communauté</div>
+    <div class="lbl">User Story</div>
+    <div class="story-quote">En tant que <strong>grimpeur connecté</strong>, je veux <strong>publier différents types de contenu et réagir aux publications</strong> afin de documenter ma progression et d'interagir avec la communauté.</div>
+    <div class="lbl">Critères d'acceptation</div>
+    <ol class="ac">
+      <li>Le fil d'actualité affiche les publications des utilisateurs suivis, triées par date décroissante.</li>
+      <li>Le bouton de création permet de choisir le type : Post, Message, Activité ou Now.</li>
+      <li>Le type <strong>Activité</strong> permet de choisir une salle, de cocher les blocs validés ; les vidéos de méthode associées sont automatiquement ajoutées au post.</li>
+      <li>Le type <strong>Now</strong> publie manuellement la présence de l'utilisateur dans une salle.</li>
+      <li>Chaque publication peut être likée et commentée ; les compteurs se mettent à jour sans rechargement complet.</li>
+      <li>Après publication, le contenu est visible sur le profil de l'auteur et dans le fil de ses abonnés.</li>
+    </ol>
+    <table style="margin-top:12px">
+      <thead><tr><th>Priorité</th><th class="center nowrap">Points</th><th>Composants kordo-ui</th></tr></thead>
+      <tbody><tr><td class="prio-haute">Haute</td><td class="center">13</td><td>UserInfo · BoulderBadge · Card · Button · Input · Toast</td></tr></tbody>
+    </table>
+  </div>
+
+  <div class="banner">Récapitulatif des stories MVP</div>
+  <table>
+    <thead><tr><th class="nowrap">US</th><th>Titre</th><th>Épic</th><th class="nowrap">Priorité</th><th class="center nowrap">Points</th></tr></thead>
+    <tbody>
+      <tr><td class="nowrap">US-01</td><td>Authentification &amp; Onboarding</td><td>Onboarding</td><td class="prio-crit">Critique</td><td class="center">8</td></tr>
+      <tr><td class="nowrap">US-02</td><td>Exploration Indoor — Salles &amp; Blocs</td><td>Indoor</td><td class="prio-crit">Critique</td><td class="center">13</td></tr>
+      <tr><td class="nowrap">US-03</td><td>Fil Social &amp; Publications</td><td>Social</td><td class="prio-haute">Haute</td><td class="center">13</td></tr>
+      <tr><td class="nowrap">US-04</td><td>Setup backend (Supabase + Auth)</td><td>Infra</td><td class="prio-crit">Critique</td><td class="center">5</td></tr>
+      <tr><td class="nowrap">US-05</td><td>Setup navigation expo-router</td><td>Infra</td><td class="prio-haute">Haute</td><td class="center">3</td></tr>
+      <tr><td class="nowrap">US-06</td><td>Types domaine : Gym, Boulder, Video, Post</td><td>Core</td><td class="prio-haute">Haute</td><td class="center">3</td></tr>
+      <tr><td class="nowrap">US-07</td><td>Système follow / unfollow</td><td>Social</td><td class="prio-moy">Moyenne</td><td class="center">8</td></tr>
+      <tr><td class="nowrap">US-08</td><td>Profil utilisateur + modification</td><td>Profil</td><td class="prio-moy">Moyenne</td><td class="center">8</td></tr>
+    </tbody>
+  </table>
+  <p class="muted-foot">Estimation en points de Fibonacci. US-04 et US-05 sont des enablers techniques sans critères d'acceptation métier.</p>
+</section>
+
+<!-- ============================ 7. STORY MAPPING ============================ -->
+<section class="chapter">
+  <div class="chapter-head">
+    <div class="part-label">Partie III — Conception Produit</div>
+    <h1>7. Story Mapping</h1>
+    <p class="lead">Les stories sont organisées par parcours utilisateur (colonnes) et par priorité (lignes). La ligne orange délimite la frontière MVP : au-dessus, le périmètre des premiers sprints ; en dessous, la roadmap post-MVP.</p>
+    <div class="head-rule"></div>
+  </div>
+
+  <table class="smap avoid">
+    <thead>
+      <tr>
+        <th style="background:var(--green)">ONBOARDING</th>
+        <th style="background:var(--orange)">INDOOR</th>
+        <th style="background:#c9772f">FEED &amp; SOCIAL</th>
+        <th style="background:var(--purple)">PROFIL</th>
+        <th style="background:var(--blue)">MESSAGES &amp; NOTIFS</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="act">
+        <td>S'inscrire / se connecter</td>
+        <td>Explorer salles &amp; blocs</td>
+        <td>Publier &amp; consommer</td>
+        <td>Gérer son identité</td>
+        <td>Échanger avec la communauté</td>
+      </tr>
+      <tr>
+        <td class="cell">Écran de bienvenue</td>
+        <td class="cell">Liste des salles</td>
+        <td class="cell">Fil d'actualité</td>
+        <td class="cell">Voir un profil public</td>
+        <td class="cell">Centre de notifications</td>
+      </tr>
+      <tr>
+        <td class="cell">Inscription email</td>
+        <td class="cell">Filtres salles (favoris…)</td>
+        <td class="cell">Publier un Post</td>
+        <td class="cell">Modifier profil + avatar</td>
+        <td class="cell">Messagerie 1:1 (sans appel)</td>
+      </tr>
+      <tr>
+        <td class="cell">Connexion + forget pwd</td>
+        <td class="cell">Catalogue blocs + filtre grade</td>
+        <td class="cell">Publier un Message</td>
+        <td class="cell">Follow / Unfollow</td>
+        <td class="cell">Paramètres notifications</td>
+      </tr>
+      <tr>
+        <td class="cell">OAuth Google / Apple</td>
+        <td class="cell">Validation d'un bloc</td>
+        <td class="cell">Publier une Activité</td>
+        <td class="cell">Abonnés / abonnements</td>
+        <td class="empty"></td>
+      </tr>
+      <tr>
+        <td class="empty"></td>
+        <td class="cell">Vidéos de méthode (blocs)</td>
+        <td class="cell">Publier un Now (manuel)</td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+      </tr>
+      <tr>
+        <td class="empty"></td>
+        <td class="cell">Classement salle / période</td>
+        <td class="cell">Like &amp; commentaire</td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="smap-line"></div>
+  <p style="text-align:center; color:var(--orange); font-weight:700; font-size:9.5pt; margin:4px 0 8px;">▲ Frontière MVP — au-dessus : sprints S3–S6 · en dessous : roadmap post-MVP ▼</p>
+
+  <table class="smap avoid">
+    <tbody>
+      <tr>
+        <td class="post">Suppression de compte</td>
+        <td class="post">Check-in dématérialisé</td>
+        <td class="post">Now automatique (check-in)</td>
+        <td class="post">Confidentialité avancée</td>
+        <td class="post">Appels dans la messagerie</td>
+      </tr>
+      <tr>
+        <td class="post">Onboarding guidé</td>
+        <td class="post">Détection grimpeurs (géoloc)</td>
+        <td class="post">Résumé hebdomadaire</td>
+        <td class="post">Graphiques de progression</td>
+        <td class="post">Création d'événements IRL</td>
+      </tr>
+      <tr>
+        <td class="empty"></td>
+        <td class="post">Dashboard gérant (B2B)</td>
+        <td class="post">Badges &amp; trophées</td>
+        <td class="post">Compte Premium</td>
+        <td class="post">Thèmes / multilingue</td>
+      </tr>
+    </tbody>
+  </table>
+  <p class="muted-foot">Légende — Cellules vertes : stories incluses dans le MVP (S3–S6). Cellules grises : stories post-MVP. Ligne orange : frontière MVP / post-MVP.</p>
+</section>
+
+<!-- ============================ 8. BACKLOG ============================ -->
+<section class="chapter">
+  <div class="chapter-head">
+    <div class="part-label">Partie III — Conception Produit</div>
+    <h1>8. Backlog priorisé</h1>
+    <p class="lead">Le backlog recense les user stories par épic, priorisées selon MoSCoW et estimées en points de Fibonacci, réparties sur 4 sprints actifs (S3 à S6) de 2 semaines.</p>
+    <div class="head-rule"></div>
+  </div>
+
+  <table>
+    <thead><tr><th class="nowrap">ID</th><th>Titre</th><th class="nowrap">Priorité</th><th class="center nowrap">Pts</th><th class="center nowrap">Sprint</th><th class="nowrap">Dépend.</th></tr></thead>
+    <tbody>
+      <tr class="epic-row blue"><td colspan="6">ÉPIC AUTH — Authentification · Sprint 3</td></tr>
+      <tr><td class="nowrap">US-A01</td><td>Écran de bienvenue</td><td class="prio-crit">Critique</td><td class="center">3</td><td class="center">S3</td><td>—</td></tr>
+      <tr><td class="nowrap">US-A02</td><td>Inscription email + validation</td><td class="prio-crit">Critique</td><td class="center">5</td><td class="center">S3</td><td>—</td></tr>
+      <tr><td class="nowrap">US-A03</td><td>Connexion email + forget password</td><td class="prio-crit">Critique</td><td class="center">3</td><td class="center">S3</td><td>A02</td></tr>
+      <tr><td class="nowrap">US-A04</td><td>OAuth Google / Apple</td><td class="prio-haute">Haute</td><td class="center">5</td><td class="center">S3</td><td>A02</td></tr>
+
+      <tr class="epic-row purple"><td colspan="6">ÉPIC PROFIL — Identité sociale · Sprint 3</td></tr>
+      <tr><td class="nowrap">US-P01</td><td>Consultation du profil public</td><td class="prio-haute">Haute</td><td class="center">3</td><td class="center">S3</td><td>A01</td></tr>
+      <tr><td class="nowrap">US-P02</td><td>Follow / Unfollow un utilisateur</td><td class="prio-haute">Haute</td><td class="center">5</td><td class="center">S3</td><td>P01</td></tr>
+      <tr><td class="nowrap">US-P03</td><td>Modification du profil (bio, avatar)</td><td class="prio-haute">Haute</td><td class="center">5</td><td class="center">S3</td><td>P01</td></tr>
+      <tr><td class="nowrap">US-P04</td><td>Liste abonnés / abonnements</td><td class="prio-moy">Moyenne</td><td class="center">3</td><td class="center">S3</td><td>P02</td></tr>
+
+      <tr class="epic-row orange"><td colspan="6">ÉPIC FEED — Publications · Sprint 4</td></tr>
+      <tr><td class="nowrap">US-F01</td><td>Fil d'actualité (consultation)</td><td class="prio-crit">Critique</td><td class="center">5</td><td class="center">S4</td><td>A01</td></tr>
+      <tr><td class="nowrap">US-F02</td><td>Publier un Post (photo / libre)</td><td class="prio-haute">Haute</td><td class="center">5</td><td class="center">S4</td><td>F01</td></tr>
+      <tr><td class="nowrap">US-F03</td><td>Publier un Message (texte court)</td><td class="prio-moy">Moyenne</td><td class="center">3</td><td class="center">S4</td><td>F01</td></tr>
+      <tr><td class="nowrap">US-F04</td><td>Publier une Activité (salle + blocs + vidéos)</td><td class="prio-haute">Haute</td><td class="center">8</td><td class="center">S4</td><td>F01, I04</td></tr>
+      <tr><td class="nowrap">US-F05</td><td>Publier un Now manuel (présence)</td><td class="prio-haute">Haute</td><td class="center">5</td><td class="center">S4</td><td>F01, I01</td></tr>
+      <tr><td class="nowrap">US-F06</td><td>Liker une publication</td><td class="prio-moy">Moyenne</td><td class="center">3</td><td class="center">S4</td><td>F01</td></tr>
+      <tr><td class="nowrap">US-F07</td><td>Commenter une publication</td><td class="prio-haute">Haute</td><td class="center">5</td><td class="center">S4</td><td>F01</td></tr>
+
+      <tr class="epic-row blue"><td colspan="6">ÉPIC NOTIFICATIONS &amp; MESSAGES · Sprint 4 &amp; 6</td></tr>
+      <tr><td class="nowrap">US-N01</td><td>Centre de notifications</td><td class="prio-haute">Haute</td><td class="center">5</td><td class="center">S4</td><td>A01</td></tr>
+      <tr><td class="nowrap">US-N02</td><td>Paramètres de notification</td><td class="prio-faible">Faible</td><td class="center">3</td><td class="center">S4</td><td>N01</td></tr>
+      <tr><td class="nowrap">US-M01</td><td>Messagerie privée 1:1 (sans appel)</td><td class="prio-haute">Haute</td><td class="center">13</td><td class="center">S6</td><td>P02</td></tr>
+
+      <tr class="epic-row"><td colspan="6">ÉPIC INDOOR — Salles &amp; Blocs · Sprint 5</td></tr>
+      <tr><td class="nowrap">US-I01</td><td>Liste des salles partenaires</td><td class="prio-crit">Critique</td><td class="center">3</td><td class="center">S5</td><td>A01</td></tr>
+      <tr><td class="nowrap">US-I02</td><td>Filtres salles (favoris, populaires, récentes)</td><td class="prio-haute">Haute</td><td class="center">5</td><td class="center">S5</td><td>I01</td></tr>
+      <tr><td class="nowrap">US-I03</td><td>Catalogue de blocs + filtre par grade</td><td class="prio-crit">Critique</td><td class="center">8</td><td class="center">S5</td><td>I01</td></tr>
+      <tr><td class="nowrap">US-I04</td><td>Validation d'un bloc par l'utilisateur</td><td class="prio-haute">Haute</td><td class="center">5</td><td class="center">S5</td><td>I03</td></tr>
+      <tr><td class="nowrap">US-I05</td><td>Vidéos de méthode sur la fiche d'un bloc</td><td class="prio-haute">Haute</td><td class="center">8</td><td class="center">S5</td><td>I03</td></tr>
+      <tr><td class="nowrap">US-I06</td><td>Classement grimpeurs par salle &amp; période</td><td class="prio-haute">Haute</td><td class="center">5</td><td class="center">S5</td><td>I01</td></tr>
+
+      <tr class="epic-row purple"><td colspan="6">ÉPIC PARAMÈTRES · Sprint 6</td></tr>
+      <tr><td class="nowrap">US-S01</td><td>Paramètres de base (compte, confidentialité)</td><td class="prio-moy">Moyenne</td><td class="center">3</td><td class="center">S6</td><td>A01</td></tr>
+    </tbody>
+  </table>
+
+  <div class="banner">Récapitulatif par sprint</div>
+  <table class="green">
+    <thead><tr><th>Sprint</th><th class="center nowrap">US</th><th class="center nowrap">Points</th><th>Épics couverts</th></tr></thead>
+    <tbody>
+      <tr><td>Sprint 3</td><td class="center">8</td><td class="center">32</td><td>Auth, Profil</td></tr>
+      <tr><td>Sprint 4</td><td class="center">9</td><td class="center">42</td><td>Feed, Notifications</td></tr>
+      <tr><td>Sprint 5</td><td class="center">6</td><td class="center">34</td><td>Indoor (salles, blocs, vidéos, classement)</td></tr>
+      <tr><td>Sprint 6</td><td class="center">2</td><td class="center">16</td><td>Messagerie, Paramètres</td></tr>
+      <tr><td><strong>TOTAL</strong></td><td class="center"><strong>25</strong></td><td class="center"><strong>124</strong></td><td><strong>7 épics fonctionnels</strong></td></tr>
+    </tbody>
+  </table>
+  <p class="muted-foot">Les story points suivent la suite de Fibonacci (1, 2, 3, 5, 8, 13). US-M01 (messagerie) à 13 points reste la story la plus complexe et pourra être découpée avant implémentation.</p>
+</section>
+
+<!-- ============================ 9. ROADMAP ============================ -->
+<section class="chapter">
+  <div class="chapter-head">
+    <div class="part-label">Partie III — Conception Produit</div>
+    <h1>9. Roadmap produit</h1>
+    <p class="lead">Du design system au lancement sur les stores : la trajectoire des sprints jusqu'au MVP en production sur 3 salles pilotes.</p>
+    <div class="head-rule"></div>
+  </div>
+
+  <div class="banner">1. Vue d'ensemble</div>
+  <div class="timeline">
+    <div class="tl s1"><h4>Sprint 1–2 · Terminés</h4><div class="when">Mars 2026</div><ul>
+      <li>Init projet</li><li>Design System</li><li>Kordo-UI stable</li>
+    </ul></div>
+    <div class="tl s2"><h4>Sprint 3–4</h4><div class="when">Mar–Avr 2026</div><ul>
+      <li>Auth · Profil</li><li>Feed &amp; publications</li><li>Notifications</li>
+    </ul></div>
+    <div class="tl s3"><h4>Sprint 5–6</h4><div class="when">Avr–Mai 2026</div><ul>
+      <li>Indoor · blocs · vidéos</li><li>Classements</li><li>Messagerie · paramètres</li>
+    </ul></div>
+    <div class="tl s4"><h4>MVP Launch</h4><div class="when">Juin 2026</div><ul>
+      <li>App Store + Play Store</li><li>3 salles pilotes</li><li>Monitoring &amp; RGPD</li>
+    </ul></div>
+  </div>
+
+  <div class="banner">2. Roadmap détaillée</div>
+  <table>
+    <thead><tr><th class="nowrap">Sprint</th><th class="nowrap">Période</th><th>Fonctionnalités clés</th><th>Livrable</th></tr></thead>
+    <tbody>
+      <tr><td class="nowrap">Sprint 3</td><td class="nowrap">Mar–Avr 2026</td><td>Welcome &amp; onboarding, inscription email, connexion, OAuth Google/Apple, profil public, modification profil + avatar, follow/unfollow, abonnés/abonnements</td><td>Auth complète + profils &amp; graphe social</td></tr>
+      <tr><td class="nowrap">Sprint 4</td><td class="nowrap">Avr 2026</td><td>Fil d'actualité, publication Post / Message / Activité / Now (manuel), like &amp; commentaire, centre de notifications + push</td><td>Feed social &amp; notifications fonctionnels</td></tr>
+      <tr><td class="nowrap">Sprint 5</td><td class="nowrap">Avr–Mai 2026</td><td>Liste salles + filtres, catalogue blocs + filtre grade, validation de bloc, vidéos de méthode, classement salle/période</td><td>Section Indoor complète</td></tr>
+      <tr><td class="nowrap">Sprint 6</td><td class="nowrap">Mai 2026</td><td>Messagerie privée 1:1 (sans appel), liste de conversations, indicateur de lecture, paramètres de base</td><td>Messagerie &amp; paramètres fonctionnels</td></tr>
+      <tr><td class="nowrap">MVP Launch</td><td class="nowrap">Juin 2026</td><td>Déploiement App Store + Play Store, intégration 3 salles pilotes, monitoring Sentry, analytics PostHog, CGU &amp; RGPD</td><td>MVP en production, 3 salles actives</td></tr>
+    </tbody>
+  </table>
+
+  <div class="banner">3. Dépendances techniques par sprint</div>
+  <h3 class="sub">Sprint 3 — Auth &amp; Profil</h3>
+  <ul class="clean">
+    <li>Supabase Auth : JWT, OAuth Google &amp; Apple configurés</li>
+    <li>Supabase Database : tables users, follows, profiles · Storage : avatars</li>
+    <li>Expo EAS Build : pipeline iOS + Android · Kordo-UI : Header, Button, Input, UserInfo</li>
+  </ul>
+  <h3 class="sub">Sprint 4 — Feed &amp; Notifications</h3>
+  <ul class="clean">
+    <li>Supabase Database : posts (post/message/activity/now), likes, comments, notifications</li>
+    <li>Supabase Realtime : subscriptions feed &amp; notifications · Expo Notifications : push</li>
+    <li>Kordo-UI : Feed, Card, UserInfo, NotificationItem</li>
+  </ul>
+  <h3 class="sub">Sprint 5 — Indoor</h3>
+  <ul class="clean">
+    <li>Supabase Database : salles, blocs, validations, videos · Storage : photos de blocs + vidéos de méthode</li>
+    <li>React Navigation : deep-links salles &amp; profils · Kordo-UI : BoulderBadge, ListRow, SegmentedControl, Card</li>
+  </ul>
+  <h3 class="sub">Sprint 6 — Messagerie &amp; Paramètres</h3>
+  <ul class="clean">
+    <li>Supabase Database : conversations, messages · Realtime : messages 1:1 · RLS : confidentialité</li>
+    <li>Kordo-UI : ChatBubble, ListRow, SegmentedControl</li>
+  </ul>
+  <h3 class="sub">MVP Launch — Infra &amp; Production</h3>
+  <ul class="clean">
+    <li>Sentry (crash reporting) · PostHog (analytics : session_start, bloc_validated, follow, message_sent)</li>
+    <li>App Store Connect + Google Play Console (interne → bêta fermée → production)</li>
+    <li>RGPD : consentement, DPA salles partenaires, export des données</li>
+  </ul>
+  <p class="muted-foot">Roadmap indicative — les sprints peuvent être ajustés selon le feedback des 3 salles pilotes et des retours de la bêta fermée. Le check-in dématérialisé, les statistiques et la gamification sont planifiés en post-MVP.</p>
+</section>
+
+<!-- ============================ 10. ÉQUIPE IDÉALE ============================ -->
+<section class="chapter">
+  <div class="chapter-head">
+    <div class="part-label">Partie IV — Organisation</div>
+    <h1>10. Équipe idéale</h1>
+    <p class="lead">De l'équipe actuelle du PFE à l'équipe cible de 6 personnes pour le lancement commercial et la croissance.</p>
+    <div class="head-rule"></div>
+  </div>
+
+  <div class="banner">1. Contexte &amp; ambition</div>
+  <div class="kv">
+    <div class="row"><div class="k">Phase actuelle (PFE)</div><div class="v">1 développeur full-stack + 1 designer — construction du MVP Kordo (auth, indoor, feed, profil). Toutes les décisions produit, architecture et design portées par ce binôme.</div></div>
+    <div class="row"><div class="k">Objectif équipe</div><div class="v">Constituer une équipe de 6 personnes couvrant l'ensemble des fonctions clés pour le lancement (T4 2026) et la croissance (2027–2028).</div></div>
+    <div class="row"><div class="k">Philosophie</div><div class="v">Grimpeurs en premier : chaque membre doit comprendre la pratique de l'intérieur. Un CTO qui ne grimpe pas ne comprendra pas les besoins des setters.</div></div>
+  </div>
+
+  <div class="banner">2. Organigramme — équipe idéale</div>
+  <div class="cols">
+    <div class="col"><h4>CTO / Lead Dev</h4><p class="muted-foot" style="margin:0 0 6px">Ingénieur senior 5+ ans, grimpeur confirmé</p><ul>
+      <li>React Native + Expo</li><li>Node.js / NestJS</li><li>Supabase / PostgreSQL</li><li>Monorepo pnpm</li><li>CI/CD (GitHub Actions, EAS)</li>
+    </ul></div>
+    <div class="col blue"><h4>Product Designer</h4><p class="muted-foot" style="margin:0 0 6px">Designer produit 3+ ans, UX mobile</p><ul>
+      <li>Figma / Design system</li><li>Mobile-first UX</li><li>Design tokens &amp; composants</li><li>Tests utilisateurs terrain</li><li>Contribution Kordo-UI</li>
+    </ul></div>
+    <div class="col orange"><h4>CEO / Business Dev</h4><p class="muted-foot" style="margin:0 0 6px">Entrepreneur sport, réseau salles</p><ul>
+      <li>Partenariats salles</li><li>Go-to-market</li><li>Levée de fonds</li><li>Relations FFME</li><li>Contrats B2B SaaS</li>
+    </ul></div>
+  </div>
+  <div class="cols">
+    <div class="col purple"><h4>Growth / Marketing</h4><p class="muted-foot" style="margin:0 0 6px">Growth hacker, communauté escalade</p><ul>
+      <li>Community management</li><li>Instagram / TikTok / YouTube</li><li>ASO (App Store Optimization)</li><li>Analytics &amp; A/B testing</li><li>Partenariats influenceurs</li>
+    </ul></div>
+    <div class="col"><h4>Data Engineer</h4><p class="muted-foot" style="margin:0 0 6px">Ingénieur data 3+ ans, analytics</p><ul>
+      <li>Classements temps réel</li><li>Stats utilisateurs (grades)</li><li>Tracking check-in &amp; activité</li><li>Pipelines B2B reporting</li><li>Supabase Edge Functions</li>
+    </ul></div>
+    <div class="col blue"><h4>Support / Ops</h4><p class="muted-foot" style="margin:0 0 6px">Polyvalent, connaît le milieu salles</p><ul>
+      <li>Onboarding salles</li><li>Support utilisateur L1/L2</li><li>Documentation</li><li>QA &amp; tests manuels</li><li>Coordination partenaires</li>
+    </ul></div>
+  </div>
+
+  <div class="banner">3. Phases de recrutement</div>
+  <table>
+    <thead><tr><th>Phase</th><th class="nowrap">Période</th><th class="nowrap">Recrutement</th><th>Priorité</th></tr></thead>
+    <tbody>
+      <tr><td>Phase 0 — PFE</td><td class="nowrap">Avr–Août 2026</td><td class="nowrap">1 dev + 1 designer</td><td>Aucun recrutement — focus MVP &amp; pilotes</td></tr>
+      <tr><td>Phase 1 — Lancement</td><td class="nowrap">Sept–Déc 2026</td><td class="nowrap">+1 CEO / Biz Dev</td><td>Signer les 3 salles pilotes, préparer la levée</td></tr>
+      <tr><td>Phase 2 — Croissance</td><td class="nowrap">Jan–Juin 2027</td><td class="nowrap">+1 Growth</td><td>Accélérer l'acquisition B2C et l'ASO</td></tr>
+      <tr><td>Phase 3 — Consolidation</td><td class="nowrap">Juil–Déc 2027</td><td class="nowrap">+1 Data Engineer</td><td>Classements temps réel &amp; reporting B2B (20 salles)</td></tr>
+      <tr><td>Phase 4 — Scale</td><td class="nowrap">2028</td><td class="nowrap">+1 Support / Ops</td><td>Gérer 50+ salles, onboarding, QA, Europe</td></tr>
+    </tbody>
+  </table>
+  <p class="muted-foot">Les recrutements des phases 1–2 peuvent être partiellement couverts par des alternants ou freelances dans un premier temps, selon le budget disponible.</p>
+</section>
+
+</body>
+</html>

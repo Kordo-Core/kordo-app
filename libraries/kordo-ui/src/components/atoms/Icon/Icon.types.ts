@@ -1,12 +1,12 @@
-import { Feather } from '@expo/vector-icons';
-import { AppearanceType, NeutralType } from 'types/theme.types';
+import { StyleProp, ViewStyle } from 'react-native';
+import { SizeType } from '../../../types/theme.types';
 
 export interface IconProps {
-  name: keyof typeof Feather.glyphMap;
-  size?: number;
-  color?: AppearanceType | NeutralType;
+  name: string;
+  size?: SizeType | number;
+  color?: string;
   onPress?: () => void;
-  style?: any;
+  style?: StyleProp<ViewStyle>;
 }
 
 export type IconPosition = 'left' | 'right';

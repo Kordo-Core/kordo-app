@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 import { Button } from './Button';
 
 /**
@@ -100,7 +100,7 @@ export const Inverted: Story = {
 export const IconButton: Story = {
   args: {
     appearance: 'primary',
-    icon: { name: 'check' },
+    icon: { name: 'checkmark' },
   },
 };
 

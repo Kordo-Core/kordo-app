@@ -1,11 +1,13 @@
-import { theme } from '../theme';
-import { AppearanceType, NeutralType, StatusType } from 'types/theme.types';
+import { KordoTheme } from '../theme';
+import { AppearanceType, NeutralType, StatusType } from '../types/theme.types';
 
-// Convertit un jeton sémantique d'apparence en sa couleur hexadécimale correspondante depuis le thème.
-// Utilisé par les composants pour résoudre des noms logiques (ex: "primary", "error") en vraies valeurs CSS,
-// ce qui centralise la correspondance et facilite les changements de thème.
+export type ColorToken = AppearanceType | NeutralType | StatusType;
+
+// Convertit un jeton sémantique d'apparence en sa couleur du thème.
+// Le thème est passé en paramètre, jamais importé : c'est ce qui fait que la résolution suit
+// le `ThemeProvider`. Dans un styled il vient de `props.theme`, dans un composant de `useTheme()`.
 // Retourne la couleur primaire par défaut si le jeton n'est pas reconnu.
-export const getColor = (appearance: AppearanceType | NeutralType | StatusType): string => {
+export const getColor = (theme: KordoTheme, appearance: ColorToken): string => {
   switch (appearance) {
     case 'primary':
       return theme.colors.primary.base;
@@ -28,4 +30,31 @@ export const getColor = (appearance: AppearanceType | NeutralType | StatusType):
     default:
       return theme.colors.primary.base;
   }
+};
+
+const APPEARANCE_TOKENS = [
+  'primary',
+  'secondary',
+  'black',
+  'white',
+  'gray',
+  'success',
+  'error',
+  'warning',
+  'info',
+] as const;
+
+const isColorToken = (value: string): value is ColorToken =>
+  (APPEARANCE_TOKENS as readonly string[]).includes(value);
+
+// Accepte indifféremment un jeton sémantique ("primary", "gray"…) ou une couleur brute
+// ("#1B4332", "rgba(…)"). Les deux formes coexistent dans le code : les composants passent
+// souvent `theme.colors.x.base`, les stories passent des jetons.
+export const resolveColor = (
+  theme: KordoTheme,
+  color: string | undefined,
+  fallback: string,
+): string => {
+  if (!color) return fallback;
+  return isColorToken(color) ? getColor(theme, color) : color;
 };

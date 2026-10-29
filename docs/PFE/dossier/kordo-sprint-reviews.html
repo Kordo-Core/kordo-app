@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<title>Kordo — Comptes-rendus de Sprint Review</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+  :root{
+    --green:#3f8f6b;--green-dark:#2f6e52;--green-soft:#eaf3ee;
+    --orange:#e0902f;--orange-soft:#fbf2e3;--orange-d:#b9711a;
+    --dark:#232323;--text:#2b2b2b;--muted:#6b6b6b;--line:#e2e2de;--row-alt:#f7f8f6;
+    --blue:#3f78b5;--red:#c0563b;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  @page{size:A4;margin:16mm 15mm;}
+  body{font-family:'Outfit','Segoe UI',system-ui,sans-serif;color:var(--text);font-size:10pt;line-height:1.45;}
+  p{margin:0 0 7px;}
+  strong{font-weight:600;}
+
+  .doc-head{margin-bottom:14px;}
+  .doc-head .brand{font-size:24pt;font-weight:800;color:var(--dark);letter-spacing:-.5px;}
+  .doc-head .brand .dot{color:var(--orange);}
+  .doc-head .sub{color:var(--muted);font-size:10.5pt;margin-top:1px;}
+  .doc-head h1{font-size:19pt;color:var(--green-dark);margin-top:12px;}
+  .doc-head .meta{color:var(--muted);font-size:9.5pt;margin-top:2px;}
+  .doc-head .rule{height:3px;border-radius:2px;margin-top:10px;
+    background:linear-gradient(90deg,var(--green) 0 64px,var(--orange) 64px 104px,var(--line) 104px 100%);}
+
+  .intro{background:var(--green-soft);border-radius:7px;padding:11px 15px;font-size:9.6pt;color:var(--green-dark);margin:14px 0 6px;}
+
+  .sprint{margin-top:16px;break-inside:avoid;page-break-inside:avoid;}
+  .sbar{display:flex;align-items:center;justify-content:space-between;
+    background:var(--green);color:#fff;border-radius:6px 6px 0 0;padding:8px 14px;}
+  .sbar.s12{background:var(--green-dark);}
+  .sbar.s3{background:var(--green);}
+  .sbar.s4{background:#4a9a73;}
+  .sbar.s5{background:var(--orange);}
+  .sbar.s6{background:var(--red);}
+  .sbar .t{font-size:12pt;font-weight:700;}
+  .sbar .t span{font-weight:400;opacity:.9;font-size:10pt;}
+  .sbar .st{font-size:8.5pt;font-weight:600;background:rgba(255,255,255,.22);padding:3px 10px;border-radius:20px;}
+  .sbody{border:1px solid var(--line);border-top:none;border-radius:0 0 6px 6px;padding:11px 14px;}
+
+  .obj{font-size:9.6pt;margin-bottom:9px;}
+  .obj b{color:var(--green-dark);}
+
+  .done{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;}
+  .done .c{background:var(--green-soft);color:var(--green-dark);border-radius:14px;padding:3px 11px;font-size:8.6pt;font-weight:500;}
+
+  table{width:100%;border-collapse:collapse;font-size:9.3pt;}
+  th{background:var(--dark);color:#fff;text-align:left;padding:6px 10px;font-weight:600;font-size:9pt;}
+  td{padding:6px 10px;border-bottom:1px solid var(--line);vertical-align:top;}
+  tbody tr:nth-child(even) td{background:var(--row-alt);}
+  th.d,td.d{width:42%;}
+  td.d{color:var(--dark);} td.d b{color:var(--orange-d);}
+  td.s{color:var(--text);}
+  .arrow{color:var(--green);font-weight:700;}
+
+  .fb{margin-top:9px;font-size:9.2pt;color:var(--muted);font-style:italic;
+    border-left:3px solid var(--orange);padding:5px 12px;background:var(--orange-soft);border-radius:0 5px 5px 0;}
+  .fb b{color:var(--orange-d);font-style:normal;}
+
+  h2.sec{font-size:13pt;color:var(--green-dark);margin:20px 0 8px;page-break-before:auto;}
+  .synth{border:1px solid var(--line);border-radius:7px;overflow:hidden;}
+  .synth .r{display:flex;border-bottom:1px solid var(--line);}
+  .synth .r:last-child{border-bottom:none;}
+  .synth .k{width:34%;background:var(--green-soft);color:var(--green-dark);font-weight:600;padding:9px 13px;font-size:9.4pt;}
+  .synth .v{flex:1;padding:9px 13px;font-size:9.4pt;}
+  .foot{margin-top:14px;color:var(--muted);font-size:8.6pt;font-style:italic;text-align:center;}
+</style>
+</head>
+<body>
+
+<div class="doc-head">
+  <div class="brand">Kordo<span class="dot">.</span></div>
+  <div class="sub">Réseau social d'escalade indoor</div>
+  <h1>Comptes-rendus de Sprint Review</h1>
+  <div class="meta">Projet de Fin d'Études · 2025–2026 · Synthèse des revues client</div>
+  <div class="rule"></div>
+</div>
+
+<div class="intro">
+  Le projet est conduit en <strong>méthode agile</strong>, en sprints de 2 semaines. À la fin de chaque sprint, une
+  <strong>revue avec le client</strong> (porteur produit + salles pilotes) valide l'incrément livré, remonte les retours terrain
+  et réajuste les priorités du backlog. Ce document synthétise chaque revue, en mettant l'accent sur les
+  <strong>difficultés rencontrées</strong> et les <strong>solutions mises en place</strong>.
+</div>
+
+<!-- SPRINT 1-2 -->
+<div class="sprint">
+  <div class="sbar s12">
+    <div class="t">Sprint 1–2 · <span>Fondations &amp; Design System</span></div>
+    <div class="st">✓ Terminé · Mars 2026</div>
+  </div>
+  <div class="sbody">
+    <div class="obj"><b>Objectif :</b> poser les fondations techniques du monorepo et livrer un design system stable et cross-platform.</div>
+    <div class="done">
+      <div class="c">Monorepo pnpm</div><div class="c">Kordo-UI (atoms → organisms)</div>
+      <div class="c">Thème &amp; tokens sémantiques</div><div class="c">Storybook</div><div class="c">Pipeline EAS</div>
+    </div>
+    <table>
+      <thead><tr><th class="d">Difficulté rencontrée</th><th>Solution mise en place</th></tr></thead>
+      <tbody>
+        <tr><td class="d"><b>Composants devant tourner web (Storybook) ET natif</b> — APIs de styling divergentes.</td>
+            <td class="s">Pattern à 3 fichiers <strong>.tsx / .web.tsx / .native.tsx</strong> + alias <em>react-native → react-native-web</em> dans Storybook.</td></tr>
+        <tr><td class="d"><b>Cohérence visuelle</b> — valeurs et couleurs dispersées dans le code.</td>
+            <td class="s">Tokens <strong>sémantiques</strong> (<em>getColor</em>) et thème centralisé injecté via le ThemeProvider Emotion.</td></tr>
+        <tr><td class="d"><b>Ambition trop large</b> pour le temps imparti.</td>
+            <td class="s">Cadrage d'un <strong>MVP</strong> et priorisation <strong>MoSCoW</strong> dès le départ.</td></tr>
+      </tbody>
+    </table>
+    <div class="fb"><b>Retour client :</b> design system validé ; demande d'industrialiser les composants Header, Button et ListRow avant d'attaquer les écrans métier.</div>
+  </div>
+</div>
+
+<!-- SPRINT 3 -->
+<div class="sprint">
+  <div class="sbar s3">
+    <div class="t">Sprint 3 · <span>Authentification &amp; Profil</span></div>
+    <div class="st">✓ Terminé · Mar–Avr 2026</div>
+  </div>
+  <div class="sbody">
+    <div class="obj"><b>Objectif :</b> permettre à un grimpeur de créer un compte, se connecter et gérer son profil public.</div>
+    <div class="done">
+      <div class="c">Welcome &amp; onboarding</div><div class="c">Inscription email</div><div class="c">OAuth Google / Apple</div>
+      <div class="c">Profil public</div><div class="c">Édition profil + avatar</div><div class="c">Follow / Unfollow</div>
+    </div>
+    <table>
+      <thead><tr><th class="d">Difficulté rencontrée</th><th>Solution mise en place</th></tr></thead>
+      <tbody>
+        <tr><td class="d"><b>OAuth multi-providers</b> — redirections et configuration iOS/Android complexes.</td>
+            <td class="s">Supabase Auth + <strong>deep links Expo</strong> ; périmètre réduit à <strong>Google &amp; Apple</strong> (Facebook abandonné pour tenir le délai).</td></tr>
+        <tr><td class="d"><b>Session perdue à la réouverture</b> de l'app.</td>
+            <td class="s">Persistance sécurisée du token et <strong>restauration de session</strong> au démarrage.</td></tr>
+        <tr><td class="d"><b>Upload d'avatar</b> cross-platform (web + natif).</td>
+            <td class="s"><strong>Supabase Storage</strong> + sélection d'image Expo, avec redimensionnement avant envoi.</td></tr>
+      </tbody>
+    </table>
+    <div class="fb"><b>Retour client :</b> parcours d'inscription jugé fluide ; suppression de Facebook acceptée. Priorité confirmée sur le feed pour le sprint suivant.</div>
+  </div>
+</div>
+
+<!-- SPRINT 4 -->
+<div class="sprint">
+  <div class="sbar s4">
+    <div class="t">Sprint 4 · <span>Feed &amp; Publications</span></div>
+    <div class="st">✓ Terminé · Avril 2026</div>
+  </div>
+  <div class="sbody">
+    <div class="obj"><b>Objectif :</b> livrer le fil social et les 4 types de publication, avec interactions et notifications.</div>
+    <div class="done">
+      <div class="c">Fil d'actualité</div><div class="c">Post · Message · Activité · Now</div>
+      <div class="c">Like &amp; commentaire</div><div class="c">Centre de notifications</div><div class="c">Push</div>
+    </div>
+    <table>
+      <thead><tr><th class="d">Difficulté rencontrée</th><th>Solution mise en place</th></tr></thead>
+      <tbody>
+        <tr><td class="d"><b>4 types de publication hétérogènes</b> dans un seul fil.</td>
+            <td class="s">Modèle de données <strong>polymorphe</strong> (type + contenu) et composants de rendu dédiés par type.</td></tr>
+        <tr><td class="d"><b>Feed et compteurs à rafraîchir</b> sans recharger l'écran.</td>
+            <td class="s"><strong>Supabase Realtime</strong> + mises à jour <strong>optimistes</strong> sur les likes et commentaires.</td></tr>
+        <tr><td class="d"><b>Now automatique</b> dépendant du check-in (non disponible).</td>
+            <td class="s">Découplage : <strong>Now publiable manuellement</strong> au MVP ; automatisation reportée avec le check-in.</td></tr>
+      </tbody>
+    </table>
+    <div class="fb"><b>Retour client :</b> les 4 formats répondent au besoin ; l'Activité « façon Strava » très appréciée. Demande d'y intégrer les vidéos de blocs (traité au Sprint 5).</div>
+  </div>
+</div>
+
+<!-- SPRINT 5 -->
+<div class="sprint">
+  <div class="sbar s5">
+    <div class="t">Sprint 5 · <span>Indoor — Salles, Blocs &amp; Vidéos</span></div>
+    <div class="st">✓ Terminé · Avr–Mai 2026</div>
+  </div>
+  <div class="sbody">
+    <div class="obj"><b>Objectif :</b> livrer le cœur de l'app — exploration des salles, catalogue de blocs, vidéos de méthode et classements.</div>
+    <div class="done">
+      <div class="c">Liste salles + filtres</div><div class="c">Catalogue blocs + grade</div><div class="c">Validation de bloc</div>
+      <div class="c">Vidéos de méthode</div><div class="c">Classement salle / période</div>
+    </div>
+    <table>
+      <thead><tr><th class="d">Difficulté rencontrée</th><th>Solution mise en place</th></tr></thead>
+      <tbody>
+        <tr><td class="d"><b>Vidéos de méthode sur les blocs</b> — poids des fichiers et lecture fluide.</td>
+            <td class="s"><strong>Supabase Storage</strong> + lecteur vidéo Expo ; liaison automatique <strong>bloc validé ↔ vidéo</strong> dans le formulaire Activité.</td></tr>
+        <tr><td class="d"><b>Performance des longues listes</b> de blocs.</td>
+            <td class="s">Listes <strong>virtualisées</strong> et filtrage par grade exécuté <strong>côté requête</strong>.</td></tr>
+        <tr><td class="d"><b>Classement par période</b> (semaine / mois / all-time) coûteux.</td>
+            <td class="s">Calcul <strong>côté base</strong> avec requêtes paramétrées et index dédiés.</td></tr>
+      </tbody>
+    </table>
+    <div class="fb"><b>Retour client :</b> les vidéos de méthode identifiées comme différenciateur fort. Les salles pilotes valident le format de fiche bloc (grade, ouvreur, vidéo).</div>
+  </div>
+</div>
+
+<!-- SPRINT 6 -->
+<div class="sprint">
+  <div class="sbar s6">
+    <div class="t">Sprint 6 · <span>Messagerie &amp; Finalisation MVP</span></div>
+    <div class="st">⏳ En cours · Mai–Juin 2026</div>
+  </div>
+  <div class="sbody">
+    <div class="obj"><b>Objectif :</b> livrer la messagerie privée, les paramètres de base et préparer la mise en production sur les stores.</div>
+    <div class="done">
+      <div class="c">Messagerie 1:1 (sans appel)</div><div class="c">Statut lu / non-lu</div><div class="c">Paramètres de base</div>
+      <div class="c">Build stores (EAS)</div><div class="c">RGPD &amp; monitoring</div>
+    </div>
+    <table>
+      <thead><tr><th class="d">Difficulté rencontrée</th><th>Solution mise en place</th></tr></thead>
+      <tbody>
+        <tr><td class="d"><b>Messagerie temps réel</b> avec confidentialité des conversations.</td>
+            <td class="s"><strong>Supabase Realtime</strong> + politiques <strong>RLS</strong> ; indicateurs de lecture lu / non-lu.</td></tr>
+        <tr><td class="d"><b>Tenir le périmètre</b> à l'approche de la mise en production.</td>
+            <td class="s"><strong>Report assumé</strong> en post-MVP (check-in, stats, badges, Premium) avec une frontière MVP claire.</td></tr>
+        <tr><td class="d"><b>Mise en conformité &amp; déploiement</b> stores.</td>
+            <td class="s">Pipeline <strong>EAS Build</strong>, CGU + consentement RGPD, monitoring <strong>Sentry / PostHog</strong>.</td></tr>
+      </tbody>
+    </table>
+    <div class="fb"><b>Retour client :</b> périmètre MVP final validé ; lancement bêta fermée sur les 3 salles pilotes planifié pour juin 2026.</div>
+  </div>
+</div>
+
+<!-- SYNTHESE -->
+<h2 class="sec">Synthèse transversale — difficultés majeures &amp; solutions</h2>
+<div class="synth">
+  <div class="r"><div class="k">Contraintes de temps</div><div class="v">Conception, design, architecture et développement menés en solo → <strong>arbitrages permanents</strong>, vélocité maîtrisée (~30 pts/sprint) et priorisation MoSCoW à chaque revue.</div></div>
+  <div class="r"><div class="k">Réduire le périmètre du MVP</div><div class="v">Difficulté à couper des features d'un projet auquel on croit → <strong>frontière MVP explicite</strong> et report assumé des fonctionnalités non essentielles (check-in, stats, badges, Premium).</div></div>
+  <div class="r"><div class="k">Business model réaliste</div><div class="v">Construire un modèle viable → affinage du <strong>B2B2C</strong> (setup fee + SaaS salles + freemium/premium grimpeurs) au fil des retours des salles pilotes.</div></div>
+  <div class="r"><div class="k">Complexité cross-platform</div><div class="v">Web + natif dans un même design system → pattern <strong>.web / .native</strong>, Emotion et Storybook, capitalisés sur tout le projet.</div></div>
+</div>
+
+<div class="foot">Document de synthèse des Sprint Reviews — Kordo · Projet de Fin d'Études 2025–2026.</div>
+
+</body>
+</html>

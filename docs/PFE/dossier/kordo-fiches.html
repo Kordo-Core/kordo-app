@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<title>Kordo — Fiches cartes</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+
+  :root {
+    --green: #3f8f6b;
+    --green-dark: #2f6e52;
+    --green-soft: #eaf3ee;
+    --orange: #e0902f;
+    --orange-soft: #fbf2e3;
+    --dark: #2b2b2b;
+    --text: #232323;
+    --muted: #6b6b6b;
+    --line: #e2e2de;
+  }
+
+  * { box-sizing: border-box; }
+  @page { size: A4; margin: 12mm; }
+  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+  body {
+    font-family: 'Outfit', 'Segoe UI', system-ui, sans-serif;
+    color: var(--text);
+    margin: 0;
+  }
+
+  /* ---- cover ---- */
+  .cover {
+    height: 270mm;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center; text-align: center;
+    page-break-after: always;
+  }
+  .cover .brand { font-size: 58pt; font-weight: 800; letter-spacing: -1px; color: var(--dark); line-height: 1; }
+  .cover .brand .dot { color: var(--orange); }
+  .cover .tagline { font-size: 13pt; color: var(--muted); margin-top: 8px; }
+  .cover .rule { width: 180px; height: 4px; margin: 24px 0; border-radius: 2px;
+    background: linear-gradient(90deg, var(--green) 0 50%, var(--orange) 50% 100%); }
+  .cover .doc-type { font-size: 23pt; font-weight: 700; color: var(--green-dark); }
+  .cover .subtitle { font-size: 11pt; color: var(--muted); margin-top: 10px; }
+  .cover .meta { margin-top: 50px; font-size: 10pt; color: var(--muted); }
+  .cover .note { margin-top: 6px; font-size: 9.5pt; color: var(--green-dark); font-weight: 600; }
+
+  /* ---- grid of cards ---- */
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8mm; }
+
+  .card {
+    border: 1px solid var(--line); border-radius: 10px; overflow: hidden;
+    break-inside: avoid; page-break-inside: avoid;
+    display: flex; flex-direction: column;
+    min-height: 76mm;
+  }
+  .card .top {
+    background: var(--green); color: #fff; padding: 8px 12px;
+    display: flex; align-items: center; gap: 9px;
+  }
+  .card .top .n {
+    background: rgba(255,255,255,.22); border-radius: 5px; font-weight: 800;
+    font-size: 11pt; padding: 1px 8px; min-width: 26px; text-align: center;
+  }
+  .card .top .ti { font-size: 11.5pt; font-weight: 700; line-height: 1.1; }
+  .card.demo .top { background: var(--orange); }
+  .card.end .top { background: var(--dark); }
+
+  .card .body { padding: 9px 13px 11px; flex: 1; }
+  .card ul { margin: 0; padding-left: 15px; }
+  .card li { font-size: 9.7pt; line-height: 1.4; margin: 4px 0; color: var(--text); }
+  .card li strong { color: var(--green-dark); font-weight: 700; }
+  .card .hook {
+    font-size: 9.3pt; font-style: italic; color: var(--orange);
+    border-left: 2px solid var(--orange); padding-left: 8px; margin-bottom: 7px; line-height: 1.35;
+  }
+  .card .nums { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 7px; }
+  .card .chip {
+    background: var(--green-soft); color: var(--green-dark); border-radius: 12px;
+    padding: 2px 9px; font-size: 8.8pt; font-weight: 700;
+  }
+  .card.demo .chip { background: var(--orange-soft); color: #b9711a; }
+</style>
+</head>
+<body>
+
+<section class="cover">
+  <div class="brand">Kordo<span class="dot">.</span></div>
+  <div class="tagline">Réseau social d'escalade indoor</div>
+  <div class="rule"></div>
+  <div class="doc-type">Fiches cartes</div>
+  <div class="subtitle">Aide-mémoire orateur · 1 carte = 1 slide · phrases-clés uniquement</div>
+  <div class="meta">Jacinto Valentino — M2 Développement · ECV Paris · Soutenance PFE 2025–2026</div>
+  <div class="note">🎯 À garder sous les yeux — ne pas lire mot à mot, juste les repères</div>
+</section>
+
+<div class="grid">
+
+  <!-- 1 -->
+  <div class="card">
+    <div class="top"><span class="n">1</span><span class="ti">Couverture</span></div>
+    <div class="body">
+      <div class="hook">« Attachez vos baudriers, on grimpe ! »</div>
+      <ul>
+        <li>Bonjour + merci</li>
+        <li>Projet né d'une <strong>passion</strong></li>
+        <li><strong>Kordo</strong> = 1er réseau social escalade indoor</li>
+        <li>Moi : Jacinto, M2 Dev, cursus Tech Lead, ECV</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 2 -->
+  <div class="card">
+    <div class="top"><span class="n">2</span><span class="ti">Qui suis-je ?</span></div>
+    <div class="body">
+      <ul>
+        <li>Grimpeur depuis <strong>2020</strong> (post-Covid)</li>
+        <li>Passion escalade indoor + produit mobile</li>
+        <li>Kordo né de <strong>mes frustrations</strong> de grimpeur</li>
+        <li>Je suis le <strong>1er utilisateur</strong> de mon app</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 3 -->
+  <div class="card">
+    <div class="top"><span class="n">3</span><span class="ti">Le problème</span></div>
+    <div class="body">
+      <div class="hook">« 4 outils, aucun ne fait le job en entier »</div>
+      <ul>
+        <li><strong>Instagram</strong> → partage, 0 donnée grimpe</li>
+        <li><strong>Excel</strong> → progression à la main</li>
+        <li><strong>WhatsApp</strong> → trouver un partenaire</li>
+        <li><strong>Tableau salle</strong> → repérer les blocs</li>
+        <li>→ Expérience éclatée, données perdues</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 4 -->
+  <div class="card">
+    <div class="top"><span class="n">4</span><span class="ti">La solution : Kordo</span></div>
+    <div class="body">
+      <ul>
+        <li>Plateforme <strong>indoor-first</strong></li>
+        <li>Réunit : <strong>social + progression + salles</strong></li>
+        <li>1 seul produit, tout au même endroit</li>
+      </ul>
+      <div class="nums">
+        <span class="chip">3 salles pilotes</span>
+        <span class="chip">100+ grimpeurs</span>
+        <span class="chip">Rétention J7 &gt; 40 %</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5 -->
+  <div class="card">
+    <div class="top"><span class="n">5</span><span class="ti">Le produit</span></div>
+    <div class="body">
+      <ul>
+        <li><strong>4 publications</strong> : Post · Message · Activité · Now</li>
+        <li>Post=Insta · Message=tweet · Activité=Strava</li>
+        <li>Now = présence live</li>
+        <li><strong>Indoor</strong> : salles + filtres, blocs + validation</li>
+        <li>⭐ <strong>Vidéos de méthode</strong> + classement salle</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 6 -->
+  <div class="card">
+    <div class="top"><span class="n">6</span><span class="ti">Marché en croissance</span></div>
+    <div class="body">
+      <div class="hook">« Dopé par les JO Paris 2024 »</div>
+      <div class="nums">
+        <span class="chip">1,2 M FR</span>
+        <span class="chip">8 M+ Europe</span>
+        <span class="chip">600+ salles FR</span>
+        <span class="chip">28 ans médian</span>
+        <span class="chip">+12–15 %/an</span>
+        <span class="chip">+25 % post-JO</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7 -->
+  <div class="card">
+    <div class="top"><span class="n">7</span><span class="ti">TAM / SAM / SOM</span></div>
+    <div class="body">
+      <ul>
+        <li><strong>TAM ≈ 44,5 M</strong> — grimpeurs monde</li>
+        <li><strong>SAM ≈ 8 M</strong> — indoor Europe + smartphone</li>
+        <li><strong>SOM ≈ 75 000</strong> — FR + Benelux, an 1–3 (~5 %)</li>
+        <li>Ambitieux mais crédible</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 8 -->
+  <div class="card">
+    <div class="top"><span class="n">8</span><span class="ti">La concurrence</span></div>
+    <div class="body">
+      <div class="hook">« Chacun couvre une brique, personne le tout »</div>
+      <ul>
+        <li><strong>Arkose+</strong> → salle, mono-enseigne</li>
+        <li><strong>Strava</strong> → social, mais pas d'escalade</li>
+        <li><strong>Instagram</strong> → 0 donnée structurée</li>
+        <li><strong>8a.nu</strong> → outdoor, UX datée</li>
+        <li>→ Kordo occupe la <strong>case vide</strong></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 9 -->
+  <div class="card">
+    <div class="top"><span class="n">9</span><span class="ti">Modèle économique</span></div>
+    <div class="body">
+      <div class="hook">Hybride <strong>B2B2C</strong></div>
+      <ul>
+        <li>B2B Setup : <strong>500–2 000 €</strong></li>
+        <li>B2B SaaS : <strong>1–3 €/user/mois</strong></li>
+        <li>B2C Premium : <strong>4,99 €/mois</strong></li>
+        <li>B2C Freemium : gratuit → masse critique</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 10 -->
+  <div class="card">
+    <div class="top"><span class="n">10</span><span class="ti">GTM &amp; projections</span></div>
+    <div class="body">
+      <ul>
+        <li><strong>Pilote</strong> T3-26 · <strong>Lancement</strong> T4-26</li>
+        <li><strong>Croissance</strong> 2027 · <strong>Expansion</strong> 2028</li>
+      </ul>
+      <div class="nums">
+        <span class="chip">An 1 : ~9 k€</span>
+        <span class="chip">An 2 : ~84 k€</span>
+        <span class="chip">An 3 : ~300 k€</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 11 -->
+  <div class="card">
+    <div class="top"><span class="n">11</span><span class="ti">SWOT</span></div>
+    <div class="body">
+      <ul>
+        <li><strong>F</strong> : 1er du genre, B2B2C, vidéos méthode</li>
+        <li><strong>F</strong> : équipe réduite, 0 traction, 0 financement</li>
+        <li><strong>O</strong> : +12 %/an, Gen Z tech, peu de concurrents</li>
+        <li><strong>M</strong> : Strava/Arkose, RGPD données sport</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 12 -->
+  <div class="card">
+    <div class="top"><span class="n">12</span><span class="ti">Roadmap</span></div>
+    <div class="body">
+      <ul>
+        <li><strong>S1–2</strong> ✓ : init + design system Kordo-UI</li>
+        <li><strong>S3–4</strong> : auth, profil, feed, notifs</li>
+        <li><strong>S5–6</strong> : indoor, vidéos, messagerie</li>
+        <li><strong>MVP juin 2026</strong> : stores + 3 salles + RGPD</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 13 -->
+  <div class="card">
+    <div class="top"><span class="n">13</span><span class="ti">Méthode agile</span></div>
+    <div class="body">
+      <ul>
+        <li>Backlog → Sprint (2 sem) → Tâches</li>
+        <li>Priorisation <strong>MoSCoW</strong></li>
+        <li>Estimation <strong>Fibonacci</strong> (1·2·3·5·8·13)</li>
+      </ul>
+      <div class="nums">
+        <span class="chip">~30 pts/sprint</span>
+        <span class="chip">25 US · 124 pts</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 14 -->
+  <div class="card">
+    <div class="top"><span class="n">14</span><span class="ti">Story Mapping</span></div>
+    <div class="body">
+      <ul>
+        <li>Colonnes = parcours · Lignes = priorité</li>
+        <li><strong>Ligne orange</strong> = frontière MVP</li>
+        <li>Vert = livré · Gris = post-MVP</li>
+        <li>Décision visuelle, claire d'un coup d'œil</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 15 -->
+  <div class="card">
+    <div class="top"><span class="n">15</span><span class="ti">MVP : choisi vs reporté</span></div>
+    <div class="body">
+      <ul>
+        <li><strong>In</strong> : auth, profil, feed 4 pubs, indoor complet</li>
+        <li><strong>Out</strong> : check-in, stats, badges, Premium, dark mode</li>
+      </ul>
+      <div class="hook">« Le vrai défi : COUPER des features pour livrer l'essentiel »</div>
+    </div>
+  </div>
+
+  <!-- 16 -->
+  <div class="card">
+    <div class="top"><span class="n">16</span><span class="ti">Stack technique</span></div>
+    <div class="body">
+      <ul>
+        <li><strong>React Native + Expo</strong> (iOS + Android)</li>
+        <li><strong>TypeScript</strong> strict · <strong>Supabase</strong> (auth/PG/realtime)</li>
+        <li>expo-router · Emotion · <strong>monorepo pnpm</strong></li>
+        <li>Kordo-UI (design system) · Sentry + PostHog</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 17 -->
+  <div class="card">
+    <div class="top"><span class="n">17</span><span class="ti">Architecture</span></div>
+    <div class="body">
+      <ul>
+        <li><strong>App mobile</strong> RN+Expo</li>
+        <li>↓ REST + Realtime</li>
+        <li><strong>Supabase</strong> (auth, storage, edge fn)</li>
+        <li>↓ <strong>PostgreSQL</strong> (users, gyms, boulders, posts)</li>
+        <li>Monorepo : core · kordo-ui · frontend · backend</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 18 -->
+  <div class="card">
+    <div class="top"><span class="n">18</span><span class="ti">Difficultés</span></div>
+    <div class="body">
+      <ul>
+        <li><strong>1.</strong> Contraintes de temps (tout en solo)</li>
+        <li><strong>2.</strong> Réduire le périmètre MVP (le + dur)</li>
+        <li><strong>3.</strong> Business model réaliste &amp; rentable</li>
+        <li>→ C'est là que j'ai le plus appris</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 19 -->
+  <div class="card demo">
+    <div class="top"><span class="n">19</span><span class="ti">DÉMO du MVP</span></div>
+    <div class="body">
+      <div class="hook">« Le moment que vous attendez… la démo ! » <strong>(respirer)</strong></div>
+      <ul>
+        <li>Inscription (email / Google / Apple)</li>
+        <li>Feed → Indoor → salle + filtres</li>
+        <li>Bloc : grade, ouvreur, <strong>vidéos méthode</strong></li>
+        <li>Valider bloc → publier <strong>Activité</strong></li>
+        <li>→ Remonte dans le feed = boucle bouclée</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 20 -->
+  <div class="card end">
+    <div class="top"><span class="n">20</span><span class="ti">Merci !</span></div>
+    <div class="body">
+      <div class="hook">« L'app qu'on ouvre avant de décoller du sol… et après la dernière prise »</div>
+      <ul>
+        <li>Récap : problème → marché → business → produit → tech → démo</li>
+        <li>Merci pour l'attention</li>
+        <li>Place aux <strong>questions</strong> 🙂</li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
