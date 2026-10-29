@@ -9,7 +9,9 @@ export const SegmentedWrapper = styled(View)((props) => ({
   right: 0,
   zIndex: 4,
   flexDirection: 'row',
-  padding: props.theme.spacing.xxl,
+  paddingHorizontal: props.theme.spacing.lg,
+  paddingTop: props.theme.spacing.sm,
+  paddingBottom: props.theme.spacing.lg,
 }));
 
 // ── Coquille partagée par les deux onglets ──
@@ -29,9 +31,9 @@ export const CardFrame = styled(Animated.View)((props) => ({
   left: 0,
   right: 0,
   zIndex: 5,
-  backgroundColor: props.theme.colors.neutral.white,
-  borderTopLeftRadius: 30,
-  borderTopRightRadius: 30,
+  backgroundColor: props.theme.colors.background,
+  borderTopLeftRadius: 32,
+  borderTopRightRadius: 32,
   overflow: 'hidden',
   boxShadow: props.theme.shadows.up,
 }));

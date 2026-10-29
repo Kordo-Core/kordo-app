@@ -42,57 +42,63 @@ export const BlocSwipeRow = memo(function BlocSwipeRow(props: BlocSwipeRowProps)
 
   return (
     <Styled.BlocRow onLayout={(e) => props.onRowLayout(props.id, e.nativeEvent.layout.height)}>
-      <Animated.View
-        pointerEvents="none"
-        {...RASTERIZE}
-        style={[
-          StyleSheet.absoluteFill,
-          greenStyle,
-          { backgroundColor: theme.colors.success.base },
-        ]}
-      >
-        <Styled.BlocActionIconLeft>
-          <Icon name="CheckmarkFilled" size="md" color={theme.colors.neutral.white} />
-        </Styled.BlocActionIconLeft>
-      </Animated.View>
-      <Animated.View
-        pointerEvents="none"
-        {...RASTERIZE}
-        style={[StyleSheet.absoluteFill, redStyle, { backgroundColor: theme.colors.error.base }]}
-      >
-        <Styled.BlocActionIconRight>
-          <Icon name="DismissFilled" size="md" color={theme.colors.neutral.white} />
-        </Styled.BlocActionIconRight>
-      </Animated.View>
-      <Styled.BlocForeground pointerEvents="none" {...RASTERIZE} style={foregroundStyle}>
-        <ListRow
-          left={
-            <BoulderBadge avatarUrl={props.detail.bloc.blocUrl} grade={props.detail.bloc.grade} />
-          }
-          primaryText={
-            <Text size="lg" bold appearance={props.status === 'validated' ? 'success' : undefined}>
-              {props.detail.bloc.name}
-            </Text>
-          }
-          secondaryText={
-            <Text appearance="primary" size="sm">
-              <Text size="sm" appearance="gray">
-                par{' '}
+      <Styled.Card>
+        <Animated.View
+          pointerEvents="none"
+          {...RASTERIZE}
+          style={[
+            StyleSheet.absoluteFill,
+            greenStyle,
+            { backgroundColor: theme.colors.success.base },
+          ]}
+        >
+          <Styled.BlocActionIconLeft>
+            <Icon name="CheckmarkFilled" size="md" color={theme.colors.neutral.white} />
+          </Styled.BlocActionIconLeft>
+        </Animated.View>
+        <Animated.View
+          pointerEvents="none"
+          {...RASTERIZE}
+          style={[StyleSheet.absoluteFill, redStyle, { backgroundColor: theme.colors.error.base }]}
+        >
+          <Styled.BlocActionIconRight>
+            <Icon name="DismissFilled" size="md" color={theme.colors.neutral.white} />
+          </Styled.BlocActionIconRight>
+        </Animated.View>
+        <Styled.BlocForeground pointerEvents="none" {...RASTERIZE} style={foregroundStyle}>
+          <ListRow
+            left={
+              <BoulderBadge avatarUrl={props.detail.bloc.blocUrl} grade={props.detail.bloc.grade} />
+            }
+            primaryText={
+              <Text
+                size="md"
+                bold
+                appearance={props.status === 'validated' ? 'success' : undefined}
+              >
+                {props.detail.bloc.name}
               </Text>
-              {props.detail.setter?.firstName}
-            </Text>
-          }
-          right={
-            props.status === 'validated' ? (
-              <Icon name="CheckmarkCircleFilled" size="md" color={theme.colors.success.base} />
-            ) : (
-              <Text size="lg" bold appearance="gray">
-                {props.detail.bloc.points}pts
+            }
+            secondaryText={
+              <Text appearance="primary" size="sm">
+                <Text size="sm" appearance="gray">
+                  par{' '}
+                </Text>
+                {props.detail.setter?.firstName}
               </Text>
-            )
-          }
-        />
-      </Styled.BlocForeground>
+            }
+            right={
+              props.status === 'validated' ? (
+                <Icon name="CheckmarkCircleFilled" size="md" color={theme.colors.success.base} />
+              ) : (
+                <Text size="sm" extraBold appearance="gray">
+                  {props.detail.bloc.points} pts
+                </Text>
+              )
+            }
+          />
+        </Styled.BlocForeground>
+      </Styled.Card>
     </Styled.BlocRow>
   );
 });

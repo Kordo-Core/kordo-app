@@ -23,28 +23,29 @@ export default function GymsScreen() {
   const categories = useMemo(
     () =>
       [
+        // Design D : tuile neutre et icône colorée ; la catégorie choisie se remplit.
         {
           label: 'Ranked',
           icon: 'TrophyRegular',
-          light: theme.colors.primary.lighter,
+          light: theme.colors.surface,
           base: theme.colors.primary.base,
         },
         {
           label: 'New',
           icon: 'StarRegular',
-          light: theme.colors.secondary.lighter,
+          light: theme.colors.surface,
           base: theme.colors.secondary.base,
         },
         {
           label: 'Bloc',
           icon: 'terrain',
-          light: theme.colors.primary.lighter,
+          light: theme.colors.surface,
           base: theme.colors.primary.base,
         },
         {
           label: 'Lead',
           icon: 'carabiner',
-          light: theme.colors.secondary.lighter,
+          light: theme.colors.surface,
           base: theme.colors.secondary.base,
         },
       ] as const,
@@ -87,10 +88,10 @@ export default function GymsScreen() {
               width: '100%',
               padding: theme.spacing.xl,
               gap: theme.spacing.lg,
-              backgroundColor: theme.colors.primary.lightest,
+              backgroundColor: theme.colors.background,
             }}
           >
-            <Text bold size="lg">
+            <Text variant="display" size="sm">
               Dernières salles visitées
             </Text>
             <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: theme.spacing.lg }}>
@@ -100,14 +101,14 @@ export default function GymsScreen() {
                   style={{
                     width: gridItemWidth,
                     height: gridItemWidth,
-                    borderRadius: theme.borderRadius.square,
+                    borderRadius: theme.borderRadius.card,
                     justifyContent: 'space-between',
                   }}
                 >
                   <ImageBackground
                     source={{ uri: gym.imageUri }}
                     style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}
-                    imageStyle={{ borderRadius: theme.borderRadius.square }}
+                    imageStyle={{ borderRadius: theme.borderRadius.card }}
                   />
                   <LinearGradient
                     colors={['rgba(0,0,0,0.5)', 'transparent']}
@@ -142,13 +143,24 @@ export default function GymsScreen() {
                 style={{
                   width: gridItemWidth,
                   height: gridItemWidth,
-                  borderRadius: theme.borderRadius.square,
+                  borderRadius: theme.borderRadius.card,
                 }}
               >
-                <Text size="md" appearance="gray">
-                  Pensez à mettre à jour les blocs réussi lors de vos séances afin de grimper plus
-                  haut dans le classement !
-                </Text>
+                <View
+                  style={{
+                    flex: 1,
+                    borderRadius: theme.borderRadius.card,
+                    backgroundColor: theme.colors.soft,
+                    padding: theme.spacing.md + 2,
+                    justifyContent: 'space-between',
+                  }}
+                >
+                  <Icon name="TrophyRegular" size="md" color={theme.colors.softText} />
+                  <Text size="sm" bold appearance="secondary" style={{ lineHeight: 19 }}>
+                    Pense à mettre à jour les blocs réussis pendant tes séances pour grimper au
+                    classement !
+                  </Text>
+                </View>
               </View>
             </View>
           </View>
@@ -157,13 +169,13 @@ export default function GymsScreen() {
           <View
             style={{
               width: '100%',
-              backgroundColor: theme.colors.secondary.lightest,
+              backgroundColor: theme.colors.background,
               padding: theme.spacing.xl,
               gap: theme.spacing.lg - 8,
               paddingBottom: theme.spacing.xl - 8,
             }}
           >
-            <Text bold size="lg">
+            <Text variant="display" size="sm">
               Vos salles favorites
             </Text>
             <View style={{ width: Dimensions.get('window').width, marginLeft: -theme.spacing.xl }}>
@@ -176,7 +188,7 @@ export default function GymsScreen() {
                     style={{
                       width: sliderCardWidth,
                       height: 320,
-                      borderRadius: theme.borderRadius.square,
+                      borderRadius: theme.borderRadius.card,
                       backgroundColor: theme.colors.neutral.gray.base,
                       justifyContent: 'space-between',
                     }}
@@ -184,7 +196,7 @@ export default function GymsScreen() {
                     <ImageBackground
                       source={{ uri: gym.imageUri }}
                       style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}
-                      imageStyle={{ borderRadius: theme.borderRadius.square }}
+                      imageStyle={{ borderRadius: theme.borderRadius.card }}
                     />
                     <LinearGradient
                       colors={['transparent', 'rgba(0,0,0,0.7)']}
@@ -225,7 +237,7 @@ export default function GymsScreen() {
                         intensity={60}
                         tint="default"
                         style={{
-                          borderRadius: theme.borderRadius.square,
+                          borderRadius: theme.borderRadius.card,
                           overflow: 'hidden',
                           padding: theme.spacing.sm,
                         }}
@@ -252,10 +264,10 @@ export default function GymsScreen() {
               width: '100%',
               padding: theme.spacing.xl,
               gap: theme.spacing.lg,
-              backgroundColor: theme.colors.primary.lightest,
+              backgroundColor: theme.colors.background,
             }}
           >
-            <Text bold size="lg">
+            <Text variant="display" size="sm">
               Les salles populaires
             </Text>
             <GymCardStack cardWidth={cardWidth} gyms={POPULAR_GYMS} />
@@ -267,10 +279,10 @@ export default function GymsScreen() {
               width: '100%',
               padding: theme.spacing.xl,
               gap: theme.spacing.lg,
-              backgroundColor: theme.colors.secondary.lightest,
+              backgroundColor: theme.colors.background,
             }}
           >
-            <Text bold size="lg">
+            <Text variant="display" size="sm">
               Catégories
             </Text>
             <View style={{ flexDirection: 'row', gap: theme.spacing.lg }}>
@@ -284,13 +296,26 @@ export default function GymsScreen() {
                       style={{
                         width: rowItemWidth,
                         height: rowItemWidth,
-                        borderRadius: theme.borderRadius.square,
+                        borderRadius: theme.borderRadius.card,
                         backgroundColor: selected ? base : light,
+                        boxShadow: theme.shadows.sm,
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}
                     >
-                      <Icon name={icon} size={40} color={theme.colors.neutral.white} />
+                      <Icon
+                        name={icon}
+                        size={34}
+                        color={
+                          selected
+                            ? base === theme.colors.primary.base
+                              ? '#13201B'
+                              : theme.colors.neutral.white
+                            : base === theme.colors.primary.base
+                              ? theme.colors.primary.dark
+                              : theme.colors.softText
+                        }
+                      />
                     </Card>
                     <Text
                       bold
@@ -314,7 +339,7 @@ export default function GymsScreen() {
                     style={{
                       width: sliderCardWidth,
                       height: 320,
-                      borderRadius: theme.borderRadius.square,
+                      borderRadius: theme.borderRadius.card,
                       backgroundColor: theme.colors.neutral.gray.base,
                       justifyContent: 'space-between',
                     }}
@@ -322,7 +347,7 @@ export default function GymsScreen() {
                     <ImageBackground
                       source={{ uri: gym.imageUri }}
                       style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}
-                      imageStyle={{ borderRadius: theme.borderRadius.square }}
+                      imageStyle={{ borderRadius: theme.borderRadius.card }}
                     />
                     <LinearGradient
                       colors={['transparent', 'rgba(0,0,0,0.7)']}
@@ -363,7 +388,7 @@ export default function GymsScreen() {
                         intensity={60}
                         tint="default"
                         style={{
-                          borderRadius: theme.borderRadius.square,
+                          borderRadius: theme.borderRadius.card,
                           overflow: 'hidden',
                           padding: theme.spacing.sm,
                         }}
@@ -384,18 +409,18 @@ export default function GymsScreen() {
             </View>
           </View>
 
-          {/* Les Salles */}
+          {/* Les salles */}
           <View
             style={{
               width: '100%',
               padding: theme.spacing.xl,
               paddingBottom: 110,
               gap: theme.spacing.lg,
-              backgroundColor: theme.colors.primary.lightest,
+              backgroundColor: theme.colors.background,
             }}
           >
-            <Text bold size="lg">
-              Les Salles
+            <Text variant="display" size="sm">
+              Les salles
             </Text>
             {(() => {
               const cardSize = width * 0.35;
@@ -418,7 +443,7 @@ export default function GymsScreen() {
                         width: cardSize,
                         height: cardSize,
                         backgroundColor: card.color,
-                        borderRadius: theme.borderRadius.square,
+                        borderRadius: theme.borderRadius.card,
                         top: 0,
                         left: theme.spacing.lg + i * step,
                         zIndex: card.z,
@@ -428,7 +453,7 @@ export default function GymsScreen() {
                       <ImageBackground
                         source={{ uri: POPULAR_GYMS[i].imageUri }}
                         style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}
-                        imageStyle={{ borderRadius: theme.borderRadius.square }}
+                        imageStyle={{ borderRadius: theme.borderRadius.card }}
                       />
                     </Card>
                   ))}
@@ -436,11 +461,11 @@ export default function GymsScreen() {
               );
             })()}
             <Text size="md" appearance="gray">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
-              incididunt ut labore et dolore magna aliqua.
+              Plus de 50 salles partenaires dans toute la France, réparties dans 8 franchises.
+              Retrouve leurs blocs, leurs classements et les grimpeurs en séance.
             </Text>
             <Button
-              appearance="primary"
+              appearance="secondary"
               title="Voir tout"
               style={{ alignSelf: 'flex-start' }}
               onPress={() => {

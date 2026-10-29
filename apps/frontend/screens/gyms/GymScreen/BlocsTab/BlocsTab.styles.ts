@@ -14,6 +14,6 @@ export const MapContainer = styled(Animated.View)((props) => ({
 // En-tête de date dans la liste des blocs
 export const SectionHeader = styled(View)((props) => ({
   paddingTop: props.theme.spacing.md,
-  paddingBottom: props.theme.spacing.xs,
-  paddingInline: props.theme.spacing.lg,
+  paddingBottom: props.theme.spacing.sm,
+  paddingInline: props.theme.spacing.lg + 2,
 }));

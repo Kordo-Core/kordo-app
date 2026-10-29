@@ -36,12 +36,28 @@ export function BlocsTab({ gymId, geometry, onBoulderSelected }: BlocsTabProps) 
   const sectors = useMemo(() => getSectorsByGym(gymId), [gymId]);
 
   const [selectedSectorId, setSelectedSectorId] = useState<string | null>(null);
+  // Filtre par couleur de prise (paliers de 5 cotations, comme BoulderBadge)
+  const [selectedGrade, setSelectedGrade] = useState<number | null>(null);
+  const gradeColors = useMemo(
+    () => [
+      { label: 'Jaune', color: theme.colors.boulderGrade.yellow },
+      { label: 'Vert', color: theme.colors.boulderGrade.green },
+      { label: 'Bleu', color: theme.colors.boulderGrade.blue },
+      { label: 'Rouge', color: theme.colors.boulderGrade.red },
+      { label: 'Noir', color: theme.colors.boulderGrade.black },
+      { label: 'Violet', color: theme.colors.boulderGrade.purple },
+    ],
+    [theme],
+  );
+  const gradeIndex = (grade: number) => Math.min(5, Math.floor((Math.max(1, grade) - 1) / 5));
 
   // Blocs filtrés par secteur sélectionné, regroupés par date, puis aplatis (en-tête + blocs)
   const blocsData = useMemo<BlocRow[]>(() => {
-    const source = selectedSectorId
-      ? blocs.filter((detail) => detail.sector.id === selectedSectorId)
-      : blocs;
+    const source = blocs.filter(
+      (detail) =>
+        (!selectedSectorId || detail.sector.id === selectedSectorId) &&
+        (selectedGrade === null || gradeIndex(detail.bloc.grade) === selectedGrade),
+    );
     const groups = new Map<string, typeof blocs>();
     source.forEach((detail) => {
       const date = detail.bloc.createdAt;
@@ -56,7 +72,8 @@ export function BlocsTab({ gymId, geometry, onBoulderSelected }: BlocsTabProps) 
         items.forEach((detail) => rows.push({ type: 'bloc', key: detail.bloc.id, detail }));
       });
     return rows;
-  }, [blocs, selectedSectorId]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [blocs, selectedSectorId, selectedGrade]);
 
   const [listHeight, setListHeight] = useState(0);
   const [mapInteractive, setMapInteractive] = useState(true);
@@ -131,9 +148,7 @@ export function BlocsTab({ gymId, geometry, onBoulderSelected }: BlocsTabProps) 
     ({ item }) =>
       item.type === 'header' ? (
         <Styled.SectionHeader onLayout={(e) => onRowLayout(item.key, e.nativeEvent.layout.height)}>
-          <Text appearance="gray" size="sm" bold>
-            {formatDate(item.date)}
-          </Text>
+          <Text variant="eyebrow">{formatDate(item.date)}</Text>
         </Styled.SectionHeader>
       ) : (
         <BlocSwipeRow
@@ -170,6 +185,12 @@ export function BlocsTab({ gymId, geometry, onBoulderSelected }: BlocsTabProps) 
           sectors={sectors}
           selectedSectorId={selectedSectorId}
           onSelectSector={setSelectedSectorId}
+          grades={gradeColors.map((g, i) => ({
+            ...g,
+            count: blocs.filter((d) => gradeIndex(d.bloc.grade) === i).length,
+            selected: selectedGrade === i,
+          }))}
+          onSelectGrade={setSelectedGrade}
         />
       </Styled.MapContainer>
       <Shell.CardFrame

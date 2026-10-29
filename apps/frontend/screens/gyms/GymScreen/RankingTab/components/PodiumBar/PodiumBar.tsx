@@ -12,7 +12,14 @@ import * as Styled from './PodiumBar.styles';
 import { PodiumBarProps } from './PodiumBar.types';
 
 // Barre du podium : monte au montage (mount) puis rétrécit au scroll (shrink)
-export function PodiumBar({ height, delay = 0, scrollY, shrinkEnd, children }: PodiumBarProps) {
+export function PodiumBar({
+  height,
+  delay = 0,
+  scrollY,
+  shrinkEnd,
+  first,
+  children,
+}: PodiumBarProps) {
   const mount = useSharedValue(0);
 
   useEffect(() => {
@@ -27,5 +34,9 @@ export function PodiumBar({ height, delay = 0, scrollY, shrinkEnd, children }: P
     return { height: height * mount.value * shrink };
   });
 
-  return <Styled.PodiumBar style={animatedStyle}>{children}</Styled.PodiumBar>;
+  return (
+    <Styled.PodiumBar first={first} style={animatedStyle}>
+      {children}
+    </Styled.PodiumBar>
+  );
 }

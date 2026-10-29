@@ -12,6 +12,7 @@ import {
   BoulderBadge,
   Header,
   Icon,
+  IconButton,
   ListRow,
   Panel,
   SegmentedControl,
@@ -20,6 +21,7 @@ import {
   Text,
   VideoStories,
 } from 'kordo-ui';
+import { LinearGradient } from 'expo-linear-gradient';
 import { ScreenLayout } from '../../../components/ScreenLayout/ScreenLayout';
 import * as Styled from './GymScreen.styles';
 import { RankingTab } from './RankingTab/RankingTab';
@@ -38,14 +40,8 @@ export default function GymScreen() {
   const theme = useTheme();
   const navigation = useNavigation();
 
-  // Dépend du thème : construit dans le composant plutôt qu'au chargement du module.
-  const segments = useMemo(
-    () => [
-      { text: 'Classement', color: theme.colors.secondary.base },
-      { text: 'Les blocs', color: theme.colors.secondary.base },
-    ],
-    [theme],
-  );
+  // Onglets posés sur le dégradé vert du hero : l'indicateur clair est celui du composant.
+  const segments = useMemo(() => [{ text: 'Classement' }, { text: 'Les blocs' }], []);
   const { params } = useRoute<RouteProp<RootStackParamList, 'Gym'>>();
   const gym = GYMS.find((g) => g.id === params.gymId);
   const [activeTab, setActiveTab] = useState(0);
@@ -103,6 +99,21 @@ export default function GymScreen() {
 
   return (
     <ScreenLayout>
+      {/* Hero vert (design D) derrière l'en-tête, les onglets et le podium / le plan */}
+      <LinearGradient
+        colors={theme.colors.hero}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          height: geometry.topInset + geometry.heroHeight + 40,
+          borderBottomLeftRadius: 36,
+          borderBottomRightRadius: 36,
+        }}
+      />
       {activeTab === 0 ? (
         <RankingTab gymId={params.gymId} geometry={geometry} />
       ) : (
@@ -123,6 +134,16 @@ export default function GymScreen() {
         }}
       >
         <>
+          {/* Fiche du bloc (design D) : photo arrondie sans repères, titre display, points */}
+          <Image
+            source={{ uri: selectedBoulder?.bloc.blocUrl }}
+            style={{
+              width: width - theme.spacing.md * 2,
+              height: 380,
+              borderRadius: theme.borderRadius.lg,
+              backgroundColor: theme.colors.surfaceAlt,
+            }}
+          />
           <ListRow
             left={
               <BoulderBadge
@@ -131,33 +152,19 @@ export default function GymScreen() {
               />
             }
             primaryText={
-              <Text size="lg" bold>
+              <Text variant="display" size="sm">
                 {selectedBoulder?.bloc.name}
               </Text>
             }
             secondaryText={
-              <Text appearance="primary" size="sm">
+              <Text appearance="secondary" size="sm" bold>
                 <Text size="sm" appearance="gray">
                   par{' '}
                 </Text>
                 {selectedBoulder?.setter?.firstName}
               </Text>
             }
-            right={
-              <Text size="lg" bold appearance="gray">
-                {selectedBoulder?.bloc.points}pts
-              </Text>
-            }
-          />
-          <Image
-            source={{ uri: selectedBoulder?.bloc.blocUrl }}
-            style={{
-              width: width,
-              height: 500,
-              backgroundColor: theme.colors.secondary.light,
-              marginLeft: -theme.spacing.md,
-              marginTop: theme.spacing.sm,
-            }}
+            right={<Tag title={`${selectedBoulder?.bloc.points ?? 0} pts`} appearance="primary" />}
           />
           <View style={{ gap: theme.spacing.md }}>
             <View
@@ -180,8 +187,13 @@ export default function GymScreen() {
                 gap: theme.spacing.sm,
               }}
             >
-              <Icon name="calendar" size="md" />
-              <Text>{selectedBoulder?.bloc.createdAt}</Text>
+              <Icon name="calendar" size="md" color={theme.colors.textMuted} />
+              <Text appearance="gray" size="sm" bold>
+                Ouvert le{' '}
+                {selectedBoulder?.bloc.createdAt
+                  ? new Date(selectedBoulder.bloc.createdAt).toLocaleDateString('fr-FR')
+                  : ''}
+              </Text>
             </View>
             <Slider
               height={260}
@@ -195,16 +207,19 @@ export default function GymScreen() {
                 style={{
                   width: 180,
                   height: 260,
-                  borderRadius: theme.borderRadius.square,
+                  borderRadius: theme.borderRadius.card,
                   borderWidth: 2,
-                  borderColor: theme.colors.primary.base,
+                  borderColor: theme.colors.border,
                   borderStyle: 'dashed',
                   alignItems: 'center',
                   justifyContent: 'center',
+                  gap: theme.spacing.sm,
                 }}
               >
-                <Icon name="image" size="lg" color={theme.colors.primary.base} />
-                <Text appearance="primary">Ajouter votre vidéo</Text>
+                <Icon name="CameraRegular" size="lg" color={theme.colors.primary.base} />
+                <Text bold appearance="gray">
+                  Ajouter ta vidéo
+                </Text>
               </View>
               {getMediaByBloc(selectedBoulder?.bloc.id || '').map((entry, index) => (
                 <MethodVideoSlide
@@ -247,12 +262,23 @@ export default function GymScreen() {
           zIndex: 10,
           backgroundColor: 'transparent',
         }}
-        centerChildren
-        left={<Icon name="ArrowLeftRegular" size="md" onPress={() => navigation.goBack()} />}
+        left={
+          <IconButton
+            icon="ArrowLeftRegular"
+            variant="glass"
+            accessibilityLabel="Retour"
+            onPress={() => navigation.goBack()}
+          />
+        }
       >
-        <Text bold size="lg">
-          {gym?.name}
-        </Text>
+        <View>
+          <Text variant="eyebrow" size={11} appearance="white" style={{ opacity: 0.8 }}>
+            {gym?.shortName ?? 'Salle'}
+          </Text>
+          <Text variant="display" size="sm" appearance="white" numberOfLines={1}>
+            {gym?.name}
+          </Text>
+        </View>
       </Header>
     </ScreenLayout>
   );

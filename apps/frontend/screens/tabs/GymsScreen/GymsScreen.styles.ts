@@ -14,9 +14,9 @@ export const Img = styled(Image)({
 });
 
 export const Card = styled(View)((props) => ({
-  backgroundColor: props.theme.colors.neutral.white,
-  borderTopLeftRadius: 30,
-  borderTopRightRadius: 30,
+  backgroundColor: props.theme.colors.background,
+  borderTopLeftRadius: 32,
+  borderTopRightRadius: 32,
   width: '100%',
   overflow: 'hidden',
   boxShadow: props.theme.shadows.up,

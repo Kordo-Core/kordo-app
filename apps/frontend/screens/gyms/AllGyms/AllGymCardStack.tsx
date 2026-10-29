@@ -102,7 +102,7 @@ function CardItem({
   const theme = useTheme();
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   // Le worklet tourne sur le thread UI : il capture une valeur primitive, pas l'objet thème.
-  const cardRadius = theme.borderRadius.square;
+  const cardRadius = theme.borderRadius.lg;
   // Style de la carte : position/échelle/opacité dérivées en continu du rang relatif `r`.
   // Recalculé sur le thread UI à chaque frame pendant le geste (worklet Reanimated).
   const animStyle = useAnimatedStyle(() => {
@@ -159,7 +159,7 @@ function CardItem({
       <ImageBackground
         source={{ uri: gym.imageUri }}
         style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}
-        imageStyle={{ borderRadius: theme.borderRadius.square }}
+        imageStyle={{ borderRadius: theme.borderRadius.lg }}
       />
       {/* Overlay du contenu, géré en fondu : gradient ancré tout en bas, infos remontées au bas visible */}
       <Animated.View
@@ -188,7 +188,7 @@ function CardItem({
         >
           <Tag title={gym.shortName} appearance="primary" />
           <View>
-            <Text appearance="white" size={'xxl'} extraBold>
+            <Text variant="display" size="md" appearance="white">
               {gym.name}
             </Text>
             <Text appearance="white" size={'lg'}>
@@ -220,7 +220,7 @@ function CardItem({
                 }}
               >
                 <View />
-                <Text appearance="white" bold size={'lg'}>
+                <Text appearance="white" extraBold size="md">
                   Voir plus
                 </Text>
                 <View

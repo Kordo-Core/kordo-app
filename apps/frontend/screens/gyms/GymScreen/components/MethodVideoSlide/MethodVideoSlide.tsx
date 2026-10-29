@@ -34,7 +34,7 @@ export function MethodVideoSlide({
       style={{
         width,
         height,
-        borderRadius: theme.borderRadius.square,
+        borderRadius: theme.borderRadius.card,
         overflow: 'hidden',
         backgroundColor: theme.colors.secondary.base,
       }}
@@ -76,16 +76,16 @@ export function MethodVideoSlide({
         />
         <View
           style={{
-            width: 56,
-            height: 56,
-            borderRadius: 28,
-            backgroundColor: theme.colors.overlay.dark,
+            width: 48,
+            height: 48,
+            borderRadius: 24,
+            backgroundColor: 'rgba(255,255,255,0.92)',
             alignItems: 'center',
             justifyContent: 'center',
             paddingLeft: 4,
           }}
         >
-          <Icon name="play" size="lg" color={theme.colors.neutral.white} />
+          <Icon name="play" size="md" color="#13201B" />
         </View>
 
         {author && (
@@ -105,9 +105,9 @@ export function MethodVideoSlide({
           >
             <Image
               source={{ uri: author.avatarUrl }}
-              style={{ width: 24, height: 24, borderRadius: 12 }}
+              style={{ width: 24, height: 24, borderRadius: 8 }}
             />
-            <Text size="sm" style={{ color: theme.colors.neutral.white }}>
+            <Text size="xs" bold style={{ color: theme.colors.neutral.white }}>
               {author.firstName}
             </Text>
           </View>

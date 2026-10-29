@@ -50,18 +50,28 @@ export function Podium({ podium, scrollY, geometry }: PodiumProps) {
               layout="column"
               onPressUser={(user) => navigation.push('UserProfile', { userId: user.id })}
               primaryText={
-                <Text size="md" bold>
+                <Text size="sm" extraBold appearance="white">
                   {entry.user.firstName}
                 </Text>
               }
               tertiaryText={
-                <Text appearance="gray" bold>
-                  {entry.totalPoints} pts
+                <Text size="xs" bold appearance="white" style={{ opacity: 0.8 }}>
+                  {entry.totalPoints.toLocaleString('fr-FR')} pts
                 </Text>
               }
             />
-            <PodiumBar height={bar} delay={delay} scrollY={scrollY} shrinkEnd={phase1End}>
-              <Text appearance="white" size="lg" extraBold>
+            <PodiumBar
+              height={bar}
+              delay={delay}
+              scrollY={scrollY}
+              shrinkEnd={phase1End}
+              first={label === '1'}
+            >
+              <Text
+                variant="display"
+                size={34}
+                style={{ color: label === '1' ? '#13201B' : '#FFFFFF' }}
+              >
                 {label}
               </Text>
             </PodiumBar>

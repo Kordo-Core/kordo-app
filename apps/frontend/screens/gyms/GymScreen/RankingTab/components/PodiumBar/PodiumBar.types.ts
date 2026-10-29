@@ -6,5 +6,7 @@ export type PodiumBarProps = {
   delay?: number;
   scrollY: SharedValue<number>;
   shrinkEnd: number;
+  /** Première place : marche orange */
+  first?: boolean;
   children: ReactNode;
 };

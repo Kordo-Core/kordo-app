@@ -79,7 +79,7 @@ function GymCard({
 }: CardProps) {
   const theme = useTheme();
   // Valeur primitive capturée par le worklet, plutôt que l'objet thème entier.
-  const cardRadius = theme.borderRadius.square;
+  const cardRadius = theme.borderRadius.lg;
 
   const animStyle = useAnimatedStyle(() => ({
     position: 'absolute',
@@ -99,7 +99,7 @@ function GymCard({
       <ImageBackground
         source={{ uri: imageUri }}
         style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}
-        imageStyle={{ borderRadius: theme.borderRadius.square }}
+        imageStyle={{ borderRadius: theme.borderRadius.lg }}
       />
       <LinearGradient
         colors={['transparent', 'rgba(0,0,0,0.75)']}
@@ -109,8 +109,8 @@ function GymCard({
           left: 0,
           right: 0,
           height: '55%',
-          borderBottomLeftRadius: theme.borderRadius.square,
-          borderBottomRightRadius: theme.borderRadius.square,
+          borderBottomLeftRadius: theme.borderRadius.lg,
+          borderBottomRightRadius: theme.borderRadius.lg,
         }}
       />
       {children}
@@ -228,7 +228,7 @@ export function GymCardStack({ cardWidth, cardHeight = 300, gyms }: Props) {
               <View style={{ gap: theme.spacing.sm }}>
                 <Tag title={gyms[i].shortName} appearance="primary" />
                 <View>
-                  <Text appearance="white" size={'lg'} bold>
+                  <Text variant="display" size="xs" appearance="white">
                     {gyms[i].name}
                   </Text>
                   <Text appearance="white">{gyms[i].address}</Text>

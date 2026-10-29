@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import { ScreenLayout } from '../../../components/ScreenLayout/ScreenLayout';
 import { useTheme } from '@emotion/react';
-import { Header, Icon, Slider, Text } from 'kordo-ui';
+import { Header, IconButton, Slider, Text } from 'kordo-ui';
 import { View } from 'react-native';
 import React from 'react';
 import { AllGymCardStack } from './AllGymCardStack';
@@ -23,9 +23,15 @@ export default function AllGymsScreen() {
       <Header
         centerChildren
         style={{ backgroundColor: 'transparent' }}
-        left={<Icon name="ArrowLeftRegular" size="md" onPress={() => navigation.goBack()} />}
+        left={
+          <IconButton
+            icon="ArrowLeftRegular"
+            accessibilityLabel="Retour"
+            onPress={() => navigation.goBack()}
+          />
+        }
       >
-        <Text bold size="lg">
+        <Text variant="display" size="xs">
           Les salles
         </Text>
       </Header>
@@ -37,18 +43,25 @@ export default function AllGymsScreen() {
           selectedIndex={selectedIndex}
           onChange={setSelectedIndex}
         >
-          {FILTERS.map((filter) => (
-            <Text key={filter} bold size="xl" appearance="black" numberOfLines={1}>
+          {FILTERS.map((filter, i) => (
+            <Text
+              key={filter}
+              variant="display"
+              size={i === selectedIndex ? 28 : 18}
+              appearance={i === selectedIndex ? 'black' : 'gray'}
+              numberOfLines={1}
+            >
               {filter}
             </Text>
           ))}
         </Slider>
         <Text
-          style={{ paddingHorizontal: theme.spacing.xl, textAlign: 'center' }}
+          style={{ paddingHorizontal: theme.spacing.xl + 8, textAlign: 'center', lineHeight: 21 }}
           appearance="gray"
+          size="sm"
         >
-          Découvrez toute nos salles partenaires ! Plus de 50 salles dans toute la France dans plus
-          de 8 franchises differente
+          Découvre toutes nos salles partenaires : plus de 50 salles dans toute la France, réparties
+          dans 8 franchises.
         </Text>
       </View>
 

@@ -22,5 +22,5 @@ export const PodiumColumn = styled(View)((props) => ({
   flex: 1,
   justifyContent: 'flex-end',
   alignItems: 'center',
-  gap: props.theme.spacing.md,
+  gap: props.theme.spacing.sm,
 }));
