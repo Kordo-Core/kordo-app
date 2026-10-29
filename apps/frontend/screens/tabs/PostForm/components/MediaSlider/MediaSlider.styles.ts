@@ -1,16 +1,16 @@
 import styled from '@emotion/native';
 import { Pressable } from 'react-native';
 
-export const TILE_W = 130;
-export const TILE_H = 180;
+export const TILE_W = 104;
+export const TILE_H = 128;
 
 export const AddTile = styled(Pressable)<{ $media: boolean }>((props) => ({
   width: props.$media ? TILE_W : '100%',
   height: TILE_H,
-  borderRadius: props.theme.borderRadius.square,
+  borderRadius: 18,
   borderWidth: 2,
   borderStyle: 'dashed' as const,
-  borderColor: props.theme.colors.primary.base,
+  borderColor: props.theme.colors.border,
   alignItems: 'center' as const,
   justifyContent: 'center' as const,
   gap: props.theme.spacing.xs,
@@ -19,9 +19,9 @@ export const AddTile = styled(Pressable)<{ $media: boolean }>((props) => ({
 export const MediaTile = styled(Pressable)((props) => ({
   width: TILE_W,
   height: TILE_H,
-  borderRadius: props.theme.borderRadius.square,
+  borderRadius: 18,
   overflow: 'hidden' as const,
-  backgroundColor: props.theme.colors.neutral.gray.light,
+  backgroundColor: props.theme.colors.surfaceAlt,
   alignItems: 'center' as const,
   justifyContent: 'center' as const,
 }));

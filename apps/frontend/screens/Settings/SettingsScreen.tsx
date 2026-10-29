@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTheme } from '@emotion/react';
 import { Button, Dialog, Header, Icon, ListRow, Section, Text, Toggle } from 'kordo-ui';
+import { ScreenHeader } from '../../components/ScreenHeader/ScreenHeader';
 import { ScreenLayout } from '../../components/ScreenLayout/ScreenLayout';
 import { getBlockedUsers, getCloseFriends } from 'fake_data';
 import { RootStackParamList } from '../../App';
@@ -38,15 +39,7 @@ export default function SettingsScreen() {
 
   return (
     <ScreenLayout>
-      <Header
-        left={<Icon name="ArrowLeftRegular" size="md" onPress={() => navigation.goBack()} />}
-        centerChildren
-        style={{ boxShadow: theme.shadows.md }}
-      >
-        <Text size="lg" bold>
-          Paramètres
-        </Text>
-      </Header>
+      <ScreenHeader title="Paramètres" eyebrow="Ton compte" onBack={() => navigation.goBack()} />
 
       <ScrollView
         style={{ flex: 1 }}

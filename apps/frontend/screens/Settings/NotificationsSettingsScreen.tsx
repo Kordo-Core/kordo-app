@@ -3,6 +3,7 @@ import { ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useTheme } from '@emotion/react';
 import { Header, Icon, ListRow, Section, Text, Toggle } from 'kordo-ui';
+import { ScreenHeader } from '../../components/ScreenHeader/ScreenHeader';
 import { ScreenLayout } from '../../components/ScreenLayout/ScreenLayout';
 
 // Clés des interrupteurs, dans l'ordre des groupes de la maquette.
@@ -66,15 +67,7 @@ export default function NotificationsSettingsScreen() {
 
   return (
     <ScreenLayout>
-      <Header
-        left={<Icon name="ArrowLeftRegular" size="md" onPress={() => navigation.goBack()} />}
-        centerChildren
-        style={{ boxShadow: theme.shadows.md }}
-      >
-        <Text size="lg" bold>
-          Notifications
-        </Text>
-      </Header>
+      <ScreenHeader title="Notifications" eyebrow="Paramètres" onBack={() => navigation.goBack()} />
 
       <ScrollView
         style={{ flex: 1 }}

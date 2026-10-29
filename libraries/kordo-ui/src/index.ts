@@ -21,6 +21,8 @@ export type { CheckboxProps } from './components/atoms/Checkbox/Checkbox.types';
 export { Message } from './components/molecules/Message/Message';
 export type { MessageProps } from './components/molecules/Message/Message.types';
 export { SegmentedControl } from './components/molecules/SegmentedControl/SegmentedControl';
+export { SlideToConfirm } from './components/molecules/SlideToConfirm/SlideToConfirm';
+export type { SlideToConfirmProps } from './components/molecules/SlideToConfirm/SlideToConfirm.types';
 export { Suggestion } from './components/molecules/Suggestion/Suggestion';
 export { Pivots } from './components/molecules/Pivots/Pivots';
 export type { PivotsProps } from './components/molecules/Pivots/Pivots.types';

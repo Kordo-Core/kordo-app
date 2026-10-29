@@ -3,6 +3,7 @@ import { Pressable, ScrollView, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useTheme } from '@emotion/react';
 import { Header, Icon, Section, Text } from 'kordo-ui';
+import { ScreenHeader } from '../../components/ScreenHeader/ScreenHeader';
 import { ScreenLayout } from '../../components/ScreenLayout/ScreenLayout';
 import { SearchToolbar } from '../../components/SearchToolbar/SearchToolbar';
 import { matchesQuery } from '../../utils/matchesQuery';
@@ -43,15 +44,7 @@ export default function LanguageScreen() {
 
   return (
     <ScreenLayout>
-      <Header
-        left={<Icon name="ArrowLeftRegular" size="md" onPress={() => navigation.goBack()} />}
-        centerChildren
-        style={{ boxShadow: theme.shadows.md }}
-      >
-        <Text size="lg" bold>
-          Langues
-        </Text>
-      </Header>
+      <ScreenHeader title="Langues" eyebrow="Paramètres" onBack={() => navigation.goBack()} />
 
       <ScrollView
         style={{ flex: 1 }}

@@ -6,6 +6,7 @@ import { useTheme } from '@emotion/react';
 import * as ImagePicker from 'expo-image-picker';
 import { MessagePublic, MessageKind } from 'core';
 import { Button, Header, Icon, Message, Text } from 'kordo-ui';
+import { ScreenHeader } from '../../components/ScreenHeader/ScreenHeader';
 import { ScreenLayout } from '../../components/ScreenLayout/ScreenLayout';
 import { MessageComposer } from './components/MessageComposer/MessageComposer';
 import * as Styled from './ChatScreen.styles';
@@ -29,15 +30,7 @@ export default function ChatScreen() {
   if (!initialConversation) {
     return (
       <ScreenLayout>
-        <Header
-          left={<Icon name="ArrowLeftRegular" size="md" onPress={() => navigation.goBack()} />}
-          centerChildren
-          style={{ boxShadow: theme.shadows.md }}
-        >
-          <Text size="lg" bold>
-            Conversation
-          </Text>
-        </Header>
+        <ScreenHeader title="Conversation" eyebrow="Messages" onBack={() => navigation.goBack()} />
         <Styled.Empty>
           <Text appearance="gray">Cette conversation n&apos;existe plus</Text>
         </Styled.Empty>

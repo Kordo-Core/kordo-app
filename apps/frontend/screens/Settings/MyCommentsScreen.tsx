@@ -5,6 +5,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTheme } from '@emotion/react';
 import { Header, Icon, Section, Text } from 'kordo-ui';
 import * as Styled from './MyCommentsScreen.styles';
+import { ScreenHeader } from '../../components/ScreenHeader/ScreenHeader';
 import { ScreenLayout } from '../../components/ScreenLayout/ScreenLayout';
 import { CURRENT_USER, getMyComments } from 'fake_data';
 import { RootStackParamList } from '../../App';
@@ -19,15 +20,11 @@ export default function MyCommentsScreen() {
   if (!comments.length) {
     return (
       <ScreenLayout>
-        <Header
-          left={<Icon name="ArrowLeftRegular" size="md" onPress={() => navigation.goBack()} />}
-          centerChildren
-          style={{ boxShadow: theme.shadows.md }}
-        >
-          <Text size="lg" bold>
-            Commentaires
-          </Text>
-        </Header>
+        <ScreenHeader
+          title="Commentaires"
+          eyebrow="Paramètres"
+          onBack={() => navigation.goBack()}
+        />
         <Text appearance="gray" style={{ padding: theme.spacing.xl, textAlign: 'center' }}>
           Aucun commentaire pour le moment.
         </Text>
@@ -37,15 +34,7 @@ export default function MyCommentsScreen() {
 
   return (
     <ScreenLayout>
-      <Header
-        left={<Icon name="ArrowLeftRegular" size="md" onPress={() => navigation.goBack()} />}
-        centerChildren
-        style={{ boxShadow: theme.shadows.md }}
-      >
-        <Text size="lg" bold>
-          Commentaires
-        </Text>
-      </Header>
+      <ScreenHeader title="Commentaires" eyebrow="Paramètres" onBack={() => navigation.goBack()} />
       <ScrollView
         style={{ flex: 1 }}
         contentContainerStyle={{

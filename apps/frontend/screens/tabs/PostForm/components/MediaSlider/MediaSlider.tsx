@@ -33,9 +33,9 @@ export function MediaSlider({ media, onAdd }: MediaSliderProps) {
         >
           {onAdd && (
             <Styled.AddTile onPress={onAdd} $media>
-              <Icon name="ImageRegular" size="lg" color={theme.colors.primary.base} />
-              <Text size="xs" appearance="primary">
-                Ajouter
+              <Icon name="CameraRegular" size="lg" color={theme.colors.primary.base} />
+              <Text size="xs" bold appearance="gray" style={{ textAlign: 'center' }}>
+                Photos{'\n'}& vidéos
               </Text>
             </Styled.AddTile>
           )}
@@ -60,9 +60,9 @@ export function MediaSlider({ media, onAdd }: MediaSliderProps) {
       ) : (
         onAdd && (
           <Styled.AddTile onPress={onAdd} $media={false}>
-            <Icon name="ImageRegular" size="lg" color={theme.colors.primary.base} />
-            <Text size="xs" appearance="primary">
-              Ajouter
+            <Icon name="CameraRegular" size="lg" color={theme.colors.primary.base} />
+            <Text size="sm" bold appearance="gray">
+              Ajouter des photos & vidéos
             </Text>
           </Styled.AddTile>
         )

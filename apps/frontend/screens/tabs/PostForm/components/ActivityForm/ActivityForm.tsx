@@ -1,3 +1,4 @@
+import { View } from 'react-native';
 import { Dropdown, DropdownItem, Input, Text } from 'kordo-ui';
 import { ActivityFormProps } from './ActivityForm.types';
 import { InteractionsSection } from '../InteractionsSection/InteractionsSection';
@@ -43,11 +44,7 @@ function formatSession(iso: string) {
 function Section({ title, children }: { title?: string; children: React.ReactNode }) {
   return (
     <Styled.SectionContainer>
-      {title && (
-        <Text bold size="lg">
-          {title}
-        </Text>
-      )}
+      {title && <Text variant="eyebrow">{title}</Text>}
 
       {children}
     </Styled.SectionContainer>
@@ -61,11 +58,13 @@ export function ActivityForm(props: ActivityFormProps) {
         <Input
           value={props.title}
           onChange={props.onTitleChange}
+          label="Titre"
           placeholder="Nommer votre activité…"
         />
         <Input
           value={props.description}
           onChange={props.onDescriptionChange}
+          label="Description"
           placeholder="Comment s'est passé la séance ? Donnez plus d'info sur votre séance…"
           multiline
         />
@@ -80,6 +79,19 @@ export function ActivityForm(props: ActivityFormProps) {
           onChange={props.onGymChange}
         />
         <Styled.BlocsWrapper>
+          <Styled.Counter>
+            <View style={{ flex: 1 }}>
+              <Text variant="eyebrow" size={11}>
+                Blocs validés
+              </Text>
+              <Text variant="display" size={64}>
+                {props.selectedBlocs.length}
+              </Text>
+            </View>
+            <Text size="xs" appearance="gray" style={{ flex: 1, lineHeight: 17 }}>
+              Choisis la salle puis les blocs réussis pendant la séance.
+            </Text>
+          </Styled.Counter>
           <Dropdown
             mode="multi"
             items={props.blocItems}
@@ -87,7 +99,7 @@ export function ActivityForm(props: ActivityFormProps) {
             value={props.selectedBlocs}
             onChange={props.onBlocsChange}
           />
-          <Text size="sm" appearance="gray">
+          <Text size="xs" appearance="gray">
             Les blocs que vous sélectionnerez seront automatiquement validés comme réussis
           </Text>
         </Styled.BlocsWrapper>

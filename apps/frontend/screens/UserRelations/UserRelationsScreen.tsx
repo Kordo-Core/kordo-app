@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Header, Icon, Pivots, Text } from 'kordo-ui';
+import { ScreenHeader } from '../../components/ScreenHeader/ScreenHeader';
 import { ScreenLayout } from '../../components/ScreenLayout/ScreenLayout';
 import * as Styled from './UserRelationsScreen.styles';
 import {
@@ -59,14 +60,7 @@ export default function UserRelationsScreen() {
 
   return (
     <ScreenLayout>
-      <Header
-        left={<Icon name="ArrowLeftRegular" size="md" onPress={() => navigation.goBack()} />}
-        centerChildren
-      >
-        <Text size="lg" bold>
-          {user.username}
-        </Text>
-      </Header>
+      <ScreenHeader title={user.username} onBack={() => navigation.goBack()} />
 
       <Styled.PivotsBar>
         <Pivots

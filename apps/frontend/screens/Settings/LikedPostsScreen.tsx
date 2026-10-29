@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTheme } from '@emotion/react';
 import { Activity, Header, Icon, Publication, Text, TextPost } from 'kordo-ui';
+import { ScreenHeader } from '../../components/ScreenHeader/ScreenHeader';
 import { ScreenLayout } from '../../components/ScreenLayout/ScreenLayout';
 import { CURRENT_USER, getLikedPosts, HomeFeedItem } from 'fake_data';
 import { RootStackParamList } from '../../App';
@@ -18,15 +19,7 @@ export default function LikedPostsScreen() {
 
   return (
     <ScreenLayout>
-      <Header
-        left={<Icon name="ArrowLeftRegular" size="md" onPress={() => navigation.goBack()} />}
-        centerChildren
-        style={{ boxShadow: theme.shadows.md }}
-      >
-        <Text size="lg" bold>
-          J&apos;aimes
-        </Text>
-      </Header>
+      <ScreenHeader title="J’aimes" eyebrow="Paramètres" onBack={() => navigation.goBack()} />
 
       {/* Liste virtualisée : elle gère son propre défilement, pas de ScrollView autour. */}
       <FlatList

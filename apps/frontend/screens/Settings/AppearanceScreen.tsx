@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useTheme } from '@emotion/react';
 import { Header, Icon, ListRow, Radio, Section, Text } from 'kordo-ui';
 import * as Styled from './AppearanceScreen.styles';
+import { ScreenHeader } from '../../components/ScreenHeader/ScreenHeader';
 import { ScreenLayout } from '../../components/ScreenLayout/ScreenLayout';
 
 type ThemeName = 'dark' | 'light' | 'fontainebleau' | 'arkose';
@@ -24,15 +25,7 @@ export default function AppearanceScreen() {
 
   return (
     <ScreenLayout>
-      <Header
-        left={<Icon name="ArrowLeftRegular" size="md" onPress={() => navigation.goBack()} />}
-        centerChildren
-        style={{ boxShadow: theme.shadows.md }}
-      >
-        <Text size="lg" bold>
-          Apparence
-        </Text>
-      </Header>
+      <ScreenHeader title="Apparence" eyebrow="Paramètres" onBack={() => navigation.goBack()} />
 
       <ScrollView
         style={{ flex: 1 }}

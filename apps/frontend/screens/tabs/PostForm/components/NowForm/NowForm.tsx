@@ -6,9 +6,7 @@ import * as Styled from './NowForm.styles';
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <Styled.SectionContainer>
-      <Text bold size="lg">
-        {title}
-      </Text>
+      <Text variant="eyebrow">{title}</Text>
       {children}
     </Styled.SectionContainer>
   );

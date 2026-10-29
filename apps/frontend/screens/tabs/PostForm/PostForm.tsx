@@ -1,10 +1,12 @@
 import { useMemo, useState } from 'react';
-import { ScrollView, View, useWindowDimensions } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import * as ImagePicker from 'expo-image-picker';
 import { useTheme } from '@emotion/react';
-import { BoulderBadge, Button, DropdownItem, Header, Icon, Text, useToast } from 'kordo-ui';
+import { BoulderBadge, DropdownItem, SlideToConfirm, Text, useToast } from 'kordo-ui';
+import Animated, { FadeInDown } from 'react-native-reanimated';
+import { ScreenHeader } from '../../../components/ScreenHeader/ScreenHeader';
 import { ScreenLayout } from '../../../components/ScreenLayout/ScreenLayout';
 import { GYMS } from '../../../fake_data/gyms.fake';
 import { getBlocsByGym, getCurrentUserBlocMethod } from '../../../fake_data/climbing.fake';
@@ -17,9 +19,16 @@ import { PublicationForm } from './components/PublicationForm/PublicationForm';
 import { MessageForm } from './components/MessageForm/MessageForm';
 import { NowForm } from './components/NowForm/NowForm';
 
+// Second mot du titre selon le type de publication
+const TYPE_WORDS: Record<PostType, string> = {
+  activity: 'activité',
+  publication: 'publication',
+  message: 'pensée',
+  now: 'session now',
+};
+
 export default function PostForm() {
   const theme = useTheme();
-  const { height } = useWindowDimensions();
   const navigation = useNavigation<BottomTabNavigationProp<MainTabsParamList>>();
   const { addToast } = useToast();
 
@@ -76,7 +85,7 @@ export default function PostForm() {
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: theme.spacing.sm }}>
           <BoulderBadge avatarUrl={bloc.blocUrl} grade={bloc.grade} />
           <View style={{ flex: 1, gap: 2 }}>
-            <Text size="lg" bold>
+            <Text size="md" bold>
               {bloc.name}
             </Text>
             <Text appearance="primary" size="sm">
@@ -89,8 +98,8 @@ export default function PostForm() {
         </View>
       ),
       right: (
-        <Text size="lg" bold appearance="gray">
-          {bloc.points}pts
+        <Text size="sm" extraBold appearance="gray">
+          {bloc.points} pts
         </Text>
       ),
     }));
@@ -136,45 +145,41 @@ export default function PostForm() {
       isClosable: true,
       duration: 2500,
     });
-    navigation.navigate('Home');
+    // Laisse le temps de voir la confirmation du curseur avant de revenir au fil
+    setTimeout(() => navigation.navigate('Home'), 900);
   };
 
   return (
     <ScreenLayout>
-      <Header
-        left={<Icon name="DismissRegular" size="md" onPress={() => navigation.navigate('Home')} />}
-        right={
-          <Button
-            appearance="secondary"
-            size="md"
-            borderRadius="rounded"
-            title="Publier"
-            onPress={publish}
-          />
-        }
-        style={{ boxShadow: theme.shadows.md }}
-      >
-        <Text bold size="lg" numberOfLines={1}>
-          Ajouter une publication
-        </Text>
-      </Header>
+      <ScreenHeader
+        eyebrow="Nouvelle publication"
+        backIcon="DismissRegular"
+        onBack={() => navigation.navigate('Home')}
+      />
 
       <ScrollView
         style={{ flex: 1 }}
-        contentContainerStyle={{ paddingTop: theme.spacing.xs, paddingBottom: 110 }}
+        contentContainerStyle={{
+          paddingHorizontal: theme.spacing.lg,
+          paddingTop: theme.spacing.xs,
+          paddingBottom: 200,
+        }}
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="handled"
       >
-        <View
-          style={{
-            backgroundColor: theme.colors.neutral.white,
-            borderTopLeftRadius: 24,
-            borderTopRightRadius: 24,
-            padding: theme.spacing.lg,
-            gap: theme.spacing.md,
-            minHeight: height,
-          }}
-        >
+        <View style={{ gap: theme.spacing.md + 2 }}>
+          {/* Titre display : le second mot change avec le type de publication */}
+          <View>
+            <Text variant="display" size={44}>
+              Nouvelle
+            </Text>
+            <Animated.View key={type} entering={FadeInDown.duration(350)}>
+              <Text variant="display" size={44} appearance="secondary">
+                {TYPE_WORDS[type]}
+              </Text>
+            </Animated.View>
+          </View>
+
           <PostTypeSelector value={type} onChange={setType} />
 
           {type === 'activity' && (
@@ -249,6 +254,18 @@ export default function PostForm() {
           )}
         </View>
       </ScrollView>
+
+      {/* Action finale : glisser pour publier, posée au-dessus de la barre de navigation */}
+      <View
+        style={{
+          position: 'absolute',
+          left: theme.spacing.lg,
+          right: theme.spacing.lg,
+          bottom: 104,
+        }}
+      >
+        <SlideToConfirm label="Glisser pour publier" doneLabel="Publié !" onConfirm={publish} />
+      </View>
     </ScreenLayout>
   );
 }

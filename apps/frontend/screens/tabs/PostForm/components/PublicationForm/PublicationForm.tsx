@@ -7,10 +7,16 @@ import * as Styled from './PublicationForm.styles';
 export function PublicationForm(props: PublicationFormProps) {
   return (
     <Styled.Container>
-      <Input value={props.title} onChange={props.onTitleChange} placeholder="Nommer votre poste…" />
+      <Input
+        label="Titre"
+        value={props.title}
+        onChange={props.onTitleChange}
+        placeholder="Nommer votre poste…"
+      />
       <Input
         value={props.description}
         onChange={props.onDescriptionChange}
+        label="Description"
         placeholder="Ajoutez du contexte à votre poste à l'aide d'une description…"
         multiline
       />

@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTheme } from '@emotion/react';
 import { Button, Header, Icon, Section, Text, UserInfo } from 'kordo-ui';
+import { ScreenHeader } from '../../components/ScreenHeader/ScreenHeader';
 import { ScreenLayout } from '../../components/ScreenLayout/ScreenLayout';
 import { SearchToolbar } from '../../components/SearchToolbar/SearchToolbar';
 import { matchesQuery } from '../../utils/matchesQuery';
@@ -21,15 +22,11 @@ export default function BlockedAccountsScreen() {
 
   return (
     <ScreenLayout>
-      <Header
-        left={<Icon name="ArrowLeftRegular" size="md" onPress={() => navigation.goBack()} />}
-        centerChildren
-        style={{ boxShadow: theme.shadows.md }}
-      >
-        <Text size="lg" bold>
-          Comptes bloqués
-        </Text>
-      </Header>
+      <ScreenHeader
+        title="Comptes bloqués"
+        eyebrow="Paramètres"
+        onBack={() => navigation.goBack()}
+      />
 
       <ScrollView
         style={{ flex: 1 }}

@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTheme } from '@emotion/react';
 import { Header, Icon, Notification, Section, Text } from 'kordo-ui';
+import { ScreenHeader } from '../../components/ScreenHeader/ScreenHeader';
 import { ScreenLayout } from '../../components/ScreenLayout/ScreenLayout';
 import { getNotificationFeed } from 'fake_data';
 import { RootStackParamList } from '../../App';
@@ -66,15 +67,7 @@ export default function NotificationsScreen() {
 
   return (
     <ScreenLayout>
-      <Header
-        left={<Icon name="ArrowLeftRegular" size="md" onPress={() => navigation.goBack()} />}
-        centerChildren
-        style={{ boxShadow: theme.shadows.md }}
-      >
-        <Text size="lg" bold>
-          Notifications
-        </Text>
-      </Header>
+      <ScreenHeader title="Notifications" eyebrow="Activité" onBack={() => navigation.goBack()} />
 
       <ScrollView
         style={{ flex: 1 }}

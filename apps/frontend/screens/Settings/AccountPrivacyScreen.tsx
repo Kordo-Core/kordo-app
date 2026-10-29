@@ -3,6 +3,7 @@ import { ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useTheme } from '@emotion/react';
 import { Header, Icon, ListRow, Section, Text, Toggle } from 'kordo-ui';
+import { ScreenHeader } from '../../components/ScreenHeader/ScreenHeader';
 import { ScreenLayout } from '../../components/ScreenLayout/ScreenLayout';
 
 // Compte public ou privé, avec les deux paragraphes qui expliquent ce que chaque état implique.
@@ -13,15 +14,11 @@ export default function AccountPrivacyScreen() {
 
   return (
     <ScreenLayout>
-      <Header
-        left={<Icon name="ArrowLeftRegular" size="md" onPress={() => navigation.goBack()} />}
-        centerChildren
-        style={{ boxShadow: theme.shadows.md }}
-      >
-        <Text size="lg" bold>
-          Confidentialité du compte
-        </Text>
-      </Header>
+      <ScreenHeader
+        title="Confidentialité du compte"
+        eyebrow="Paramètres"
+        onBack={() => navigation.goBack()}
+      />
 
       <ScrollView
         style={{ flex: 1 }}

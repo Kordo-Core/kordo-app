@@ -9,6 +9,7 @@ export function MessageForm(props: MessageFormProps) {
       <Input
         value={props.message}
         onChange={props.onMessageChange}
+        label="Message"
         placeholder="Écrivez votre message…"
         multiline
       />
