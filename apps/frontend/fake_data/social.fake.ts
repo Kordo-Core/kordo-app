@@ -505,12 +505,12 @@ export const ACTIVITY_TOPS: Top[] = [
   ...buildActivityTops('post-7', 'u-tomoa', 'arkose-pantin', 12),
 ];
 
-// Quelques vidéos garanties pour la démo (bloc_media de l'ouvreur de la séance) : clips
-// d'escalade en salle de Mixkit (Mixkit Stock Video Free License)
+// Quelques vidéos garanties pour la démo (bloc_media de l'ouvreur de la séance) : clips de bloc
+// en salle filmés à la verticale (9:16), de Pexels (licence Pexels)
 const ACTIVITY_VIDEO_URLS = [
-  'https://assets.mixkit.co/videos/41022/41022-720.mp4',
-  'https://assets.mixkit.co/videos/50925/50925-720.mp4',
-  'https://assets.mixkit.co/videos/41021/41021-720.mp4',
+  'https://videos.pexels.com/video-files/7591538/7591538-hd_720_1280_25fps.mp4',
+  'https://videos.pexels.com/video-files/7591461/7591461-hd_720_1280_25fps.mp4',
+  'https://videos.pexels.com/video-files/7591475/7591475-hd_720_1280_25fps.mp4',
 ];
 const EXTRA_BLOC_MEDIA: BlocMedia[] = Array.from({ length: 5 }, (_, i) => ({
   id: `am-${i + 1}`,

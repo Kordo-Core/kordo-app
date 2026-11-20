@@ -144,15 +144,15 @@ const DESC_TIP = [
 // Points proportionnels au grade (grades de 1 à 30)
 const gradePoints = (grade: number): number => grade * 50;
 
-// Vidéos de méthode postées sur les blocs : clips d'escalade en salle de Mixkit (licence
-// Mixkit Stock Video Free License, utilisation gratuite)
+// Vidéos de méthode postées sur les blocs : clips de bloc en salle, filmés à la verticale (9:16)
+// comme une story, de Pexels (licence Pexels, utilisation gratuite)
 const METHOD_VIDEOS = [
-  'https://assets.mixkit.co/videos/50929/50929-720.mp4',
-  'https://assets.mixkit.co/videos/41024/41024-720.mp4',
-  'https://assets.mixkit.co/videos/50925/50925-720.mp4',
-  'https://assets.mixkit.co/videos/50930/50930-720.mp4',
-  'https://assets.mixkit.co/videos/50920/50920-720.mp4',
-  'https://assets.mixkit.co/videos/50922/50922-720.mp4',
+  'https://videos.pexels.com/video-files/7591461/7591461-hd_720_1280_25fps.mp4',
+  'https://videos.pexels.com/video-files/7591538/7591538-hd_720_1280_25fps.mp4',
+  'https://videos.pexels.com/video-files/7591532/7591532-hd_720_1280_25fps.mp4',
+  'https://videos.pexels.com/video-files/7591542/7591542-hd_720_1280_25fps.mp4',
+  'https://videos.pexels.com/video-files/7591475/7591475-hd_720_1280_25fps.mp4',
+  'https://videos.pexels.com/video-files/7591600/7591600-hd_720_1280_25fps.mp4',
 ];
 
 // Miniatures des blocs : photos Unsplash de prises et de murs de bloc (licence Unsplash),
