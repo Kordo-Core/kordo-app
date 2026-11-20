@@ -85,10 +85,11 @@ export function VideoStories({ videos, initialIndex = 0, onClose }: VideoStories
       <GestureHandlerRootView style={{ flex: 1 }}>
         <GestureDetector gesture={panGesture}>
           <Animated.View style={[styles.container, animatedStyle]}>
+            {/* Plein écran façon story Instagram : la vidéo remplit l'écran (rognée si besoin), sans bandes noires */}
             <VideoView
               player={player}
               style={StyleSheet.absoluteFill}
-              contentFit="contain"
+              contentFit="cover"
               nativeControls={false}
             />
 
