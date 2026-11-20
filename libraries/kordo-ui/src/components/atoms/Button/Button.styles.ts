@@ -1,11 +1,19 @@
 import styled from '@emotion/native';
 import { ButtonProps } from './Button.types';
 import { getColor } from '../../../utils/getColors';
+import { getToneColors, isSurfaceTone } from '../../../utils/surfaceTones';
+
+// Hauteur de chaque taille ; un bouton icône seule est carré
+const HEIGHTS = { sm: 32, md: 44, lg: 58 };
 
 export const ButtonContainer = styled.View<Omit<ButtonProps, 'onPress' | 'style'>>((props) => {
-  const color = getColor(props.theme, props.appearance!);
+  const color = isSurfaceTone(props.appearance)
+    ? getToneColors(props.theme, props.appearance).background
+    : getColor(props.theme, props.appearance!);
   const isDisabled = props.disabled;
-  const isLarge = props.size === 'lg';
+  const size = props.size ?? 'md';
+  const isLarge = size === 'lg';
+  const isSmall = size === 'sm';
   const iconOnly = props.icon && !props.title;
 
   return {
@@ -14,24 +22,32 @@ export const ButtonContainer = styled.View<Omit<ButtonProps, 'onPress' | 'style'
     opacity: isDisabled ? 0.45 : 1,
 
     // Contour
-    borderColor: props.inverted ? props.theme.colors.border : 'transparent',
-    borderWidth: props.borderless ? 0 : props.inverted ? 1.5 : 0,
+    // Inversé : filet intérieur de 1 px (maquette « sport »), sans décaler le contenu
+    borderColor: 'transparent',
+    borderWidth: 0,
+    boxShadow: props.inverted && !props.borderless ? props.theme.shadows.sm : undefined,
     borderRadius:
       props.borderRadius === 'rounded'
         ? props.theme.borderRadius.rounded
-        : isLarge
-          ? props.theme.borderRadius.square + 2
+        : isSmall
+          ? 5
           : props.theme.borderRadius.square,
 
     // Mise en page
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    height: isLarge ? 56 : 44,
-    minWidth: !props.icon && props.title ? 88 : undefined,
-    width: iconOnly ? (isLarge ? 56 : 44) : props.fullWidth ? '100%' : undefined,
-    gap: props.theme.spacing.sm,
+    height: HEIGHTS[size],
+    minWidth: !props.icon && props.title && !isSmall ? 88 : undefined,
+    width: iconOnly ? HEIGHTS[size] : props.fullWidth ? '100%' : undefined,
+    gap: isSmall ? props.theme.spacing.xs : props.theme.spacing.sm,
 
-    paddingHorizontal: iconOnly ? 0 : isLarge ? props.theme.spacing.xl + 2 : props.theme.spacing.lg,
+    paddingHorizontal: iconOnly
+      ? 0
+      : isLarge
+        ? props.theme.spacing.xl + 2
+        : isSmall
+          ? 12
+          : props.theme.spacing.lg,
   };
 });

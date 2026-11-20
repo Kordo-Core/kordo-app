@@ -24,7 +24,7 @@ import Jakarta500 from '../assets/fonts/PlusJakartaSans-Medium.ttf';
 import Jakarta600 from '../assets/fonts/PlusJakartaSans-SemiBold.ttf';
 import Jakarta700 from '../assets/fonts/PlusJakartaSans-Bold.ttf';
 import Jakarta800 from '../assets/fonts/PlusJakartaSans-ExtraBold.ttf';
-import Bricolage800 from '../assets/fonts/BricolageGrotesque-ExtraBold.ttf';
+import Barlow800Italic from '../assets/fonts/BarlowCondensed-ExtraBoldItalic.ttf';
 
 const fontFaces = `
   @font-face { font-family: 'PlusJakartaSans_400Regular'; src: url(${Jakarta400}) format('truetype'); }
@@ -32,7 +32,7 @@ const fontFaces = `
   @font-face { font-family: 'PlusJakartaSans_600SemiBold'; src: url(${Jakarta600}) format('truetype'); }
   @font-face { font-family: 'PlusJakartaSans_700Bold'; src: url(${Jakarta700}) format('truetype'); }
   @font-face { font-family: 'PlusJakartaSans_800ExtraBold'; src: url(${Jakarta800}) format('truetype'); }
-  @font-face { font-family: 'BricolageGrotesque_800ExtraBold'; src: url(${Bricolage800}) format('truetype'); }
+  @font-face { font-family: 'BarlowCondensed_800ExtraBold_Italic'; src: url(${Barlow800Italic}) format('truetype'); }
 `;
 
 // Header, Section, ListRow et Notification lisent les marges de sécurité. Le vrai

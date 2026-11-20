@@ -45,7 +45,7 @@ export const Now: React.FC<NowProps> = ({ now, onPressUser, onPressGym }) => {
     <View
       style={{
         alignSelf: 'stretch',
-        marginHorizontal: theme.spacing.md + 2,
+        marginHorizontal: theme.spacing.lg,
         paddingHorizontal: theme.spacing.lg,
         backgroundColor: theme.colors.surface,
         borderRadius: theme.borderRadius.card,

@@ -5,7 +5,7 @@ export const Box = styled.View<{ checked?: boolean; color: string; disabled?: bo
   (props) => ({
     width: 22,
     height: 22,
-    borderRadius: 7,
+    borderRadius: 3,
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: props.checked ? 0 : 2,

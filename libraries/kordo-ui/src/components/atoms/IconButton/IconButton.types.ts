@@ -12,10 +12,14 @@ export interface IconButtonProps {
    * - `soft` : fond vert doux, pour une action secondaire (appeler, filtrer…)
    * - `action` : fond vert plein
    */
-  variant?: 'surface' | 'glass' | 'soft' | 'action';
+  variant?: 'surface' | 'glass' | 'tint' | 'soft' | 'action';
   /** Côté du bouton en pixels (44 par défaut) */
   size?: number;
   /** Pastille de compteur affichée en haut à droite (non lus, filtres actifs…) */
   badge?: number | string;
+  /** Couleur de la pastille : vert d'action (défaut) ou orange (filtres actifs) */
+  badgeTone?: 'action' | 'accent';
+  /** Point orange pulsant : signale du nouveau sans compter (notifications) */
+  dot?: boolean;
   style?: StyleProp<ViewStyle>;
 }

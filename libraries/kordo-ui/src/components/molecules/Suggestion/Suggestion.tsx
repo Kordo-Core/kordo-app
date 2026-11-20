@@ -28,7 +28,7 @@ export const Suggestion: React.FC<SuggestionProps> = (props) => {
           <Pressable onPress={() => props.onPressUser(props.user)}>
             <Styled.CustomImage
               source={{
-                uri: 'https://res.cloudinary.com/dqmegz5dn/image/upload/v1763334248/avatar-kordo_rwvjw4.png',
+                uri: 'https://i.pravatar.cc/300?img=52',
               }}
             />
           </Pressable>

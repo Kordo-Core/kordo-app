@@ -29,8 +29,7 @@ export default {
 
 type Story = StoryObj<typeof BoulderBadge>;
 
-const defaultAvatar =
-  'https://res.cloudinary.com/dqmegz5dn/image/upload/v1763334248/avatar-kordo_rwvjw4.png';
+const defaultAvatar = 'https://i.pravatar.cc/300?img=52';
 
 export const Yellow: Story = { args: { avatarUrl: defaultAvatar, grade: 3 } };
 export const Green: Story = { args: { avatarUrl: defaultAvatar, grade: 8 } };

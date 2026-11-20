@@ -23,7 +23,7 @@ export const ButtonWrapper = styled.View(() => ({
 export const CustomImage = styled(Image)(() => ({
   width: 64,
   height: 64,
-  borderRadius: 20,
+  borderRadius: 8,
 }));
 
 export const UserInfo = styled.View(() => ({

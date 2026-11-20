@@ -4,6 +4,7 @@ import { useTheme } from '@emotion/react';
 import * as Styled from './Dropdown.styles';
 import { DropdownItem, DropdownProps } from './Dropdown.types';
 import { Icon } from '../../atoms/Icon/Icon';
+import { Text } from '../../atoms/Text/Text';
 
 // Espace (px) entre le trigger et la liste flottante
 const GAP = 4;
@@ -71,13 +72,34 @@ export const Dropdown: React.FC<DropdownProps> = (props) => {
 
   return (
     <>
-      <Styled.Trigger ref={triggerRef} disabled={props.disabled} onPress={openMenu}>
+      <Styled.Trigger
+        ref={triggerRef}
+        disabled={props.disabled}
+        labeled={!!props.label}
+        onPress={openMenu}
+      >
         {props.icon && (
-          <Icon name={props.icon.name} size={props.icon.size ?? 20} color={props.icon.color} />
+          <Icon
+            name={props.icon.name}
+            size={props.icon.size ?? 20}
+            color={props.icon.color ?? (props.label ? theme.colors.textMuted : undefined)}
+          />
         )}
-        <Styled.TriggerText numberOfLines={1} appearance={displayText ? 'black' : 'gray'}>
-          {displayText || props.placeholder || ''}
-        </Styled.TriggerText>
+        {props.label ? (
+          // Libellé en capitales au-dessus de la valeur (maquette « sport »)
+          <View style={{ flex: 1, gap: 2 }}>
+            <Text variant="eyebrow" size={11}>
+              {props.label}
+            </Text>
+            <Text bold numberOfLines={1} appearance={displayText ? 'black' : 'gray'}>
+              {displayText || props.placeholder || ''}
+            </Text>
+          </View>
+        ) : (
+          <Styled.TriggerText numberOfLines={1} appearance={displayText ? 'black' : 'gray'}>
+            {displayText || props.placeholder || ''}
+          </Styled.TriggerText>
+        )}
         <Icon
           name={open ? 'ChevronUpRegular' : 'ChevronDownRegular'}
           size={20}

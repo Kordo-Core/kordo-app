@@ -66,9 +66,10 @@ export const getOnColor = (theme: KordoTheme, appearance: ColorToken): string =>
   switch (appearance) {
     case 'primary':
     case 'warning':
-      return '#13201B';
+      // Encre quasi noire : #0B1410 en clair, le fond #070B09 en sombre (maquettes)
+      return theme.mode === 'dark' ? theme.colors.background : '#0B1410';
     case 'white':
-      return '#13201B';
+      return '#0B1410';
     case 'black':
       return theme.colors.background;
     default:

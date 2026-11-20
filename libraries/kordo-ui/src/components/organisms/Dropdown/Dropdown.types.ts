@@ -17,6 +17,8 @@ interface BaseDropdownProps {
   items: DropdownItem[];
   // Texte affiché quand rien n'est sélectionné
   placeholder?: string;
+  /** Libellé en capitales affiché au-dessus de la valeur (sélecteur de formulaire) */
+  label?: string;
   // Icône optionnelle affichée à gauche du trigger
   icon?: IconProps;
   // Hauteur max de la liste ouverte avant de scroller (défaut 240)

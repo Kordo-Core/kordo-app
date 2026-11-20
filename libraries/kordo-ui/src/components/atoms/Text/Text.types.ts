@@ -21,7 +21,7 @@ export interface TextProps extends ReactTextProps {
   extraBold?: boolean;
   /**
    * Style typographique :
-   * - `display` : titre sportif en Bricolage Grotesque, majuscules, interlettrage serré.
+   * - `display` : titre sportif en Barlow Condensed italique, majuscules, interlettrage serré.
    *   `size` lit alors `theme.displaySizes`.
    * - `eyebrow` : surtitre en petites majuscules espacées, couleur secondaire par défaut.
    */

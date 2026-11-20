@@ -27,7 +27,8 @@ export const AvatarWrapper = styled.View<Pick<UserInfoProps, 'highlightedAvatar'
   return {
     borderColor: props.theme.colors.secondary.base,
     borderWidth: 2.5,
-    borderRadius: props.theme.borderRadius.rounded,
+    // Anneau en carré arrondi, qui épouse la photo (2 px plus loin que son coin)
+    borderRadius: Math.round(props.theme.avatarSizes.md * 0.13) + 2,
     padding: 2.5,
   };
 });
@@ -35,9 +36,10 @@ export const AvatarWrapper = styled.View<Pick<UserInfoProps, 'highlightedAvatar'
 export const CustomImage = styled(Image)<Pick<UserInfoProps, 'layout'>>((props) => ({
   width: props.layout === 'column' ? props.theme.avatarSizes.lg : props.theme.avatarSizes.md,
   height: props.layout === 'column' ? props.theme.avatarSizes.lg : props.theme.avatarSizes.md,
-  // Squircle : environ un tiers de la taille, comme les avatars de la maquette
+  // Carré à peine arrondi (13 % de la taille, maquette « sport »). Tous les avatars de l'app ont cette forme,
+  // ceux des grimpeurs en séance compris.
   borderRadius: Math.round(
-    (props.layout === 'column' ? props.theme.avatarSizes.lg : props.theme.avatarSizes.md) * 0.31,
+    (props.layout === 'column' ? props.theme.avatarSizes.lg : props.theme.avatarSizes.md) * 0.13,
   ),
 }));
 

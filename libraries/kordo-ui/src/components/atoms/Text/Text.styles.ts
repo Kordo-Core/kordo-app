@@ -4,11 +4,11 @@ import { getColor } from '../../../utils/getColors';
 import { KordoTheme } from '../../../theme';
 
 // Couleur d'un texte. Les teintes de marque sont trop claires pour du texte sur fond clair :
-// un texte « primary » prend l'orange foncé lisible, un texte « secondary » le vert du thème
-// (plus clair en mode sombre). Les fonds, eux, continuent d'utiliser `getColor`.
+// un texte « primary » prend l'orange foncé lisible, un texte « secondary » le vert de marque
+// (#00845A en clair, #00A36F en sombre, comme les maquettes). Les fonds utilisent `getColor`.
 const textColor = (theme: KordoTheme, appearance: TextProps['appearance']) => {
   if (appearance === 'primary') return theme.colors.accentText;
-  if (appearance === 'secondary') return theme.colors.softText;
+  if (appearance === 'secondary') return theme.colors.secondary.base;
   return getColor(theme, appearance ?? 'black');
 };
 
@@ -25,10 +25,12 @@ export const Text = styled.Text<Omit<TextProps, 'children'>>((props) => {
   if (props.variant === 'display') {
     const size = props.size ?? 'lg';
     const fontSize = typeof size === 'number' ? size : props.theme.displaySizes[size];
+    // Maquette « sport » : interlettrage fixe de −0,3 px, interligne 0,95, italique (porté par
+    // la police elle-même, Barlow Condensed ExtraBold Italic).
     return {
       fontSize,
-      lineHeight: Math.round(fontSize * 0.98),
-      letterSpacing: -fontSize * 0.035,
+      lineHeight: Math.round(fontSize * 0.95),
+      letterSpacing: -0.3,
       textTransform: 'uppercase',
       fontFamily: props.theme.fonts.display,
       color: textColor(props.theme, props.appearance),
@@ -39,7 +41,7 @@ export const Text = styled.Text<Omit<TextProps, 'children'>>((props) => {
     const size = props.size ?? 'xs';
     return {
       fontSize: typeof size === 'number' ? size : fontSizesMap[size],
-      letterSpacing: 1.6,
+      letterSpacing: 1.2,
       textTransform: 'uppercase',
       fontFamily: props.theme.fonts.extraBold,
       color: textColor(props.theme, props.appearance ?? 'gray'),

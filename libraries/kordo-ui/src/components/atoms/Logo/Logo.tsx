@@ -3,6 +3,7 @@ import { View } from 'react-native';
 import Svg, { Circle, Path, Rect } from 'react-native-svg';
 import { useTheme } from '@emotion/react';
 import { Text } from '../Text/Text';
+import { DISPLAY_SCALE } from '../../../theme';
 
 export interface LogoProps {
   /** Côté du symbole en pixels */
@@ -27,7 +28,7 @@ export const Logo: React.FC<LogoProps> = ({
 }) => {
   const theme = useTheme();
   const bg = variant === 'light' ? '#FFFFFF' : theme.colors.secondary.base;
-  const stroke = variant === 'light' ? '#2F6B55' : '#FFFFFF';
+  const stroke = variant === 'light' ? '#00845A' : '#FFFFFF';
 
   const mark = (
     <Svg width={size} height={size} viewBox="0 0 64 64" accessibilityLabel="Kordo">
@@ -53,8 +54,8 @@ export const Logo: React.FC<LogoProps> = ({
       <Text
         style={{
           fontFamily: theme.fonts.display,
-          fontSize: size * 0.65,
-          letterSpacing: -0.8,
+          fontSize: Math.round(size * 0.65 * DISPLAY_SCALE),
+          letterSpacing: -0.3,
           color: wordmarkColor ?? theme.colors.text,
         }}
       >

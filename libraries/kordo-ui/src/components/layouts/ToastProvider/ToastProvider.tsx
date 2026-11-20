@@ -11,6 +11,8 @@ const ToastContext = React.createContext<ToastContextProps | undefined>(undefine
 export const ToastProvider: React.FC<ToastProviderProps> = ({ children }) => {
   // Stocke la liste des toasts actuellement affichés à l'écran
   const [toasts, setToasts] = React.useState<ToastProps[]>([]);
+  // Place réservée sous les toasts (barre de navigation affichée) ; null = marge par défaut
+  const [bottomInset, setBottomInset] = React.useState<number | null>(null);
 
   // Supprime un toast de la liste par son identifiant unique, utilisé à la fois pour la suppression manuelle et automatique
   const deleteToast = (id: string) => {
@@ -33,9 +35,9 @@ export const ToastProvider: React.FC<ToastProviderProps> = ({ children }) => {
   };
 
   return (
-    <ToastContext.Provider value={{ addToast }}>
+    <ToastContext.Provider value={{ addToast, setBottomInset }}>
       {children}
-      <Styled.ToastContainer>
+      <Styled.ToastContainer style={bottomInset !== null ? { bottom: bottomInset } : undefined}>
         {toasts.map((toast) => (
           <Toast key={toast.id} {...toast} />
         ))}
@@ -49,4 +51,20 @@ export const useToast = () => {
   const context = React.useContext(ToastContext);
   if (!context) throw new Error('useToast must be used within a ToastProvider');
   return context;
+};
+
+// Variante tolérante : renvoie undefined hors du ToastProvider (composants de kordo-ui affichés
+// seuls, dans Storybook par exemple) au lieu de lever une erreur
+export const useOptionalToast = () => React.useContext(ToastContext);
+
+// Réserve une hauteur sous les toasts tant que le composant appelant est affiché (barre de
+// navigation) : les toasts apparaissent au-dessus. null = rien à réserver.
+export const useToastBottomInset = (inset: number | null) => {
+  const context = React.useContext(ToastContext);
+  const setBottomInset = context?.setBottomInset;
+  React.useEffect(() => {
+    if (!setBottomInset) return;
+    setBottomInset(inset);
+    return () => setBottomInset(null);
+  }, [inset, setBottomInset]);
 };

@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 import { Button } from './Button';
+import { View } from 'react-native';
 
 /**
  * Interactive button with a bounce animation on press.
@@ -134,4 +135,36 @@ export const Disabled: Story = {
     appearance: 'primary',
     disabled: true,
   },
+};
+
+/** Small button (32px) on a soft background, with the icon after the label. */
+export const SmallSoft: Story = {
+  args: {
+    title: 'Tout voir',
+    size: 'sm',
+    appearance: 'soft',
+    borderRadius: 'rounded',
+    icon: { name: 'chevron-right', size: 16 },
+    iconPosition: 'right',
+  },
+};
+
+/** Soft backgrounds shared with `Tag`. */
+export const SoftTones: Story = {
+  render: () => (
+    <View
+      style={{
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        gap: 8,
+        padding: 16,
+        backgroundColor: '#2F6B55',
+      }}
+    >
+      <Button size="sm" appearance="surface" title="Refuser" />
+      <Button size="sm" appearance="soft" title="Filtre" />
+      <Button size="sm" appearance="muted" title="Neutre" />
+      <Button size="sm" appearance="glass" title="Sur photo" />
+    </View>
+  ),
 };

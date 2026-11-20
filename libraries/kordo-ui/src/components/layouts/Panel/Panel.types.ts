@@ -7,4 +7,6 @@ export interface PanelProps {
   isOpen?: boolean;
   /** Callback fired when the panel is closed (overlay click or close button) */
   onClose?: () => void;
+  /** Fond du panneau : blanc (défaut) ou gris clair de l'écran (fiche d'un bloc, filtres) */
+  tone?: 'surface' | 'background';
 }

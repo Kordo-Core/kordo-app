@@ -28,7 +28,7 @@ export const ToastContainer = styled.View<{ type: ToastProps['type'] }>((props) 
     borderColor: typeColors[props.type].border,
     backgroundColor: props.theme.colors.surface,
     boxShadow: props.theme.shadows.lg,
-    borderRadius: props.theme.borderRadius.square + 2,
+    borderRadius: props.theme.borderRadius.square + 1,
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',

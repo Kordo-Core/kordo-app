@@ -2,6 +2,7 @@ import { UserInfoProps } from './UserInfo.types';
 import * as Styled from './UserInfo.styles';
 import { Pressable } from 'react-native';
 import { Text } from '../../atoms/Text/Text';
+import { CENTERED_TEXT } from '../../../utils/centeredText';
 
 // Affiche les informations utilisateur (avatar, nom, textes secondaires) en mode colonne ou ligne selon le layout
 export const UserInfo: React.FC<UserInfoProps> = (props) => {
@@ -47,7 +48,22 @@ export const UserInfo: React.FC<UserInfoProps> = (props) => {
               {/* Badge "Now" affiché sur l'avatar quand l'utilisateur est actuellement actif */}
               {props.highlightedAvatar && (
                 <Styled.Now>
-                  <Text size={9} appearance="white" extraBold style={{ letterSpacing: 0.4 }}>
+                  {/* Hauteur de ligne = hauteur intérieure de la pastille, et l'espacement des
+                      lettres compensé à gauche : le mot est centré dans les deux sens */}
+                  <Text
+                    size={9}
+                    appearance="white"
+                    extraBold
+                    style={[
+                      {
+                        letterSpacing: 0.4,
+                        paddingLeft: 0.4,
+                        lineHeight: 14,
+                        textAlign: 'center',
+                      },
+                      CENTERED_TEXT,
+                    ]}
+                  >
                     NOW
                   </Text>
                 </Styled.Now>

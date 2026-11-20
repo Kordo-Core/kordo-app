@@ -10,6 +10,7 @@ import { SegmentedControlProps } from './SegmentedControl.types';
  * - **size**: `md`, `lg`
  * - **borderRadius**: `rounded`, `square`
  * - **segments**: array of `{ text, color? }`
+ * - **variant**: `glass` (sur une photo, par défaut), `surface` (sur le fond clair d’une page)
  */
 export default {
   title: 'Molecules/SegmentedControl',
@@ -79,5 +80,16 @@ export const Square: Story = {
     segments: [{ text: 'On' }, { text: 'Off' }],
     size: 'md',
     borderRadius: 'square',
+  },
+};
+
+/** Sur le fond clair d'une page (filtres, périodes) : piste gris clair, libellés gris. */
+export const Surface: Story = {
+  render: (args) => <SegmentedControlWithState {...args} />,
+  args: {
+    segments: [{ text: 'Tout' }, { text: 'Social' }, { text: 'Salles' }],
+    size: 'md',
+    borderRadius: 'square',
+    variant: 'surface',
   },
 };

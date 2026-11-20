@@ -1,6 +1,7 @@
 import React, { FC, useEffect, useRef, useState } from 'react';
 import {
   ScrollView,
+  View,
   Dimensions,
   LayoutChangeEvent,
   NativeScrollEvent,
@@ -13,7 +14,12 @@ import Animated, {
   SharedValue,
 } from 'react-native-reanimated';
 import { SliderProps } from './Slider.types';
+import { useWebDragScroll } from './useWebDragScroll';
 import * as Styled from './Slider.styles';
+
+// Marge autour des cartes : un défilement horizontal rogne aussi en vertical, l'ombre des cartes
+// doit tenir dans sa zone. Annulée dans la mise en page par une marge négative.
+const SHADOW_ROOM = 28;
 
 // --- Réglages du mode sélection (atténuation des items en s'éloignant du centre) ---
 const SCALE_FALLOFF = 0.25;
@@ -132,6 +138,22 @@ const SelectSlider: FC<SliderProps> = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedIndex, ready]);
 
+  // Web : glissement à la souris, puis aimantation sur l'item le plus proche (un geste vif
+  // passe à l'item suivant ou précédent)
+  useWebDragScroll(scrollRef as never, (x, velocity) => {
+    let best = 0;
+    snapOffsets.forEach((offset, i) => {
+      if (Math.abs(offset - x) < Math.abs(snapOffsets[best] - x)) best = i;
+    });
+    if (Math.abs(velocity) > 0.4) {
+      const dir = velocity > 0 ? 1 : -1;
+      const next = best + (Math.sign(x - snapOffsets[best]) === dir ? dir : 0);
+      best = Math.max(0, Math.min(next, snapOffsets.length - 1));
+    }
+    if (best !== selectedIndex) props.onChange?.(best);
+    return snapOffsets[best] ?? 0;
+  });
+
   // À la fin du défilement, sélectionne l'item dont le point d'accroche est le plus proche
   const handleSettle = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
     const x = e.nativeEvent.contentOffset.x;
@@ -159,7 +181,12 @@ const SelectSlider: FC<SliderProps> = (props) => {
         // Snap sur les centres mesurés → résistance/aimantation quelle que soit la largeur des items
         snapToOffsets={snapOffsets}
         decelerationRate="fast"
-        contentContainerStyle={{ paddingLeft: padLeft, paddingRight: padRight }}
+        style={{ marginVertical: -SHADOW_ROOM }}
+        contentContainerStyle={{
+          paddingLeft: padLeft,
+          paddingRight: padRight,
+          paddingVertical: SHADOW_ROOM,
+        }}
         onScroll={scrollHandler}
         scrollEventThrottle={16}
         onMomentumScrollEnd={handleSettle}
@@ -184,18 +211,94 @@ const SelectSlider: FC<SliderProps> = (props) => {
   );
 };
 
-// Composant de défilement horizontal. Par défaut : carrousel libre espacé par `gap`.
-// Avec `selectMode`, devient un sélecteur aimanté qui centre et met en avant l'item sélectionné.
-export const Slider: FC<SliderProps> = (props) => {
-  if (props.selectMode) return <SelectSlider {...props} />;
+// Mode « pages » : chaque item prend toute la largeur, le défilement s'arrête page par page.
+const PagingSlider: FC<SliderProps> = (props) => {
+  const items = React.Children.toArray(props.children);
+  const scrollRef = useRef<ScrollView>(null);
+  const [width, setWidth] = useState(0);
+  const page = useRef(props.selectedIndex ?? 0);
+  const settleTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  const report = (index: number) => {
+    const clamped = Math.max(0, Math.min(index, items.length - 1));
+    if (clamped !== page.current) {
+      page.current = clamped;
+      props.onChange?.(clamped);
+    }
+  };
+
+  // Changement de page demandé de l'extérieur (points indicateurs…)
+  useEffect(() => {
+    const target = props.selectedIndex ?? 0;
+    if (!width || target === page.current) return;
+    page.current = target;
+    scrollRef.current?.scrollTo({ x: target * width, animated: true });
+  }, [props.selectedIndex, width]);
+
+  // Web : glissement à la souris, page suivante dès un geste vif ou au-delà d'un cinquième
+  useWebDragScroll(
+    scrollRef as never,
+    (x, velocity) => {
+      if (!width) return x;
+      const from = page.current;
+      let target = Math.round(x / width);
+      if (velocity > 0.3 || x - from * width > width * 0.2) target = Math.max(target, from + 1);
+      if (velocity < -0.3 || from * width - x > width * 0.2) target = Math.min(target, from - 1);
+      target = Math.max(0, Math.min(target, items.length - 1));
+      report(target);
+      return target * width;
+    },
+    width > 0,
+  );
+
+  // Page affichée une fois le défilement posé (doigt, molette, pavé tactile)
+  const onScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+    if (!width) return;
+    const x = e.nativeEvent.contentOffset.x;
+    if (settleTimer.current) clearTimeout(settleTimer.current);
+    settleTimer.current = setTimeout(() => report(Math.round(x / width)), 120);
+  };
+
+  return (
+    <Styled.SliderContainer
+      height={props.height}
+      style={props.style}
+      onLayout={(e: LayoutChangeEvent) => setWidth(e.nativeEvent.layout.width)}
+    >
+      {width > 0 && (
+        <ScrollView
+          ref={scrollRef}
+          horizontal
+          pagingEnabled
+          showsHorizontalScrollIndicator={false}
+          scrollEventThrottle={16}
+          onScroll={onScroll}
+        >
+          {items.map((child, index) => (
+            <View key={index} style={{ width, height: props.height }}>
+              {child}
+            </View>
+          ))}
+        </ScrollView>
+      )}
+    </Styled.SliderContainer>
+  );
+};
+
+// Carrousel libre : glissement à la souris sur le web, sans aimantation
+const FreeSlider: FC<SliderProps> = (props) => {
+  const scrollRef = useRef<ScrollView>(null);
+  useWebDragScroll(scrollRef as never, (x) => x);
   return (
     <Styled.SliderContainer height={props.height ?? 0} style={props.style}>
       <ScrollView
+        ref={scrollRef}
         horizontal
         showsHorizontalScrollIndicator={false}
+        style={{ marginVertical: -SHADOW_ROOM }}
         contentContainerStyle={{
           paddingHorizontal: props.gap ?? 0,
+          paddingVertical: SHADOW_ROOM,
         }}
       >
         {/* Itère sur chaque enfant pour l'envelopper individuellement avec l'espacement approprié */}
@@ -212,4 +315,13 @@ export const Slider: FC<SliderProps> = (props) => {
       </ScrollView>
     </Styled.SliderContainer>
   );
+};
+
+// Composant de défilement horizontal. Par défaut : carrousel libre espacé par `gap`.
+// Avec `selectMode`, devient un sélecteur aimanté qui centre et met en avant l'item sélectionné ;
+// avec `paging`, un carrousel page par page (photos). Sur le web, tous se glissent à la souris.
+export const Slider: FC<SliderProps> = (props) => {
+  if (props.selectMode) return <SelectSlider {...props} />;
+  if (props.paging) return <PagingSlider {...props} />;
+  return <FreeSlider {...props} />;
 };

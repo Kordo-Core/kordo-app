@@ -10,5 +10,7 @@ export interface ToggleProps {
   appearance?: AppearanceType | StatusType;
   /** Grise l'interrupteur et ignore les clics */
   disabled?: boolean;
+  /** `md` (52 × 32, réglages) par défaut ; `sm` (36 × 22) pour une option de formulaire */
+  size?: 'sm' | 'md';
   style?: StyleProp<ViewStyle>;
 }

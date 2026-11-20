@@ -1,18 +1,37 @@
 import styled from '@emotion/native';
+import { Theme } from '@emotion/react';
 
 // Gabarit partagé par les deux variantes de ligne, cliquable ou non.
 const row = {
   flexDirection: 'row',
   alignItems: 'center',
   width: '100%',
-  paddingVertical: 10,
+  paddingVertical: 14,
   gap: 12,
 } as const;
 
-export const Row = styled.View(row);
+// Variante « carte » : la ligne devient une carte blanche arrondie, légèrement ombrée
+const card = (props: { theme: Theme; variant?: 'plain' | 'card' }) =>
+  props.variant === 'card'
+    ? {
+        gap: props.theme.spacing.md,
+        paddingHorizontal: props.theme.spacing.md,
+        borderRadius: props.theme.borderRadius.card,
+        backgroundColor: props.theme.colors.surface,
+        boxShadow: props.theme.shadows.sm,
+      }
+    : {};
+
+export const Row = styled.View<{ variant?: 'plain' | 'card' }>((props) => ({
+  ...row,
+  ...card(props),
+}));
 
 // Même gabarit, mais la ligne entière déclenche l'action du parent.
-export const PressableRow = styled.Pressable(row);
+export const PressableRow = styled.Pressable<{ variant?: 'plain' | 'card' }>((props) => ({
+  ...row,
+  ...card(props),
+}));
 
 export const Left = styled.View(() => ({
   flexDirection: 'row',

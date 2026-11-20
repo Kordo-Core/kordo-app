@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports -- les polices se chargent par require() avec Metro */
 /**
  * Polices du design system, embarquées dans kordo-ui (licence SIL OFL, voir `assets/fonts`).
  *
@@ -16,5 +17,5 @@ export const kordoFonts = {
   PlusJakartaSans_600SemiBold: require('../assets/fonts/PlusJakartaSans-SemiBold.ttf'),
   PlusJakartaSans_700Bold: require('../assets/fonts/PlusJakartaSans-Bold.ttf'),
   PlusJakartaSans_800ExtraBold: require('../assets/fonts/PlusJakartaSans-ExtraBold.ttf'),
-  BricolageGrotesque_800ExtraBold: require('../assets/fonts/BricolageGrotesque-ExtraBold.ttf'),
+  BarlowCondensed_800ExtraBold_Italic: require('../assets/fonts/BarlowCondensed-ExtraBoldItalic.ttf'),
 };

@@ -30,7 +30,13 @@ const CLOSE_DURATION = 250;
 const OPEN_RATIO = 0.75;
 
 // Composant panneau coulissant (bottom sheet) : le bloc entier (handle + contenu) glisse pour révéler le contenu qui dépasse
-export const Panel: React.FC<PanelProps> = ({ title, children, isOpen = false, onClose }) => {
+export const Panel: React.FC<PanelProps> = ({
+  title,
+  children,
+  isOpen = false,
+  onClose,
+  tone = 'surface',
+}) => {
   const theme = useTheme();
   // Hauteur de la fenêtre, base de tous les calculs de position
   const { height } = useWindowDimensions();
@@ -161,6 +167,21 @@ export const Panel: React.FC<PanelProps> = ({ title, children, isOpen = false, o
       }
     });
 
+  // Web : la molette (ou le pavé tactile) fait défiler le bloc comme le doigt, dans la plage de
+  // lecture (entre la fin du contenu et la position de repos)
+  const sheetRef = useRef<Animated.View>(null);
+  useEffect(() => {
+    if (Platform.OS !== 'web' || !visible) return;
+    const node = sheetRef.current as unknown as HTMLElement | null;
+    if (!node?.addEventListener) return;
+    const onWheel = (e: WheelEvent) => {
+      e.preventDefault();
+      translateY.value = Math.min(Math.max(translateY.value - e.deltaY, topMin), restTop);
+    };
+    node.addEventListener('wheel', onWheel, { passive: false });
+    return () => node.removeEventListener('wheel', onWheel);
+  }, [visible, topMin, restTop, translateY]);
+
   // Applique la translation verticale au bloc
   const panelAnimatedStyle = useAnimatedStyle(() => ({
     transform: [{ translateY: translateY.value }],
@@ -193,21 +214,22 @@ export const Panel: React.FC<PanelProps> = ({ title, children, isOpen = false, o
       </Animated.View>
       <GestureDetector gesture={panGesture}>
         <Animated.View
+          ref={sheetRef}
           onLayout={handleLayout}
           style={[{ position: 'absolute', top: 0, left: 0, right: 0 }, panelAnimatedStyle]}
         >
-          <Styled.Sheet>
-            <Styled.HandleArea>
+          <Styled.Sheet tone={tone}>
+            <Styled.HandleArea tone={tone}>
               <Styled.Handle />
             </Styled.HandleArea>
-            <Styled.Content>
+            <Styled.Content tone={tone}>
               {title && <Styled.Title>{title}</Styled.Title>}
               {children}
             </Styled.Content>
           </Styled.Sheet>
           {/* Prolonge le fond blanc sous le panneau (zone du clavier) : aucun vide sombre
               n'apparaît le temps que le bloc redescende à la fermeture du clavier. */}
-          <Styled.Filler pointerEvents="none" />
+          <Styled.Filler tone={tone} pointerEvents="none" />
         </Animated.View>
       </GestureDetector>
     </Styled.Container>

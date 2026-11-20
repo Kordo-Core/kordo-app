@@ -1,6 +1,7 @@
 import styled from '@emotion/native';
 
-const DOT_SIZE = 24;
+// 24 px de pastille + 2 × 2 px de contour (la maquette compte le contour en plus)
+const DOT_SIZE = 28;
 const INNER_SIZE = 12;
 
 // Anneau coloré quand l'option est sélectionnée, anneau neutre sinon (design D).

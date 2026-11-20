@@ -1,45 +1,25 @@
 import { useState } from 'react';
-import {
-  Image,
-  LayoutChangeEvent,
-  NativeScrollEvent,
-  NativeSyntheticEvent,
-  Pressable,
-  ScrollView,
-  View,
-} from 'react-native';
+import { Image, Pressable, View } from 'react-native';
 import { useTheme } from '@emotion/react';
 import { PublicationProps } from './Publication.types';
-import { UserInfo } from '../../molecules/UserInfo/UserInfo';
 import { Text } from '../../atoms/Text/Text';
-import { Icon } from '../../atoms/Icon/Icon';
+import {
+  BigHeart,
+  formatPostDate,
+  PostActions,
+  PostHeader,
+  useDoubleTapLike,
+  usePostCardStyle,
+} from '../../molecules/PostParts/PostParts';
 import { CommentsPanel } from '../CommentsPanel/CommentsPanel';
+import { usePostOptions } from '../PostOptionsPanel/usePostOptions';
+import { Slider } from '../../../animations/Slider/Slider';
+import { CENTERED_TEXT } from '../../../utils/centeredText';
 
-const MONTHS = [
-  'janvier',
-  'février',
-  'mars',
-  'avril',
-  'mai',
-  'juin',
-  'juillet',
-  'août',
-  'septembre',
-  'octobre',
-  'novembre',
-  'décembre',
-];
-const pad = (n: number) => String(n).padStart(2, '0');
-const formatPublicationDate = (iso: string) => {
-  const d = new Date(iso);
-  return `${d.getDate()} ${MONTHS[d.getMonth()]} ${d.getFullYear()} à ${pad(d.getHours())}h${pad(d.getMinutes())}`;
-};
+const MEDIA_HEIGHT = 280;
 
-// Ratio type Instagram (portrait 4:5) appliqué à la largeur mesurée du carrousel.
-const PHOTO_RATIO = 1.25;
-
-// Carte d'une publication (post photo) : header, carrousel de photos paginé + points,
-// like cliquable, panneau de commentaires, description.
+// Carte d'une publication (post photo), design D : en-tête, carrousel de photos paginé avec
+// le titre en surimpression, description, actions. Double tap sur la photo = j'aime.
 export const Publication: React.FC<PublicationProps> = ({
   publication,
   currentUser,
@@ -47,18 +27,22 @@ export const Publication: React.FC<PublicationProps> = ({
   style,
 }) => {
   const theme = useTheme();
+  const cardStyle = usePostCardStyle();
   const fullName = [publication.user.firstName, publication.user.lastName]
     .filter(Boolean)
     .join(' ');
 
-  // Largeur du carrousel (mesurée) + index de la photo affichée pour les points
-  const [width, setWidth] = useState(0);
+  // Index de la photo affichée, pour les points
   const [index, setIndex] = useState(0);
 
   // Like optimiste local + panneau des commentaires
   const [liked, setLiked] = useState(publication.isLiked);
   const [commentsOpen, setCommentsOpen] = useState(false);
   const likeCount = publication.likes.length - (publication.isLiked ? 1 : 0) + (liked ? 1 : 0);
+  const { onPress: onTapMedia, heartStyle } = useDoubleTapLike(
+    () => setLiked(true),
+    publication.likesEnabled,
+  );
 
   // Commentaires (état local pour refléter l'ajout)
   const [comments, setComments] = useState(publication.comments);
@@ -76,44 +60,32 @@ export const Publication: React.FC<PublicationProps> = ({
   };
 
   const photos = publication.photos;
-  const photoHeight = width * PHOTO_RATIO;
 
-  const onScrollEnd = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
-    if (width === 0) return;
-    setIndex(Math.round(e.nativeEvent.contentOffset.x / width));
-  };
+  const options = usePostOptions({
+    author: publication.user,
+    currentUser,
+    meta: [publication.title, formatPostDate(publication.createdAt)].filter(Boolean).join(' · '),
+    shareMessage: `${fullName || publication.user.username} · ${publication.title}`,
+    commentsEnabled: publication.commentsEnabled,
+  });
+  if (options.hidden) return null;
 
   return (
-    <View
-      style={[
-        {
-          // Design D : carte arrondie posée sur le fond, avec une marge latérale
-          alignSelf: 'stretch',
-          marginHorizontal: theme.spacing.md + 2,
-          backgroundColor: theme.colors.surface,
-          borderRadius: theme.borderRadius.lg,
-          overflow: 'hidden',
-          padding: theme.spacing.md + 2,
-          gap: theme.spacing.md,
-          boxShadow: theme.shadows.md,
-        },
-        style,
-      ]}
-    >
-      <UserInfo
+    <View style={[cardStyle, style]}>
+      <PostHeader
         user={publication.user}
-        layout="row"
-        primaryText={fullName || publication.user.username}
-        secondaryText={
-          <Text appearance="gray" size="sm">
-            {formatPublicationDate(publication.createdAt)}
-          </Text>
-        }
-        onPressUser={() => onPressUser?.(publication.user)}
+        meta={formatPostDate(publication.createdAt)}
+        tag="Poste"
+        onPressUser={onPressUser}
       />
 
       {!!publication.title && (
-        <Text variant="display" size="sm">
+        <Text
+          variant="display"
+          size={26}
+          numberOfLines={2}
+          style={{ paddingHorizontal: theme.spacing.lg, paddingBottom: theme.spacing.sm + 2 }}
+        >
           {publication.title}
         </Text>
       )}
@@ -121,49 +93,40 @@ export const Publication: React.FC<PublicationProps> = ({
       {/* Carrousel de photos paginé (1..10) */}
       {photos.length > 0 && (
         <View
-          onLayout={(e: LayoutChangeEvent) => setWidth(e.nativeEvent.layout.width)}
           style={{
-            // Presque plein-bord : la photo déborde légèrement du padding de la carte et garde
-            // ses propres coins arrondis (design D)
-            marginHorizontal: -theme.spacing.sm + 2,
-            height: photoHeight,
+            marginHorizontal: theme.spacing.sm,
+            height: MEDIA_HEIGHT,
             borderRadius: theme.borderRadius.card,
             overflow: 'hidden',
             backgroundColor: theme.colors.surfaceAlt,
           }}
         >
-          {width > 0 &&
-            (photos.length === 1 ? (
-              <Image
-                source={{ uri: photos[0].url }}
-                style={{ width, height: photoHeight }}
-                resizeMode="cover"
-              />
-            ) : (
-              <ScrollView
-                horizontal
-                pagingEnabled
-                showsHorizontalScrollIndicator={false}
-                scrollEventThrottle={16}
-                onMomentumScrollEnd={onScrollEnd}
-              >
-                {photos.map((photo) => (
-                  <Image
-                    key={photo.id}
-                    source={{ uri: photo.url }}
-                    style={{ width, height: photoHeight }}
-                    resizeMode="cover"
-                  />
-                ))}
-              </ScrollView>
+          {/* Carrousel de kordo-ui en mode pages : glisse au doigt comme à la souris */}
+          <Slider
+            paging
+            height={MEDIA_HEIGHT}
+            selectedIndex={index}
+            onChange={setIndex}
+            style={{ height: MEDIA_HEIGHT }}
+          >
+            {photos.map((photo, i) => (
+              <Pressable key={photo.id} onPress={() => onTapMedia(i)} style={{ flex: 1 }}>
+                <Image
+                  source={{ uri: photo.url }}
+                  style={{ width: '100%', height: MEDIA_HEIGHT }}
+                  resizeMode="cover"
+                />
+              </Pressable>
             ))}
+          </Slider>
 
           {/* Points indicateurs (overlay bas-centre) */}
           {photos.length > 1 && (
             <View
+              pointerEvents="box-none"
               style={{
                 position: 'absolute',
-                bottom: theme.spacing.sm,
+                bottom: 12,
                 left: 0,
                 right: 0,
                 flexDirection: 'row',
@@ -172,8 +135,11 @@ export const Publication: React.FC<PublicationProps> = ({
               }}
             >
               {photos.map((photo, i) => (
-                <View
+                <Pressable
                   key={photo.id}
+                  onPress={() => setIndex(i)}
+                  hitSlop={6}
+                  accessibilityLabel={`Photo ${i + 1} sur ${photos.length}`}
                   style={{
                     width: i === index ? 18 : 6,
                     height: 6,
@@ -185,58 +151,61 @@ export const Publication: React.FC<PublicationProps> = ({
               ))}
             </View>
           )}
+
+          {/* Compteur « 2 / 4 » (overlay haut-droite) */}
+          {photos.length > 1 && (
+            <View
+              pointerEvents="none"
+              style={{
+                position: 'absolute',
+                top: 10,
+                right: 10,
+                height: 26,
+                paddingHorizontal: 10,
+                borderRadius: theme.borderRadius.rounded,
+                backgroundColor: theme.colors.overlay.dark,
+                justifyContent: 'center',
+              }}
+            >
+              <Text
+                size="xs"
+                extraBold
+                style={[{ color: theme.colors.neutral.white }, CENTERED_TEXT]}
+                accessibilityLabel={`Photo ${index + 1} sur ${photos.length}`}
+              >
+                {`${index + 1} / ${photos.length}`}
+              </Text>
+            </View>
+          )}
+
+          <BigHeart style={heartStyle} />
         </View>
       )}
 
-      {/* Compteurs likes / commentaires (cliquables, selon les autorisations de l'auteur) */}
-      {(publication.likesEnabled || publication.commentsEnabled) && (
-        <View style={{ flexDirection: 'row', alignItems: 'center', gap: theme.spacing.lg }}>
-          {publication.likesEnabled && (
-            <Pressable
-              onPress={() => setLiked((prev) => !prev)}
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                gap: theme.spacing.xs + 2,
-                height: 38,
-                paddingHorizontal: theme.spacing.md,
-                borderRadius: 12,
-                backgroundColor: liked ? theme.colors.error.lighter : theme.colors.surfaceAlt,
-              }}
-            >
-              <Icon
-                name={liked ? 'HeartFilled' : 'HeartRegular'}
-                size="md"
-                color={liked ? theme.colors.error.base : theme.colors.text}
-              />
-              <Text bold size="sm" appearance={liked ? 'error' : 'black'}>
-                {likeCount}
-              </Text>
-            </Pressable>
-          )}
-          {publication.commentsEnabled && (
-            <Pressable
-              onPress={() => setCommentsOpen(true)}
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                gap: theme.spacing.xs + 2,
-                height: 38,
-                paddingHorizontal: theme.spacing.md,
-                borderRadius: 12,
-              }}
-            >
-              <Icon name="ChatRegular" size="md" color={theme.colors.text} />
-              <Text bold size="sm">
-                {comments.length}
-              </Text>
-            </Pressable>
-          )}
-        </View>
+      {!!publication.description && (
+        <Text
+          numberOfLines={3}
+          style={{
+            paddingTop: theme.spacing.md,
+            paddingHorizontal: theme.spacing.lg,
+            paddingBottom: theme.spacing.xs,
+            lineHeight: 22,
+          }}
+        >
+          {publication.description}
+        </Text>
       )}
 
-      {/* Description */}
-      {!!publication.description && <Text numberOfLines={3}>{publication.description}</Text>}
+      <PostActions
+        likesEnabled={publication.likesEnabled}
+        commentsEnabled={options.commentsEnabled}
+        liked={liked}
+        likeCount={likeCount}
+        onToggleLike={() => setLiked((prev) => !prev)}
+        commentCount={comments.length}
+        onPressComments={() => setCommentsOpen(true)}
+        onPressOptions={options.openOptions}
+      />
 
       <CommentsPanel
         isOpen={commentsOpen}
@@ -246,6 +215,8 @@ export const Publication: React.FC<PublicationProps> = ({
         onAddComment={addComment}
         onPressUser={onPressUser}
       />
+
+      {options.panel}
     </View>
   );
 };

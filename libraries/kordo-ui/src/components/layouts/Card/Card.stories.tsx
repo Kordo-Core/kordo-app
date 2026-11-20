@@ -60,3 +60,17 @@ export const Pressable: Story = {
     ),
   },
 };
+
+/** Photo card: the image fills the card and follows its corners, the overlay keeps the text readable. */
+export const Photo: Story = {
+  args: {
+    image: 'https://images.unsplash.com/photo-1522163182402-834f871fd851?w=600',
+    overlay: 'bottom',
+    style: { width: 260, height: 300, justifyContent: 'flex-end' },
+    children: (
+      <Text variant="display" size={24} appearance="white">
+        Arkose Nation
+      </Text>
+    ),
+  },
+};

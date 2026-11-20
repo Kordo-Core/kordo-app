@@ -10,6 +10,7 @@ export type ActivityPublic = {
   title: string; // session_post.title
   description: string; // session_post.description
   createdAt: string; // post.created_at (ISO)
+  duration?: string; // durée de la séance, ex. « 1h52 »
 
   // — calculés automatiquement à la construction —
   blocks: BoulderPublic[]; // tops(session_post_id) → bloc

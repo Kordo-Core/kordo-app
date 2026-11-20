@@ -7,6 +7,12 @@ export interface MessageProps {
   content?: string;
   /** Horodatage affiché sous la bulle, aligné sur son bord extérieur */
   time?: string;
+  /** Le message suivant vient du même auteur : coins vifs aussi en haut, côté émetteur */
+  continued?: boolean;
+  /** Affiche le petit cœur accroché à la bulle */
+  liked?: boolean;
+  /** Double tap sur la bulle */
+  onLike?: () => void;
   /** Contenu libre (image, vidéo…). La bulle ne fournit alors que le fond et l'alignement */
   children?: React.ReactNode;
   style?: StyleProp<ViewStyle>;

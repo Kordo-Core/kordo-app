@@ -10,5 +10,9 @@ export interface NotificationProps {
   onPressFollow?: (notification: NotificationPublic) => void;
   /** Clic sur le nom de la salle (type meet) */
   onPressGym?: (gymId: string) => void;
+  /** État lu piloté par l'écran (par défaut : `notification.isRead`) */
+  isRead?: boolean;
+  /** Appui sur la carte : la marquer comme lue */
+  onRead?: (notification: NotificationPublic) => void;
   style?: StyleProp<ViewStyle>;
 }

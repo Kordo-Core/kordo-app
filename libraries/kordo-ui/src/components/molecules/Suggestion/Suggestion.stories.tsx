@@ -34,8 +34,7 @@ export default {
 
 type Story = StoryObj<typeof Suggestion>;
 
-const avatar =
-  'https://res.cloudinary.com/dqmegz5dn/image/upload/v1763334248/avatar-kordo_rwvjw4.png';
+const avatar = 'https://i.pravatar.cc/300?img=52';
 
 const mockUser: UserPublic = { id: '1', username: 'climbing_fan', avatarUrl: avatar };
 const otherUser: UserPublic = { id: '2', username: 'boulder_master', avatarUrl: avatar };
