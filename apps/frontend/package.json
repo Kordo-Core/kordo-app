@@ -6,7 +6,8 @@
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "update:preview": "eas update --channel preview --platform android"
   },
   "dependencies": {
     "@emotion/native": "^11.11.0",
@@ -23,6 +24,7 @@
     "expo-font": "^14.0.12",
     "expo-image-picker": "~17.0.11",
     "expo-linear-gradient": "~15.0.7",
+    "expo-updates": "~29.0.20",
     "expo-video": "~3.0.16",
     "kordo-ui": "workspace:*",
     "react": "19.1.0",

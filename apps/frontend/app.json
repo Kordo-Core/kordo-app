@@ -24,7 +24,10 @@
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
       "package": "app.kordo.mobile",
-      "versionCode": 1
+      "versionCode": 1,
+      "runtimeVersion": {
+        "policy": "appVersion"
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -38,6 +41,9 @@
       "eas": {
         "projectId": "3f267f34-4533-43bd-afd0-b88e511a069a"
       }
+    },
+    "updates": {
+      "url": "https://u.expo.dev/3f267f34-4533-43bd-afd0-b88e511a069a"
     }
   }
 }
