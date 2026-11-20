@@ -152,12 +152,21 @@ function StoryAvatar({ uri, live }: { uri?: string; live?: boolean }) {
               justifyContent: 'center',
             }}
           >
-            {/* L'espacement des lettres s'ajoute aussi après la dernière : compensé à droite */}
+            {/* L'espacement des lettres s'ajoute aussi après la dernière : compensé à droite.
+                Vertical : sans la marge interne d'Android (qui poussait le texte ~1 px trop bas),
+                la boîte du texte suit l'ascendante et la descendante de la police ; des capitales
+                sans jambage y restent 0,4 px sous le centre, d'où le léger décalage vers le haut. */}
             <Text
               size={11}
               extraBold
               appearance="white"
-              style={{ letterSpacing: 0.4, marginRight: -0.4 }}
+              style={{
+                letterSpacing: 0.4,
+                marginRight: -0.4,
+                includeFontPadding: false,
+                textAlignVertical: 'center',
+                transform: [{ translateY: -0.4 }],
+              }}
             >
               NOW
             </Text>
