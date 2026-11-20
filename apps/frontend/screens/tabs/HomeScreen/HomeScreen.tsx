@@ -62,6 +62,9 @@ const STORY_SIZE = 66;
 // Story ronde (maquette « sport ») : anneau de 66 px, photo de 60 px dans un liseré de 3 px
 const STORY_RADIUS = STORY_SIZE / 2;
 const HEADER_BUTTON = 46;
+// Taille et hauteur de ligne du titre « Salut … » (texte display : interligne 0,95)
+const TITLE_SIZE = 42;
+const TITLE_LINE = Math.round(TITLE_SIZE * 0.95);
 // Pastille de tendance de la carte résumé : pilule translucide sur le dégradé vert
 const TREND_PILL = {
   height: 26,
@@ -342,7 +345,18 @@ export default function HomeScreen() {
         style={{ paddingHorizontal: 4 }}
         onLayout={(e: LayoutChangeEvent) => setHeaderHeight(e.nativeEvent.layout.height)}
         right={
-          <View style={{ flexDirection: 'row', alignItems: 'center', gap: theme.spacing.sm }}>
+          // Centrés sur la ligne « Salut Léo » (et non sur tout le bloc date + titre), comme le
+          // trophée de Progression : collés en bas, puis descendus de la moitié de l'écart entre
+          // le bouton (46 px) et la ligne du titre (42 × 0,95 ≈ 40 px)
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              gap: theme.spacing.sm,
+              alignSelf: 'flex-end',
+              marginBottom: (TITLE_LINE - HEADER_BUTTON) / 2,
+            }}
+          >
             {/* Notifications : point orange pulsant (du nouveau, sans compter) ; messages : compteur */}
             <IconButton
               icon="AlertRegular"
@@ -373,7 +387,7 @@ export default function HomeScreen() {
           <Text variant="eyebrow" size={12}>
             {formatToday()}
           </Text>
-          <Text variant="display" size={42}>
+          <Text variant="display" size={TITLE_SIZE}>
             Salut {CURRENT_USER.firstName ?? CURRENT_USER.username}
           </Text>
         </View>
