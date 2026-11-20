@@ -70,15 +70,24 @@ export const GYMS_DB: GymRecord[] = GYMS.map((g, i) => {
 });
 
 // --- Tags ---
+// Étiquettes des blocs, rangées par famille comme dans les filtres du design D
 export const TAGS: Tag[] = [
-  { id: 't-overhang', name: 'Dévers' },
-  { id: 't-slab', name: 'Dalle' },
-  { id: 't-dyno', name: 'Jeté' },
-  { id: 't-crimp', name: 'Réglettes' },
-  { id: 't-volume', name: 'Volumes' },
-  { id: 't-pinch', name: 'Pinces' },
-  { id: 't-techy', name: 'Technique' },
-  { id: 't-power', name: 'Puissant' },
+  { id: 't-arched', name: 'Arquée', group: 'hand' },
+  { id: 't-pinch', name: 'Pince', group: 'hand' },
+  { id: 't-crimp', name: 'Réglette', group: 'hand' },
+  { id: 't-sloper', name: 'Plat', group: 'hand' },
+  { id: 't-pocket', name: 'Bi-doigt', group: 'hand' },
+  { id: 't-undercling', name: 'Inversée', group: 'hand' },
+  { id: 't-smear-foot', name: 'Petit pied', group: 'foot' },
+  { id: 't-smear', name: 'Adhérence', group: 'foot' },
+  { id: 't-toe', name: 'Contre-pointe', group: 'foot' },
+  { id: 't-heel', name: 'Talon', group: 'foot' },
+  { id: 't-hook', name: 'Crochet', group: 'foot' },
+  { id: 't-upper', name: 'Haut du corps', group: 'body' },
+  { id: 't-lower', name: 'Bas du corps', group: 'body' },
+  { id: 't-core', name: 'Gainage', group: 'body' },
+  { id: 't-arms', name: 'Bras', group: 'body' },
+  { id: 't-flex', name: 'Souplesse', group: 'body' },
 ];
 
 // --- Plan de salle : 15 secteurs (tracés SVG, viewBox 0 0 280 251) ---
@@ -135,15 +144,36 @@ const DESC_TIP = [
 // Points proportionnels au grade (grades de 1 à 30)
 const gradePoints = (grade: number): number => grade * 50;
 
-// URLs de vidéos de méthode (échantillons mp4 publics) postées par les utilisateurs sur les blocs
+// Vidéos de méthode postées sur les blocs : clips d'escalade en salle de Mixkit (licence
+// Mixkit Stock Video Free License, utilisation gratuite)
 const METHOD_VIDEOS = [
-  'https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/360/Big_Buck_Bunny_360_10s_1MB.mp4',
-  'https://test-videos.co.uk/vids/jellyfish/mp4/h264/360/Jellyfish_360_10s_1MB.mp4',
-  'https://test-videos.co.uk/vids/sintel/mp4/h264/360/Sintel_360_10s_1MB.mp4',
-  'https://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_320x180.mp4',
-  'https://www.w3schools.com/html/mov_bbb.mp4',
-  'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4',
+  'https://assets.mixkit.co/videos/50929/50929-720.mp4',
+  'https://assets.mixkit.co/videos/41024/41024-720.mp4',
+  'https://assets.mixkit.co/videos/50925/50925-720.mp4',
+  'https://assets.mixkit.co/videos/50930/50930-720.mp4',
+  'https://assets.mixkit.co/videos/50920/50920-720.mp4',
+  'https://assets.mixkit.co/videos/50922/50922-720.mp4',
 ];
+
+// Miniatures des blocs : photos Unsplash de prises et de murs de bloc (licence Unsplash),
+// réparties de façon stable selon l'identifiant du bloc
+const BLOC_PHOTO_IDS = [
+  '1659666287295-7da26c3f80d4',
+  '1696105538708-6be6c90707a1',
+  '1517599652-86163851f0de',
+  '1543398971-17eea343659e',
+  '1675448057076-4fb80b43c5d6',
+  '1545909429-c3423747ff05',
+  '1759928222798-63e73f690563',
+  '1650819521156-d69c6a5a4564',
+  '1775654792608-08a019b97da8',
+  '1788247356784-dc09fba8ac0e',
+];
+const blocPhoto = (blocId: string) => {
+  let h = 0;
+  for (const ch of blocId) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
+  return `https://images.unsplash.com/photo-${BLOC_PHOTO_IDS[h % BLOC_PHOTO_IDS.length]}?w=200&h=200&fit=crop&q=70`;
+};
 
 // --- Génération secteurs / sessions / blocs / tags / tops / médias par salle ---
 export const SECTORS: Sector[] = [];
@@ -195,19 +225,19 @@ GYMS_DB.forEach((gym) => {
       grade,
       points: gradePoints(grade),
       sectorId: sector.id,
-      blocUrl: `https://picsum.photos/seed/${blocId}/96/96`,
+      blocUrl: blocPhoto(blocId),
       description: `${pick(rng, DESC_INTRO)} ${pick(rng, DESC_MOVE)} ${pick(rng, DESC_TIP)}`,
       createdAt: session.createdAt,
     };
     BLOCS.push(bloc);
 
-    // 1 à 2 tags
+    // Une étiquette par famille (prise de main, prise de pied, effort), comme un vrai bloc.
+    // Les tirages aléatoires d'origine sont conservés pour ne pas décaler la suite des données.
     const tagCount = 1 + Math.floor(rng() * 2);
-    const used = new Set<string>();
-    range(tagCount).forEach(() => {
-      const tag = pick(rng, TAGS);
-      if (used.has(tag.id)) return;
-      used.add(tag.id);
+    const draws = range(tagCount).map(() => pick(rng, TAGS));
+    (['hand', 'foot', 'body'] as const).forEach((group, g) => {
+      const family = TAGS.filter((t) => t.group === group);
+      const tag = family[(BLOCS.length * (g + 3) + draws.length + g) % family.length];
       BLOC_TAGS.push({ id: `${bloc.id}-${tag.id}`, blocId: bloc.id, tagId: tag.id });
     });
 
@@ -286,15 +316,21 @@ export function getCurrentUserRank(gymId: string): RankingEntry | undefined {
 }
 
 /** Blocs d'une salle, enrichis du secteur, de l'ouvreur et des tags. */
+const blocsByGym = new Map<string, BlocDetail[]>();
 export function getBlocsByGym(gymId: string): BlocDetail[] {
-  return BLOCS.filter((b) => b.gymId === gymId).map((bloc) => ({
-    bloc,
-    setter: USERS.find((u) => u.id === bloc.setterId),
-    sector: SECTORS.find((s) => s.id === bloc.sectorId)!,
-    tags: BLOC_TAGS.filter((bt) => bt.blocId === bloc.id)
-      .map((bt) => TAGS.find((t) => t.id === bt.tagId)!)
-      .filter(Boolean),
-  }));
+  let details = blocsByGym.get(gymId);
+  if (!details) {
+    details = BLOCS.filter((b) => b.gymId === gymId).map((bloc) => ({
+      bloc,
+      setter: USERS.find((u) => u.id === bloc.setterId),
+      sector: SECTORS.find((s) => s.id === bloc.sectorId)!,
+      tags: BLOC_TAGS.filter((bt) => bt.blocId === bloc.id)
+        .map((bt) => TAGS.find((t) => t.id === bt.tagId)!)
+        .filter(Boolean),
+    }));
+    blocsByGym.set(gymId, details);
+  }
+  return details;
 }
 
 /** Détail complet d'un bloc par son id (pour ouvrir directement son panneau). */
@@ -325,4 +361,28 @@ export function getMediaByBloc(blocId: string): BlocMediaWithAuthor[] {
 /** Vidéo de méthode postée par l'utilisateur courant sur un bloc, si elle existe. */
 export function getCurrentUserBlocMethod(blocId: string): BlocMedia | undefined {
   return BLOC_MEDIA.find((m) => m.blocId === blocId && m.userId === CURRENT_USER.id);
+}
+
+/** Nombre de grimpeurs ayant validé un bloc (tri « Tops » des filtres). */
+// Blocs validés et vidéos de méthode d'un grimpeur
+export function getUserClimbingCounts(userId: string) {
+  return {
+    tops: TOPS.filter((t) => t.userId === userId).length,
+    betas: BLOC_MEDIA.filter((m) => m.userId === userId).length,
+  };
+}
+
+// Salle habituelle d'un grimpeur, stable d'un écran à l'autre
+export function getUserHomeGymName(userId: string): string {
+  const sum = [...userId].reduce((acc, c) => acc + c.charCodeAt(0), 0);
+  return GYMS[sum % GYMS.length].name;
+}
+
+let topCounts: Map<string, number> | null = null;
+export function getTopCount(blocId: string): number {
+  if (!topCounts) {
+    topCounts = new Map();
+    for (const t of TOPS) topCounts.set(t.blocId, (topCounts.get(t.blocId) ?? 0) + 1);
+  }
+  return topCounts.get(blocId) ?? 0;
 }

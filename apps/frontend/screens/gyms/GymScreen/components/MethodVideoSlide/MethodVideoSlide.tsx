@@ -85,7 +85,7 @@ export function MethodVideoSlide({
             paddingLeft: 4,
           }}
         >
-          <Icon name="play" size="md" color="#13201B" />
+          <Icon name="play" size="md" color="#0B1410" />
         </View>
 
         {author && (
@@ -105,7 +105,7 @@ export function MethodVideoSlide({
           >
             <Image
               source={{ uri: author.avatarUrl }}
-              style={{ width: 24, height: 24, borderRadius: 8 }}
+              style={{ width: 24, height: 24, borderRadius: 3 }}
             />
             <Text size="xs" bold style={{ color: theme.colors.neutral.white }}>
               {author.firstName}

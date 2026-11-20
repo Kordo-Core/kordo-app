@@ -5,7 +5,7 @@ export interface UserListProps {
   /** Recherche en cours, saisie dans la barre de l'écran */
   query: string;
   /** Intitulé au-dessus de la liste, sans le compteur : "Tous les abonnements" */
-  caption: string;
+  caption?: string;
   /** Message affiché quand la liste est vide */
   emptyLabel: string;
 }

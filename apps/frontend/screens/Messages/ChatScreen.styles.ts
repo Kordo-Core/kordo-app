@@ -12,7 +12,7 @@ export const HeaderIdentity = styled.Pressable((props) => ({
 export const HeaderAvatar = styled.Image((props) => ({
   width: 42,
   height: 42,
-  borderRadius: 14,
+  borderRadius: 6,
 }));
 
 export const Presence = styled.View((props) => ({
@@ -21,19 +21,24 @@ export const Presence = styled.View((props) => ({
   gap: props.theme.spacing.xs,
 }));
 
-// Point de présence, vert quand le contact est connecté, gris sinon.
+// Point de présence posé sur l'avatar (maquette) : 12 px + liseré de 2 px couleur du fond
 export const PresenceDot = styled.View<{ online: boolean }>((props) => ({
-  width: 8,
-  height: 8,
+  position: 'absolute',
+  right: -1,
+  bottom: -1,
+  width: 16,
+  height: 16,
+  borderWidth: 2,
+  borderColor: props.theme.colors.background,
   borderRadius: props.theme.borderRadius.rounded,
-  backgroundColor: props.online ? '#3BB273' : props.theme.colors.textMuted,
+  backgroundColor: props.online ? '#1FD18A' : props.theme.colors.textMuted,
 }));
 
 // Contenu de la liste de messages : l'espace vertical sépare les bulles.
 export const messagesContent = (theme: KordoTheme) => ({
   flexGrow: 1,
-  padding: theme.spacing.md + 2,
-  gap: theme.spacing.sm + 2,
+  padding: 14,
+  gap: 6,
 });
 
 // Miniature d'un média, dans une bulle qui a retiré son rembourrage.
@@ -72,4 +77,14 @@ export const Empty = styled.View((props) => ({
   flex: 1,
   paddingTop: props.theme.spacing.xxl,
   alignItems: 'center',
+}));
+
+// Bouton d'appel de l'entête (vert doux, comme les IconButton `soft`)
+export const CallButton = styled.Pressable((props) => ({
+  width: 44,
+  height: 44,
+  borderRadius: 6,
+  alignItems: 'center',
+  justifyContent: 'center',
+  backgroundColor: props.theme.colors.soft,
 }));

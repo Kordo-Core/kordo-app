@@ -3,9 +3,11 @@ import { Pressable, ScrollView, View } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTheme } from '@emotion/react';
-import { Button, Checkbox, IconButton, Input, Logo, Text } from 'kordo-ui';
+import { Button, Checkbox, Icon, Input, Logo, Text } from 'kordo-ui';
 import Animated, { FadeInDown, LinearTransition } from 'react-native-reanimated';
 import { RootStackParamList } from '../../App';
+// Même colonne, même en-tête et mêmes boutons sociaux que l'écran de connexion
+import * as Styled from '../LoginFormScreen/LoginFormScreen.styles';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'SignUp'>;
 
@@ -34,53 +36,33 @@ export default function SignUpScreen({ navigation }: Props) {
       ? theme.colors.error.base
       : strength <= 2
         ? theme.colors.primary.base
-        : theme.colors.success.base;
+        : theme.colors.secondary.base;
   const canSubmit = username.length > 1 && /\S+@\S+\.\S+/.test(email) && strength >= 2 && accepted;
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.background }}>
-      <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          paddingHorizontal: theme.spacing.xl,
-          paddingTop: theme.spacing.sm,
-        }}
-      >
-        <IconButton
-          icon="ArrowLeftRegular"
-          accessibilityLabel="Retour"
-          onPress={() => navigation.goBack()}
-        />
-        <Button
-          title="Connexion"
-          size="md"
-          appearance="black"
-          inverted
-          borderless
-          onPress={() => navigation.navigate('Login')}
-        />
-      </View>
-
-      <ScrollView
-        contentContainerStyle={{
-          padding: theme.spacing.xl,
-          gap: theme.spacing.lg,
-          paddingBottom: theme.spacing.xxl,
-        }}
-        keyboardShouldPersistTaps="handled"
-      >
-        <Animated.View entering={FadeInDown.duration(450)} style={{ gap: theme.spacing.lg }}>
+      <ScrollView contentContainerStyle={Styled.contentStyle} keyboardShouldPersistTaps="handled">
+        <Styled.TopRow>
           <Logo size={52} />
-          <View style={{ gap: 10 }}>
+          <Styled.HeaderLink
+            onPress={() => navigation.navigate('LoginForm')}
+            accessibilityRole="button"
+          >
+            <Text size={14} bold>
+              Connexion
+            </Text>
+          </Styled.HeaderLink>
+        </Styled.TopRow>
+
+        <Animated.View entering={FadeInDown.duration(450)}>
+          <Styled.Intro>
             <Text variant="display" size="lg">
               Crée ton{'\n'}compte
             </Text>
-            <Text appearance="gray" style={{ lineHeight: 22 }}>
+            <Text appearance="gray" style={Styled.introBody}>
               Ton e-mail, ton nom et un mot de passe sécurisé. Ça prend 30 secondes.
             </Text>
-          </View>
+          </Styled.Intro>
         </Animated.View>
 
         <Input
@@ -88,7 +70,7 @@ export default function SignUpScreen({ navigation }: Props) {
           placeholder="Ton pseudo de grimpeur"
           value={username}
           onChange={setUsername}
-          leftIcon={{ name: 'PersonRegular' }}
+          leftIcon={{ name: 'PersonRegular', color: theme.colors.textMuted }}
         />
         <Input
           label="E-mail"
@@ -96,7 +78,12 @@ export default function SignUpScreen({ navigation }: Props) {
           type="email"
           value={email}
           onChange={setEmail}
-          leftIcon={{ name: 'MailRegular' }}
+          leftIcon={{ name: 'MailRegular', color: theme.colors.textMuted }}
+          rightIcon={
+            /\S+@\S+\.\S+/.test(email)
+              ? { name: 'CheckmarkCircleFilled', size: 24, color: theme.colors.secondary.base }
+              : undefined
+          }
         />
         <Input
           label="Mot de passe"
@@ -104,11 +91,12 @@ export default function SignUpScreen({ navigation }: Props) {
           type="password"
           value={password}
           onChange={setPassword}
-          leftIcon={{ name: 'LockClosedRegular' }}
+          leftIcon={{ name: 'LockClosedRegular', color: theme.colors.textMuted }}
+          revealable
         />
 
         {/* Jauge de force : quatre segments qui se remplissent dans la couleur du niveau */}
-        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, paddingHorizontal: 4 }}>
           {[0, 1, 2, 3].map((i) => (
             <View
               key={i}
@@ -137,10 +125,17 @@ export default function SignUpScreen({ navigation }: Props) {
 
         <Pressable
           onPress={() => setAccepted((a) => !a)}
-          style={{ flexDirection: 'row', gap: theme.spacing.sm + 2, alignItems: 'flex-start' }}
+          style={{
+            flexDirection: 'row',
+            gap: 10,
+            alignItems: 'flex-start',
+            paddingTop: 4,
+            paddingHorizontal: 4,
+            paddingBottom: 6,
+          }}
         >
           <Checkbox checked={accepted} onChange={setAccepted} />
-          <Text size="sm" appearance="gray" style={{ flex: 1, lineHeight: 19 }}>
+          <Text size="sm" appearance="gray" style={{ flex: 1, lineHeight: 18.2 }}>
             J’accepte les conditions d’utilisation et la politique de confidentialité de Kordo.
           </Text>
         </Pressable>
@@ -148,34 +143,36 @@ export default function SignUpScreen({ navigation }: Props) {
         <Button
           title="Créer mon compte"
           size="lg"
+          textSize={16}
           appearance="secondary"
           disabled={!canSubmit}
           fullWidth
-          onPress={() => navigation.reset({ index: 0, routes: [{ name: 'MainTabs' }] })}
+          containerStyle={{
+            boxShadow: `0px 10px 24px ${theme.mode === 'dark' ? 'rgba(0, 163, 111, 0.18)' : 'rgba(0, 132, 90, 0.18)'}`,
+          }}
+          onPress={() => navigation.reset({ index: 0, routes: [{ name: 'Onboarding' }] })}
         />
 
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: theme.spacing.md }}>
           <View style={{ flex: 1, height: 1, backgroundColor: theme.colors.border }} />
-          <Text size="sm" bold appearance="gray">
+          <Text size="sm" appearance="gray" style={{ fontFamily: theme.fonts.semiBold }}>
             ou continuer avec
           </Text>
           <View style={{ flex: 1, height: 1, backgroundColor: theme.colors.border }} />
         </View>
         <View style={{ flexDirection: 'row', gap: theme.spacing.sm }}>
-          <Button
-            title="Google"
-            appearance="black"
-            inverted
-            icon={{ name: 'google', size: 18, color: '#EA4335' }}
-            style={{ flex: 1 }}
-          />
-          <Button
-            title="Apple"
-            appearance="black"
-            inverted
-            icon={{ name: 'apple', size: 18, color: theme.colors.text }}
-            style={{ flex: 1 }}
-          />
+          {[
+            { title: 'Google', icon: 'google', color: '#EA4335' },
+            { title: 'Facebook', icon: 'facebook', color: '#1877F2' },
+            { title: 'Apple', icon: 'apple', color: theme.colors.text },
+          ].map((p) => (
+            <Styled.SocialButton key={p.title} accessibilityRole="button">
+              <Icon name={p.icon} size={18} color={p.color} />
+              <Text size={14} bold>
+                {p.title}
+              </Text>
+            </Styled.SocialButton>
+          ))}
         </View>
       </ScrollView>
     </SafeAreaView>

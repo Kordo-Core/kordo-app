@@ -14,7 +14,7 @@ export default function LoginScreen({ navigation }: Props) {
     <Styled.Container>
       <Styled.TopRow>
         <IconButton
-          icon="ArrowLeftRegular"
+          icon="ChevronLeftRegular"
           accessibilityLabel="Retour"
           onPress={() => navigation.goBack()}
         />

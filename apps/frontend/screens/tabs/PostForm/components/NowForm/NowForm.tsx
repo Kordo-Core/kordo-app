@@ -6,7 +6,9 @@ import * as Styled from './NowForm.styles';
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <Styled.SectionContainer>
-      <Text variant="eyebrow">{title}</Text>
+      <Text variant="eyebrow" style={{ marginTop: 6, marginHorizontal: 4 }}>
+        {title}
+      </Text>
       {children}
     </Styled.SectionContainer>
   );

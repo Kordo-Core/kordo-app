@@ -12,7 +12,7 @@ import { RootStackParamList } from '../../../../App';
 
 // Liste d'utilisateurs commune aux onglets Followers et Suivi(e)s : seule la source
 // des données change, la présentation est identique.
-export const UserList: React.FC<UserListProps> = ({ users, query, caption, emptyLabel }) => {
+export const UserList: React.FC<UserListProps> = ({ users, query, emptyLabel }) => {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const theme = useTheme();
 
@@ -23,12 +23,6 @@ export const UserList: React.FC<UserListProps> = ({ users, query, caption, empty
 
   return (
     <>
-      <Styled.Caption>
-        <Text variant="eyebrow">
-          {caption} · {visibleUsers.length}
-        </Text>
-      </Styled.Caption>
-
       <FlatList
         style={Styled.list}
         data={visibleUsers}

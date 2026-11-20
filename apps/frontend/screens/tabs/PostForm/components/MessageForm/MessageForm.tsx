@@ -9,8 +9,10 @@ export function MessageForm(props: MessageFormProps) {
       <Input
         value={props.message}
         onChange={props.onMessageChange}
-        label="Message"
-        placeholder="Écrivez votre message…"
+        label="MESSAGE"
+        variant="form"
+        counter={500}
+        placeholder="Écris ton message…"
         multiline
       />
       <InteractionsSection

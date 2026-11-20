@@ -1,27 +1,30 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Pressable, ScrollView, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTheme } from '@emotion/react';
 import { LinearGradient } from 'expo-linear-gradient';
-import Animated, {
-  FadeIn,
-  FadeInDown,
-  useAnimatedStyle,
-  useSharedValue,
-  withDelay,
-  withTiming,
-} from 'react-native-reanimated';
-import { Icon, Text } from 'kordo-ui';
+import Animated, { FadeIn, FadeInDown } from 'react-native-reanimated';
+import {
+  BarChart,
+  Heatmap,
+  Icon,
+  LevelPyramid,
+  ProgressBar,
+  SegmentedControl,
+  Text,
+} from 'kordo-ui';
 import { ScreenHeader } from '../../../components/ScreenHeader/ScreenHeader';
 import { ScreenLayout } from '../../../components/ScreenLayout/ScreenLayout';
-import { CURRENT_USER } from 'fake_data';
 import { RootStackParamList } from '../../../App';
 
 // Progression (design D) : fusion des écrans de stats des propositions A, B et C.
 // Données fictives tant que l'API des statistiques n'existe pas.
 
 type Period = 'week' | 'month' | 'year';
+const PERIOD_KEYS: Period[] = ['week', 'month', 'year'];
+// Texte posé sur l'orange plein de la carte « Niveau max »
+const ON_ORANGE = '#0B1410';
 
 const PERIODS: Record<
   Period,
@@ -99,41 +102,6 @@ const buildRegularity = () => {
   return levels;
 };
 
-// Barre verticale animée : sa hauteur pousse depuis zéro à chaque changement de période.
-const GrowBar: React.FC<{
-  height: number;
-  color: string;
-  delay: number;
-  width?: number;
-  radius?: number;
-}> = ({ height, color, delay, width = 22, radius = 7 }) => {
-  const h = useSharedValue(0);
-  useEffect(() => {
-    h.value = withDelay(delay, withTiming(height, { duration: 500 }));
-  }, [height, delay]);
-  const style = useAnimatedStyle(() => ({ height: h.value }));
-  return <Animated.View style={[{ width, borderRadius: radius, backgroundColor: color }, style]} />;
-};
-
-// Jauge horizontale animée (pyramide, salles)
-const GrowGauge: React.FC<{ ratio: number; color: string; delay: number; track: string }> = ({
-  ratio,
-  color,
-  delay,
-  track,
-}) => {
-  const w = useSharedValue(0);
-  useEffect(() => {
-    w.value = withDelay(delay, withTiming(ratio * 100, { duration: 600 }));
-  }, [ratio, delay]);
-  const style = useAnimatedStyle(() => ({ width: `${w.value}%` }));
-  return (
-    <View style={{ flex: 1, height: 10, borderRadius: 999, backgroundColor: track }}>
-      <Animated.View style={[{ height: 10, borderRadius: 999, backgroundColor: color }, style]} />
-    </View>
-  );
-};
-
 export default function StatsScreen() {
   const theme = useTheme();
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
@@ -146,10 +114,8 @@ export default function StatsScreen() {
 
   const regularity = useMemo(buildRegularity, []);
   const total = data.values.reduce((a, b) => a + b, 0);
-  const max = Math.max(...data.values);
   const barIndex = Math.min(selectedBar, data.values.length - 1);
 
-  const heat = [theme.colors.border, '#B3D4C4', '#57987D', theme.colors.secondary.base];
   const pyramidColor = {
     primary: theme.colors.primary.base,
     primaryLight: theme.colors.primary.light,
@@ -160,13 +126,13 @@ export default function StatsScreen() {
     ? `${['', '1–6', '7–14', '15+'][dayLevel]} blocs ce ${DAYS[selectedDay % 7]}`
     : `Repos ce ${DAYS[selectedDay % 7]}`;
 
+  // Carte blanche de la maquette : filet de 1 px (ombre intérieure), 16 px de marge, 6 px d'écart
   const card = {
     backgroundColor: theme.colors.surface,
     borderRadius: theme.borderRadius.card,
-    borderWidth: 1,
-    borderColor: theme.colors.border,
-    padding: theme.spacing.lg,
-    gap: theme.spacing.sm,
+    boxShadow: theme.shadows.sm,
+    padding: 16,
+    gap: 6,
   } as const;
 
   const selectPeriod = (p: Period) => {
@@ -176,35 +142,58 @@ export default function StatsScreen() {
 
   return (
     <ScreenLayout>
-      <ScreenHeader
-        title="Progression"
-        eyebrow={data.range}
-        right={
-          <Pressable
-            onPress={() => navigation.navigate('UserProfile', { userId: CURRENT_USER.id })}
-            accessibilityLabel="Mes trophées"
+      <ScreenHeader gap={12} topGap={12} style={{ paddingHorizontal: 4 }}>
+        {/* Maquette : surtitre et titre empilés, trophée à droite aligné sur le titre, puis la période */}
+        <View style={{ gap: 12 }}>
+          <View
             style={{
-              width: 44,
-              height: 44,
-              borderRadius: theme.borderRadius.square,
-              backgroundColor: theme.colors.surface,
-              borderWidth: 1,
-              borderColor: theme.colors.border,
-              alignItems: 'center',
-              justifyContent: 'center',
+              flexDirection: 'row',
+              alignItems: 'flex-end',
+              justifyContent: 'space-between',
             }}
           >
-            <Icon name="TrophyRegular" size="sm" />
-          </Pressable>
-        }
-      />
+            <View style={{ gap: 4 }}>
+              <Text variant="eyebrow">Tes stats</Text>
+              <Text variant="display" size="lg">
+                Progression
+              </Text>
+            </View>
+            <Pressable
+              onPress={() => navigation.navigate('Trophies')}
+              accessibilityLabel="Mes trophées"
+              style={{
+                width: 44,
+                height: 44,
+                borderRadius: theme.borderRadius.square,
+                backgroundColor: theme.colors.surface,
+                boxShadow: theme.shadows.sm,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <Icon name="TrophyRegular" size="sm" />
+            </Pressable>
+          </View>
+          <SegmentedControl
+            segments={PERIOD_KEYS.map((p) => ({ text: PERIODS[p].label }))}
+            selectedIndex={PERIOD_KEYS.indexOf(period)}
+            onSelect={(i) => selectPeriod(PERIOD_KEYS[i])}
+            variant="surface"
+            size="md"
+            borderRadius="square"
+            // Pleine largeur : déborde de la marge de 4 px du titre
+            style={{ marginHorizontal: -4 }}
+          />
+        </View>
+      </ScreenHeader>
 
       <ScrollView
         style={{ flex: 1 }}
+        showsVerticalScrollIndicator={false}
         contentContainerStyle={{
-          paddingHorizontal: theme.spacing.lg,
-          paddingBottom: 130,
-          gap: theme.spacing.md,
+          paddingHorizontal: 14,
+          paddingBottom: 120,
+          gap: 12,
         }}
       >
         {/* Héro : sélecteur de période, total de blocs et histogramme interactif */}
@@ -213,110 +202,75 @@ export default function StatsScreen() {
             colors={theme.colors.hero}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
-            style={{ borderRadius: theme.borderRadius.lg, padding: theme.spacing.xl, gap: 14 }}
+            style={{ borderRadius: theme.borderRadius.lg, padding: 20, gap: 10 }}
           >
-            <View
-              style={{
-                flexDirection: 'row',
-                padding: 4,
-                borderRadius: 999,
-                backgroundColor: 'rgba(255,255,255,0.14)',
-              }}
-            >
-              {(Object.keys(PERIODS) as Period[]).map((p) => {
-                const on = p === period;
-                return (
-                  <Pressable
-                    key={p}
-                    onPress={() => selectPeriod(p)}
-                    accessibilityRole="tab"
-                    accessibilityState={{ selected: on }}
-                    style={{
-                      flex: 1,
-                      height: 34,
-                      borderRadius: 999,
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      backgroundColor: on ? theme.colors.neutral.white : 'transparent',
-                    }}
-                  >
-                    <Text size="sm" extraBold style={{ color: on ? '#13201B' : '#FFFFFF' }}>
-                      {PERIODS[p].label}
-                    </Text>
-                  </Pressable>
-                );
-              })}
-            </View>
-
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-              <Text variant="eyebrow" size={11} appearance="white" style={{ opacity: 0.8 }}>
-                Blocs validés · {data.range}
+              {/* Préfixe en capitales, période telle quelle (« 5 – 11 mai ») */}
+              <Text size={11} extraBold style={{ color: theme.colors.soft, letterSpacing: 1.6 }}>
+                BLOCS VALIDÉS · {data.range}
               </Text>
-              <Text size="xs" extraBold appearance="white">
-                {data.delta}
-              </Text>
+              <View
+                style={{
+                  height: 24,
+                  paddingHorizontal: 9,
+                  borderRadius: 999,
+                  justifyContent: 'center',
+                  backgroundColor: 'rgba(255, 255, 255, 0.15)',
+                }}
+              >
+                <Text size="xs" extraBold appearance="white">
+                  {data.delta}
+                </Text>
+              </View>
             </View>
 
-            <Animated.View key={period} entering={FadeIn.duration(300)}>
-              <Text variant="display" size={64} appearance="white">
+            <Animated.View key={`total-${period}`} entering={FadeIn.duration(300)}>
+              <Text variant="display" size={99} appearance="white">
                 {total}
               </Text>
             </Animated.View>
 
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'flex-end',
-                justifyContent: 'space-between',
-                height: 110,
-              }}
-            >
-              {data.values.map((v, i) => {
-                const on = i === barIndex;
-                return (
-                  <Pressable
-                    key={`${period}-${i}`}
-                    onPress={() => setSelectedBar(i)}
-                    accessibilityLabel={`${data.labels[i]} : ${v} blocs`}
-                    style={{ alignItems: 'center', gap: 6, flex: 1 }}
-                  >
-                    <Text size="xs" extraBold appearance="white" style={{ opacity: on ? 1 : 0 }}>
-                      {v}
-                    </Text>
-                    <GrowBar
-                      height={Math.max(6, (v / max) * 72)}
-                      delay={i * 40}
-                      color={
-                        on
-                          ? theme.colors.primary.base
-                          : v
-                            ? 'rgba(255,255,255,0.55)'
-                            : 'rgba(255,255,255,0.15)'
-                      }
-                    />
-                    <Text size="xs" bold appearance="white" style={{ opacity: 0.7 }}>
-                      {data.labels[i]}
-                    </Text>
-                  </Pressable>
-                );
-              })}
-            </View>
+            <BarChart
+              key={`chart-${period}`}
+              data={data.values.map((value, i) => ({ value, label: data.labels[i] }))}
+              height={80}
+              minBarHeight={6}
+              fill
+              gap={6}
+              barRadius={4}
+              tone="light"
+              showValue
+              showLabels
+              highlightIndex={barIndex}
+              onSelect={setSelectedBar}
+              unit="blocs"
+              style={{ height: 120 }}
+            />
           </LinearGradient>
         </Animated.View>
 
         {/* Grille de chiffres clés */}
         <Animated.View
           entering={FadeInDown.delay(100).duration(450)}
-          style={{ flexDirection: 'row', gap: theme.spacing.md }}
+          style={{ flexDirection: 'row', gap: 10 }}
         >
-          <View style={[card, { flex: 1, backgroundColor: theme.colors.primary.lightest }]}>
-            <Text variant="eyebrow" size={11} appearance="primary">
+          <View
+            style={[
+              card,
+              { flex: 1, gap: 4, boxShadow: 'none', backgroundColor: theme.colors.primary.base },
+            ]}
+          >
+            <Text
+              variant="eyebrow"
+              size={11}
+              style={{ color: ON_ORANGE, opacity: 0.75, letterSpacing: 1.6 }}
+            >
               Niveau max
             </Text>
-            <Text variant="display" size={44}>
+            <Text variant="display" size={57} style={{ color: ON_ORANGE }}>
               7A
             </Text>
-            <Text size="xs" appearance="gray">
+            <Text size="xs" bold style={{ color: ON_ORANGE }}>
               depuis mars · Excalibur
             </Text>
           </View>
@@ -324,7 +278,7 @@ export default function StatsScreen() {
             <Text variant="eyebrow" size={11}>
               Temps en salle
             </Text>
-            <Text variant="display" size={44}>
+            <Text variant="display" size={47} style={{ textTransform: 'none' }}>
               {data.hours}
             </Text>
             <Text size="xs" appearance="gray">
@@ -335,42 +289,42 @@ export default function StatsScreen() {
 
         <Animated.View
           entering={FadeInDown.delay(160).duration(450)}
-          style={{ flexDirection: 'row', gap: theme.spacing.md }}
+          style={{ flexDirection: 'row', gap: 10 }}
         >
           <View style={[card, { flex: 1 }]}>
             <Text variant="eyebrow" size={11}>
               Min / séance
             </Text>
-            <View style={{ flexDirection: 'row', alignItems: 'flex-end', gap: 10 }}>
-              <Text variant="display" size={36}>
+            <View style={{ gap: 6 }}>
+              <Text variant="display" size={40}>
                 134
               </Text>
-              <View style={{ flexDirection: 'row', alignItems: 'flex-end', gap: 3, height: 36 }}>
-                {SESSION_MINUTES.map((m, i) => (
-                  <GrowBar
-                    key={i}
-                    width={6}
-                    radius={3}
-                    delay={300 + i * 50}
-                    height={(m / 140) * 36}
-                    color={
-                      i === SESSION_MINUTES.length - 1
-                        ? theme.colors.primary.base
-                        : theme.colors.secondary.base
-                    }
-                  />
-                ))}
-              </View>
+              <BarChart
+                data={SESSION_MINUTES.map((value) => ({ value }))}
+                height={34}
+                fill
+                barRadius={3}
+                gap={4}
+                delay={300}
+                highlightIndex={SESSION_MINUTES.length - 1}
+              />
             </View>
           </View>
           <View style={[card, { flex: 1 }]}>
             <Text variant="eyebrow" size={11}>
               Flash
             </Text>
-            <Text variant="display" size={36}>
+            <Text variant="display" size={40}>
               41 %
             </Text>
-            <Text size="xs" bold appearance="secondary">
+            {/* Part des blocs passés au premier essai */}
+            <ProgressBar
+              value={0.41}
+              color={theme.colors.secondary.base}
+              height={8}
+              accessibilityLabel="41 % de flash"
+            />
+            <Text size="xs" appearance="gray">
               +6 pts ce mois
             </Text>
           </View>
@@ -386,50 +340,14 @@ export default function StatsScreen() {
               {dayTip}
             </Text>
           </View>
-          <View style={{ flexDirection: 'row', gap: 4, marginTop: 4 }}>
-            {Array.from({ length: WEEKS }, (_, w) => (
-              <View key={w} style={{ flex: 1, gap: 4 }}>
-                {Array.from({ length: 7 }, (_, d) => {
-                  const i = w * 7 + d;
-                  return (
-                    <Pressable
-                      key={d}
-                      onPress={() => setSelectedDay(i)}
-                      accessibilityLabel={`Semaine ${w + 1}, ${DAYS[d]}`}
-                      style={{
-                        aspectRatio: 1,
-                        borderRadius: 4,
-                        backgroundColor: heat[regularity[i]],
-                        borderWidth: i === selectedDay ? 2 : 0,
-                        borderColor: theme.colors.text,
-                      }}
-                    />
-                  );
-                })}
-              </View>
-            ))}
-          </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'flex-end',
-              gap: 4,
-            }}
-          >
-            <Text size="xs" appearance="gray">
-              moins
-            </Text>
-            {heat.map((c) => (
-              <View
-                key={c}
-                style={{ width: 10, height: 10, borderRadius: 3, backgroundColor: c }}
-              />
-            ))}
-            <Text size="xs" appearance="gray">
-              plus
-            </Text>
-          </View>
+          <Heatmap
+            values={regularity}
+            selectedIndex={selectedDay}
+            onSelect={setSelectedDay}
+            cellLabel={(i) => `Semaine ${Math.floor(i / 7) + 1}, ${DAYS[i % 7]}`}
+            legend={{ less: 'moins', more: 'plus' }}
+            style={{ marginTop: 4 }}
+          />
         </Animated.View>
 
         {/* Pyramide de niveaux */}
@@ -437,60 +355,73 @@ export default function StatsScreen() {
           <Text variant="eyebrow" size={11}>
             Pyramide de niveaux
           </Text>
-          {PYRAMID.map((p, i) => (
-            <View key={p.grade} style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
-              <Text bold style={{ width: 30 }}>
-                {p.grade}
-              </Text>
-              <GrowGauge
-                ratio={Math.max(0.08, p.count / 360)}
-                color={pyramidColor[p.tone]}
-                track={theme.colors.surfaceAlt}
-                delay={i * 80}
-              />
-              <Text size="sm" bold appearance="gray" style={{ width: 36, textAlign: 'right' }}>
-                {p.count}
-              </Text>
-            </View>
-          ))}
+          <LevelPyramid
+            levels={PYRAMID.map((p) => ({
+              label: p.grade,
+              count: p.count,
+              color: pyramidColor[p.tone],
+            }))}
+          />
         </Animated.View>
 
-        {/* Salles les plus visitées, repliable */}
-        <Animated.View entering={FadeInDown.delay(340).duration(450)} style={card}>
+        {/* Salles les plus visitées, repliable (maquette : pastille d'icône, titre 15 px, barres) */}
+        <Animated.View
+          entering={FadeInDown.delay(340).duration(450)}
+          style={[card, { padding: 0, gap: 0, overflow: 'hidden' }]}
+        >
           <Pressable
             onPress={() => setGymsOpen((o) => !o)}
             accessibilityRole="button"
             accessibilityState={{ expanded: gymsOpen }}
-            style={{ flexDirection: 'row', alignItems: 'center' }}
+            style={{ flexDirection: 'row', alignItems: 'center', gap: 14, padding: 14 }}
           >
-            <Text variant="eyebrow" size={11} style={{ flex: 1 }}>
+            <View
+              style={{
+                width: 36,
+                height: 36,
+                borderRadius: 5,
+                backgroundColor: theme.colors.soft,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <Icon name="LocationRegular" size="sm" color={theme.colors.softText} />
+            </View>
+            <Text extraBold style={{ flex: 1 }}>
               Salles les plus visitées
             </Text>
             <Icon name={gymsOpen ? 'chevron-up' : 'chevron-down'} size="sm" color="gray" />
           </Pressable>
-          {gymsOpen &&
-            TOP_GYMS.map((g, i) => (
-              <Animated.View
-                key={g.name}
-                entering={FadeIn.delay(i * 60)}
-                style={{ gap: 6, marginTop: 4 }}
-              >
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                  <Text size="sm" bold>
+          {gymsOpen && (
+            <View style={{ paddingHorizontal: 14, paddingBottom: 16, gap: 10 }}>
+              {TOP_GYMS.map((g, i) => (
+                <Animated.View
+                  key={g.name}
+                  entering={FadeIn.delay(i * 60)}
+                  style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}
+                >
+                  <Text
+                    size="sm"
+                    numberOfLines={1}
+                    style={{ width: 120, fontFamily: theme.fonts.semiBold }}
+                  >
                     {g.name}
                   </Text>
-                  <Text size="sm" bold appearance="gray">
-                    {g.visits} visites
+                  <ProgressBar
+                    value={g.visits / TOP_GYMS[0].visits}
+                    color={theme.colors.secondary.base}
+                    height={12}
+                    delay={i * 80}
+                    duration={600}
+                    style={{ flex: 1 }}
+                  />
+                  <Text size="sm" extraBold style={{ width: 22, textAlign: 'right' }}>
+                    {g.visits}
                   </Text>
-                </View>
-                <GrowGauge
-                  ratio={g.visits / TOP_GYMS[0].visits}
-                  color={i === 0 ? theme.colors.primary.base : theme.colors.secondary.base}
-                  track={theme.colors.surfaceAlt}
-                  delay={i * 80}
-                />
-              </Animated.View>
-            ))}
+                </Animated.View>
+              ))}
+            </View>
+          )}
         </Animated.View>
       </ScrollView>
     </ScreenLayout>

@@ -7,7 +7,7 @@ export const TILE_H = 128;
 export const AddTile = styled(Pressable)<{ $media: boolean }>((props) => ({
   width: props.$media ? TILE_W : '100%',
   height: TILE_H,
-  borderRadius: 18,
+  borderRadius: 8,
   borderWidth: 2,
   borderStyle: 'dashed' as const,
   borderColor: props.theme.colors.border,
@@ -19,7 +19,7 @@ export const AddTile = styled(Pressable)<{ $media: boolean }>((props) => ({
 export const MediaTile = styled(Pressable)((props) => ({
   width: TILE_W,
   height: TILE_H,
-  borderRadius: 18,
+  borderRadius: 8,
   overflow: 'hidden' as const,
   backgroundColor: props.theme.colors.surfaceAlt,
   alignItems: 'center' as const,

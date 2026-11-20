@@ -8,11 +8,14 @@ export const Row = styled.View((props) => ({
 
 export const TypeCard = styled(Pressable)<{ selected: boolean }>((props) => ({
   flex: 1,
-  height: 70,
-  borderRadius: 18,
+  height: 68,
+  borderRadius: 8,
   gap: 6,
   backgroundColor: props.selected ? props.theme.colors.text : props.theme.colors.surface,
-  boxShadow: props.selected ? '0px 8px 18px rgba(0, 0, 0, 0.18)' : props.theme.shadows.sm,
+  // Seules cartes de la maquette qui gardent une ombre portée au lieu du filet
+  boxShadow: props.selected
+    ? '0px 8px 18px rgba(0, 0, 0, 0.18)'
+    : `0px 1px 2px rgba(${props.theme.colors.scrim}, 0.05)`,
   alignItems: 'center' as const,
   justifyContent: 'center' as const,
 }));

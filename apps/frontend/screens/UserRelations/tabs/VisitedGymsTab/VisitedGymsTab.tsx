@@ -47,7 +47,7 @@ export const VisitedGymsTab: React.FC<RelationTabProps> = ({ userId, query }) =>
           onPress={() => navigation.navigate('Gym', { gymId: item.gym.id })}
           style={{
             paddingHorizontal: theme.spacing.md,
-            borderRadius: 20,
+            borderRadius: 8,
             backgroundColor: theme.colors.surface,
             boxShadow: theme.shadows.sm,
           }}
@@ -59,7 +59,7 @@ export const VisitedGymsTab: React.FC<RelationTabProps> = ({ userId, query }) =>
                 style={{
                   width: THUMB_SIZE,
                   height: THUMB_SIZE,
-                  borderRadius: 14,
+                  borderRadius: 6,
                 }}
               />
             }

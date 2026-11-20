@@ -96,9 +96,13 @@ export interface BlocMedia {
   createdAt: string;
 }
 
+/** Famille d'une étiquette de bloc : prise de main, prise de pied, ou effort physique */
+export type TagGroup = 'hand' | 'foot' | 'body';
+
 export interface Tag {
   id: string;
   name: string;
+  group: TagGroup;
 }
 
 export interface BlocTag {
@@ -148,6 +152,7 @@ export interface ActivityPost {
   id: string; // = post.id
   gymId: string;
   title: string;
+  duration?: string;
   description: string;
   likesEnabled: boolean;
   commentsEnabled: boolean;

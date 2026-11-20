@@ -1,59 +1,41 @@
 import { useMemo, useState } from 'react';
-import { View, ScrollView, useWindowDimensions, Dimensions, ImageBackground } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import { ScrollView, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import * as Styled from './GymsScreen.styles';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '@emotion/react';
-import { Button, Card, Icon, Slider, Tag, Text } from 'kordo-ui';
-import { GymCardStack } from './GymCardStack';
-import { BlurView } from 'expo-blur';
-import { FAVORITE_GYMS, POPULAR_GYMS, RECENTLY_VISITED } from '../../../fake_data/gyms.fake';
+import { Marquee, Text } from 'kordo-ui';
+import {
+  FAVORITE_GYMS,
+  Gym,
+  GYM_LIVE_COUNTS,
+  PASSPORT_TOTAL,
+  VISIT_LOG,
+} from '../../../fake_data/gyms.fake';
+import { getBlocsByGym, getCurrentUserRank } from '../../../fake_data';
+import { ScreenLayout } from '../../../components/ScreenLayout/ScreenLayout';
 import { RootStackParamList } from '../../../App';
-import { Bounce } from 'kordo-ui/src/animations/Bounce/Bounce';
+import { GymCoverCard } from './components/GymCoverCard';
+import { PassportCard } from './components/PassportCard';
+import { VisitTimeline } from './components/VisitTimeline';
+import { TopGyms } from './components/TopGyms';
+import { FavoriteGyms } from './components/FavoriteGyms';
+import { GymCategories } from './components/GymCategories';
+import { AllGymsTeaser } from './components/AllGymsTeaser';
 
-const IMAGE_FRACTION = 0.25;
-const CARD_FRACTION = 0.75;
+const SECTION_GAP = 30;
 
+// Onglet Salles (design D) : la dernière salle visitée, le passeport, les dernières visites, le
+// top 5, les favorites, les catégories, puis l'accès à toutes les salles.
 export default function GymsScreen() {
   const theme = useTheme();
+  const insets = useSafeAreaInsets();
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
-  // Les couleurs des catégories viennent du thème : la liste se construit dans le composant.
-  const categories = useMemo(
-    () =>
-      [
-        // Design D : tuile neutre et icône colorée ; la catégorie choisie se remplit.
-        {
-          label: 'Ranked',
-          icon: 'TrophyRegular',
-          light: theme.colors.surface,
-          base: theme.colors.primary.base,
-        },
-        {
-          label: 'New',
-          icon: 'StarRegular',
-          light: theme.colors.surface,
-          base: theme.colors.secondary.base,
-        },
-        {
-          label: 'Bloc',
-          icon: 'terrain',
-          light: theme.colors.surface,
-          base: theme.colors.primary.base,
-        },
-        {
-          label: 'Lead',
-          icon: 'carabiner',
-          light: theme.colors.surface,
-          base: theme.colors.secondary.base,
-        },
-      ] as const,
-    [theme],
+  // Les salles favorites sont, par définition, aimées au départ
+  const [likedGyms, setLikedGyms] = useState<Set<string>>(
+    () => new Set(FAVORITE_GYMS.map((g) => g.id)),
   );
-  const [likedGyms, setLikedGyms] = useState<Set<string>>(new Set());
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-
   const toggleLike = (gymId: string) =>
     setLikedGyms((prev) => {
       const next = new Set(prev);
@@ -61,420 +43,70 @@ export default function GymsScreen() {
       else next.add(gymId);
       return next;
     });
+  const isLiked = (gymId: string) => likedGyms.has(gymId);
 
-  const { width, height } = useWindowDimensions();
-  const imageHeight = height * IMAGE_FRACTION;
-  const cardMinHeight = height * CARD_FRACTION;
-  const gridItemWidth = (width - theme.spacing.xl * 2 - theme.spacing.lg) / 2;
-  const cardWidth = width - theme.spacing.xl * 2;
-  const rowItemWidth = (width - theme.spacing.xl * 2 - theme.spacing.lg * 3) / 4;
-  const sliderCardWidth = (Dimensions.get('window').width * 60) / 100;
+  const openGym = (gym: Gym) => navigation.navigate('Gym', { gymId: gym.id });
+
+  const lastVisit = VISIT_LOG[0];
+  const rank = useMemo(() => getCurrentUserRank(lastVisit.gym.id)?.rank, [lastVisit.gym.id]);
+  const blocCount = useMemo(() => getBlocsByGym(lastVisit.gym.id).length, [lastVisit.gym.id]);
 
   return (
-    <View style={{ flex: 1 }}>
-      <Styled.ImageContainer style={{ height: imageHeight }}>
-        <Styled.Img source={{ uri: RECENTLY_VISITED[0].gym.imageUri }} />
-      </Styled.ImageContainer>
-
+    <ScreenLayout>
       <ScrollView
         style={{ flex: 1 }}
-        contentContainerStyle={{ paddingTop: imageHeight }}
         showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingTop: insets.top + 18, paddingBottom: 120 }}
       >
-        <Styled.Card style={{ minHeight: cardMinHeight }}>
-          {/* Dernières salles visitées */}
-          <View
-            style={{
-              width: '100%',
-              padding: theme.spacing.xl,
-              gap: theme.spacing.lg,
-              backgroundColor: theme.colors.background,
-            }}
-          >
-            <Text variant="display" size="sm">
-              Dernières salles visitées
-            </Text>
-            <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: theme.spacing.lg }}>
-              {RECENTLY_VISITED.map(({ gym, lastVisitLabel }) => (
-                <Card
-                  key={gym.id}
-                  style={{
-                    width: gridItemWidth,
-                    height: gridItemWidth,
-                    borderRadius: theme.borderRadius.card,
-                    justifyContent: 'space-between',
-                  }}
-                >
-                  <ImageBackground
-                    source={{ uri: gym.imageUri }}
-                    style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}
-                    imageStyle={{ borderRadius: theme.borderRadius.card }}
-                  />
-                  <LinearGradient
-                    colors={['rgba(0,0,0,0.5)', 'transparent']}
-                    style={{
-                      position: 'absolute',
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      height: '40%',
-                      borderTopLeftRadius: theme.borderRadius.square,
-                      borderTopRightRadius: theme.borderRadius.square,
-                    }}
-                  />
-                  <View style={{ gap: theme.spacing.sm }}>
-                    <Text appearance="white" bold size="lg" style={{ width: '85%' }}>
-                      {gym.name}
-                    </Text>
-                    <Tag title={lastVisitLabel} appearance="secondary" icon={{ name: 'clock' }} />
-                  </View>
-                  <Button
-                    icon={{ name: 'ArrowRightFilled', size: 'sm' }}
-                    appearance="black"
-                    inverted
-                    borderless
-                    borderRadius="rounded"
-                    style={{ alignSelf: 'flex-end' }}
-                    onPress={() => navigation.navigate('Gym', { gymId: gym.id })}
-                  />
-                </Card>
-              ))}
-              <View
-                style={{
-                  width: gridItemWidth,
-                  height: gridItemWidth,
-                  borderRadius: theme.borderRadius.card,
-                }}
-              >
-                <View
-                  style={{
-                    flex: 1,
-                    borderRadius: theme.borderRadius.card,
-                    backgroundColor: theme.colors.soft,
-                    padding: theme.spacing.md + 2,
-                    justifyContent: 'space-between',
-                  }}
-                >
-                  <Icon name="TrophyRegular" size="md" color={theme.colors.softText} />
-                  <Text size="sm" bold appearance="secondary" style={{ lineHeight: 19 }}>
-                    Pense à mettre à jour les blocs réussis pendant tes séances pour grimper au
-                    classement !
-                  </Text>
-                </View>
-              </View>
-            </View>
-          </View>
+        <View style={{ paddingHorizontal: 14, gap: theme.spacing.xs }}>
+          <Text variant="eyebrow" size={12} appearance="gray">
+            {PASSPORT_TOTAL} salles partenaires
+          </Text>
+          <Text variant="display" size={47}>
+            Salles
+          </Text>
+        </View>
 
-          {/* Vos salles favorites */}
-          <View
-            style={{
-              width: '100%',
-              backgroundColor: theme.colors.background,
-              padding: theme.spacing.xl,
-              gap: theme.spacing.lg - 8,
-              paddingBottom: theme.spacing.xl - 8,
-            }}
-          >
-            <Text variant="display" size="sm">
-              Vos salles favorites
-            </Text>
-            <View style={{ width: Dimensions.get('window').width, marginLeft: -theme.spacing.xl }}>
-              <Slider selectMode height={320} gap={theme.spacing.lg}>
-                {FAVORITE_GYMS.map((gym) => (
-                  <Card
-                    key={gym.id}
-                    isPressable
-                    onPress={() => navigation.navigate('Gym', { gymId: gym.id })}
-                    style={{
-                      width: sliderCardWidth,
-                      height: 320,
-                      borderRadius: theme.borderRadius.card,
-                      backgroundColor: theme.colors.surfaceAlt,
-                      justifyContent: 'space-between',
-                    }}
-                  >
-                    <ImageBackground
-                      source={{ uri: gym.imageUri }}
-                      style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}
-                      imageStyle={{ borderRadius: theme.borderRadius.card }}
-                    />
-                    <LinearGradient
-                      colors={['transparent', 'rgba(0,0,0,0.7)']}
-                      style={{
-                        position: 'absolute',
-                        bottom: 0,
-                        left: 0,
-                        right: 0,
-                        height: '40%',
-                        borderBottomLeftRadius: theme.borderRadius.square,
-                        borderBottomRightRadius: theme.borderRadius.square,
-                      }}
-                    />
-                    <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
-                      <Bounce onPress={() => toggleLike(gym.id)}>
-                        <BlurView
-                          intensity={20}
-                          tint="dark"
-                          style={{
-                            padding: theme.spacing.sm,
-                            borderWidth: 1,
-                            borderColor: 'rgba(255, 255, 255, 0.57)',
-                            borderRadius: theme.borderRadius.rounded,
-                            overflow: 'hidden',
-                          }}
-                        >
-                          <Icon
-                            name={likedGyms.has(gym.id) ? 'HeartFilled' : 'heart'}
-                            size="md"
-                            color={likedGyms.has(gym.id) ? 'red' : 'white'}
-                          />
-                        </BlurView>
-                      </Bounce>
-                    </View>
-                    <View style={{ gap: theme.spacing.sm }}>
-                      <Tag title={gym.shortName} appearance="primary" />
-                      <BlurView
-                        intensity={60}
-                        tint="default"
-                        style={{
-                          borderRadius: theme.borderRadius.card,
-                          overflow: 'hidden',
-                          padding: theme.spacing.sm,
-                        }}
-                      >
-                        <View>
-                          <Text appearance="white" bold size="lg">
-                            {gym.name}
-                          </Text>
-                          <Text appearance="white" size="md">
-                            {gym.description}
-                          </Text>
-                        </View>
-                      </BlurView>
-                    </View>
-                  </Card>
-                ))}
-              </Slider>
-            </View>
-          </View>
+        <View style={{ marginTop: theme.spacing.lg, gap: theme.spacing.lg }}>
+          <GymCoverCard
+            gym={lastVisit.gym}
+            lastVisit={lastVisit.when.toLowerCase()}
+            rank={rank}
+            blocCount={blocCount}
+            liveCount={GYM_LIVE_COUNTS[lastVisit.gym.id]}
+            onPressRanking={() => openGym(lastVisit.gym)}
+            onPressBlocs={() =>
+              navigation.navigate('Gym', { gymId: lastVisit.gym.id, initialTab: 'blocs' })
+            }
+          />
+          <PassportCard onPressGym={openGym} />
+        </View>
 
-          {/* Les salles populaires */}
-          <View
-            style={{
-              width: '100%',
-              padding: theme.spacing.xl,
-              gap: theme.spacing.lg,
-              backgroundColor: theme.colors.background,
-            }}
-          >
-            <Text variant="display" size="sm">
-              Les salles populaires
+        {/* Bandeau qui défile, légèrement incliné */}
+        <View
+          style={{
+            marginTop: 28,
+            paddingVertical: theme.spacing.md,
+            backgroundColor: theme.colors.primary.base,
+            transform: [{ rotate: '-1.4deg' }, { scale: 1.03 }],
+          }}
+        >
+          <Marquee>
+            <Text variant="display" size={31} numberOfLines={1} style={{ color: '#0B1410' }}>
+              Pense à mettre à jour les blocs réussis pour grimper au classement.
             </Text>
-            <GymCardStack cardWidth={cardWidth} gyms={POPULAR_GYMS} />
-          </View>
+          </Marquee>
+        </View>
 
-          {/* Catégories */}
-          <View
-            style={{
-              width: '100%',
-              padding: theme.spacing.xl,
-              gap: theme.spacing.lg,
-              backgroundColor: theme.colors.background,
-            }}
-          >
-            <Text variant="display" size="sm">
-              Catégories
-            </Text>
-            <View style={{ flexDirection: 'row', gap: theme.spacing.lg }}>
-              {categories.map(({ label, icon, light, base }) => {
-                const selected = selectedCategory === label;
-                return (
-                  <View key={label}>
-                    <Card
-                      isPressable
-                      onPress={() => setSelectedCategory(selected ? null : label)}
-                      style={{
-                        width: rowItemWidth,
-                        height: rowItemWidth,
-                        borderRadius: theme.borderRadius.card,
-                        backgroundColor: selected ? base : light,
-                        boxShadow: theme.shadows.sm,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}
-                    >
-                      <Icon
-                        name={icon}
-                        size={34}
-                        color={
-                          selected
-                            ? base === theme.colors.primary.base
-                              ? '#13201B'
-                              : theme.colors.neutral.white
-                            : base === theme.colors.primary.base
-                              ? theme.colors.primary.dark
-                              : theme.colors.softText
-                        }
-                      />
-                    </Card>
-                    <Text
-                      bold
-                      size="md"
-                      appearance="gray"
-                      style={{ marginTop: theme.spacing.sm, alignSelf: 'center' }}
-                    >
-                      {label}
-                    </Text>
-                  </View>
-                );
-              })}
-            </View>
-            <View style={{ width: Dimensions.get('window').width, marginLeft: -theme.spacing.xl }}>
-              <Slider height={320} gap={theme.spacing.lg}>
-                {POPULAR_GYMS.slice(0, 4).map((gym) => (
-                  <Card
-                    key={gym.id}
-                    isPressable
-                    onPress={() => navigation.navigate('Gym', { gymId: gym.id })}
-                    style={{
-                      width: sliderCardWidth,
-                      height: 320,
-                      borderRadius: theme.borderRadius.card,
-                      backgroundColor: theme.colors.surfaceAlt,
-                      justifyContent: 'space-between',
-                    }}
-                  >
-                    <ImageBackground
-                      source={{ uri: gym.imageUri }}
-                      style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}
-                      imageStyle={{ borderRadius: theme.borderRadius.card }}
-                    />
-                    <LinearGradient
-                      colors={['transparent', 'rgba(0,0,0,0.7)']}
-                      style={{
-                        position: 'absolute',
-                        bottom: 0,
-                        left: 0,
-                        right: 0,
-                        height: '40%',
-                        borderBottomLeftRadius: theme.borderRadius.square,
-                        borderBottomRightRadius: theme.borderRadius.square,
-                      }}
-                    />
-                    <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
-                      <Bounce onPress={() => toggleLike(gym.id)}>
-                        <BlurView
-                          intensity={20}
-                          tint="dark"
-                          style={{
-                            padding: theme.spacing.sm,
-                            borderWidth: 1,
-                            borderColor: 'rgba(255, 255, 255, 0.57)',
-                            borderRadius: theme.borderRadius.rounded,
-                            overflow: 'hidden',
-                          }}
-                        >
-                          <Icon
-                            name={likedGyms.has(gym.id) ? 'HeartFilled' : 'heart'}
-                            size="md"
-                            color={likedGyms.has(gym.id) ? 'red' : 'white'}
-                          />
-                        </BlurView>
-                      </Bounce>
-                    </View>
-                    <View style={{ gap: theme.spacing.sm }}>
-                      <Tag title={gym.shortName} appearance="primary" />
-                      <BlurView
-                        intensity={60}
-                        tint="default"
-                        style={{
-                          borderRadius: theme.borderRadius.card,
-                          overflow: 'hidden',
-                          padding: theme.spacing.sm,
-                        }}
-                      >
-                        <View>
-                          <Text appearance="white" bold size="lg">
-                            {gym.name}
-                          </Text>
-                          <Text appearance="white" size="md">
-                            {gym.description}
-                          </Text>
-                        </View>
-                      </BlurView>
-                    </View>
-                  </Card>
-                ))}
-              </Slider>
-            </View>
-          </View>
+        <View style={{ marginTop: SECTION_GAP, gap: SECTION_GAP }}>
+          <VisitTimeline onPressGym={openGym} />
+          <TopGyms onPressGym={openGym} />
+          <FavoriteGyms isLiked={isLiked} onToggleLike={toggleLike} onPressGym={openGym} />
+          <GymCategories isLiked={isLiked} onToggleLike={toggleLike} onPressGym={openGym} />
 
-          {/* Les salles */}
-          <View
-            style={{
-              width: '100%',
-              padding: theme.spacing.xl,
-              paddingBottom: 110,
-              gap: theme.spacing.lg,
-              backgroundColor: theme.colors.background,
-            }}
-          >
-            <Text variant="display" size="sm">
-              Les salles
-            </Text>
-            {(() => {
-              const cardSize = width * 0.35;
-              const overlap = (4 * cardSize - cardWidth) / 3;
-              const step = cardSize - overlap - theme.spacing.lg / 1.5;
-              return (
-                <View style={{ height: cardSize * 1.15, position: 'relative' }}>
-                  {(
-                    [
-                      { rotate: '-14deg', color: theme.colors.soft, z: 1 },
-                      { rotate: '+9deg', color: theme.colors.secondary.light, z: 2 },
-                      { rotate: '-3deg', color: theme.colors.surface, z: 4 },
-                      { rotate: '+19deg', color: theme.colors.primary.light, z: 3 },
-                    ] as const
-                  ).map((card, i) => (
-                    <Card
-                      key={i}
-                      style={{
-                        position: 'absolute',
-                        width: cardSize,
-                        height: cardSize,
-                        backgroundColor: card.color,
-                        borderRadius: theme.borderRadius.card,
-                        top: 0,
-                        left: theme.spacing.lg + i * step,
-                        zIndex: card.z,
-                        transform: [{ rotate: card.rotate }],
-                      }}
-                    >
-                      <ImageBackground
-                        source={{ uri: POPULAR_GYMS[i].imageUri }}
-                        style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}
-                        imageStyle={{ borderRadius: theme.borderRadius.card }}
-                      />
-                    </Card>
-                  ))}
-                </View>
-              );
-            })()}
-            <Text size="md" appearance="gray">
-              Plus de 50 salles partenaires dans toute la France, réparties dans 8 franchises.
-              Retrouve leurs blocs, leurs classements et les grimpeurs en séance.
-            </Text>
-            <Button
-              appearance="secondary"
-              title="Voir tout"
-              style={{ alignSelf: 'flex-start' }}
-              onPress={() => {
-                navigation.navigate('AllGyms');
-              }}
-            />
-          </View>
-        </Styled.Card>
+          <AllGymsTeaser onPress={() => navigation.navigate('AllGyms')} />
+        </View>
       </ScrollView>
-    </View>
+    </ScreenLayout>
   );
 }

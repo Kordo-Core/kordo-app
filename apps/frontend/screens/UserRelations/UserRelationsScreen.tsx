@@ -79,7 +79,12 @@ export default function UserRelationsScreen() {
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{ paddingHorizontal: theme.spacing.md + 2, gap: 6 }}
+          style={{ marginVertical: -6 }}
+          contentContainerStyle={{
+            paddingHorizontal: theme.spacing.md + 2,
+            paddingVertical: 6,
+            gap: 6,
+          }}
         >
           {RELATION_PIVOTS.map((p) => {
             const active = p.key === pivot;

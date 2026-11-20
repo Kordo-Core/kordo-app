@@ -37,6 +37,7 @@ export const POSTS: Post[] = [
   { id: 'post-1', userId: 'u-adam', type: 'activity', createdAt: '2025-05-22T18:30:00Z' },
   { id: 'post-2', userId: 'u-emma', type: 'publication', createdAt: '2025-05-22T12:10:00Z' },
   { id: 'post-3', userId: 'u-leo', type: 'text', createdAt: '2025-05-21T20:05:00Z' },
+  { id: 'post-11', userId: CURRENT_USER.id, type: 'activity', createdAt: '2025-05-22T20:30:00Z' },
   { id: 'post-4', userId: 'u-janja', type: 'now', createdAt: '2025-05-22T17:45:00Z' },
   { id: 'post-5', userId: 'u-hugo', type: 'publication', createdAt: '2025-05-20T09:30:00Z' },
   { id: 'post-6', userId: 'u-chloe', type: 'text', createdAt: '2025-05-19T19:00:00Z' },
@@ -48,9 +49,19 @@ export const POSTS: Post[] = [
 
 export const ACTIVITY_POSTS: ActivityPost[] = [
   {
+    id: 'post-11',
+    gymId: 'arkose-nation',
+    title: 'Séance dévers avec la team',
+    duration: '2h10',
+    description: 'Grosse séance au secteur dévers, enfin sorti le jaune du fond !',
+    likesEnabled: true,
+    commentsEnabled: true,
+  },
+  {
     id: 'post-1',
     gymId: 'arkose-nation',
     title: 'Séance force avant la compétition de samedi',
+    duration: '1h52',
     description:
       "Super séance avec l'eki team, découverte de Arkose Nation, super salle ! J'espère y retourner rapidement pour réussir les derniers blocs.",
     likesEnabled: true,
@@ -60,6 +71,7 @@ export const ACTIVITY_POSTS: ActivityPost[] = [
     id: 'post-7',
     gymId: 'arkose-pantin',
     title: 'Petite session récup à Pantin',
+    duration: '1h05',
     description: 'Séance tranquille pour récupérer, focus sur la technique et les pieds.',
     likesEnabled: true,
     commentsEnabled: true,
@@ -86,11 +98,11 @@ export const PUBLICATION_POSTS: PublicationPost[] = [
 // URLs Unsplash (escalade / bloc) pour démontrer le carrousel de photos
 const PUBLICATION_PHOTO_URLS = [
   'https://images.unsplash.com/photo-1522163182402-834f871fd851?w=800&q=80',
-  'https://images.unsplash.com/photo-1540206395-68808572332f?w=800&q=80',
+  'https://images.unsplash.com/photo-1775654792608-08a019b97da8?w=800&q=80',
   'https://images.unsplash.com/photo-1516592673884-4a382d1124c2?w=800&q=80',
   'https://images.unsplash.com/photo-1564769662533-4f00a87b4056?w=800&q=80',
-  'https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=800&q=80',
-  'https://images.unsplash.com/photo-1502904550040-7534597429ae?w=800&q=80',
+  'https://images.unsplash.com/photo-1728000442481-20bf8df1d584?w=800&q=80',
+  'https://images.unsplash.com/photo-1767850815964-cf6423b9a5dc?w=800&q=80',
 ];
 
 export const PUBLICATION_MEDIA: PublicationMedia[] = [
@@ -143,6 +155,10 @@ export const LIKES: Like[] = [
   { id: 'like-3', userId: 'u-hugo', postId: 'post-1', createdAt: '2025-05-22T18:40:00Z' },
   { id: 'like-4', userId: CURRENT_USER.id, postId: 'post-2', createdAt: '2025-05-22T13:00:00Z' },
   { id: 'like-5', userId: 'u-chloe', postId: 'post-7', createdAt: '2025-05-18T17:00:00Z' },
+  { id: 'like-6', userId: CURRENT_USER.id, postId: 'post-5', createdAt: '2025-05-20T10:00:00Z' },
+  { id: 'like-7', userId: CURRENT_USER.id, postId: 'post-7', createdAt: '2025-05-18T18:00:00Z' },
+  { id: 'like-8', userId: CURRENT_USER.id, postId: 'post-1', createdAt: '2025-05-22T19:00:00Z' },
+  { id: 'like-9', userId: CURRENT_USER.id, postId: 'post-6', createdAt: '2025-05-19T20:00:00Z' },
 ];
 
 // --- Commentaires ---
@@ -310,6 +326,14 @@ export const NOTIFICATIONS: Notification[] = [
 
 // --- Rencontres en salle (table "gym_meet") ---
 export const GYM_MEETS: GymMeet[] = [
+  // Rencontres de Léo pendant sa séance à Arkose Nation
+  ...['u-emma', 'u-hugo', 'u-chloe', 'u-janja'].map((user2Id, i) => ({
+    id: `meet-leo-${i + 1}`,
+    gymId: 'arkose-nation',
+    user1Id: CURRENT_USER.id,
+    user2Id,
+    createdAt: `2025-05-22T19:${10 + i * 10}:00Z`,
+  })),
   {
     id: 'meet-1',
     gymId: 'arkose-nation',
@@ -443,6 +467,11 @@ export function getNowFeed(): NowPublic[] {
 const isValidatedByCurrentUser = (blocId: string): boolean =>
   TOPS.some((t) => t.userId === CURRENT_USER.id && t.blocId === blocId);
 
+/** Blocs validés par l'utilisateur courant. */
+export function getValidatedBlocIds(): Set<string> {
+  return new Set(TOPS.filter((t) => t.userId === CURRENT_USER.id).map((t) => t.blocId));
+}
+
 const toBoulderPublic = (bloc: Bloc): BoulderPublic => ({
   id: bloc.id,
   setter: USERS.find((u) => u.id === bloc.setterId),
@@ -472,14 +501,16 @@ const buildActivityTops = (
 
 export const ACTIVITY_TOPS: Top[] = [
   ...buildActivityTops('post-1', 'u-adam', 'arkose-nation', 24),
+  ...buildActivityTops('post-11', CURRENT_USER.id, 'arkose-nation', 9),
   ...buildActivityTops('post-7', 'u-tomoa', 'arkose-pantin', 12),
 ];
 
-// Quelques vidéos garanties pour la démo (bloc_media de l'ouvreur de la séance)
+// Quelques vidéos garanties pour la démo (bloc_media de l'ouvreur de la séance) : clips
+// d'escalade en salle de Mixkit (Mixkit Stock Video Free License)
 const ACTIVITY_VIDEO_URLS = [
-  'https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/360/Big_Buck_Bunny_360_10s_1MB.mp4',
-  'https://test-videos.co.uk/vids/jellyfish/mp4/h264/360/Jellyfish_360_10s_1MB.mp4',
-  'https://test-videos.co.uk/vids/sintel/mp4/h264/360/Sintel_360_10s_1MB.mp4',
+  'https://assets.mixkit.co/videos/41022/41022-720.mp4',
+  'https://assets.mixkit.co/videos/50925/50925-720.mp4',
+  'https://assets.mixkit.co/videos/41021/41021-720.mp4',
 ];
 const EXTRA_BLOC_MEDIA: BlocMedia[] = Array.from({ length: 5 }, (_, i) => ({
   id: `am-${i + 1}`,
@@ -557,6 +588,7 @@ export function getActivityFeed(): ActivityPublic[] {
         title: session.title,
         description: session.description,
         createdAt: post.createdAt,
+        duration: session.duration,
         blocks,
         maxGrade,
         meets,
@@ -738,15 +770,38 @@ export function getNotificationFeed(): NotificationSection[] {
   ].filter((s) => s.items.length > 0);
 }
 
+export type MeetSuggestionItem = { user: UserPublic; subtitle: string };
+
+/** Personnes croisées via Meet que l'utilisateur courant ne suit pas encore, sans doublon. */
+export function getMeetSuggestions(): MeetSuggestionItem[] {
+  const seen = new Set<string>();
+  return GYM_MEETS.flatMap((m) => {
+    if (m.user1Id !== CURRENT_USER.id && m.user2Id !== CURRENT_USER.id) return [];
+    const otherId = m.user1Id === CURRENT_USER.id ? m.user2Id : m.user1Id;
+    const user = USERS.find((u) => u.id === otherId);
+    if (!user || seen.has(otherId) || isFollowedByCurrentUser(otherId)) return [];
+    seen.add(otherId);
+    return [{ user, subtitle: GYMS.find((g) => g.id === m.gymId)?.name ?? '' }];
+  });
+}
+
+// Le bloc de suggestions vient après ce nombre de posts
+const MEET_SUGGESTIONS_POSITION = 2;
+
 export type HomeFeedItem =
   | { kind: 'now'; data: NowPublic }
   | { kind: 'activity'; data: ActivityPublic }
   | { kind: 'publication'; data: PublicationPublic }
   | { kind: 'text'; data: TextPostPublic };
 
+/** Ligne du fil d'accueil : un post, ou le bloc de suggestions. */
+export type HomeFeedEntry =
+  | HomeFeedItem
+  | { kind: 'meetSuggestions'; data: { id: string; suggestions: MeetSuggestionItem[] } };
+
 /** Feed unifié de la home : posts des utilisateurs suivis par l'utilisateur courant, plus récents d'abord. */
-export function getHomeFeed(): HomeFeedItem[] {
-  const items: HomeFeedItem[] = [
+export function getHomeFeed(): HomeFeedEntry[] {
+  const posts: HomeFeedItem[] = [
     ...getNowFeed()
       .filter((n) => isFollowedByCurrentUser(n.user.id))
       .map((data): HomeFeedItem => ({ kind: 'now', data })),
@@ -761,7 +816,17 @@ export function getHomeFeed(): HomeFeedItem[] {
       .map((data): HomeFeedItem => ({ kind: 'text', data })),
   ];
 
-  return items.sort((a, b) => b.data.createdAt.localeCompare(a.data.createdAt));
+  const items: HomeFeedEntry[] = posts.sort((a, b) =>
+    b.data.createdAt.localeCompare(a.data.createdAt),
+  );
+  const suggestions = getMeetSuggestions();
+  if (suggestions.length > 0) {
+    items.splice(MEET_SUGGESTIONS_POSITION, 0, {
+      kind: 'meetSuggestions',
+      data: { id: 'meet-suggestions', suggestions },
+    });
+  }
+  return items;
 }
 
 // --- Profil utilisateur (page UserProfile) ---

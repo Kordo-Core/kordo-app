@@ -1,5 +1,6 @@
 import React from 'react';
-import { Image, Pressable, View } from 'react-native';
+import { Image, Pressable, StyleSheet, View } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useTheme } from '@emotion/react';
 import { Button, Logo, Text } from 'kordo-ui';
@@ -47,7 +48,17 @@ export default function LandingScreen({ navigation }: Props) {
     <Styled.Screen>
       <Styled.Hero>
         <Image source={{ uri: HERO_URI }} style={{ width: '100%', height: '100%' }} />
-        <Styled.HeroShade />
+        {/* Voile de la maquette : sombre en haut (logo) et en bas (puce), clair au milieu */}
+        <LinearGradient
+          colors={[
+            `rgba(${theme.colors.scrim}, 0.45)`,
+            `rgba(${theme.colors.scrim}, 0)`,
+            `rgba(${theme.colors.scrim}, 0)`,
+            `rgba(${theme.colors.scrim}, 0.6)`,
+          ]}
+          locations={[0, 0.3, 0.62, 1]}
+          style={StyleSheet.absoluteFill}
+        />
         <Styled.HeroTop>
           <Logo size={40} variant="light" withWordmark wordmarkColor={theme.colors.neutral.white} />
         </Styled.HeroTop>
@@ -62,14 +73,14 @@ export default function LandingScreen({ navigation }: Props) {
       <Styled.Bottom>
         {/* La clé force le remontage : chaque message entre avec son propre fondu */}
         <Animated.View key={index} entering={FadeInDown.duration(450)} style={{ gap: 10 }}>
-          <Text variant="display" size={36}>
+          <Text variant="display" size={40}>
             {slide.top}
             {'\n'}
-            <Text variant="display" size={36} appearance="secondary">
+            <Text variant="display" size={40} appearance="secondary">
               {slide.accent}
             </Text>
           </Text>
-          <Text appearance="gray" style={{ lineHeight: 22 }}>
+          <Text appearance="gray" style={{ lineHeight: 22.5 }}>
             {slide.body}
           </Text>
         </Animated.View>
@@ -93,7 +104,9 @@ export default function LandingScreen({ navigation }: Props) {
             size="lg"
             appearance="black"
             icon={{ name: 'ChevronRightRegular', size: 18 }}
+            iconPosition="right"
             style={{ flex: 1.4 }}
+            containerStyle={{ borderRadius: 8 }}
             onPress={() => navigation.navigate('SignUp')}
           />
           <Button
@@ -102,9 +115,9 @@ export default function LandingScreen({ navigation }: Props) {
             appearance="secondary"
             inverted
             borderless
-            containerStyle={{ backgroundColor: theme.colors.soft }}
+            containerStyle={{ backgroundColor: theme.colors.soft, borderRadius: 8 }}
             style={{ flex: 1 }}
-            onPress={() => navigation.navigate('Login')}
+            onPress={() => navigation.navigate('LoginForm')}
           />
         </Styled.Actions>
       </Styled.Bottom>

@@ -6,8 +6,8 @@ import { toUserPublic } from './social.fake';
 // Présence simulée : sans backend, on fige qui est « en ligne ».
 const ONLINE_USER_IDS = new Set(['u-adam', 'u-emma', 'u-nina']);
 
-const IMAGE_URL =
-  'https://res.cloudinary.com/dqmegz5dn/image/upload/v1763334248/avatar-kordo_rwvjw4.png';
+// Photo envoyée dans une conversation : une séance de bloc (Unsplash)
+const IMAGE_URL = 'https://images.unsplash.com/photo-1696105538782-7815474f28e0?w=800&q=80';
 
 // Les dates sont calculées au chargement plutôt qu'écrites en dur. La liste des conversations les
 // range par fraîcheur (Récent, Il y a 1h, Aujourd'hui, Hier, Cette semaine, Plus ancien) : avec

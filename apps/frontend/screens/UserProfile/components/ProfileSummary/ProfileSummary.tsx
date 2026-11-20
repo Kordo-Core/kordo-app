@@ -1,7 +1,7 @@
 import { View } from 'react-native';
 import { useTheme } from '@emotion/react';
 import { Text, Button } from 'kordo-ui';
-import Animated, { FadeInDown, ZoomIn } from 'react-native-reanimated';
+import Animated, { FadeIn, FadeInDown } from 'react-native-reanimated';
 import * as Styled from './ProfileSummary.styles';
 import { ProfileSummaryProps } from './ProfileSummary.types';
 import { RelationPivot } from '../../../UserRelations/UserRelationsScreen.types';
@@ -15,6 +15,7 @@ export const ProfileSummary: React.FC<ProfileSummaryProps> = ({
   followStatus,
   onToggleFollow,
   onPressMessage,
+  onPressEdit,
   onPressStat,
 }) => {
   const theme = useTheme();
@@ -27,15 +28,59 @@ export const ProfileSummary: React.FC<ProfileSummaryProps> = ({
 
   return (
     <Styled.Container>
-      <Animated.View entering={ZoomIn.springify().damping(14)}>
-        <Styled.Avatar source={{ uri: user.avatarUrl }} />
-      </Animated.View>
+      {/* Avatar avec son niveau en médaillon, visibilité du compte à droite */}
+      <View
+        style={{ flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between' }}
+      >
+        <Animated.View entering={FadeIn.duration(300)}>
+          <Styled.Avatar source={{ uri: user.avatarUrl }} />
+          {/* Niveau : pastille orange de 24 px dans un liseré de 3 px couleur du fond */}
+          <View
+            style={{
+              position: 'absolute',
+              right: -2,
+              bottom: 4,
+              height: 30,
+              paddingHorizontal: 8,
+              borderRadius: 999,
+              borderWidth: 3,
+              borderColor: theme.colors.background,
+              backgroundColor: theme.colors.primary.base,
+              justifyContent: 'center',
+            }}
+          >
+            <Text size={11} extraBold style={{ color: theme.colors.navBarAccentIcon }}>
+              7A
+            </Text>
+          </View>
+        </Animated.View>
+        {isOwnProfile && (
+          <View style={{ paddingBottom: 6 }}>
+            <View
+              style={{
+                height: 30,
+                paddingHorizontal: 12,
+                borderRadius: 999,
+                flexDirection: 'row',
+                alignItems: 'center',
+                gap: 6,
+                backgroundColor: theme.colors.soft,
+              }}
+            >
+              <View style={{ width: 7, height: 7, borderRadius: 4, backgroundColor: '#1FD18A' }} />
+              <Text size="xs" extraBold style={{ color: theme.colors.softText }}>
+                Compte public
+              </Text>
+            </View>
+          </View>
+        )}
+      </View>
 
       <Animated.View entering={FadeInDown.delay(80).duration(400)} style={{ gap: 4 }}>
-        <Text variant="display" size={34}>
+        <Text variant="display" size={42}>
           {user.firstName} {user.lastName}
         </Text>
-        <Text size="sm" bold appearance="gray">
+        <Text size={14} appearance="gray" style={{ fontFamily: theme.fonts.semiBold }}>
           @{user.username}
           {user.bio ? ` · ${user.bio}` : ''}
         </Text>
@@ -44,10 +89,10 @@ export const ProfileSummary: React.FC<ProfileSummaryProps> = ({
       <Styled.StatsCard>
         {cells.map((cell) => (
           <Styled.StatCell key={cell.label} onPress={() => onPressStat(cell.pivot)}>
-            <Text variant="display" size="xs">
+            <Text variant="display" size="sm">
               {cell.value}
             </Text>
-            <Text size="xs" bold appearance="gray">
+            <Text size={11} appearance="gray" style={{ fontFamily: theme.fonts.semiBold }}>
               {cell.label}
             </Text>
           </Styled.StatCell>
@@ -58,15 +103,23 @@ export const ProfileSummary: React.FC<ProfileSummaryProps> = ({
         {isOwnProfile && (
           <>
             <View style={Styled.buttonFlex}>
-              <Button title="Modifier le profil" appearance="black" fullWidth />
+              <Button
+                textSize={14}
+                title="Modifier le profil"
+                appearance="black"
+                onPress={onPressEdit}
+                containerStyle={Styled.actionButton}
+                fullWidth
+              />
             </View>
             <View style={Styled.buttonFlex}>
               <Button
+                textSize={14}
                 title="Partager"
                 appearance="secondary"
                 inverted
                 borderless
-                containerStyle={{ backgroundColor: theme.colors.soft }}
+                containerStyle={[Styled.actionButton, { backgroundColor: theme.colors.soft }]}
                 fullWidth
               />
             </View>
@@ -75,14 +128,23 @@ export const ProfileSummary: React.FC<ProfileSummaryProps> = ({
         {!isOwnProfile && followStatus === 'none' && (
           <>
             <View style={Styled.buttonFlex}>
-              <Button title="Suivre" appearance="secondary" fullWidth onPress={onToggleFollow} />
+              <Button
+                textSize={14}
+                title="Suivre"
+                appearance="secondary"
+                containerStyle={Styled.actionButton}
+                fullWidth
+                onPress={onToggleFollow}
+              />
             </View>
             <View style={Styled.buttonFlex}>
               <Button
+                textSize={14}
                 title="Écrire"
                 appearance="black"
                 inverted
                 icon={{ name: 'ChatRegular', size: 18 }}
+                containerStyle={Styled.actionButton}
                 fullWidth
                 onPress={onPressMessage}
               />
@@ -93,21 +155,24 @@ export const ProfileSummary: React.FC<ProfileSummaryProps> = ({
           <>
             <View style={Styled.buttonFlex}>
               <Button
+                textSize={14}
                 title="Abonné"
                 appearance="secondary"
                 inverted
                 icon={{ name: 'CheckmarkRegular', size: 18 }}
-                containerStyle={Styled.followingTint(theme)}
+                containerStyle={[Styled.actionButton, Styled.followingTint(theme)]}
                 fullWidth
                 onPress={onToggleFollow}
               />
             </View>
             <View style={Styled.buttonFlex}>
               <Button
+                textSize={14}
                 title="Écrire"
                 appearance="black"
                 inverted
                 icon={{ name: 'ChatRegular', size: 18 }}
+                containerStyle={Styled.actionButton}
                 fullWidth
                 onPress={onPressMessage}
               />
@@ -116,12 +181,13 @@ export const ProfileSummary: React.FC<ProfileSummaryProps> = ({
         )}
         {!isOwnProfile && followStatus === 'pending' && (
           <Button
+            textSize={14}
             title="Demande envoyée"
             appearance="secondary"
             inverted
             disabled
             fullWidth
-            containerStyle={Styled.followingTint(theme)}
+            containerStyle={[Styled.actionButton, Styled.followingTint(theme)]}
           />
         )}
       </Styled.ActionsRow>

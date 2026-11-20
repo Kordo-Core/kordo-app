@@ -5,3 +5,5 @@ export * from './users.fake';
 export * from './climbing.fake';
 export * from './social.fake';
 export * from './messages.fake';
+export * from './onboarding.fake';
+export * from './search.fake';

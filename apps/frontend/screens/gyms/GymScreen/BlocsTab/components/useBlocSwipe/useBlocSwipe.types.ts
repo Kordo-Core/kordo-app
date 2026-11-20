@@ -1,21 +1,17 @@
 import { ComposedGesture } from 'react-native-gesture-handler';
 import { SharedValue } from 'react-native-reanimated';
-import { BlocRow, RowStatus } from '../../utils/BlocRow.types';
-import { CardGeometry } from '../../../utils/CardGeometry.types';
+import { RowStatus } from '../../utils/BlocRow.types';
 
 export type UseBlocSwipeParams = {
-  blocsData: BlocRow[];
-  scrollY: SharedValue<number>;
-  geometry: CardGeometry;
-  innerScroll: number;
+  initialValidated: Set<string>; // blocs déjà validés à l'arrivée sur la page
   screenWidth: number;
   onSelect: (id: string) => void; // tap sur une ligne fermée → sélection du bloc (par id)
+  onStatusChange?: (id: string, status: RowStatus) => void;
 };
 
 export type UseBlocSwipeReturn = {
-  gesture: ComposedGesture;
+  gestureFor: (id: string) => ComposedGesture; // glisser et toucher, propres à chaque ligne
   statuses: Record<string, RowStatus>;
-  onRowLayout: (key: string, height: number) => void;
   getInitialOffset: (id: string) => number; // offset initial (miroir JS, lisible au render)
   activeId: SharedValue<string>;
   activeDragX: SharedValue<number>;

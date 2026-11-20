@@ -3,4 +3,8 @@ export interface TrophyShelfProps {
   title: string;
   /** Ouvre la liste complète des trophées */
   onPressAll?: () => void;
+  /** Ouvre la page d'un trophée obtenu */
+  onPressTrophy?: (trophyId: string) => void;
+  /** Profil d'un autre grimpeur : seulement ses trophées obtenus, sans lien vers la liste */
+  earnedOnly?: boolean;
 }

@@ -1,11 +1,18 @@
-import { Fragment, useState } from 'react';
-import { Image, Pressable, ScrollView, View } from 'react-native';
+import { useState } from 'react';
+import { Image, Pressable, ScrollView, Share, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
+import {
+  CommonActions,
+  useIsFocused,
+  useNavigation,
+  useRoute,
+  RouteProp,
+} from '@react-navigation/native';
+import Svg, { Path } from 'react-native-svg';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTheme } from '@emotion/react';
-import { Icon, IconButton, ListRow, Section, Text } from 'kordo-ui';
+import { Icon, IconButton, Section, Text } from 'kordo-ui';
 import { ScreenLayout } from '../../components/ScreenLayout/ScreenLayout';
 import { ProfileSummary } from './components/ProfileSummary/ProfileSummary';
 import { FollowStatus } from './components/ProfileSummary/ProfileSummary.types';
@@ -16,6 +23,7 @@ import {
   getFollowStatus,
   getUserById,
   getUserProfileStats,
+  getUserClimbingCounts,
 } from 'fake_data';
 import { RootStackParamList } from '../../App';
 import { RelationPivot } from '../UserRelations/UserRelationsScreen.types';
@@ -39,17 +47,24 @@ const COVER_URI =
   'https://res.cloudinary.com/dqmegz5dn/image/upload/v1776866438/mark-mcgregor-Ns8trMR4Om8-unsplash_qodikf.jpg';
 
 // Résumé de la semaine (données fictives tant que l'API des statistiques n'existe pas)
+// Courbe de tendance de la carte (blocs par jour, normalisés sur la hauteur du tracé)
+const TREND_PATH = 'M2 30 L14 24 L26 27 L38 16 L50 19 L62 9 L78 4';
+
 const WEEK = [
   { value: '3', label: 'activités' },
-  { value: '6h51', label: 'en salle' },
+  { value: '6h51', label: 'temps' },
   { value: '33', label: 'blocs' },
 ];
+
+// Texte pâle posé sur le dégradé vert (clair comme sombre)
 
 export default function UserProfile() {
   const theme = useTheme();
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const { params } = useRoute<RouteProp<RootStackParamList, 'UserProfile'>>();
 
+  // Redessine l'écran au retour de « Modifier le profil » (données fictives modifiées en place)
+  useIsFocused();
   const user = getUserById(params.userId);
   const isOwnProfile = params.userId === CURRENT_USER.id;
   const stats = getUserProfileStats(params.userId);
@@ -78,11 +93,21 @@ export default function UserProfile() {
     navigation.navigate('NewConversation');
   };
 
+  const climbing = getUserClimbingCounts(params.userId);
+
+  // Compteurs affichés à droite des lignes de navigation, quand la donnée existe
+  const counts: Record<string, number | undefined> = {
+    Activités: stats.activitiesCount,
+    'Salles visitées': stats.gymsVisitedCount,
+    'Blocs validés': climbing.tops,
+    Bêtas: climbing.betas,
+  };
+
   // Pastilles d'icône des lignes de navigation, selon le thème
   const tones = {
     green: [theme.colors.soft, theme.colors.softText],
     blue: [theme.colors.info.lighter, theme.colors.info.base],
-    orange: [theme.colors.primary.lightest, theme.colors.accentText],
+    orange: [theme.colors.primary.lighter, theme.colors.accentText],
     red: [theme.colors.error.lighter, theme.colors.error.base],
     neutral: [theme.colors.surfaceAlt, theme.colors.text],
   } as const;
@@ -91,30 +116,30 @@ export default function UserProfile() {
     <ScreenLayout>
       <ScrollView
         style={{ flex: 1 }}
-        contentContainerStyle={{ paddingBottom: theme.spacing.xxl * 2 }}
+        contentContainerStyle={{ paddingBottom: 30 }}
         showsVerticalScrollIndicator={false}
       >
         {/* Couverture photo, coins inférieurs arrondis */}
         <View
           style={{
-            height: 210,
-            borderBottomLeftRadius: 32,
-            borderBottomRightRadius: 32,
+            height: 200,
+            borderBottomLeftRadius: 13,
+            borderBottomRightRadius: 13,
             overflow: 'hidden',
           }}
         >
           <Image source={{ uri: COVER_URI }} style={{ width: '100%', height: '100%' }} />
           <LinearGradient
-            colors={['rgba(19,32,27,0.5)', 'rgba(19,32,27,0.05)']}
+            colors={[`rgba(${theme.colors.scrim}, 0.5)`, `rgba(${theme.colors.scrim}, 0.05)`]}
             style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}
           />
         </View>
 
         <View
           style={{
-            marginTop: -52,
-            paddingHorizontal: theme.spacing.lg,
-            gap: theme.spacing.lg,
+            marginTop: -48,
+            paddingHorizontal: 14,
+            gap: 14,
           }}
         >
           <ProfileSummary
@@ -124,6 +149,7 @@ export default function UserProfile() {
             followStatus={followStatus}
             onToggleFollow={handleToggleFollow}
             onPressMessage={openConversation}
+            onPressEdit={() => navigation.navigate('EditProfile')}
             onPressStat={openRelations}
           />
 
@@ -133,62 +159,126 @@ export default function UserProfile() {
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
             style={{
-              borderRadius: theme.borderRadius.card + 2,
-              padding: theme.spacing.lg + 2,
-              gap: theme.spacing.sm + 2,
+              borderRadius: theme.borderRadius.card,
+              padding: 18,
+              gap: 12,
             }}
           >
-            <Text variant="eyebrow" size={11} appearance="white" style={{ opacity: 0.8 }}>
-              Cette semaine
-            </Text>
-            <View style={{ flexDirection: 'row', gap: 20 }}>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}
+            >
+              <Text
+                variant="eyebrow"
+                size={11}
+                style={{ color: theme.colors.soft, letterSpacing: 1.6 }}
+              >
+                12 – 18 mai 2025
+              </Text>
+              {isOwnProfile && (
+                <Pressable
+                  onPress={() =>
+                    navigation.dispatch(
+                      CommonActions.navigate({ name: 'MainTabs', params: { screen: 'Stats' } }),
+                    )
+                  }
+                  hitSlop={8}
+                >
+                  <Text size="xs" extraBold appearance="white">
+                    Voir plus ›
+                  </Text>
+                </Pressable>
+              )}
+            </View>
+            <View style={{ flexDirection: 'row', alignItems: 'flex-end', gap: 20 }}>
               {WEEK.map((w) => (
                 <View key={w.label}>
-                  <Text variant="display" size={32} appearance="white">
+                  {/* Casse normale : « 6h51 » et non « 6H51 » */}
+                  <Text
+                    variant="display"
+                    size={38}
+                    appearance="white"
+                    style={{ textTransform: 'none' }}
+                  >
                     {w.value}
                   </Text>
-                  <Text size="xs" bold appearance="white" style={{ opacity: 0.75 }}>
+                  <Text size={11} style={{ color: theme.colors.soft }}>
                     {w.label}
                   </Text>
                 </View>
               ))}
+              {/* Tendance de la semaine : courbe orange */}
+              <Svg width={80} height={36} viewBox="0 0 80 36" style={{ marginLeft: 'auto' }}>
+                <Path
+                  d={TREND_PATH}
+                  stroke={theme.colors.primary.base}
+                  strokeWidth={2.5}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  fill="none"
+                />
+              </Svg>
             </View>
           </LinearGradient>
         </View>
 
-        <View style={{ gap: theme.spacing.md, marginTop: theme.spacing.lg }}>
-          <Section gap="xs">
-            {NAV_ITEMS.map(({ label, icon, tone, pivot }) => (
-              <Fragment key={label}>
-                <Pressable
-                  disabled={!pivot}
-                  onPress={pivot ? () => openRelations(pivot) : undefined}
+        <View style={{ gap: 14, marginTop: 14 }}>
+          {/* Raccourcis : rangées de 62 px séparées par un filet (maquette « sport ») */}
+          <Section
+            gap="xs"
+            style={{ paddingVertical: 0, paddingHorizontal: 0, gap: 0, overflow: 'hidden' }}
+          >
+            {NAV_ITEMS.map(({ label, icon, tone, pivot }, i) => (
+              <Pressable
+                key={label}
+                disabled={!pivot}
+                onPress={pivot ? () => openRelations(pivot) : undefined}
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  gap: 12,
+                  paddingVertical: 12,
+                  paddingHorizontal: 14,
+                  borderTopWidth: i ? 1 : 0,
+                  borderTopColor: theme.colors.border,
+                }}
+              >
+                <View
+                  style={{
+                    width: 38,
+                    height: 38,
+                    borderRadius: 5,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    backgroundColor: tones[tone][0],
+                  }}
                 >
-                  <ListRow
-                    left={
-                      <View
-                        style={{
-                          width: 38,
-                          height: 38,
-                          borderRadius: 12,
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          backgroundColor: tones[tone][0],
-                        }}
-                      >
-                        <Icon name={icon} size={19} color={tones[tone][1]} />
-                      </View>
-                    }
-                    primaryText={<Text bold>{label}</Text>}
-                    right={<Icon name="chevron-right" color={theme.colors.textMuted} />}
-                  />
-                </Pressable>
-              </Fragment>
+                  <Icon name={icon} size={19} color={tones[tone][1]} />
+                </View>
+                <Text style={{ flex: 1, fontFamily: theme.fonts.semiBold }}>{label}</Text>
+                {counts[label] !== undefined && (
+                  <Text size="sm" bold appearance="gray">
+                    {counts[label]}
+                  </Text>
+                )}
+                <Icon name="chevron-right" size={18} color={theme.colors.textMuted} />
+              </Pressable>
             ))}
           </Section>
 
-          <Section gap="md" style={{ paddingVertical: theme.spacing.lg }}>
-            <TrophyShelf title={isOwnProfile ? 'Mes trophées' : 'Collection de trophées'} />
+          <Section gap="md" style={{ padding: 16 }}>
+            <TrophyShelf
+              title={isOwnProfile ? 'Mes trophées' : 'Collection de trophées'}
+              onPressAll={() => navigation.navigate('Trophies')}
+              // Les pages Badge s'adressent à moi : seulement depuis mon profil
+              onPressTrophy={
+                isOwnProfile ? (trophyId) => navigation.navigate('Badge', { trophyId }) : undefined
+              }
+              earnedOnly={!isOwnProfile}
+            />
           </Section>
         </View>
       </ScrollView>
@@ -204,22 +294,39 @@ export default function UserProfile() {
           style={{
             flexDirection: 'row',
             justifyContent: 'space-between',
-            paddingHorizontal: theme.spacing.lg,
-            paddingTop: theme.spacing.sm,
+            paddingHorizontal: 16,
+            paddingTop: 14,
           }}
         >
           <IconButton
-            icon="ArrowLeftRegular"
+            icon="ChevronLeftRegular"
             variant="glass"
+            size={42}
             accessibilityLabel="Retour"
             onPress={() => navigation.goBack()}
           />
-          <IconButton
-            icon={isOwnProfile ? 'settings' : 'more-vertical'}
-            variant="glass"
-            accessibilityLabel={isOwnProfile ? 'Paramètres' : 'Plus d’options'}
-            onPress={isOwnProfile ? () => navigation.navigate('Settings') : undefined}
-          />
+          <View style={{ flexDirection: 'row', gap: 8 }}>
+            {isOwnProfile && (
+              <IconButton
+                icon="share"
+                variant="glass"
+                size={42}
+                accessibilityLabel="Partager"
+                onPress={() =>
+                  Share.share({ message: `Retrouve-moi sur Kordo : @${user.username}` }).catch(
+                    () => {},
+                  )
+                }
+              />
+            )}
+            <IconButton
+              icon={isOwnProfile ? 'options' : 'more-vertical'}
+              variant="glass"
+              size={42}
+              accessibilityLabel={isOwnProfile ? 'Paramètres' : 'Plus d’options'}
+              onPress={isOwnProfile ? () => navigation.navigate('Settings') : undefined}
+            />
+          </View>
         </View>
       </SafeAreaView>
     </ScreenLayout>

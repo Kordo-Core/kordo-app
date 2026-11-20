@@ -27,7 +27,7 @@ export function PostTypeSelector({ value, onChange }: PostTypeSelectorProps) {
             accessibilityRole="tab"
             accessibilityState={{ selected }}
           >
-            <Icon name={type.icon} size={22} color={color} />
+            <Icon name={type.icon} size={20} color={color} />
             <Text size="xs" extraBold style={{ color }}>
               {type.label}
             </Text>

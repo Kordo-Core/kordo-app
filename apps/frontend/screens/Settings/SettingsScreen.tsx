@@ -1,13 +1,14 @@
 import { useState } from 'react';
-import { Pressable, ScrollView, View } from 'react-native';
+import { Image, Pressable, ScrollView, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTheme } from '@emotion/react';
-import { Button, Dialog, Icon, ListRow, Section, Text, Toggle, useThemeMode } from 'kordo-ui';
+import { Button, Dialog, Icon, ListRow, Text, Toggle, useThemeMode } from 'kordo-ui';
 import { ScreenHeader } from '../../components/ScreenHeader/ScreenHeader';
 import { ScreenLayout } from '../../components/ScreenLayout/ScreenLayout';
+import { SettingsGroup } from '../../components/SettingsGroup/SettingsGroup';
 import { SettingIcon } from '../../components/SettingIcon/SettingIcon';
-import { getBlockedUsers, getCloseFriends } from 'fake_data';
+import { CURRENT_USER, getBlockedUsers, getCloseFriends } from 'fake_data';
 import { RootStackParamList } from '../../App';
 
 // Action destructive en attente de confirmation (null = aucun dialogue ouvert).
@@ -41,24 +42,54 @@ export default function SettingsScreen() {
 
   return (
     <ScreenLayout>
-      <ScreenHeader title="Paramètres" eyebrow="Ton compte" onBack={() => navigation.goBack()} />
+      <ScreenHeader gap={8} title="Paramètres" onBack={() => navigation.goBack()} />
 
       <ScrollView
         style={{ flex: 1 }}
         contentContainerStyle={{
-          gap: theme.spacing.xs,
-          paddingBlock: theme.spacing.xs,
-          paddingBottom: theme.spacing.xxl,
+          gap: 8,
+          // La carte du compte descend de 6 px de plus que l'écart standard
+          paddingTop: 6,
+          paddingBottom: 30,
         }}
         keyboardShouldPersistTaps="handled"
       >
-        <Section gap="lg">
-          <Text variant="eyebrow">Votre utilisation</Text>
+        {/* Carte du compte : mène au profil */}
+        <SettingsGroup rowPadding={4}>
+          <Pressable
+            onPress={() => navigation.navigate('UserProfile', { userId: CURRENT_USER.id })}
+          >
+            <ListRow
+              left={
+                <Image
+                  source={{ uri: CURRENT_USER.avatarUrl }}
+                  style={{ width: 56, height: 56, borderRadius: 7 }}
+                />
+              }
+              primaryText={
+                <Text size="lg" extraBold>
+                  {CURRENT_USER.firstName} {CURRENT_USER.lastName}
+                </Text>
+              }
+              secondaryText={
+                <Text size="sm" appearance="gray">
+                  @{CURRENT_USER.username} · compte public
+                </Text>
+              }
+              right={chevron}
+            />
+          </Pressable>
+        </SettingsGroup>
 
+        <SettingsGroup title="Ton utilisation">
           <Pressable onPress={() => navigation.navigate('NotificationsSettings')}>
             <ListRow
-              left={<SettingIcon name="alert" tone="orange" />}
-              primaryText={<Text appearance="black">Notifications</Text>}
+              left={<SettingIcon name="alert" tone="green" />}
+              primaryText={
+                <Text appearance="black" style={{ fontFamily: theme.fonts.semiBold }}>
+                  Notifications
+                </Text>
+              }
               right={chevron}
             />
           </Pressable>
@@ -66,7 +97,11 @@ export default function SettingsScreen() {
           <Pressable onPress={() => navigation.navigate('LikedPosts')}>
             <ListRow
               left={<SettingIcon name="heart" tone="red" />}
-              primaryText={<Text appearance="black">J&apos;aimes</Text>}
+              primaryText={
+                <Text appearance="black" style={{ fontFamily: theme.fonts.semiBold }}>
+                  J’aime
+                </Text>
+              }
               right={chevron}
             />
           </Pressable>
@@ -74,26 +109,27 @@ export default function SettingsScreen() {
           <Pressable onPress={() => navigation.navigate('MyComments')}>
             <ListRow
               left={<SettingIcon name="chat" tone="blue" />}
-              primaryText={<Text appearance="black">Commentaires</Text>}
+              primaryText={
+                <Text appearance="black" style={{ fontFamily: theme.fonts.semiBold }}>
+                  Commentaires
+                </Text>
+              }
               right={chevron}
             />
           </Pressable>
-        </Section>
+        </SettingsGroup>
 
-        <Section gap="lg">
-          <Text variant="eyebrow">Interactions</Text>
-
+        <SettingsGroup title="Interactions">
           <ListRow
-            left={<SettingIcon name="person" tone="green" />}
+            left={<SettingIcon name="person" tone="orange" />}
             primaryText={
               <Text appearance="black" bold>
                 Fonctionnalité Meet
               </Text>
             }
             secondaryText={
-              <Text size="sm" appearance="gray">
-                Vous pourrez voir les profils des personnes que vous avez croisées lors de vos
-                activités, et elles pourront également voir le vôtre.
+              <Text size="xs" appearance="gray" style={{ lineHeight: 16.8 }}>
+                Vois les grimpeurs croisés en séance ; ils pourront aussi voir ton profil.
               </Text>
             }
             right={<Toggle value={meetEnabled} onChange={setMeetEnabled} />}
@@ -101,24 +137,37 @@ export default function SettingsScreen() {
 
           <Pressable onPress={() => navigation.navigate('Mentions')}>
             <ListRow
-              left={<SettingIcon name="tag" tone="blue" />}
-              primaryText={<Text appearance="black">Mentions</Text>}
-              right={chevron}
+              left={<SettingIcon glyph="@" tone="neutral" />}
+              primaryText={
+                <Text appearance="black" style={{ fontFamily: theme.fonts.semiBold }}>
+                  Mentions
+                </Text>
+              }
+              right={
+                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+                  <Text size="sm" appearance="gray">
+                    Tout le monde
+                  </Text>
+                  {chevron}
+                </View>
+              }
             />
           </Pressable>
-        </Section>
+        </SettingsGroup>
 
-        <Section gap="lg">
-          <Text variant="eyebrow">Visualisation de mon contenu</Text>
-
+        <SettingsGroup title="Visibilité de ton contenu">
           <Pressable onPress={() => navigation.navigate('AccountPrivacy')}>
             <ListRow
               left={<SettingIcon name="lock-closed" tone="green" />}
-              primaryText={<Text appearance="black">Confidentialité du compte</Text>}
+              primaryText={
+                <Text appearance="black" style={{ fontFamily: theme.fonts.semiBold }}>
+                  Confidentialité du compte
+                </Text>
+              }
               right={
                 <>
                   <Text size="sm" appearance="gray">
-                    publique
+                    Public
                   </Text>
                   {chevron}
                 </>
@@ -129,7 +178,11 @@ export default function SettingsScreen() {
           <Pressable onPress={() => navigation.navigate('CloseFriends')}>
             <ListRow
               left={<SettingIcon name="star" tone="orange" />}
-              primaryText={<Text appearance="black">Ami(e)s proches</Text>}
+              primaryText={
+                <Text appearance="black" style={{ fontFamily: theme.fonts.semiBold }}>
+                  Ami(e)s proches
+                </Text>
+              }
               right={
                 <>
                   <Text size="sm" appearance="gray">
@@ -144,7 +197,11 @@ export default function SettingsScreen() {
           <Pressable onPress={() => navigation.navigate('BlockedAccounts')}>
             <ListRow
               left={<SettingIcon name="dismiss-circle" tone="red" />}
-              primaryText={<Text appearance="black">Bloqués</Text>}
+              primaryText={
+                <Text appearance="black" style={{ fontFamily: theme.fonts.semiBold }}>
+                  Bloqués
+                </Text>
+              }
               right={
                 <>
                   <Text size="sm" appearance="gray">
@@ -155,15 +212,17 @@ export default function SettingsScreen() {
               }
             />
           </Pressable>
-        </Section>
+        </SettingsGroup>
 
-        <Section gap="lg">
-          <Text variant="eyebrow">Affichage</Text>
-
+        <SettingsGroup title="Affichage">
           <Pressable onPress={() => navigation.navigate('Appearance')}>
             <ListRow
               left={<SettingIcon name="grid" tone="green" />}
-              primaryText={<Text appearance="black">Apparence</Text>}
+              primaryText={
+                <Text appearance="black" style={{ fontFamily: theme.fonts.semiBold }}>
+                  Apparence
+                </Text>
+              }
               right={
                 <>
                   <Text size="sm" appearance="gray">
@@ -178,7 +237,11 @@ export default function SettingsScreen() {
           <Pressable onPress={() => navigation.navigate('Language')}>
             <ListRow
               left={<SettingIcon name="options" tone="blue" />}
-              primaryText={<Text appearance="black">Langue de l&apos;application</Text>}
+              primaryText={
+                <Text appearance="black" style={{ fontFamily: theme.fonts.semiBold }}>
+                  Langue de l&apos;application
+                </Text>
+              }
               right={
                 <>
                   <Text size="sm" appearance="gray">
@@ -189,25 +252,35 @@ export default function SettingsScreen() {
               }
             />
           </Pressable>
-        </Section>
+        </SettingsGroup>
 
-        <Section gap="lg">
-          <Text variant="eyebrow">Plus d&apos;infos et connexion</Text>
-
+        <SettingsGroup title="À propos">
           <Pressable onPress={() => {}}>
             <ListRow
-              primaryText={<Text appearance="black">Politique de confidentialité</Text>}
+              left={<SettingIcon name="info" tone="neutral" />}
+              primaryText={
+                <Text appearance="black" style={{ fontFamily: theme.fonts.semiBold }}>
+                  Politique de confidentialité
+                </Text>
+              }
               right={chevron}
             />
           </Pressable>
 
           <Pressable onPress={() => {}}>
             <ListRow
-              primaryText={<Text appearance="black">Conditions d&apos;utilisation</Text>}
+              left={<SettingIcon name="document" tone="neutral" />}
+              primaryText={
+                <Text appearance="black" style={{ fontFamily: theme.fonts.semiBold }}>
+                  Conditions d&apos;utilisation
+                </Text>
+              }
               right={chevron}
             />
           </Pressable>
+        </SettingsGroup>
 
+        <SettingsGroup title="Compte">
           <Pressable onPress={() => setPendingAction('logout')}>
             <ListRow
               left={<SettingIcon name="sign-out" tone="red" />}
@@ -216,18 +289,24 @@ export default function SettingsScreen() {
                   Se déconnecter
                 </Text>
               }
-              right={chevron}
             />
           </Pressable>
 
           <Pressable onPress={() => setPendingAction('delete')}>
             <ListRow
               left={<SettingIcon name="delete" tone="red" />}
-              primaryText={<Text appearance="error">Supprimer le compte</Text>}
-              right={chevron}
+              primaryText={
+                <Text appearance="error" bold>
+                  Supprimer le compte
+                </Text>
+              }
             />
           </Pressable>
-        </Section>
+        </SettingsGroup>
+
+        <Text size="xs" appearance="gray" style={{ textAlign: 'center', marginTop: 14 }}>
+          Kordo 2.4.0
+        </Text>
       </ScrollView>
 
       {/* Hors du ScrollView : le voile du dialogue se positionne sur son parent, il doit
@@ -235,9 +314,7 @@ export default function SettingsScreen() {
       {/* Un dialogue par action : leur contenu ne doit pas dépendre de `pendingAction`, qui
           repasse à `null` alors que le dialogue est encore monté pour son animation de sortie. */}
       <Dialog isOpen={pendingAction === 'logout'} onClose={closeDialog} title="Se déconnecter ?">
-        <Text appearance="gray">
-          Vous devrez saisir vos identifiants pour retrouver votre compte.
-        </Text>
+        <Text appearance="gray">Tu devras saisir tes identifiants pour retrouver ton compte.</Text>
         {confirmActions('Se déconnecter')}
       </Dialog>
 
@@ -247,7 +324,7 @@ export default function SettingsScreen() {
         title="Supprimer le compte ?"
       >
         <Text appearance="gray">
-          Cette action est définitive : vos activités, blocs validés et abonnements seront perdus.
+          Cette action est définitive : tes activités, blocs validés et abonnements seront perdus.
         </Text>
         {confirmActions('Supprimer')}
       </Dialog>

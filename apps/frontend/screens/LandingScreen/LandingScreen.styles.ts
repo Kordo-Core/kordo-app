@@ -6,26 +6,17 @@ export const Screen = styled(View)((props) => ({
   backgroundColor: props.theme.colors.background,
 }));
 
-// Photo plein cadre en haut, coins inférieurs arrondis (design D)
+// Photo plein cadre en haut, coins inférieurs arrondis : 500 px sur un écran de 844 px
 export const Hero = styled(View)({
-  height: '58%',
-  borderBottomLeftRadius: 40,
-  borderBottomRightRadius: 40,
+  height: '59.24%',
+  borderBottomLeftRadius: 17,
+  borderBottomRightRadius: 17,
   overflow: 'hidden',
-});
-
-export const HeroShade = styled(View)({
-  position: 'absolute',
-  top: 0,
-  left: 0,
-  right: 0,
-  bottom: 0,
-  backgroundColor: 'rgba(19, 32, 27, 0.22)',
 });
 
 export const HeroTop = styled(View)({
   position: 'absolute',
-  top: 64,
+  top: 70,
   left: 20,
 });
 
@@ -35,18 +26,21 @@ export const LiveChip = styled(View)({
   bottom: 22,
   flexDirection: 'row',
   alignItems: 'center',
-  gap: 8,
+  gap: 6,
   paddingVertical: 8,
-  paddingHorizontal: 14,
+  paddingLeft: 8,
+  paddingRight: 14,
   borderRadius: 999,
-  backgroundColor: 'rgba(255, 255, 255, 0.2)',
+  backgroundColor: 'rgba(255, 255, 255, 0.18)',
+  // Flou d'arrière-plan de la maquette (web ; ignoré en natif)
+  ...({ backdropFilter: 'blur(14px)' } as object),
 });
 
 export const LiveDot = styled(View)({
-  width: 8,
-  height: 8,
+  width: 7,
+  height: 7,
   borderRadius: 4,
-  backgroundColor: '#6FD3A0',
+  backgroundColor: '#3DFFA8',
 });
 
 export const Bottom = styled(View)((props) => ({

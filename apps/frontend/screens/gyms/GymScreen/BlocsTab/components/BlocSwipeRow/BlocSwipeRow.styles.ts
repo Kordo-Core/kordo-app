@@ -2,8 +2,7 @@ import styled from '@emotion/native';
 import { View } from 'react-native';
 import Animated from 'react-native-reanimated';
 
-// Racine mesurée de la ligne : porte l'espacement entre cartes (inclus dans la hauteur
-// mesurée, dont dépend le repérage du doigt dans useBlocSwipe).
+// Racine de la ligne : porte l'espacement entre cartes (inclus dans BLOC_ROW_HEIGHT).
 export const BlocRow = styled(View)((props) => ({
   width: '100%',
   paddingHorizontal: props.theme.spacing.md + 2,
@@ -14,7 +13,7 @@ export const BlocRow = styled(View)((props) => ({
 export const Card = styled(View)((props) => ({
   position: 'relative',
   overflow: 'hidden',
-  borderRadius: 20,
+  borderRadius: 8,
   boxShadow: props.theme.shadows.sm,
 }));
 

@@ -18,7 +18,7 @@ export const MessageComposer: React.FC<MessageComposerProps> = ({
   return (
     <Styled.Bar>
       <Styled.CameraButton onPress={onPressCamera} accessibilityLabel="Prendre une photo">
-        <Icon name="camera" size="md" color="#13201B" />
+        <Icon name="camera" size="md" color="#0B1410" />
       </Styled.CameraButton>
 
       <Styled.InputWrapper>
