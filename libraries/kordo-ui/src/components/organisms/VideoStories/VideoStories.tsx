@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Modal, Pressable, StyleSheet, View, useWindowDimensions } from 'react-native';
-import { useVideoPlayer, VideoView } from 'expo-video';
+import { createVideoPlayer, VideoPlayer, VideoView } from 'expo-video';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -22,20 +22,50 @@ export function VideoStories({ videos, initialIndex = 0, onClose }: VideoStories
   const [progress, setProgress] = useState(0);
   const { height } = useWindowDimensions();
 
-  const player = useVideoPlayer(videos[initialIndex]?.url ?? '', (p) => {
-    // Émet un événement de temps régulier pour animer la barre de progression
-    p.timeUpdateEventInterval = 0.1;
-    p.play();
-  });
-
-  // Change la source à chaque changement d'index
-  useEffect(() => {
-    const current = videos[index];
-    if (current) {
-      player.replace(current.url);
-      player.play();
+  // Un lecteur par vidéo, gardé en cache : la vidéo courante et ses voisines (précédente,
+  // suivante) se chargent à l'avance, si bien que passer à la suivante est instantané au lieu
+  // de recharger la source dans un lecteur unique (téléchargement + mise en mémoire à chaque tap).
+  const players = useRef(new Map<string, VideoPlayer>());
+  const getPlayer = (url: string) => {
+    let p = players.current.get(url);
+    if (!p) {
+      p = createVideoPlayer(url);
+      // Émet un événement de temps régulier pour animer la barre de progression
+      p.timeUpdateEventInterval = 0.1;
+      players.current.set(url, p);
     }
+    return p;
+  };
+  const player = getPlayer(videos[index]?.url ?? '');
+
+  // Lecture de la vidéo courante depuis le début, préchargement des voisines, et libération
+  // des lecteurs trop loin (au plus 3 vidéos en mémoire)
+  useEffect(() => {
+    const keep = new Set(
+      [index - 1, index, index + 1].map((i) => videos[i]?.url).filter((u): u is string => !!u),
+    );
+    keep.forEach(getPlayer);
+    players.current.forEach((p, url) => {
+      if (!keep.has(url)) {
+        p.release();
+        players.current.delete(url);
+      } else if (p !== player) {
+        p.pause();
+      }
+    });
+    player.currentTime = 0;
+    player.play();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [index]);
+
+  // Libère tous les lecteurs à la fermeture
+  useEffect(() => {
+    const map = players.current;
+    return () => {
+      map.forEach((p) => p.release());
+      map.clear();
+    };
+  }, []);
 
   // Suit l'avancement de la vidéo courante → remplissage de la barre (reset à chaque vidéo)
   useEffect(() => {
@@ -45,15 +75,14 @@ export function VideoStories({ videos, initialIndex = 0, onClose }: VideoStories
       if (duration > 0) setProgress(Math.min(payload.currentTime / duration, 1));
     });
     return () => sub.remove();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [index]);
+  }, [player]);
 
   // Avance automatiquement à la fin de la vidéo
   useEffect(() => {
     const sub = player.addListener('playToEnd', () => goNext());
     return () => sub.remove();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [index]);
+  }, [player]);
 
   const goNext = () => setIndex((i) => (i < videos.length - 1 ? i + 1 : (onClose(), i)));
   const goPrev = () => setIndex((i) => Math.max(0, i - 1));
