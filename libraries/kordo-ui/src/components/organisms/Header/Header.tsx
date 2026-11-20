@@ -58,7 +58,8 @@ export const Header: React.FC<HeaderProps & { scrollY?: number }> = (props) => {
       {props.smart && <Styled.CustomSafeAreaView style={{ height: insets.top }} />}
       <Styled.Header
         style={[
-          { paddingTop: insets.top + 4, paddingBottom: 4 },
+          // Maquette « sport » : le contenu de la rangée (6 px de marge) commence 16 px sous la zone sûre
+          { paddingTop: insets.top + (props.topGap ?? 10), paddingBottom: 4 },
           smartStyle,
           props.smart ? animatedStyle : undefined,
           props.style,

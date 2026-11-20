@@ -55,7 +55,7 @@ export const Dialog: React.FC<DialogProps> = ({
 
       <Styled.Box style={boxStyle}>
         {!!title && (
-          <Text size="lg" extraBold>
+          <Text variant="display" size="md">
             {title}
           </Text>
         )}

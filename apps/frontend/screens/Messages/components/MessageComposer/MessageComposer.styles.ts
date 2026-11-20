@@ -5,16 +5,18 @@ export const Bar = styled.View((props) => ({
   flexDirection: 'row',
   alignItems: 'center',
   gap: props.theme.spacing.sm,
-  padding: props.theme.spacing.md,
-  backgroundColor: props.theme.colors.neutral.white,
-  boxShadow: props.theme.shadows.up,
+  paddingHorizontal: props.theme.spacing.md,
+  paddingTop: props.theme.spacing.sm,
+  // Maquette : 30 px sous la saisie (place de la barre d'accueil du téléphone)
+  paddingBottom: 30,
+  backgroundColor: props.theme.colors.background,
 }));
 
 // Bouton appareil photo : pastille pleine à gauche de la saisie, comme sur la maquette.
 export const CameraButton = styled.Pressable((props) => ({
-  width: 40,
-  height: 40,
-  borderRadius: props.theme.borderRadius.rounded,
+  width: 46,
+  height: 46,
+  borderRadius: props.theme.borderRadius.square,
   alignItems: 'center',
   justifyContent: 'center',
   backgroundColor: props.theme.colors.primary.base,

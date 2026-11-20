@@ -1,13 +1,19 @@
 import { memo, useEffect } from 'react';
 import { useTheme } from '@emotion/react';
-import { BoulderBadge, Icon, ListRow, Text } from 'kordo-ui';
-import { StyleSheet } from 'react-native';
+import { Icon, ListRow, Text } from 'kordo-ui';
+import { Image, StyleSheet, View } from 'react-native';
+import { GestureDetector } from 'react-native-gesture-handler';
 import Animated, { useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 import * as Styled from './BlocSwipeRow.styles';
 import { BlocSwipeRowProps } from './BlocSwipeRow.types';
+import { getTopCount } from '../../../../../../fake_data';
 
 // Promotion en texture GPU : la vue est dessinée une fois puis simplement déplacée par le
 // GPU pendant le slide (sinon Android/iOS redessinent tout le sous-arbre à chaque frame).
+// Paliers de cotation : grades 1 à 30 par tranches de 5, une couleur par tranche
+const TIER_COLORS = ['yellow', 'green', 'blue', 'red', 'black', 'purple'] as const;
+const tierOf = (grade: number) => Math.max(0, Math.min(Math.floor((grade - 1) / 5), 5));
+
 const RASTERIZE = { renderToHardwareTextureAndroid: true, shouldRasterizeIOS: true } as const;
 
 // Ligne de bloc swipable : son offset vit DANS la ligne (donc il scrolle avec la liste,
@@ -41,58 +47,107 @@ export const BlocSwipeRow = memo(function BlocSwipeRow(props: BlocSwipeRowProps)
   });
 
   return (
-    <Styled.BlocRow onLayout={(e) => props.onRowLayout(props.id, e.nativeEvent.layout.height)}>
-      <Animated.View
-        pointerEvents="none"
-        {...RASTERIZE}
-        style={[
-          StyleSheet.absoluteFill,
-          greenStyle,
-          { backgroundColor: theme.colors.success.base },
-        ]}
-      >
-        <Styled.BlocActionIconLeft>
-          <Icon name="CheckmarkFilled" size="md" color={theme.colors.neutral.white} />
-        </Styled.BlocActionIconLeft>
-      </Animated.View>
-      <Animated.View
-        pointerEvents="none"
-        {...RASTERIZE}
-        style={[StyleSheet.absoluteFill, redStyle, { backgroundColor: theme.colors.error.base }]}
-      >
-        <Styled.BlocActionIconRight>
-          <Icon name="DismissFilled" size="md" color={theme.colors.neutral.white} />
-        </Styled.BlocActionIconRight>
-      </Animated.View>
-      <Styled.BlocForeground pointerEvents="none" {...RASTERIZE} style={foregroundStyle}>
-        <ListRow
-          left={
-            <BoulderBadge avatarUrl={props.detail.bloc.blocUrl} grade={props.detail.bloc.grade} />
-          }
-          primaryText={
-            <Text size="lg" bold appearance={props.status === 'validated' ? 'success' : undefined}>
-              {props.detail.bloc.name}
-            </Text>
-          }
-          secondaryText={
-            <Text appearance="primary" size="sm">
-              <Text size="sm" appearance="gray">
-                par{' '}
-              </Text>
-              {props.detail.setter?.firstName}
-            </Text>
-          }
-          right={
-            props.status === 'validated' ? (
-              <Icon name="CheckmarkCircleFilled" size="md" color={theme.colors.success.base} />
-            ) : (
-              <Text size="lg" bold appearance="gray">
-                {props.detail.bloc.points}pts
-              </Text>
-            )
-          }
-        />
-      </Styled.BlocForeground>
-    </Styled.BlocRow>
+    <GestureDetector gesture={props.gesture} touchAction="pan-y">
+      <Styled.BlocRow>
+        <Styled.Card>
+          <Animated.View
+            pointerEvents="none"
+            {...RASTERIZE}
+            style={[
+              StyleSheet.absoluteFill,
+              greenStyle,
+              { backgroundColor: theme.colors.success.base },
+            ]}
+          >
+            <Styled.BlocActionIconLeft>
+              <Icon name="CheckmarkFilled" size="md" color={theme.colors.neutral.white} />
+            </Styled.BlocActionIconLeft>
+          </Animated.View>
+          <Animated.View
+            pointerEvents="none"
+            {...RASTERIZE}
+            style={[
+              StyleSheet.absoluteFill,
+              redStyle,
+              { backgroundColor: theme.colors.error.base },
+            ]}
+          >
+            <Styled.BlocActionIconRight>
+              <Icon name="DismissFilled" size="md" color={theme.colors.neutral.white} />
+            </Styled.BlocActionIconRight>
+          </Animated.View>
+          <Styled.BlocForeground pointerEvents="none" {...RASTERIZE} style={foregroundStyle}>
+            <ListRow
+              left={
+                // Photo carrée cerclée de la couleur du palier de cotation (design D)
+                <Image
+                  source={{ uri: props.detail.bloc.blocUrl }}
+                  style={{
+                    width: 46,
+                    height: 46,
+                    borderRadius: 6,
+                    borderWidth: 2.5,
+                    borderColor:
+                      theme.colors.boulderGrade[TIER_COLORS[tierOf(props.detail.bloc.grade)]],
+                  }}
+                />
+              }
+              primaryText={
+                <Text
+                  size="md"
+                  bold
+                  appearance={props.status === 'validated' ? 'success' : undefined}
+                >
+                  {props.detail.bloc.name}
+                </Text>
+              }
+              secondaryText={
+                <Text appearance="primary" size="sm">
+                  <Text size="sm" appearance="gray">
+                    par{' '}
+                  </Text>
+                  {props.detail.setter?.firstName}
+                  <Text size="sm" appearance="gray">
+                    {' '}
+                    · {getTopCount(props.detail.bloc.id)} tops
+                  </Text>
+                </Text>
+              }
+              right={
+                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+                  <Text size="sm" extraBold appearance="gray">
+                    {props.detail.bloc.points} pts
+                  </Text>
+                  {/* Case de validation : pleine quand le bloc est validé (glisser à droite) */}
+                  <View
+                    style={{
+                      width: 34,
+                      height: 34,
+                      borderRadius: 5,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      borderWidth: props.status === 'validated' ? 0 : 1.5,
+                      borderColor: theme.colors.border,
+                      backgroundColor:
+                        props.status === 'validated' ? theme.colors.success.base : 'transparent',
+                    }}
+                  >
+                    <Icon
+                      name="CheckmarkRegular"
+                      size={16}
+                      color={
+                        props.status === 'validated'
+                          ? theme.colors.neutral.white
+                          : theme.colors.text
+                      }
+                    />
+                  </View>
+                </View>
+              }
+            />
+          </Styled.BlocForeground>
+        </Styled.Card>
+      </Styled.BlocRow>
+    </GestureDetector>
   );
 });

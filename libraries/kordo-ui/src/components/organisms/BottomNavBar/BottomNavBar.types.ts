@@ -8,6 +8,8 @@ export type NavTab = {
   key: string;
   icon: NavTabIcon;
   isAction?: boolean;
+  /** Onglet mis en avant (« + ») : carré orange permanent, jamais « actif » */
+  accent?: boolean;
 };
 
 export interface BottomNavBarProps {

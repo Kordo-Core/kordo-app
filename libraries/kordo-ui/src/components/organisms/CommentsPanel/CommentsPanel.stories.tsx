@@ -36,8 +36,7 @@ export default {
 
 type Story = StoryObj<typeof CommentsPanel>;
 
-const avatar =
-  'https://res.cloudinary.com/dqmegz5dn/image/upload/v1763334248/avatar-kordo_rwvjw4.png';
+const avatar = 'https://i.pravatar.cc/300?img=52';
 
 const currentUser: UserPublic = { id: 'u-me', username: 'me', avatarUrl: avatar };
 

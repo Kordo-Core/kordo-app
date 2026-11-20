@@ -2,14 +2,16 @@ import { useState } from 'react';
 import { ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useTheme } from '@emotion/react';
-import { Header, Icon, ListRow, Radio, Section, Text } from 'kordo-ui';
+import { ListRow, Radio, Text } from 'kordo-ui';
+import { ScreenHeader } from '../../components/ScreenHeader/ScreenHeader';
 import { ScreenLayout } from '../../components/ScreenLayout/ScreenLayout';
+import { SettingsGroup } from '../../components/SettingsGroup/SettingsGroup';
 
 type MentionAudience = 'everyone' | 'following' | 'nobody';
 
 const OPTIONS: { value: MentionAudience; label: string }[] = [
   { value: 'everyone', label: 'Tout le monde' },
-  { value: 'following', label: 'Uniquement les personnes que vous suivez' },
+  { value: 'following', label: 'Personnes que tu suis' },
   { value: 'nobody', label: 'Ne pas autoriser' },
 ];
 
@@ -21,29 +23,17 @@ export default function MentionsScreen() {
 
   return (
     <ScreenLayout>
-      <Header
-        left={<Icon name="ArrowLeftRegular" size="md" onPress={() => navigation.goBack()} />}
-        centerChildren
-        style={{ boxShadow: theme.shadows.md }}
-      >
-        <Text size="lg" bold>
-          Mentions
-        </Text>
-      </Header>
+      <ScreenHeader title="Mentions" eyebrow="Paramètres" onBack={() => navigation.goBack()} />
 
       <ScrollView
         style={{ flex: 1 }}
         contentContainerStyle={{
-          gap: theme.spacing.xs,
-          paddingBlock: theme.spacing.xs,
-          paddingBottom: theme.spacing.xxl,
+          gap: 10,
+          paddingBottom: 30,
         }}
         keyboardShouldPersistTaps="handled"
       >
-        <Section gap="lg">
-          <Text size="md" appearance="gray">
-            Qui peut @mentionner votre nom
-          </Text>
+        <SettingsGroup title="Qui peut te @mentionner">
           {OPTIONS.map(({ value, label }) => (
             <ListRow
               key={value}
@@ -53,12 +43,15 @@ export default function MentionsScreen() {
             />
           ))}
 
-          <Text size="sm" appearance="gray" style={{ marginTop: theme.spacing.sm }}>
-            Choisissez qui peut vous mentionner dans des commentaires, des publications ou des
-            activités. Lorsqu&apos;une personne essaie de vous identifier, elle pourra voir si vous
-            acceptez d&apos;être identifié(e) ou non.
+          <Text
+            size="sm"
+            appearance="gray"
+            style={{ marginTop: theme.spacing.sm, marginBottom: theme.spacing.sm }}
+          >
+            Si une personne non autorisée essaie de t’identifier, elle sera prévenue que tu ne
+            l’acceptes pas.
           </Text>
-        </Section>
+        </SettingsGroup>
       </ScrollView>
     </ScreenLayout>
   );

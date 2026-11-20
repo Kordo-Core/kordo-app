@@ -3,37 +3,42 @@ import { MessageProps } from './Message.types';
 
 type Direction = Pick<MessageProps, 'direction'>;
 
-// La bulle ne dépasse jamais les trois quarts de la largeur : un message long revient à la
-// ligne au lieu de s'étirer d'un bord à l'autre.
-const MAX_WIDTH = '75%';
-
-// Rayon relevé sur la maquette. Le thème n'en propose pas d'équivalent : `square` (8) est le
-// rayon des cartes, `rounded` (100) celui des pilules — une bulle n'est ni l'un ni l'autre.
+// Rayon relevé sur la maquette. Le thème n'en propose pas d'équivalent : une bulle n'est ni
+// une carte ni une pilule.
+// Bulles très arrondies, queue resserrée : seule exception aux petits rayons de la maquette
 const RADIUS = 20;
 
-// Un coin reste vif, et c'est lui qui désigne l'émetteur : en bas à gauche pour un message
-// reçu, en haut à droite pour un message envoyé.
-const TAIL_RADIUS = 2;
+// Coins vifs du côté de l'émetteur. Le dernier message d'une suite n'en garde qu'un, en bas ;
+// les messages qui en précèdent un autre du même auteur l'ont aussi en haut, pour que la suite
+// se lise comme un seul bloc.
+const TAIL_RADIUS = 6;
+
+type BubbleProps = Direction & { continued: boolean };
 
 // Aligne la bulle et son horodatage sur le même bord, celui qui dépend de l'émetteur.
 export const Row = styled.View<Direction>((props) => ({
   width: '100%',
   alignItems: props.direction === 'out' ? 'flex-end' : 'flex-start',
-  gap: props.theme.spacing.xs,
 }));
 
-export const Bubble = styled.View<Direction>((props) => ({
-  maxWidth: MAX_WIDTH,
-  padding: props.theme.spacing.md,
-  borderRadius: RADIUS,
-  ...(props.direction === 'out'
-    ? { borderTopRightRadius: TAIL_RADIUS }
-    : { borderBottomLeftRadius: TAIL_RADIUS }),
-  backgroundColor:
-    props.direction === 'out'
-      ? props.theme.colors.secondary.lighter
-      : props.theme.colors.neutral.gray.lightest,
-}));
+export const Bubble = styled.View<BubbleProps>((props) => {
+  const out = props.direction === 'out';
+  return {
+    paddingVertical: 11,
+    paddingHorizontal: 15,
+    borderRadius: RADIUS,
+    ...(out
+      ? {
+          borderBottomRightRadius: TAIL_RADIUS,
+          borderTopRightRadius: props.continued ? TAIL_RADIUS : RADIUS,
+        }
+      : {
+          borderBottomLeftRadius: TAIL_RADIUS,
+          borderTopLeftRadius: props.continued ? TAIL_RADIUS : RADIUS,
+        }),
+    backgroundColor: out ? props.theme.colors.secondary.base : props.theme.colors.surface,
+  };
+});
 
 // Une bulle de média se passe du rembourrage : l'image occupe toute la bulle.
 export const MediaBubble = styled(Bubble)(() => ({

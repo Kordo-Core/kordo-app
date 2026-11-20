@@ -1,10 +1,12 @@
 import { useMemo, useState } from 'react';
-import { Pressable, ScrollView, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useTheme } from '@emotion/react';
-import { Header, Icon, Section, Text } from 'kordo-ui';
+import { ListRow, Radio, Text } from 'kordo-ui';
+import { ScreenHeader } from '../../components/ScreenHeader/ScreenHeader';
 import { ScreenLayout } from '../../components/ScreenLayout/ScreenLayout';
 import { SearchToolbar } from '../../components/SearchToolbar/SearchToolbar';
+import { SettingsGroup } from '../../components/SettingsGroup/SettingsGroup';
 import { matchesQuery } from '../../utils/matchesQuery';
 
 // Langues proposées. Aucune traduction n'existe encore : cet écran ne fait que le choix visuel.
@@ -31,8 +33,7 @@ const LANGUAGES = [
   '中文 (简体)',
 ];
 
-// Choix de la langue : la langue courante est épinglée en tête avec une coche,
-// le reste de la liste est filtrable.
+// Choix de la langue (design D) : recherche, puis la liste filtrable avec un bouton radio.
 export default function LanguageScreen() {
   const navigation = useNavigation();
   const theme = useTheme();
@@ -43,46 +44,37 @@ export default function LanguageScreen() {
 
   return (
     <ScreenLayout>
-      <Header
-        left={<Icon name="ArrowLeftRegular" size="md" onPress={() => navigation.goBack()} />}
-        centerChildren
-        style={{ boxShadow: theme.shadows.md }}
-      >
-        <Text size="lg" bold>
-          Langues
-        </Text>
-      </Header>
+      <ScreenHeader title="Langue" eyebrow="Paramètres" onBack={() => navigation.goBack()} />
 
       <ScrollView
         style={{ flex: 1 }}
+        showsVerticalScrollIndicator={false}
         contentContainerStyle={{
-          gap: theme.spacing.xs,
-          paddingBlock: theme.spacing.xs,
-          paddingBottom: theme.spacing.xxl,
+          gap: 10,
+          paddingBottom: 16,
         }}
         keyboardShouldPersistTaps="handled"
       >
-        {/* Langue courante et recherche : fixes sous le header, hors de la zone défilante. */}
-        <Section>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Text style={{ flex: 1 }}>{selected}</Text>
-            <Icon name="CheckmarkFilled" size="sm" color={theme.colors.secondary.base} />
-          </View>
-        </Section>
-
-        <Section>
+        <View style={{ marginHorizontal: 14 }}>
           <SearchToolbar value={query} onChange={setQuery} placeholder="Rechercher..." />
+        </View>
 
+        <SettingsGroup rowPadding={4} rowPaddingHorizontal={16} separatorInset={0}>
           {visible.map((language) => (
-            <Pressable
+            <ListRow
               key={language}
               onPress={() => setSelected(language)}
-              style={{ width: '100%', paddingBlock: theme.spacing.sm }}
-            >
-              <Text>{language}</Text>
-            </Pressable>
+              primaryText={
+                <Text appearance="black" bold={language === selected}>
+                  {language}
+                </Text>
+              }
+              right={
+                <Radio selected={language === selected} onSelect={() => setSelected(language)} />
+              }
+            />
           ))}
-        </Section>
+        </SettingsGroup>
       </ScrollView>
     </ScreenLayout>
   );

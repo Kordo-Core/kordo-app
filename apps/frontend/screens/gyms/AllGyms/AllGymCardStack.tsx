@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { View, ImageBackground, Dimensions, LayoutChangeEvent } from 'react-native';
+import { View, Dimensions, LayoutChangeEvent } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { GestureDetector, Gesture } from 'react-native-gesture-handler';
 import Animated, {
@@ -17,6 +17,11 @@ import { Gym } from '../../../fake_data/gyms.fake';
 import { RootStackParamList } from '../../../App';
 import BlurView from 'expo-blur/build/BlurView';
 import { Bounce } from 'kordo-ui/src/animations/Bounce/Bounce';
+
+// Hauteur du bouton « Voir la salle »
+const BUTTON = 58;
+// Libellé court du type de salle
+const CATEGORY_LABELS = { bloc: 'Bloc', lead: 'Voie', both: 'Bloc & voie' } as const;
 
 /**
  * Pile de cartes de salles en profondeur, façon « deck » vertical, parcourue par glissement.
@@ -41,9 +46,9 @@ const AnimatedCard = Animated.createAnimatedComponent(Card);
 // --- Réglages de la pile (tous ajustables sans toucher à la logique) ---
 
 // Nombre de cartes qui dépassent vers le haut (à venir) derrière la carte de devant
-const MAX_BACK = 3;
+const MAX_BACK = 2;
 // Espace vertical (px) entre deux cartes consécutives dans la profondeur (escalier du haut)
-const PEEK_Y = 64;
+const PEEK_Y = 22;
 // Distance (px) que parcourt vers le bas une carte quand elle passe devant et s'efface
 const EXIT_DROP = 200;
 // Grossissement appliqué à la carte qui passe devant pendant sa descente
@@ -53,8 +58,9 @@ const SCALE_STEP = 0.06;
 // Échelle minimale (cartes les plus lointaines) et maximale (cartes passées les plus proches)
 const SCALE_MIN = 0.6;
 const SCALE_MAX = 1.25;
-// Débordement (px) de la carte de devant sous le bas visible : garantit qu'elle est toujours coupée
-const BOTTOM_OVERFLOW = 180;
+// Débordement (px) de la carte de devant sous le bas de l'écran : elle est coupée par le bord,
+// comme sur la maquette, sans laisser de bande vide en dessous
+const BOTTOM_BLEED = 40;
 // Distance de glissement (px) à parcourir pour avancer d'une carte
 const DRAG_PER_CARD = 140;
 // Ressort d'aimantation appliqué à `progress` quand on relâche le geste
@@ -102,7 +108,7 @@ function CardItem({
   const theme = useTheme();
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   // Le worklet tourne sur le thread UI : il capture une valeur primitive, pas l'objet thème.
-  const cardRadius = theme.borderRadius.square;
+  const cardRadius = theme.borderRadius.card;
   // Style de la carte : position/échelle/opacité dérivées en continu du rang relatif `r`.
   // Recalculé sur le thread UI à chaque frame pendant le geste (worklet Reanimated).
   const animStyle = useAnimatedStyle(() => {
@@ -126,16 +132,19 @@ function CardItem({
     const opacity = clampWorklet(1 + r, 0, 1);
 
     return {
-      position: 'absolute',
-      alignSelf: 'center',
-      width,
-      height,
-      borderRadius: cardRadius,
       zIndex,
       opacity,
       transform: [{ translateY }, { scale }],
     };
-  });
+  }, [index, count, baseOffset]);
+  // Taille et forme hors du style animé : elles suivent la hauteur mesurée à chaque rendu
+  const sizeStyle = {
+    position: 'absolute' as const,
+    alignSelf: 'center' as const,
+    width,
+    height,
+    borderRadius: cardRadius,
+  };
 
   // Opacité du bloc d'infos : ne s'affiche que sur la carte de devant et s'estompe vite (×1.5) dès
   // qu'elle recule, pour que les cartes de derrière restent visuellement « vides ».
@@ -143,23 +152,40 @@ function CardItem({
     const r = index - progress.value;
     return { opacity: clampWorklet(1 - Math.abs(r) * 1.5, 0, 1) };
   });
+  // Voile des cartes à venir : calme la pile pour que seule la carte de devant attire l'œil
+  const veilStyle = useAnimatedStyle(() => {
+    const r = index - progress.value;
+    return { opacity: clampWorklet(r * 0.35, 0, 0.55) };
+  });
 
   return (
+    // Photo de la salle : remplit toute la carte (gérée par Card), déborde donc avec elle par le bas
     <AnimatedCard
+      image={gym.imageUri}
       style={[
+        sizeStyle,
         animStyle,
         {
-          backgroundColor: theme.colors.neutral.gray.light,
+          backgroundColor: theme.colors.surfaceAlt,
           // Seule la carte de devant capte les touches (pointerEvents via style, supporté en RN 0.81)
           pointerEvents: isFront ? 'auto' : 'none',
         },
       ]}
     >
-      {/* Photo de la salle : remplit toute la carte, déborde donc avec elle par le bas */}
-      <ImageBackground
-        source={{ uri: gym.imageUri }}
-        style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}
-        imageStyle={{ borderRadius: theme.borderRadius.square }}
+      <Animated.View
+        pointerEvents="none"
+        style={[
+          {
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            borderRadius: cardRadius,
+            backgroundColor: theme.colors.text,
+          },
+          veilStyle,
+        ]}
       />
       {/* Overlay du contenu, géré en fondu : gradient ancré tout en bas, infos remontées au bas visible */}
       <Animated.View
@@ -167,7 +193,8 @@ function CardItem({
       >
         {/* Le gradient part toujours du bas réel de la carte et monte assez haut pour couvrir le texte */}
         <LinearGradient
-          colors={['transparent', 'rgb(0, 0, 0)']}
+          colors={['transparent', `rgba(${theme.colors.scrim}, 0.92)`]}
+          locations={[0, 0.65]}
           style={{
             position: 'absolute',
             left: 0,
@@ -186,23 +213,46 @@ function CardItem({
             gap: theme.spacing.sm,
           }}
         >
-          <Tag title={gym.shortName} appearance="primary" />
+          <Tag size="md" title={gym.shortName} appearance="primary" />
           <View>
-            <Text appearance="white" size={'xxl'} extraBold>
+            <Text variant="display" size={40} appearance="white">
               {gym.name}
             </Text>
-            <Text appearance="white" size={'lg'}>
+            <Text appearance="white" size="md" style={{ opacity: 0.9 }}>
               {gym.address}
             </Text>
           </View>
+          <View style={{ flexDirection: 'row', gap: 6 }}>
+            {[`★ ${gym.rating.toFixed(1).replace('.', ',')}`, CATEGORY_LABELS[gym.category]].map(
+              (label) => (
+                <View
+                  key={label}
+                  style={{
+                    height: 28,
+                    paddingHorizontal: 10,
+                    borderRadius: 4,
+                    justifyContent: 'center',
+                    backgroundColor: 'rgba(255, 255, 255, 0.16)',
+                  }}
+                >
+                  <Text size="xs" bold appearance="white">
+                    {label}
+                  </Text>
+                </View>
+              ),
+            )}
+          </View>
 
-          <Bounce onPress={() => navigation.navigate('Gym', { gymId: gym.id })}>
+          <Bounce
+            onPress={() => navigation.navigate('Gym', { gymId: gym.id })}
+            style={{ alignSelf: 'stretch' }}
+          >
             <BlurView
               intensity={60}
               tint="default"
               style={{
-                height: 70,
-                borderRadius: theme.borderRadius.rounded,
+                height: BUTTON,
+                borderRadius: 8,
                 overflow: 'hidden',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -220,20 +270,20 @@ function CardItem({
                 }}
               >
                 <View />
-                <Text appearance="white" bold size={'lg'}>
-                  Voir plus
+                <Text appearance="white" extraBold size={16}>
+                  Voir la salle
                 </Text>
                 <View
                   style={{
                     backgroundColor: 'white',
-                    height: 70 - 2 * theme.spacing.xs,
-                    width: 70 - 2 * theme.spacing.xs,
+                    height: BUTTON - 2 * theme.spacing.xs,
+                    width: BUTTON - 2 * theme.spacing.xs,
                     alignItems: 'center',
                     justifyContent: 'center',
-                    borderRadius: theme.borderRadius.rounded,
+                    borderRadius: 7,
                   }}
                 >
-                  <Icon name="ArrowRightFilled" size={'md'} />
+                  <Icon name="ArrowRightFilled" size={'md'} color="#0B1410" />
                 </View>
               </View>
             </BlurView>
@@ -249,11 +299,21 @@ interface Props {
   gyms: Gym[];
   /** Largeur d'une carte (px). Défaut : largeur d'écran moins les marges latérales */
   cardWidth?: number;
-  /** Hauteur de la carte de devant (px). Défaut : 62 % de la hauteur d'écran (déborde volontairement) */
+  /** Hauteur de la carte de devant (px). Défaut : la zone visible, plus un débordement sous le bord */
   cardHeight?: number;
+  /** Carte passée au premier plan (index dans `gyms`) */
+  onFrontChange?: (index: number) => void;
+  /** Hauteur de la zone affichée, mesurée par l'écran (0 tant qu'elle ne l'est pas) */
+  visibleHeight?: number;
 }
 
-export function AllGymCardStack({ gyms, cardWidth, cardHeight }: Props) {
+export function AllGymCardStack({
+  gyms,
+  cardWidth,
+  cardHeight,
+  onFrontChange,
+  visibleHeight: measuredHeight,
+}: Props) {
   const theme = useTheme();
   const count = gyms.length;
   const width = cardWidth ?? Dimensions.get('window').width - theme.spacing.lg * 2;
@@ -265,12 +325,12 @@ export function AllGymCardStack({ gyms, cardWidth, cardHeight }: Props) {
   const [visibleHeight, setVisibleHeight] = useState(
     Math.round(Dimensions.get('window').height * 0.5),
   );
-  // Hauteur de la carte de devant calée sur la zone visible mesurée : elle remplit tout l'espace
-  // disponible PUIS déborde de BOTTOM_OVERFLOW sous le bas, donc elle est toujours coupée quel que
-  // soit l'espace restant au-dessus (header, sélecteur de filtre, etc.).
-  const frontHeight = cardHeight ?? visibleHeight - baseOffset + BOTTOM_OVERFLOW;
+  // Hauteur de la carte de devant calée sur la zone visible mesurée : elle remplit l'espace
+  // restant sous les cartes à venir et déborde un peu sous le bord de l'écran.
+  const areaHeight = measuredHeight || visibleHeight;
+  const frontHeight = cardHeight ?? areaHeight - baseOffset + BOTTOM_BLEED;
   // Le bloc d'infos est remonté du débordement (+ une marge) pour rester dans la zone affichée.
-  const contentBottom = Math.max(baseOffset + frontHeight - visibleHeight, 0) + theme.spacing.lg;
+  const contentBottom = Math.max(baseOffset + frontHeight - areaHeight, 0) + theme.spacing.lg;
 
   // Position continue dans la pile : 0 = première carte devant, count-1 = dernière carte devant
   const progress = useSharedValue(0);
@@ -294,6 +354,7 @@ export function AllGymCardStack({ gyms, cardWidth, cardHeight }: Props) {
       progress.value = withSpring(target, SPRING);
       // Synchronise l'index JS de la carte de devant pour basculer l'interactivité sur la nouvelle carte
       runOnJS(setFrontIndex)(target);
+      if (onFrontChange) runOnJS(onFrontChange)(target);
     });
 
   return (

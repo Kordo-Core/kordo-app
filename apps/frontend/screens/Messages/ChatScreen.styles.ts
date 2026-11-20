@@ -10,9 +10,9 @@ export const HeaderIdentity = styled.Pressable((props) => ({
 }));
 
 export const HeaderAvatar = styled.Image((props) => ({
-  width: props.theme.avatarSizes.sm,
-  height: props.theme.avatarSizes.sm,
-  borderRadius: props.theme.borderRadius.rounded,
+  width: 42,
+  height: 42,
+  borderRadius: 6,
 }));
 
 export const Presence = styled.View((props) => ({
@@ -21,21 +21,24 @@ export const Presence = styled.View((props) => ({
   gap: props.theme.spacing.xs,
 }));
 
-// Point de présence, vert quand le contact est connecté, gris sinon.
+// Point de présence posé sur l'avatar (maquette) : 12 px + liseré de 2 px couleur du fond
 export const PresenceDot = styled.View<{ online: boolean }>((props) => ({
-  width: 8,
-  height: 8,
+  position: 'absolute',
+  right: -1,
+  bottom: -1,
+  width: 16,
+  height: 16,
+  borderWidth: 2,
+  borderColor: props.theme.colors.background,
   borderRadius: props.theme.borderRadius.rounded,
-  backgroundColor: props.online
-    ? props.theme.colors.secondary.base
-    : props.theme.colors.neutral.gray.base,
+  backgroundColor: props.online ? '#1FD18A' : props.theme.colors.textMuted,
 }));
 
 // Contenu de la liste de messages : l'espace vertical sépare les bulles.
 export const messagesContent = (theme: KordoTheme) => ({
   flexGrow: 1,
-  padding: theme.spacing.md,
-  gap: theme.spacing.md,
+  padding: 14,
+  gap: 6,
 });
 
 // Miniature d'un média, dans une bulle qui a retiré son rembourrage.
@@ -59,9 +62,10 @@ export const PlayBadge = styled.View((props) => ({
 // Barre du bas quand la conversation n'est pas encore acceptée : elle remplace la saisie.
 export const RequestBar = styled.View((props) => ({
   gap: props.theme.spacing.md,
-  padding: props.theme.spacing.md,
-  backgroundColor: props.theme.colors.neutral.white,
-  boxShadow: props.theme.shadows.up,
+  margin: props.theme.spacing.md,
+  padding: props.theme.spacing.lg,
+  borderRadius: props.theme.borderRadius.card,
+  backgroundColor: props.theme.colors.soft,
 }));
 
 export const RequestActions = styled.View((props) => ({
@@ -73,4 +77,14 @@ export const Empty = styled.View((props) => ({
   flex: 1,
   paddingTop: props.theme.spacing.xxl,
   alignItems: 'center',
+}));
+
+// Bouton d'appel de l'entête (vert doux, comme les IconButton `soft`)
+export const CallButton = styled.Pressable((props) => ({
+  width: 44,
+  height: 44,
+  borderRadius: 6,
+  alignItems: 'center',
+  justifyContent: 'center',
+  backgroundColor: props.theme.colors.soft,
 }));

@@ -20,8 +20,7 @@ export default {
 
 type Story = StoryObj<typeof Activity>;
 
-const avatar =
-  'https://res.cloudinary.com/dqmegz5dn/image/upload/v1763334248/avatar-kordo_rwvjw4.png';
+const avatar = 'https://i.pravatar.cc/300?img=52';
 
 const BLOC_NAMES = ['Crimpy', 'Dyno', 'Slab attack', 'Overhang', 'Pince party', 'Compression'];
 const blocks = Array.from({ length: 24 }, (_, i) => ({

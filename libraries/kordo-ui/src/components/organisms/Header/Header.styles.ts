@@ -7,21 +7,21 @@ export const CustomSafeAreaView = styled.View((props) => ({
   left: 0,
   right: 0,
   zIndex: 3,
-  backgroundColor: props.theme.colors.neutral.white,
+  backgroundColor: props.theme.colors.background,
 }));
 
 export const Header = styled(Animated.View)((props) => ({
   zIndex: 2,
   width: '100%',
-  backgroundColor: props.theme.colors.neutral.white,
+  backgroundColor: props.theme.colors.background,
 }));
 
 export const Row = styled.View({
   flexDirection: 'row',
   alignItems: 'center',
-  paddingHorizontal: 16,
-  paddingVertical: 8,
-  gap: 16,
+  paddingHorizontal: 14,
+  paddingVertical: 6,
+  gap: 10,
 });
 
 export const ChildrenWrapper = styled.View({

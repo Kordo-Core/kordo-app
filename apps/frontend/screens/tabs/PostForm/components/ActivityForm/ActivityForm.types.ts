@@ -6,12 +6,22 @@ export interface ActivityFormProps {
   onTitleChange: (v: string) => void;
   description: string;
   onDescriptionChange: (v: string) => void;
+  photos: MediaItem[];
+  onAddMedia: () => void;
   gymId: string | null;
   onGymChange: (v: string | null) => void;
   gymItems: DropdownItem[];
   selectedBlocs: string[];
   onBlocsChange: (v: string[]) => void;
   blocItems: DropdownItem[];
+  /** Nombre de blocs validés, jamais inférieur au nombre de blocs cochés */
+  blocCount: number;
+  onBlocCountChange: (v: number) => void;
+  /** Palier de couleur du niveau max (0 jaune … 5 violet, -1 : aucun) */
+  maxTier: number;
+  /** Plancher imposé par le bloc coché le plus dur (-1 : aucun bloc coché) */
+  minTier: number;
+  onMaxTierChange: (v: number) => void;
   autoVideos: MediaItem[];
   sessionId: string | null;
   onSessionChange: (v: string | null) => void;

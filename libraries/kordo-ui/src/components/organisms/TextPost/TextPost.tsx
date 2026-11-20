@@ -1,33 +1,18 @@
 import { useState } from 'react';
-import { Pressable, View } from 'react-native';
+import { View } from 'react-native';
 import { useTheme } from '@emotion/react';
 import { TextPostProps } from './TextPost.types';
-import { UserInfo } from '../../molecules/UserInfo/UserInfo';
 import { Text } from '../../atoms/Text/Text';
-import { Icon } from '../../atoms/Icon/Icon';
+import {
+  formatPostDate,
+  PostActions,
+  PostHeader,
+  usePostCardStyle,
+} from '../../molecules/PostParts/PostParts';
 import { CommentsPanel } from '../CommentsPanel/CommentsPanel';
+import { usePostOptions } from '../PostOptionsPanel/usePostOptions';
 
-const MONTHS = [
-  'janvier',
-  'février',
-  'mars',
-  'avril',
-  'mai',
-  'juin',
-  'juillet',
-  'août',
-  'septembre',
-  'octobre',
-  'novembre',
-  'décembre',
-];
-const pad = (n: number) => String(n).padStart(2, '0');
-const formatTextPostDate = (iso: string) => {
-  const d = new Date(iso);
-  return `${d.getDate()} ${MONTHS[d.getMonth()]} ${d.getFullYear()} à ${pad(d.getHours())}h${pad(d.getMinutes())}`;
-};
-
-// Carte d'un post texte : header (user/date), contenu texte, like cliquable, panneau de commentaires.
+// Carte d'un post texte (« pensée »), design D : en-tête, texte, actions, panneau de commentaires.
 export const TextPost: React.FC<TextPostProps> = ({
   textPost,
   currentUser,
@@ -35,6 +20,7 @@ export const TextPost: React.FC<TextPostProps> = ({
   style,
 }) => {
   const theme = useTheme();
+  const cardStyle = usePostCardStyle();
   const fullName = [textPost.user.firstName, textPost.user.lastName].filter(Boolean).join(' ');
 
   const [liked, setLiked] = useState(textPost.isLiked);
@@ -55,65 +41,41 @@ export const TextPost: React.FC<TextPostProps> = ({
     ]);
   };
 
+  const options = usePostOptions({
+    author: textPost.user,
+    currentUser,
+    meta: formatPostDate(textPost.createdAt),
+    shareMessage: `${fullName || textPost.user.username} · ${textPost.content}`,
+    commentsEnabled: textPost.commentsEnabled,
+  });
+  if (options.hidden) return null;
+
   return (
-    <View
-      style={[
-        {
-          width: '100%',
-          backgroundColor: theme.colors.neutral.white,
-          padding: theme.spacing.md,
-          gap: theme.spacing.md,
-          boxShadow: theme.shadows.sm,
-        },
-        style,
-      ]}
-    >
-      <UserInfo
+    <View style={[cardStyle, style]}>
+      <PostHeader
         user={textPost.user}
-        layout="row"
-        primaryText={fullName || textPost.user.username}
-        secondaryText={
-          <Text appearance="gray" size="sm">
-            {formatTextPostDate(textPost.createdAt)}
-          </Text>
-        }
-        onPressUser={() => onPressUser?.(textPost.user)}
+        meta={formatPostDate(textPost.createdAt)}
+        tag="Message"
+        onPressUser={onPressUser}
       />
 
       {/* Contenu texte du post */}
-      {!!textPost.content && <Text>{textPost.content}</Text>}
-
-      {/* Compteurs likes / commentaires (cliquables, selon les autorisations de l'auteur) */}
-      {(textPost.likesEnabled || textPost.commentsEnabled) && (
-        <View style={{ flexDirection: 'row', alignItems: 'center', gap: theme.spacing.lg }}>
-          {textPost.likesEnabled && (
-            <Pressable
-              onPress={() => setLiked((prev) => !prev)}
-              style={{ flexDirection: 'row', alignItems: 'center', gap: theme.spacing.xs }}
-            >
-              <Icon
-                name={liked ? 'HeartFilled' : 'HeartRegular'}
-                size="md"
-                color={liked ? theme.colors.error.base : theme.colors.neutral.gray.base}
-              />
-              <Text appearance="gray" size="sm">
-                {likeCount}
-              </Text>
-            </Pressable>
-          )}
-          {textPost.commentsEnabled && (
-            <Pressable
-              onPress={() => setCommentsOpen(true)}
-              style={{ flexDirection: 'row', alignItems: 'center', gap: theme.spacing.xs }}
-            >
-              <Icon name="ChatRegular" size="md" color={theme.colors.neutral.gray.base} />
-              <Text appearance="gray" size="sm">
-                {comments.length}
-              </Text>
-            </Pressable>
-          )}
-        </View>
+      {!!textPost.content && (
+        <Text style={{ paddingHorizontal: theme.spacing.lg, paddingBottom: 4, lineHeight: 22 }}>
+          {textPost.content}
+        </Text>
       )}
+
+      <PostActions
+        likesEnabled={textPost.likesEnabled}
+        commentsEnabled={options.commentsEnabled}
+        liked={liked}
+        likeCount={likeCount}
+        onToggleLike={() => setLiked((prev) => !prev)}
+        commentCount={comments.length}
+        onPressComments={() => setCommentsOpen(true)}
+        onPressOptions={options.openOptions}
+      />
 
       <CommentsPanel
         isOpen={commentsOpen}
@@ -123,6 +85,8 @@ export const TextPost: React.FC<TextPostProps> = ({
         onAddComment={addComment}
         onPressUser={onPressUser}
       />
+
+      {options.panel}
     </View>
   );
 };

@@ -19,6 +19,7 @@ export const Toggle: React.FC<ToggleProps> = ({
   onChange,
   appearance = 'secondary',
   disabled,
+  size = 'md',
   style,
 }) => {
   const theme = useTheme();
@@ -29,16 +30,18 @@ export const Toggle: React.FC<ToggleProps> = ({
   );
 
   // Couleurs lues hors du worklet : il ne capture que des chaînes, pas l'objet thème.
-  const trackOff = theme.colors.neutral.gray.light;
+  const trackOff = theme.colors.track;
   const trackOn = getColor(theme, appearance);
-  const travel = Styled.TRACK_WIDTH - Styled.KNOB_SIZE - Styled.KNOB_MARGIN * 2;
+  const dims = Styled.SIZES[size];
+  const margin = dims.margin;
+  const travel = dims.width - dims.knob - margin * 2;
 
   const trackStyle = useAnimatedStyle(() => ({
     backgroundColor: interpolateColor(progress.value, [0, 1], [trackOff, trackOn]),
   }));
 
   const knobStyle = useAnimatedStyle(() => ({
-    transform: [{ translateX: Styled.KNOB_MARGIN + progress.value * travel }],
+    transform: [{ translateX: margin + progress.value * travel }],
   }));
 
   return (
@@ -49,8 +52,8 @@ export const Toggle: React.FC<ToggleProps> = ({
       onPress={() => onChange(!value)}
       style={style}
     >
-      <Styled.Track disabled={disabled} style={trackStyle}>
-        <Styled.Knob style={knobStyle} />
+      <Styled.Track disabled={disabled} size={size} style={trackStyle}>
+        <Styled.Knob size={size} style={knobStyle} />
       </Styled.Track>
     </Pressable>
   );

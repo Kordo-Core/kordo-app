@@ -26,16 +26,21 @@ export const AvatarWrapper = styled.View<Pick<UserInfoProps, 'highlightedAvatar'
 
   return {
     borderColor: props.theme.colors.secondary.base,
-    borderWidth: 2,
-    borderRadius: props.theme.borderRadius.rounded,
-    padding: 2,
+    borderWidth: 2.5,
+    // Anneau en carré arrondi, qui épouse la photo (2 px plus loin que son coin)
+    borderRadius: Math.round(props.theme.avatarSizes.md * 0.13) + 2,
+    padding: 2.5,
   };
 });
 
 export const CustomImage = styled(Image)<Pick<UserInfoProps, 'layout'>>((props) => ({
   width: props.layout === 'column' ? props.theme.avatarSizes.lg : props.theme.avatarSizes.md,
   height: props.layout === 'column' ? props.theme.avatarSizes.lg : props.theme.avatarSizes.md,
-  borderRadius: props.theme.borderRadius.rounded,
+  // Carré à peine arrondi (13 % de la taille, maquette « sport »). Tous les avatars de l'app ont cette forme,
+  // ceux des grimpeurs en séance compris.
+  borderRadius: Math.round(
+    (props.layout === 'column' ? props.theme.avatarSizes.lg : props.theme.avatarSizes.md) * 0.13,
+  ),
 }));
 
 export const UserData = styled.View<Pick<UserInfoProps, 'layout'>>((props) => ({
@@ -54,13 +59,17 @@ export const CustomText = styled(Text)<Pick<UserInfoProps, 'layout'>>((props) =>
 
 export const Now = styled.View((props) => ({
   paddingHorizontal: 0,
-  width: 36,
-  height: 16,
+  width: 38,
+  height: 18,
   justifyContent: 'center',
   alignItems: 'center',
-  borderRadius: props.theme.borderRadius.square,
+  borderRadius: props.theme.borderRadius.rounded,
+  borderWidth: 2,
+  borderColor: props.theme.colors.surface,
   backgroundColor: props.theme.colors.secondary.base,
   position: 'absolute',
-  bottom: -6,
-  left: 9,
+  bottom: -7,
+  alignSelf: 'center',
+  left: '50%',
+  marginLeft: -19,
 }));

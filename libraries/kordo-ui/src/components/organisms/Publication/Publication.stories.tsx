@@ -21,8 +21,7 @@ export default {
 
 type Story = StoryObj<typeof Publication>;
 
-const avatar =
-  'https://res.cloudinary.com/dqmegz5dn/image/upload/v1763334248/avatar-kordo_rwvjw4.png';
+const avatar = 'https://i.pravatar.cc/300?img=52';
 
 const PHOTO_URLS = [
   'https://images.unsplash.com/photo-1522163182402-834f871fd851?w=800&q=80',

@@ -16,7 +16,7 @@ export const Icon: React.FC<IconProps> = ({ name, size, color, onPress, style })
   if (!icon) return null;
 
   const resolvedSize = resolveIconSize(size);
-  const fill = resolveColor(theme, color, 'currentColor');
+  const fill = resolveColor(theme, color, theme.colors.text);
 
   return (
     <svg

@@ -30,8 +30,7 @@ const mockNow: NowPublic = {
     username: 'antoine',
     firstName: 'Antoine',
     lastName: 'Rios Campo',
-    avatarUrl:
-      'https://res.cloudinary.com/dqmegz5dn/image/upload/v1763334248/avatar-kordo_rwvjw4.png',
+    avatarUrl: 'https://i.pravatar.cc/300?img=52',
   },
   gym: { id: 'g1', name: 'Arkose Nation' },
   createdAt: '2026-06-15T10:00:00Z',

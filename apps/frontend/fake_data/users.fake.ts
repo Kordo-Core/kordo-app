@@ -10,8 +10,8 @@ export const USERS: User[] = [
     firstName: 'Adam',
     lastName: 'Ondra',
     isSetter: false,
-    avatarUrl:
-      'https://res.cloudinary.com/dqmegz5dn/image/upload/v1763334248/avatar-kordo_rwvjw4.png',
+    // Photo carrée, comme les autres : l'ancienne image était déjà découpée en rond
+    avatarUrl: avatar(52),
     bio: 'Toujours un projet en cours 🧗',
     createdAt: '2024-01-12',
     updatedAt: '2025-05-20',

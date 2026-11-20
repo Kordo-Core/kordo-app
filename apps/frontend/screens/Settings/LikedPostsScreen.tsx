@@ -1,80 +1,130 @@
-import { useMemo } from 'react';
-import { FlatList } from 'react-native';
+import { useMemo, useState } from 'react';
+import { FlatList, Image, Pressable, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTheme } from '@emotion/react';
-import { Activity, Header, Icon, Publication, Text, TextPost } from 'kordo-ui';
+import { LinearGradient } from 'expo-linear-gradient';
+import { Icon, Text } from 'kordo-ui';
+import { ScreenHeader } from '../../components/ScreenHeader/ScreenHeader';
 import { ScreenLayout } from '../../components/ScreenLayout/ScreenLayout';
-import { CURRENT_USER, getLikedPosts, HomeFeedItem } from 'fake_data';
+import { EmptyState } from '../../components/EmptyState/EmptyState';
+import { getLikedPosts, HomeFeedItem } from 'fake_data';
 import { RootStackParamList } from '../../App';
 
-// Publications aimées, rendues avec les mêmes cartes que le fil d'accueil.
+const TILE_HEIGHT = 200;
+
+// Auteur du post, quel que soit son type
+const postUser = (item: HomeFeedItem) => item.data.user;
+
+// Image de la vignette : la première photo d'une publication, sinon l'avatar de l'auteur.
+const postImage = (item: HomeFeedItem) =>
+  item.kind === 'publication'
+    ? (item.data.photos[0]?.url ?? postUser(item).avatarUrl)
+    : postUser(item).avatarUrl;
+
+// Publications aimées (design D) : grille de vignettes, le cœur retire le j'aime.
 export default function LikedPostsScreen() {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const theme = useTheme();
   const liked = useMemo(() => getLikedPosts(), []);
+  const [removed, setRemoved] = useState<string[]>([]);
 
-  const openProfile = (userId: string) => navigation.push('UserProfile', { userId });
+  const toggleLike = (id: string) =>
+    setRemoved((ids) => (ids.includes(id) ? ids.filter((i) => i !== id) : [...ids, id]));
 
   return (
     <ScreenLayout>
-      <Header
-        left={<Icon name="ArrowLeftRegular" size="md" onPress={() => navigation.goBack()} />}
-        centerChildren
-        style={{ boxShadow: theme.shadows.md }}
-      >
-        <Text size="lg" bold>
-          J&apos;aimes
-        </Text>
-      </Header>
+      <ScreenHeader
+        title="J’aime"
+        eyebrow="Ton activité"
+        subtitle="Les publications que tu as aimées. Touche ♥ pour retirer ton j’aime."
+        onBack={() => navigation.goBack()}
+      />
 
       {/* Liste virtualisée : elle gère son propre défilement, pas de ScrollView autour. */}
       <FlatList
         style={{ flex: 1 }}
         data={liked}
+        numColumns={2}
         keyExtractor={(item) => item.data.id}
+        columnWrapperStyle={{ gap: 10 }}
         contentContainerStyle={{
-          gap: theme.spacing.xs,
-          paddingBlock: theme.spacing.xs,
-          paddingBottom: theme.spacing.xxl,
+          gap: 10,
+          paddingHorizontal: 14,
+          paddingBottom: 30,
         }}
         ListEmptyComponent={
-          <Text appearance="gray" style={{ padding: theme.spacing.xl, textAlign: 'center' }}>
-            Aucune publication aimée pour le moment.
-          </Text>
+          <EmptyState
+            icon="HeartRegular"
+            title="Rien pour l’instant"
+            text="Aucune publication aimée pour le moment. Touche le cœur d’une publication du fil pour la retrouver ici."
+            actionLabel="Voir le fil"
+            onAction={() => navigation.navigate('MainTabs')}
+          />
         }
         renderItem={({ item }: { item: HomeFeedItem }) => {
-          switch (item.kind) {
-            case 'activity':
-              return (
-                <Activity
-                  activity={item.data}
-                  currentUser={CURRENT_USER}
-                  onPressUser={(user) => openProfile(user.id)}
-                  onPressBloc={(bloc) =>
-                    navigation.navigate('Gym', { gymId: item.data.gym.id, blocId: bloc.id })
-                  }
+          const user = postUser(item);
+          const isLiked = !removed.includes(item.data.id);
+          return (
+            <Pressable
+              onPress={() => navigation.push('UserProfile', { userId: user.id })}
+              style={{
+                width: '48.5%',
+                height: TILE_HEIGHT,
+                borderRadius: 8,
+                overflow: 'hidden',
+                backgroundColor: theme.colors.surfaceAlt,
+                opacity: isLiked ? 1 : 0.5,
+              }}
+            >
+              <Image
+                source={{ uri: postImage(item) }}
+                style={{ position: 'absolute', width: '100%', height: '100%' }}
+              />
+              <LinearGradient
+                colors={['transparent', `rgba(${theme.colors.scrim}, 0.85)`]}
+                locations={[0.5, 1]}
+                style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0 }}
+              />
+              <View
+                style={{
+                  position: 'absolute',
+                  left: 10,
+                  right: 10,
+                  bottom: 10,
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  gap: 6,
+                }}
+              >
+                <Image
+                  source={{ uri: user.avatarUrl }}
+                  style={{ width: 24, height: 24, borderRadius: 3 }}
                 />
-              );
-            case 'publication':
-              return (
-                <Publication
-                  publication={item.data}
-                  currentUser={CURRENT_USER}
-                  onPressUser={(user) => openProfile(user.id)}
-                />
-              );
-            case 'text':
-              return (
-                <TextPost
-                  textPost={item.data}
-                  currentUser={CURRENT_USER}
-                  onPressUser={(user) => openProfile(user.id)}
-                />
-              );
-            default:
-              return null;
-          }
+                <Text size="xs" extraBold appearance="white" numberOfLines={1} style={{ flex: 1 }}>
+                  {user.firstName ?? user.username}
+                </Text>
+                <Pressable
+                  onPress={() => toggleLike(item.data.id)}
+                  accessibilityLabel={isLiked ? 'Retirer le j’aime' : 'Aimer'}
+                  style={{
+                    width: 34,
+                    height: 34,
+                    borderRadius: 5,
+                    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <Icon
+                    name={isLiked ? 'HeartFilled' : 'HeartRegular'}
+                    size={16}
+                    color={isLiked ? '#FF5A5F' : theme.colors.neutral.white}
+                  />
+                </Pressable>
+              </View>
+            </Pressable>
+          );
         }}
       />
     </ScreenLayout>

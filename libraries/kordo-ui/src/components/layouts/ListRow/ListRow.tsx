@@ -25,10 +25,12 @@ export const ListRow: React.FC<ListRowProps> = (props) => {
   // Ligne cliquable seulement si le parent le demande : sans `onPress`, un simple conteneur,
   // pour ne pas capter les clics destinés aux slots gauche et droit.
   return props.onPress ? (
-    <Styled.PressableRow onPress={props.onPress} style={props.style}>
+    <Styled.PressableRow onPress={props.onPress} variant={props.variant} style={props.style}>
       {content}
     </Styled.PressableRow>
   ) : (
-    <Styled.Row style={props.style}>{content}</Styled.Row>
+    <Styled.Row variant={props.variant} style={props.style}>
+      {content}
+    </Styled.Row>
   );
 };

@@ -17,7 +17,7 @@ const AnimatedPath = Animated.createAnimatedComponent(Path);
 
 export const Icon: React.FC<IconProps> = (props) => {
   const theme = useTheme();
-  const fill = resolveColor(theme, props.color, theme.colors.neutral.black);
+  const fill = resolveColor(theme, props.color, theme.colors.text);
   const from = useSharedValue(fill);
   const to = useSharedValue(fill);
   const progress = useSharedValue(1);

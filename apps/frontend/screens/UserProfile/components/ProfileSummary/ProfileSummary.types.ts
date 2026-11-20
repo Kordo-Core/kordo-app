@@ -19,4 +19,6 @@ export interface ProfileSummaryProps {
   /** Tap sur un compteur : ouvre la liste correspondante sur le bon onglet */
   onPressStat: (pivot: RelationPivot) => void;
   onPressMessage: () => void;
+  /** Profil de l'utilisateur connecté : « Modifier le profil » */
+  onPressEdit?: () => void;
 }

@@ -1,44 +1,53 @@
 import styled from '@emotion/native';
 import { ButtonProps } from './Button.types';
 import { getColor } from '../../../utils/getColors';
+import { getToneColors, isSurfaceTone } from '../../../utils/surfaceTones';
+
+// Hauteur de chaque taille ; un bouton icône seule est carré
+const HEIGHTS = { sm: 32, md: 44, lg: 58 };
 
 export const ButtonContainer = styled.View<Omit<ButtonProps, 'onPress' | 'style'>>((props) => {
-  const color = getColor(props.theme, props.appearance!);
+  const color = isSurfaceTone(props.appearance)
+    ? getToneColors(props.theme, props.appearance).background
+    : getColor(props.theme, props.appearance!);
   const isDisabled = props.disabled;
+  const size = props.size ?? 'md';
+  const isLarge = size === 'lg';
+  const isSmall = size === 'sm';
+  const iconOnly = props.icon && !props.title;
 
   return {
-    backgroundColor: props.inverted ? props.theme.colors.neutral.white : color,
-    opacity: isDisabled ? 0.5 : 1,
+    // Plein : fond de la couleur. Inversé : fond de surface, contour fin, texte coloré.
+    backgroundColor: props.inverted ? props.theme.colors.surface : color,
+    opacity: isDisabled ? 0.45 : 1,
 
-    // Border
-    borderColor: props.inverted ? color : 'transparent',
-    borderWidth: props.borderless ? 0 : 1,
+    // Contour
+    // Inversé : filet intérieur de 1 px (maquette « sport »), sans décaler le contenu
+    borderColor: 'transparent',
+    borderWidth: 0,
+    boxShadow: props.inverted && !props.borderless ? props.theme.shadows.sm : undefined,
     borderRadius:
       props.borderRadius === 'rounded'
         ? props.theme.borderRadius.rounded
-        : props.theme.borderRadius.square,
+        : isSmall
+          ? 5
+          : props.theme.borderRadius.square,
 
-    // Layout
+    // Mise en page
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    height: props.size === 'lg' ? 60 : 32,
-    minWidth: !props.icon && props.title ? 80 : undefined,
-    width:
-      props.icon && !props.title
-        ? props.size === 'lg'
-          ? 60
-          : 36
-        : props.fullWidth
-          ? '100%'
-          : undefined,
-    gap: props.theme.spacing.sm,
+    height: HEIGHTS[size],
+    minWidth: !props.icon && props.title && !isSmall ? 88 : undefined,
+    width: iconOnly ? HEIGHTS[size] : props.fullWidth ? '100%' : undefined,
+    gap: isSmall ? props.theme.spacing.xs : props.theme.spacing.sm,
 
-    paddingHorizontal:
-      props.icon && !props.title
-        ? 0
-        : props.size === 'lg'
-          ? props.theme.spacing.xxl
-          : props.theme.spacing.md,
+    paddingHorizontal: iconOnly
+      ? 0
+      : isLarge
+        ? props.theme.spacing.xl + 2
+        : isSmall
+          ? 12
+          : props.theme.spacing.lg,
   };
 });

@@ -188,7 +188,7 @@ const Composer = styled.div((props) => ({
   alignItems: 'center',
   gap: props.theme.spacing.sm,
   padding: props.theme.spacing.md,
-  backgroundColor: props.theme.colors.neutral.white,
+  backgroundColor: props.theme.colors.background,
   boxShadow: props.theme.shadows.up,
 }));
 

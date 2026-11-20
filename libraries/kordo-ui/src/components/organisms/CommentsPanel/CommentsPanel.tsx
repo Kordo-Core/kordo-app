@@ -1,13 +1,17 @@
 import { useEffect, useState } from 'react';
-import { Image, Modal, View } from 'react-native';
+import { Image, Modal, Pressable, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import Svg, { Path } from 'react-native-svg';
 import { useTheme } from '@emotion/react';
 import { CommentItem, CommentsPanelProps } from './CommentsPanel.types';
-import { UserInfo } from '../../molecules/UserInfo/UserInfo';
 import { Text } from '../../atoms/Text/Text';
+import { Icon } from '../../atoms/Icon/Icon';
 import { Input } from '../../molecules/Input/Input';
-import { ListRow } from '../../layouts/ListRow/ListRow';
 import { Panel } from '../../layouts/Panel/Panel';
+import { motion } from '../../../animations/motion';
+
+const AVATAR = 36;
+const SEND = 42;
 
 // Temps relatif compact : "5min", "12h", "3j", "2 sem", "4 mois".
 const formatRelative = (iso: string): string => {
@@ -20,6 +24,93 @@ const formatRelative = (iso: string): string => {
   if (d < 30) return `${Math.round(d / 7)} sem`;
   return `${Math.round(d / 30)} mois`;
 };
+
+// Un commentaire (design D) : avatar arrondi, bulle claire avec le nom et le texte, puis une
+// ligne d'actions discrète (date, Répondre) et un petit cœur à droite.
+function CommentRow({
+  comment,
+  onPressUser,
+  onReply,
+}: {
+  comment: CommentItem;
+  onPressUser?: () => void;
+  onReply?: () => void;
+}) {
+  const theme = useTheme();
+  const [liked, setLiked] = useState(false);
+  const name =
+    [comment.user.firstName, comment.user.lastName].filter(Boolean).join(' ') ||
+    comment.user.username;
+
+  return (
+    <View style={{ flexDirection: 'row', gap: 10 }}>
+      <Pressable onPress={onPressUser} disabled={!onPressUser} accessibilityLabel={name}>
+        <Image
+          source={{ uri: comment.user.avatarUrl }}
+          style={{
+            width: AVATAR,
+            height: AVATAR,
+            borderRadius: Math.round(AVATAR * 0.13),
+            backgroundColor: theme.colors.surfaceAlt,
+          }}
+        />
+      </Pressable>
+
+      <View style={{ flex: 1, gap: 4 }}>
+        <View
+          style={{
+            alignSelf: 'flex-start',
+            maxWidth: '100%',
+            paddingVertical: 9,
+            paddingHorizontal: 12,
+            gap: 2,
+            borderRadius: 8,
+            borderTopLeftRadius: 3,
+            backgroundColor: theme.colors.surfaceAlt,
+          }}
+        >
+          <Text size="sm" extraBold onPress={onPressUser}>
+            {name}
+          </Text>
+          <Text size="sm" style={{ lineHeight: 20 }}>
+            {comment.content}
+          </Text>
+        </View>
+
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 14, paddingLeft: 12 }}>
+          <Text size="xs" bold appearance="gray">
+            {formatRelative(comment.createdAt)}
+          </Text>
+          {onReply && (
+            <Pressable onPress={onReply} hitSlop={8}>
+              <Text size="xs" extraBold appearance="gray">
+                Répondre
+              </Text>
+            </Pressable>
+          )}
+        </View>
+      </View>
+
+      <Pressable
+        onPress={() => setLiked((v) => !v)}
+        hitSlop={8}
+        accessibilityRole="button"
+        accessibilityLabel={liked ? 'Ne plus aimer' : 'Aimer le commentaire'}
+        style={({ pressed }) => ({
+          paddingTop: 12,
+          alignItems: 'center',
+          transform: [{ scale: pressed ? motion.pressScale : 1 }],
+        })}
+      >
+        <Icon
+          name={liked ? 'HeartFilled' : 'HeartRegular'}
+          size={16}
+          color={liked ? theme.colors.error.base : theme.colors.textMuted}
+        />
+      </Pressable>
+    </View>
+  );
+}
 
 // Panneau des commentaires d'un post (liste + zone de saisie), réutilisé par tous les posts.
 // Le Panel se cale au-dessus du clavier à l'ouverture de la saisie.
@@ -53,53 +144,11 @@ export const CommentsPanel: React.FC<CommentsPanelProps> = ({
     setDraft('');
   };
 
-  // Ligne de commentaire : nom + date à côté, contenu en dessous (structure proche de TextPost).
-  const renderComment = (comment: CommentItem) => {
-    const name =
-      [comment.user.firstName, comment.user.lastName].filter(Boolean).join(' ') ||
-      comment.user.username;
-
-    // Ferme le panneau avant de remonter le clic : la navigation est gérée côté frontend, et
-    // sans cette fermeture l'écran ouvert s'empilerait *derrière* le Modal resté visible.
-    const openUser = onPressUser
-      ? () => {
-          onClose();
-          onPressUser(comment.user);
-        }
-      : undefined;
-
-    return (
-      <ListRow
-        key={comment.id}
-        primaryText={
-          <UserInfo
-            user={comment.user}
-            layout="row"
-            primaryText={
-              <Text size="md">
-                {/* Le clic est posé sur le nom seul : la date qui le suit appartient au même
-                    bloc de texte, et l'ouvrir aussi serait une cible trompeuse. */}
-                <Text size="md" bold onPress={openUser}>
-                  {name}
-                </Text>
-                {'  '}
-                <Text appearance="gray" size="sm">
-                  {formatRelative(comment.createdAt)}
-                </Text>
-              </Text>
-            }
-            secondaryText={
-              <Text size="sm" style={{ marginTop: theme.spacing.xs }}>
-                {comment.content}
-              </Text>
-            }
-            // Reste utile pour l'avatar, qu'UserInfo enveloppe dans une Pressable à part.
-            onPressUser={() => openUser?.()}
-          />
-        }
-      />
-    );
-  };
+  const title =
+    comments.length > 0
+      ? `${comments.length} commentaire${comments.length > 1 ? 's' : ''}`
+      : 'Commentaires';
+  const canSend = draft.trim().length > 0;
 
   return (
     <Modal
@@ -110,52 +159,109 @@ export const CommentsPanel: React.FC<CommentsPanelProps> = ({
       onRequestClose={onClose}
     >
       <GestureHandlerRootView style={{ flex: 1 }}>
-        <Panel isOpen={isOpen} onClose={onClose}>
-          {comments.map(renderComment)}
-
-          {/* Zone de saisie d'un nouveau commentaire (avatar + input + bouton d'envoi),
-              en bas du panneau ; le Panel la remonte au-dessus du clavier à l'ouverture. */}
-          {currentUser && (
-            <View
-              style={{
-                flexDirection: 'row',
-                // flex-start + décalage de l'avatar : on aligne l'avatar sur la boîte de saisie
-                // (42px), sans subir la ligne d'erreur réservée sous l'Input.
-                alignItems: 'flex-start',
-                gap: theme.spacing.sm,
-                marginTop: theme.spacing.sm,
-              }}
-            >
-              <Image
-                source={{ uri: currentUser.avatarUrl }}
-                style={{
-                  width: theme.avatarSizes.sm,
-                  height: theme.avatarSizes.sm,
-                  borderRadius: theme.borderRadius.rounded,
-                  backgroundColor: theme.colors.neutral.gray.light,
-                  marginTop: 4 + (42 - theme.avatarSizes.sm) / 2,
-                }}
-              />
-              <View style={{ flex: 1 }}>
-                <Input
-                  value={draft}
-                  onChange={setDraft}
-                  placeholder="Ajouter un commentaire…"
-                  // Bouton d'envoi (flèche vers le haut) affiché uniquement à la saisie
-                  rightIcon={
-                    draft.trim()
-                      ? {
-                          name: 'ArrowCircleUpRegular',
-                          size: theme.iconSizes.lg,
-                          color: theme.colors.secondary.base,
-                          onPress: send,
-                        }
-                      : undefined
-                  }
-                />
+        <Panel isOpen={isOpen} onClose={onClose} title={title}>
+          <View style={{ gap: 18, paddingTop: 4 }}>
+            {comments.length === 0 ? (
+              // État vide : une invitation plutôt qu'un panneau blanc
+              <View style={{ alignItems: 'center', gap: 8, paddingVertical: 28 }}>
+                <View
+                  style={{
+                    width: 56,
+                    height: 56,
+                    borderRadius: 8,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    backgroundColor: theme.colors.soft,
+                  }}
+                >
+                  <Icon name="ChatRegular" size={26} color={theme.colors.softText} />
+                </View>
+                <Text bold>Aucun commentaire</Text>
+                <Text size="sm" appearance="gray">
+                  Lance la conversation.
+                </Text>
               </View>
-            </View>
-          )}
+            ) : (
+              comments.map((comment) => {
+                // Ferme le panneau avant de remonter le clic : la navigation est gérée côté
+                // frontend, et sans cette fermeture l'écran ouvert s'empilerait *derrière* le
+                // Modal resté visible.
+                const openUser = onPressUser
+                  ? () => {
+                      onClose();
+                      onPressUser(comment.user);
+                    }
+                  : undefined;
+                return (
+                  <CommentRow
+                    key={comment.id}
+                    comment={comment}
+                    onPressUser={openUser}
+                    onReply={currentUser ? () => setDraft(`@${comment.user.username} `) : undefined}
+                  />
+                );
+              })
+            )}
+
+            {/* Zone de saisie (avatar + champ + bouton d'envoi rond), séparée de la liste ;
+                le Panel la remonte au-dessus du clavier à l'ouverture. */}
+            {currentUser && (
+              <View
+                style={{
+                  flexDirection: 'row',
+                  // flex-start + décalages : on aligne l'avatar et le bouton sur la boîte de
+                  // saisie (42px), sans subir la ligne d'erreur réservée sous l'Input.
+                  alignItems: 'flex-start',
+                  gap: 10,
+                  paddingTop: 14,
+                  borderTopWidth: 1,
+                  borderTopColor: theme.colors.border,
+                }}
+              >
+                <Image
+                  source={{ uri: currentUser.avatarUrl }}
+                  style={{
+                    width: AVATAR,
+                    height: AVATAR,
+                    borderRadius: Math.round(AVATAR * 0.13),
+                    backgroundColor: theme.colors.surfaceAlt,
+                    marginTop: 4 + (42 - AVATAR) / 2,
+                  }}
+                />
+                <View style={{ flex: 1 }}>
+                  <Input value={draft} onChange={setDraft} placeholder="Ajouter un commentaire…" />
+                </View>
+                <Pressable
+                  onPress={send}
+                  disabled={!canSend}
+                  accessibilityRole="button"
+                  accessibilityLabel="Envoyer le commentaire"
+                  style={({ pressed }) => ({
+                    width: SEND,
+                    height: SEND,
+                    marginTop: 4,
+                    borderRadius: 6,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    backgroundColor: canSend
+                      ? theme.colors.secondary.base
+                      : theme.colors.surfaceAlt,
+                    transform: [{ scale: pressed ? motion.pressScale : 1 }],
+                  })}
+                >
+                  <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
+                    <Path
+                      d="M12 19V5M6 11l6-6 6 6"
+                      stroke={canSend ? '#FFFFFF' : theme.colors.textMuted}
+                      strokeWidth={2.6}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </Svg>
+                </Pressable>
+              </View>
+            )}
+          </View>
         </Panel>
       </GestureHandlerRootView>
     </Modal>
